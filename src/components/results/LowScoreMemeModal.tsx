@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { X, Sparkles, RotateCcw, AlertTriangle, RefreshCw } from 'lucide-react';
+import { X, Sparkles, RotateCcw, AlertTriangle } from 'lucide-react';
 
 interface LowScoreMemeModalProps {
   isOpen: boolean;
@@ -88,12 +88,6 @@ export default function LowScoreMemeModal({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
 
-  const handleNextRandomMeme = () => {
-    const otherMemes = MEME_LIST.filter((m) => m.image !== currentMeme.image);
-    const randomIndex = Math.floor(Math.random() * otherMemes.length);
-    setCurrentMeme(otherMemes[randomIndex]);
-  };
-
   if (!isOpen) return null;
 
   return (
@@ -138,23 +132,11 @@ export default function LowScoreMemeModal({
             />
           </div>
 
-          {/* Score Badge & Random Reroll */}
-          <div className="mt-2.5 flex items-center justify-center gap-2">
-            <div className="inline-block bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800/60 px-3.5 py-1 rounded-xl">
-              <span className="text-xs text-rose-700 dark:text-rose-300 font-bold">
-                Điểm bài viết: <span className="font-mono text-base font-black">{bandScore.toFixed(1)}</span> / 9.0
-              </span>
-            </div>
-
-            <button
-              type="button"
-              onClick={handleNextRandomMeme}
-              title="Đổi meme khác"
-              className="p-1.5 rounded-lg border border-gray-200 dark:border-zinc-700 bg-gray-50 dark:bg-zinc-800 text-gray-500 hover:text-amber-600 dark:hover:text-amber-400 text-xs transition flex items-center gap-1"
-            >
-              <RefreshCw className="w-3.5 h-3.5" />
-              <span className="text-[11px] font-semibold">Đổi meme</span>
-            </button>
+          {/* Score Badge */}
+          <div className="mt-3 inline-block bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800/60 px-4 py-1.5 rounded-xl">
+            <span className="text-xs text-rose-700 dark:text-rose-300 font-bold">
+              Điểm bài viết: <span className="font-mono text-base font-black">{bandScore.toFixed(1)}</span> / 9.0
+            </span>
           </div>
         </div>
 
