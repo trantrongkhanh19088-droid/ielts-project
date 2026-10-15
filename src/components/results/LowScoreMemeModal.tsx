@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { X, Sparkles, RotateCcw, AlertTriangle } from 'lucide-react';
+import { X, Sparkles, RotateCcw, AlertTriangle, RefreshCw } from 'lucide-react';
 
 interface LowScoreMemeModalProps {
   isOpen: boolean;
@@ -10,11 +10,73 @@ interface LowScoreMemeModalProps {
   bandScore: number;
 }
 
+interface MemeItem {
+  image: string;
+  tag: string;
+  title: string;
+  caption: string;
+}
+
+const MEME_LIST: MemeItem[] = [
+  {
+    image: '/memes/meme-buddha.png',
+    tag: 'Thầy Độ Hết Nổi 🙏',
+    title: 'Thầy độ không nổi rồi con ơi! 🙏',
+    caption:
+      'Band dưới 6.0 thế này thì đến thầy cũng phải chắp tay tịnh tâm! Hãy soi lại các lỗi Task Response và Grammar ngay bên dưới để phục thù lần tới nhé.',
+  },
+  {
+    image: '/memes/meme-bandaged.png',
+    tag: 'Gãy Tay Vẫn Tạch 😭',
+    title: 'Gõ phím gãy cả ngón tay mà Band thế này à?! 😭',
+    caption:
+      'Viết hăng say đến mức ngón tay quấn băng trắng xoá, mà examiner chấm bài vẫn gõ đầu dưới 6.0! Mau kéo xuống xem lỗi sai để băng bó vết thương lòng nào.',
+  },
+  {
+    image: '/memes/meme-be-driver.png',
+    tag: 'Tài Xế Tương Lai 🛵',
+    title: 'Chuẩn bị nhận đồng phục chạy Be thôi con ơi! 🛵',
+    caption:
+      'Với cái band điểm này thì tạm gác bút nghiên, bật app nhận cuốc xe giao hàng thôi chứ biết sao giờ! Mau đọc bài mẫu Band 8.5+ để đổi vận nhé.',
+  },
+  {
+    image: '/memes/meme-emperor.png',
+    tag: 'Ánh Mắt Phán Xét 🤨',
+    title: 'Giám khảo đang nhìn bài viết của bạn với ánh mắt này! 🤨',
+    caption:
+      'Ai cho phép bạn dùng từ vựng sơ cấp và viết câu thiếu vị ngữ trước mặt trẫm? Hãy đọc ngay nhận xét 4 tiêu chí bên dưới để tạ tội!',
+  },
+  {
+    image: '/memes/meme-pink-dress.png',
+    tag: 'Ngại Giùm Thí Sinh 🙈',
+    title: 'Ối dồi ôi! Band này nhìn mà ngại ngùng giùm luôn á! 🙈',
+    caption:
+      'Ủa ai chấm bài zậy? Điểm số làm người ta ngại xỉu ngang luôn á! Bấm vào xem lỗi ngay để nâng cấp từ vựng C1/C2 liền tay đi nào.',
+  },
+  {
+    image: '/memes/meme-blanket.png',
+    tag: 'Quấn Chăn Tịnh Tâm 🛌',
+    title: 'Trầm cảm quấn mền tịnh tâm, từ chối giao tiếp! 🛌',
+    caption:
+      'Nhận xong bảng điểm dưới 6.0 chỉ muốn quấn mền đầu thai bài thi khác! Nhưng thôi dậy đi, kéo xuống đọc nhận xét để lần sau phục thù nhé!',
+  },
+];
+
 export default function LowScoreMemeModal({
   isOpen,
   onClose,
   bandScore,
 }: LowScoreMemeModalProps) {
+  const [currentMeme, setCurrentMeme] = useState<MemeItem>(MEME_LIST[0]);
+
+  // Pick random meme whenever modal opens
+  useEffect(() => {
+    if (isOpen) {
+      const randomIndex = Math.floor(Math.random() * MEME_LIST.length);
+      setCurrentMeme(MEME_LIST[randomIndex]);
+    }
+  }, [isOpen]);
+
   // Handle ESC key press
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -26,13 +88,19 @@ export default function LowScoreMemeModal({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
 
+  const handleNextRandomMeme = () => {
+    const otherMemes = MEME_LIST.filter((m) => m.image !== currentMeme.image);
+    const randomIndex = Math.floor(Math.random() * otherMemes.length);
+    setCurrentMeme(otherMemes[randomIndex]);
+  };
+
   if (!isOpen) return null;
 
   return (
     <div
       role="dialog"
       aria-modal="true"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
@@ -43,44 +111,56 @@ export default function LowScoreMemeModal({
           type="button"
           onClick={onClose}
           aria-label="Đóng popup"
-          className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 bg-gray-100 dark:bg-zinc-800 rounded-full transition shadow-sm"
+          className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 bg-gray-100 dark:bg-zinc-800 rounded-full transition shadow-sm z-10"
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Humorous / Warning Tag */}
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800 text-xs font-extrabold uppercase tracking-wide mb-3">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800 text-xs font-extrabold uppercase tracking-wide mb-2.5">
           <AlertTriangle className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-          <span>Cảnh báo Band dưới 6.0</span>
+          <span>{currentMeme.tag}</span>
         </div>
 
-        {/* Title */}
-        <h3 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">
-          Thầy độ không nổi rồi con ơi! 🙏
+        {/* Dynamic Title */}
+        <h3 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white leading-snug">
+          {currentMeme.title}
         </h3>
 
-        {/* Meme Image */}
-        <div className="my-4 relative">
-          <div className="relative mx-auto w-52 max-h-56 overflow-hidden rounded-2xl shadow-lg border-2 border-amber-400/60 dark:border-amber-500/40 bg-amber-50 dark:bg-zinc-800">
+        {/* Meme Image Container */}
+        <div className="my-3.5 relative">
+          <div className="relative mx-auto w-56 max-h-60 overflow-hidden rounded-2xl shadow-lg border-2 border-amber-400/60 dark:border-amber-500/40 bg-amber-50/50 dark:bg-zinc-800 flex items-center justify-center">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/low-score-meme.png"
-              alt="Band dưới 6.0 Meme"
-              className="w-full h-auto object-cover hover:scale-105 transition duration-300"
+              src={currentMeme.image}
+              alt={currentMeme.title}
+              className="max-h-56 w-auto object-contain hover:scale-105 transition duration-300"
             />
           </div>
 
-          <div className="mt-3 inline-block bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800/60 px-3.5 py-1 rounded-xl">
-            <span className="text-xs text-rose-700 dark:text-rose-300 font-bold">
-              Điểm bài viết: <span className="font-mono text-base font-black">{bandScore.toFixed(1)}</span> / 9.0
-            </span>
+          {/* Score Badge & Random Reroll */}
+          <div className="mt-2.5 flex items-center justify-center gap-2">
+            <div className="inline-block bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800/60 px-3.5 py-1 rounded-xl">
+              <span className="text-xs text-rose-700 dark:text-rose-300 font-bold">
+                Điểm bài viết: <span className="font-mono text-base font-black">{bandScore.toFixed(1)}</span> / 9.0
+              </span>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleNextRandomMeme}
+              title="Đổi meme khác"
+              className="p-1.5 rounded-lg border border-gray-200 dark:border-zinc-700 bg-gray-50 dark:bg-zinc-800 text-gray-500 hover:text-amber-600 dark:hover:text-amber-400 text-xs transition flex items-center gap-1"
+            >
+              <RefreshCw className="w-3.5 h-3.5" />
+              <span className="text-[11px] font-semibold">Đổi meme</span>
+            </button>
           </div>
         </div>
 
-        {/* Encouraging Message */}
-        <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed mb-6 px-2">
-          Đừng vội nản lòng! Hãy bấm nút bên dưới để soi chi tiết từng lỗi ngữ pháp,
-          tham khảo từ vựng C1/C2 nâng cấp và đọc bài mẫu <strong>Band 8.5+</strong> để phục thù lần tới nhé!
+        {/* Dynamic Encouraging Caption */}
+        <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed mb-5 px-2">
+          {currentMeme.caption}
         </p>
 
         {/* Action Buttons */}
