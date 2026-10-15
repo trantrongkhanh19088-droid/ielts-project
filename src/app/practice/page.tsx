@@ -8,6 +8,7 @@ import ExamHeader from '@/components/exam/ExamHeader';
 import PromptPane from '@/components/exam/PromptPane';
 import EditorPane from '@/components/exam/EditorPane';
 import FullTestNavBar from '@/components/exam/FullTestNavBar';
+import GradingProgressModal from '@/components/exam/GradingProgressModal';
 import {
   calculateOverallBand,
   checkRateLimit,
@@ -288,6 +289,7 @@ function PracticeContent() {
           task_type: 'full_test',
           prompt_title: `Full Test: ${task1Prompt.title} & ${task2Prompt.title}`,
           prompt_text: `Task 1: ${task1Prompt.question}\n\nTask 2: ${task2Prompt.question}`,
+          chart_image_url: customImageBase64 || task1Prompt.imageUrl || undefined,
           essay_content: `--- TASK 1 ---\n${task1Essay}\n\n--- TASK 2 ---\n${task2Essay}`,
           word_count: t1Words + t2Words,
           duration_seconds: timeSpent,
@@ -341,7 +343,7 @@ function PracticeContent() {
           task_type: isT1 ? 'task1' : 'task2',
           prompt_title: activePrompt.title,
           prompt_text: activePrompt.question,
-          chart_image_url: customImageBase64 || undefined,
+          chart_image_url: customImageBase64 || activePrompt.imageUrl || undefined,
           essay_content: activeEssay,
           word_count: data.wordCount,
           duration_seconds: timeSpent,
@@ -456,6 +458,9 @@ function PracticeContent() {
           contrastMode={contrastMode}
         />
       )}
+
+      {/* AI Grading Progress Modal */}
+      <GradingProgressModal isOpen={isSubmitting} isFullTest={isFullTest} />
     </div>
   );
 }

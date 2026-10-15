@@ -4,6 +4,7 @@ export const TASK_1_SEEDS: PromptSeed[] = [
   {
     "id": "t1-01-immigration-line",
     "taskType": "task1",
+    "imageUrl": "/forecast/t1-01.png",
     "title": "T1-01: Immigrants to Three Countries (1990-2001)",
     "category": "Line Graph",
     "instruction": "Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",
@@ -183,6 +184,7 @@ export const TASK_1_SEEDS: PromptSeed[] = [
   {
     "id": "t1-02-landfill-process",
     "taskType": "task1",
+    "imageUrl": "/forecast/t1-02.png",
     "title": "T1-02: Modern Landfill Construction & Operation",
     "category": "Process",
     "instruction": "Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",
@@ -224,6 +226,7 @@ export const TASK_1_SEEDS: PromptSeed[] = [
   {
     "id": "t1-03-expenditure-2009",
     "taskType": "task1",
+    "imageUrl": "/forecast/t1-03.png",
     "title": "T1-03: Household Expenditure Shares (2009)",
     "category": "Bar Chart",
     "instruction": "Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",
@@ -347,6 +350,7 @@ export const TASK_1_SEEDS: PromptSeed[] = [
   {
     "id": "t1-04-doctor-worker-pay",
     "taskType": "task1",
+    "imageUrl": "/forecast/t1-04.png",
     "title": "T1-04: Annual Pay of Doctors vs Other Workers (2004)",
     "category": "Bar Chart",
     "instruction": "Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",
@@ -466,6 +470,7 @@ export const TASK_1_SEEDS: PromptSeed[] = [
   {
     "id": "t1-05-leisure-reading-music",
     "taskType": "task1",
+    "imageUrl": "/forecast/t1-05.png",
     "title": "T1-05: Time Spent on Reading vs Music by Age in NZ",
     "category": "Bar Chart",
     "instruction": "Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",
@@ -563,6 +568,7 @@ export const TASK_1_SEEDS: PromptSeed[] = [
   {
     "id": "t1-06-car-ownership-uk",
     "taskType": "task1",
+    "imageUrl": "/forecast/t1-06.png",
     "title": "T1-06: Household Car Ownership in Britain (1971-2007)",
     "category": "Line Graph",
     "instruction": "Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",
@@ -728,6 +734,7 @@ export const TASK_1_SEEDS: PromptSeed[] = [
   {
     "id": "t1-07-beachfront-maps",
     "taskType": "task1",
+    "imageUrl": "/forecast/t1-07.png",
     "title": "T1-07: Australian Beachfront Development (1950 vs Now)",
     "category": "Map / Plan",
     "instruction": "Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",
@@ -774,6 +781,7 @@ export const TASK_1_SEEDS: PromptSeed[] = [
   {
     "id": "t1-08-education-mode-australia",
     "taskType": "task1",
+    "imageUrl": "/forecast/t1-08.png",
     "title": "T1-08: Australian Higher Education Modes by Gender & Age (2006)",
     "category": "Bar Chart",
     "instruction": "Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",
@@ -883,6 +891,7 @@ export const TASK_1_SEEDS: PromptSeed[] = [
   {
     "id": "t1-09-supermarket-food-goods",
     "taskType": "task1",
+    "imageUrl": "/forecast/t1-09.png",
     "title": "T1-09: Supermarket Food and Goods Purchases (1998 vs 2008)",
     "category": "Bar Chart",
     "instruction": "Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",
@@ -978,6 +987,7 @@ export const TASK_1_SEEDS: PromptSeed[] = [
   {
     "id": "t1-10-coal-electricity-process",
     "taskType": "task1",
+    "imageUrl": "/forecast/t1-10.png",
     "title": "T1-10: Producing Electricity from Coal",
     "category": "Process",
     "instruction": "Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",
@@ -1019,6 +1029,7 @@ export const TASK_1_SEEDS: PromptSeed[] = [
   {
     "id": "t1-11-travel-modes-1997-2007",
     "taskType": "task1",
+    "imageUrl": "/forecast/t1-11.png",
     "title": "T1-11: Annual Travel Distance by Mode in the UK (1997 vs 2007)",
     "category": "Table Chart",
     "instruction": "Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",
@@ -1088,6 +1099,7 @@ export const TASK_1_SEEDS: PromptSeed[] = [
   {
     "id": "t1-12-room-layouts-training",
     "taskType": "task1",
+    "imageUrl": "/forecast/t1-12.png",
     "title": "T1-12: Training Room Layouts (Plan A vs Plan B)",
     "category": "Map / Plan",
     "instruction": "Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",
@@ -1134,6 +1146,7 @@ export const TASK_1_SEEDS: PromptSeed[] = [
   {
     "id": "t1-13-water-filter-process",
     "taskType": "task1",
+    "imageUrl": "/forecast/t1-13.png",
     "title": "T1-13: Simple Water Filter Assembly and Operation",
     "category": "Process",
     "instruction": "Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",
@@ -1185,6 +1198,7 @@ export const TASK_1_SEEDS: PromptSeed[] = [
   {
     "id": "t1-14-retirement-age-gender",
     "taskType": "task1",
+    "imageUrl": "/forecast/t1-14.png",
     "title": "T1-14: Retirement Age in Seven Countries (2004 vs 2008)",
     "category": "Bar Chart",
     "instruction": "Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",
@@ -1336,6 +1350,7 @@ export const TASK_1_SEEDS: PromptSeed[] = [
   {
     "id": "t1-15-museum-redevelopment-map",
     "taskType": "task1",
+    "imageUrl": "/forecast/t1-15.png",
     "title": "T1-15: Walton Museum South Wing (2008 vs 2012)",
     "category": "Map / Plan",
     "instruction": "Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",
@@ -1377,6 +1392,7 @@ export const TASK_1_SEEDS: PromptSeed[] = [
   {
     "id": "t1-16-home-smokery-process",
     "taskType": "task1",
+    "imageUrl": "/forecast/t1-16.png",
     "title": "T1-16: Home Smokery Structure and Operation",
     "category": "Process",
     "instruction": "Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",
@@ -1423,6 +1439,7 @@ export const TASK_1_SEEDS: PromptSeed[] = [
   {
     "id": "t1-17-shalton-village-maps",
     "taskType": "task1",
+    "imageUrl": "/forecast/t1-17.png",
     "title": "T1-17: Shalton Village Development (1910 vs 2010)",
     "category": "Map / Plan",
     "instruction": "Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",
@@ -1469,6 +1486,7 @@ export const TASK_1_SEEDS: PromptSeed[] = [
   {
     "id": "t1-18-energy-shares-1985-2003",
     "taskType": "task1",
+    "imageUrl": "/forecast/t1-18.png",
     "title": "T1-18: National Energy Production by Source (1985 vs 2003)",
     "category": "Pie Chart",
     "instruction": "Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",
@@ -1597,6 +1615,7 @@ export const TASK_1_SEEDS: PromptSeed[] = [
   {
     "id": "t1-19-student-common-room-maps",
     "taskType": "task1",
+    "imageUrl": "/forecast/t1-19.png",
     "title": "T1-19: Student Common Room Layout (5 Years Ago vs Now)",
     "category": "Map / Plan",
     "instruction": "Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",
@@ -1643,6 +1662,7 @@ export const TASK_1_SEEDS: PromptSeed[] = [
   {
     "id": "t1-20-household-tasks-gender",
     "taskType": "task1",
+    "imageUrl": "/forecast/t1-20.png",
     "title": "T1-20: Household Tasks by Gender in Great Britain",
     "category": "Bar Chart",
     "instruction": "Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",
@@ -1751,6 +1771,7 @@ export const TASK_1_SEEDS: PromptSeed[] = [
   {
     "id": "t1-21-zoo-redevelopment-map",
     "taskType": "task1",
+    "imageUrl": "/forecast/t1-21.png",
     "title": "T1-21: Australian Zoo Redevelopment (1960 vs Now)",
     "category": "Map / Plan",
     "instruction": "Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",
@@ -1797,6 +1818,7 @@ export const TASK_1_SEEDS: PromptSeed[] = [
   {
     "id": "t1-22-european-residents-matrix",
     "taskType": "task1",
+    "imageUrl": "/forecast/t1-22.png",
     "title": "T1-22: Cross-Border European Residents (2011)",
     "category": "Table Chart",
     "instruction": "Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",
@@ -1881,6 +1903,7 @@ export const TASK_1_SEEDS: PromptSeed[] = [
   {
     "id": "t1-23-dairy-producers-2012",
     "taskType": "task1",
+    "imageUrl": "/forecast/t1-23.png",
     "title": "T1-23: World Top Three Dairy Producers (2012)",
     "category": "Bar Chart",
     "instruction": "Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",
@@ -1976,6 +1999,7 @@ export const TASK_1_SEEDS: PromptSeed[] = [
   {
     "id": "t1-24-household-size-uk",
     "taskType": "task1",
+    "imageUrl": "/forecast/t1-24.png",
     "title": "T1-24: Household Size Distribution in the UK (1981 vs 2001)",
     "category": "Bar Chart",
     "instruction": "Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",
@@ -2084,6 +2108,7 @@ export const TASK_1_SEEDS: PromptSeed[] = [
   {
     "id": "t1-25-marriage-ages-1996-2008",
     "taskType": "task1",
+    "imageUrl": "/forecast/t1-25.png",
     "title": "T1-25: Age of Marriage by Gender (1996 vs 2008)",
     "category": "Bar Chart",
     "instruction": "Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",
@@ -2221,6 +2246,7 @@ export const TASK_1_SEEDS: PromptSeed[] = [
   {
     "id": "t1-26-smoked-fish-process",
     "taskType": "task1",
+    "imageUrl": "/forecast/t1-26.png",
     "title": "T1-26: Smoked Fish Production Process",
     "category": "Process",
     "instruction": "Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",
@@ -2262,6 +2288,7 @@ export const TASK_1_SEEDS: PromptSeed[] = [
   {
     "id": "t1-27-ireland-unemployment-emigration",
     "taskType": "task1",
+    "imageUrl": "/forecast/t1-27.png",
     "title": "T1-27: Ireland Unemployment Rate & Emigration (1988-2008)",
     "category": "Line Graph",
     "instruction": "Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",
@@ -2395,6 +2422,7 @@ export const TASK_1_SEEDS: PromptSeed[] = [
   {
     "id": "t1-28-hydroelectric-dam-maps",
     "taskType": "task1",
+    "imageUrl": "/forecast/t1-28.png",
     "title": "T1-28: Town Changes After Hydroelectric Dam Construction (1990 vs 2010)",
     "category": "Map / Plan",
     "instruction": "Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",
@@ -2441,6 +2469,7 @@ export const TASK_1_SEEDS: PromptSeed[] = [
   {
     "id": "t1-29-office-layouts-us-japan",
     "taskType": "task1",
+    "imageUrl": "/forecast/t1-29.png",
     "title": "T1-29: Office Layouts (Typical American vs Japanese Office)",
     "category": "Map / Plan",
     "instruction": "Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",
@@ -2487,6 +2516,7 @@ export const TASK_1_SEEDS: PromptSeed[] = [
   {
     "id": "t1-30-healthcare-indicators-europe",
     "taskType": "task1",
+    "imageUrl": "/forecast/t1-30.png",
     "title": "T1-30: Medical Care in Austria, France, and Sweden (1980-2000)",
     "category": "Table Chart",
     "instruction": "Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.",

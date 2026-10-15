@@ -227,6 +227,31 @@ function ResultsContent() {
         </div>
       )}
 
+      {/* Prompt Reference & Chart Image */}
+      <div className="p-4 rounded-xl border border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-sm space-y-2">
+        <div className="flex items-center justify-between">
+          <span className="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+            Đề bài thi ({activeResult.taskType === 'task1' ? 'Task 1' : 'Task 2'}):
+          </span>
+          <span className="text-xs font-semibold text-sky-600 dark:text-sky-400">
+            {activeResult.promptTitle}
+          </span>
+        </div>
+        <p className="text-xs leading-relaxed text-gray-700 dark:text-gray-300 font-sans">
+          {activeResult.promptText}
+        </p>
+        {record.chart_image_url && (activeResult.taskType === 'task1' || !isFullTest) && (
+          <div className="pt-2">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={record.chart_image_url}
+              alt="Biểu đồ đề bài"
+              className="max-h-56 object-contain rounded-lg border border-gray-200 dark:border-zinc-800 bg-white"
+            />
+          </div>
+        )}
+      </div>
+
       {/* Active Task ScoreCard */}
       <ScoreCard result={activeResult} />
 

@@ -49,6 +49,7 @@ export default function PromptPane({
   const [showTable, setShowTable] = useState(false);
   const [showOutline, setShowOutline] = useState(false);
   const [isZoomOpen, setIsZoomOpen] = useState(false);
+  const [chartViewMode, setChartViewMode] = useState<'image' | 'interactive'>('image');
   const [highlightTooltip, setHighlightTooltip] = useState<{
     visible: boolean;
     x: number;
@@ -57,6 +58,11 @@ export default function PromptPane({
 
   const questionContainerRef = useRef<HTMLDivElement>(null);
   const [uploadingImage, setUploadingImage] = useState(false);
+
+  useEffect(() => {
+    setChartViewMode('image');
+    setShowTable(false);
+  }, [prompt.id]);
 
   // Handle Text Selection for Highlighting
   const handleMouseUp = () => {
@@ -382,40 +388,109 @@ export default function PromptPane({
               </div>
             )}
 
-            {/* Built-in Interactive Charts for Task 1 */}
+            {/* Built-in Visual Diagram / Interactive Charts for Task 1 */}
             {prompt.taskType === 'task1' && !customImageBase64 && (
-              <div className="space-y-4 pt-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold uppercase tracking-wider opacity-80">
-                    Biểu đồ số liệu trực quan:
-                  </span>
-                  {prompt.chartTable && (
-                    <button
-                      type="button"
-                      onClick={() => setShowTable(!showTable)}
-                      className="inline-flex items-center gap-1 text-xs text-sky-600 dark:text-sky-400 hover:underline"
-                    >
-                      <TableIcon className="w-3.5 h-3.5" />
-                      {showTable ? 'Ẩn bảng số liệu' : 'Xem bảng số liệu chi tiết'}
-                    </button>
-                  )}
+              <div className="space-y-3 pt-2">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs font-bold uppercase tracking-wider opacity-85">
+                      {prompt.category ? `Đề bài: ${prompt.category}` : 'Hình ảnh / Biểu đồ:'}
+                    </span>
+                    {prompt.imageUrl && (
+                      <span className="text-[10px] px-1.5 py-0.5 rounded font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
+                        Forecast Quý 3
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    {/* Toggle between Original Scan and Interactive Chart if both exist */}
+                    {prompt.imageUrl && prompt.chartData && (
+                      <div className="flex rounded-md p-0.5 bg-gray-200 dark:bg-zinc-800 text-[11px] font-medium">
+                        <button
+                          type="button"
+                          onClick={() => setChartViewMode('image')}
+                          className={`px-2 py-0.5 rounded transition ${
+                            chartViewMode === 'image'
+                              ? 'bg-white dark:bg-zinc-900 text-sky-600 dark:text-sky-400 shadow-sm font-semibold'
+                              : 'text-gray-600 dark:text-gray-400 hover:text-gray-900'
+                          }`}
+                        >
+                          Hình ảnh gốc
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setChartViewMode('interactive')}
+                          className={`px-2 py-0.5 rounded transition ${
+                            chartViewMode === 'interactive'
+                              ? 'bg-white dark:bg-zinc-900 text-sky-600 dark:text-sky-400 shadow-sm font-semibold'
+                              : 'text-gray-600 dark:text-gray-400 hover:text-gray-900'
+                          }`}
+                        >
+                          Biểu đồ số
+                        </button>
+                      </div>
+                    )}
+
+                    {prompt.imageUrl && (
+                      <button
+                        type="button"
+                        onClick={() => setIsZoomOpen(true)}
+                        className="inline-flex items-center gap-1 text-xs text-sky-600 dark:text-sky-400 hover:underline font-semibold"
+                      >
+                        <Maximize2 className="w-3.5 h-3.5" />
+                        <span>Phóng to</span>
+                      </button>
+                    )}
+
+                    {prompt.chartTable && (
+                      <button
+                        type="button"
+                        onClick={() => setShowTable(!showTable)}
+                        className="inline-flex items-center gap-1 text-xs text-sky-600 dark:text-sky-400 hover:underline"
+                      >
+                        <TableIcon className="w-3.5 h-3.5" />
+                        <span>{showTable ? 'Ẩn số liệu' : 'Bảng số liệu'}</span>
+                      </button>
+                    )}
+                  </div>
                 </div>
 
-                {prompt.chartType === 'line' && prompt.chartData && prompt.chartDataKeys && (
-                  <Task1LineChart data={prompt.chartData} dataKeys={prompt.chartDataKeys} />
+                {/* Display Official Diagram Image (Map, Process, or Chart) */}
+                {prompt.imageUrl && (chartViewMode === 'image' || !prompt.chartData) && (
+                  <div className="relative group rounded-xl border border-gray-200 dark:border-zinc-800 bg-white p-2.5 overflow-hidden shadow-sm">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={prompt.imageUrl}
+                      alt={prompt.title}
+                      onClick={() => setIsZoomOpen(true)}
+                      className="w-full max-h-80 object-contain rounded cursor-zoom-in transition-transform duration-200 group-hover:scale-[1.01]"
+                    />
+                    <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-black/75 text-white text-[10px] px-2 py-1 rounded-md pointer-events-none flex items-center gap-1">
+                      <Maximize2 className="w-3 h-3" />
+                      <span>Nhấp để phóng to toàn màn hình</span>
+                    </div>
+                  </div>
                 )}
 
-                {prompt.chartType === 'bar' && prompt.chartData && prompt.chartDataKeys && (
-                  <Task1BarChart data={prompt.chartData} dataKeys={prompt.chartDataKeys} />
-                )}
-
-                {prompt.chartType === 'pie' && prompt.chartData && (
-                  <Task1PieChart data={prompt.chartData as any} />
+                {/* Display Interactive Chart if selected or if no image */}
+                {(!prompt.imageUrl || chartViewMode === 'interactive') && prompt.chartData && (
+                  <div>
+                    {prompt.chartType === 'line' && prompt.chartDataKeys && (
+                      <Task1LineChart data={prompt.chartData} dataKeys={prompt.chartDataKeys} />
+                    )}
+                    {prompt.chartType === 'bar' && prompt.chartDataKeys && (
+                      <Task1BarChart data={prompt.chartData} dataKeys={prompt.chartDataKeys} />
+                    )}
+                    {prompt.chartType === 'pie' && (
+                      <Task1PieChart data={prompt.chartData as any} />
+                    )}
+                  </div>
                 )}
 
                 {/* Data Table */}
                 {showTable && prompt.chartTable && (
-                  <div className="overflow-x-auto rounded border border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+                  <div className="overflow-x-auto rounded border border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 mt-2">
                     <table className="w-full text-xs text-left border-collapse">
                       <thead className="bg-gray-100 dark:bg-zinc-800 border-b border-gray-200 dark:border-zinc-700">
                         <tr>
@@ -490,12 +565,12 @@ export default function PromptPane({
         </div>
       )}
 
-      {/* Zoom Modal for Custom Image */}
-      {customImageBase64 && (
+      {/* Zoom Modal for Custom Image or Built-in Forecast Image */}
+      {(customImageBase64 || prompt.imageUrl) && (
         <ImageZoomModal
           isOpen={isZoomOpen}
           onClose={() => setIsZoomOpen(false)}
-          imageUrl={customImageBase64}
+          imageUrl={customImageBase64 || prompt.imageUrl || ''}
           title={prompt.title}
         />
       )}

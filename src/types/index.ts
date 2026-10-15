@@ -17,7 +17,8 @@ export interface PromptSeed {
   question: string;
   minWords: number;
   timeMinutes: number;
-  chartType?: 'line' | 'bar' | 'pie' | 'custom_image';
+  chartType?: 'line' | 'bar' | 'pie' | 'custom_image' | 'process' | 'map' | 'table';
+  imageUrl?: string;
   chartData?: ChartDataPoint[];
   chartDataKeys?: { key: string; name: string; color: string }[];
   chartDescription?: string;
