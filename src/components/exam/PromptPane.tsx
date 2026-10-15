@@ -19,6 +19,8 @@ import { compressImage } from '@/lib/utils';
 
 interface PromptPaneProps {
   prompt: PromptSeed;
+  availablePrompts?: PromptSeed[];
+  onSelectPrompt?: (prompt: PromptSeed) => void;
   contrastMode: ContrastMode;
   fontSize: FontSize;
   scratchpadNotes: string;
@@ -31,6 +33,8 @@ interface PromptPaneProps {
 
 export default function PromptPane({
   prompt,
+  availablePrompts,
+  onSelectPrompt,
   contrastMode,
   fontSize,
   scratchpadNotes,
@@ -212,13 +216,40 @@ export default function PromptPane({
                   : 'bg-sky-50 border-sky-100 text-sky-900'
               }`}
             >
-              <div className="flex items-center gap-1.5 font-bold">
-                <Info className="w-4 h-4 text-sky-600 shrink-0" />
-                <span>
-                  {prompt.taskType === 'task1'
-                    ? 'IELTS Writing Task 1 (Academic)'
-                    : 'IELTS Writing Task 2'}
-                </span>
+              <div className="flex flex-wrap items-center justify-between gap-2 font-bold">
+                <div className="flex items-center gap-1.5">
+                  <Info className="w-4 h-4 text-sky-600 shrink-0" />
+                  <span>
+                    {prompt.taskType === 'task1'
+                      ? 'IELTS Writing Task 1 (Academic)'
+                      : 'IELTS Writing Task 2'}
+                  </span>
+                </div>
+                {availablePrompts && availablePrompts.length > 1 && onSelectPrompt && (
+                  <div className="flex items-center gap-1.5 font-normal">
+                    <span className="text-[11px] opacity-75">Đổi đề ({availablePrompts.length}):</span>
+                    <select
+                      value={prompt.id}
+                      onChange={(e) => {
+                        const found = availablePrompts.find((p) => p.id === e.target.value);
+                        if (found) onSelectPrompt(found);
+                      }}
+                      className={`text-[11px] px-2 py-1 rounded border font-medium outline-none cursor-pointer max-w-[220px] truncate ${
+                        contrastMode === 'yellow-on-black'
+                          ? 'bg-black text-[#ffe600] border-[#ffe600]'
+                          : contrastMode === 'white-on-black'
+                          ? 'bg-zinc-800 text-white border-zinc-700'
+                          : 'bg-white text-gray-800 border-gray-300 shadow-sm'
+                      }`}
+                    >
+                      {availablePrompts.map((p, idx) => (
+                        <option key={p.id} value={p.id}>
+                          {idx + 1}. [{p.category}] {p.title}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
               </div>
               <p className="leading-relaxed">
                 You should spend about <strong>{prompt.timeMinutes} minutes</strong> on this task.

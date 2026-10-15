@@ -400,6 +400,17 @@ function PracticeContent() {
         <div className="h-full overflow-hidden">
           <PromptPane
             prompt={currentPrompt}
+            availablePrompts={isFullTest ? (activeFullTestPart === 'task1' ? TASK_1_SEEDS : TASK_2_SEEDS) : mode === 'task1' ? TASK_1_SEEDS : TASK_2_SEEDS}
+            onSelectPrompt={(selected) => {
+              if (isFullTest) {
+                if (activeFullTestPart === 'task1') setTask1Prompt(selected);
+                else setTask2Prompt(selected);
+              } else if (mode === 'task1') {
+                setTask1Prompt(selected);
+              } else {
+                setTask2Prompt(selected);
+              }
+            }}
             contrastMode={contrastMode}
             fontSize={fontSize}
             scratchpadNotes={currentNotes}
