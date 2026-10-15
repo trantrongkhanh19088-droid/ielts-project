@@ -123,6 +123,155 @@ export const TASK_1_SEEDS: PromptSeed[] = [
       ],
     },
   },
+  // --- 5 NEW TASK 1 FORECAST PROMPTS ---
+  {
+    id: 't1-line-co2-emissions',
+    taskType: 'task1',
+    title: 'CO2 Emissions in 4 European Countries (Forecast)',
+    category: 'Line Graph',
+    instruction:
+      'Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.',
+    question:
+      'The line graph shows carbon dioxide emissions per person (in metric tonnes) in four European countries (United Kingdom, Sweden, Italy, Portugal) between 1967 and 2007.',
+    minWords: 150,
+    timeMinutes: 20,
+    chartType: 'line',
+    chartDescription:
+      'CO2 emissions in tonnes per capita: The UK was consistently the highest emitter, though falling gradually from 11 tonnes in 1967 to 9 tonnes in 2007. Sweden initially rose from 8.5 to a peak of 10.5 in 1977, before dropping dramatically to 5.5 tonnes by 2007. In contrast, Italy rose steadily from 4.2 to 7.8 tonnes, and Portugal increased almost fourfold from 1.3 to 5.4 tonnes.',
+    chartDataKeys: [
+      { key: 'UK', name: 'United Kingdom', color: '#1e40af' },
+      { key: 'Sweden', name: 'Sweden', color: '#0284c7' },
+      { key: 'Italy', name: 'Italy', color: '#10b981' },
+      { key: 'Portugal', name: 'Portugal', color: '#f59e0b' },
+    ],
+    chartData: [
+      { label: '1967', UK: 11.0, Sweden: 8.5, Italy: 4.2, Portugal: 1.3 },
+      { label: '1977', UK: 10.8, Sweden: 10.5, Italy: 6.2, Portugal: 2.5 },
+      { label: '1987', UK: 10.0, Sweden: 7.0, Italy: 7.0, Portugal: 3.8 },
+      { label: '1997', UK: 9.4, Sweden: 6.0, Italy: 7.5, Portugal: 4.8 },
+      { label: '2007', UK: 9.0, Sweden: 5.5, Italy: 7.8, Portugal: 5.4 },
+    ],
+    chartTable: {
+      headers: ['Year', 'United Kingdom', 'Sweden', 'Italy', 'Portugal'],
+      rows: [
+        ['1967', '11.0 t', '8.5 t', '4.2 t', '1.3 t'],
+        ['1977', '10.8 t', '10.5 t', '6.2 t', '2.5 t'],
+        ['1987', '10.0 t', '7.0 t', '7.0 t', '3.8 t'],
+        ['1997', '9.4 t', '6.0 t', '7.5 t', '4.8 t'],
+        ['2007', '9.0 t', '5.5 t', '7.8 t', '5.4 t'],
+      ],
+    },
+  },
+  {
+    id: 't1-bar-sports-participation',
+    taskType: 'task1',
+    title: 'University Sports Participation by Gender (Forecast)',
+    category: 'Bar Chart',
+    instruction:
+      'Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.',
+    question:
+      'The chart below shows the percentage of male and female students at a university who took part in six different sports in 2023.',
+    minWords: 150,
+    timeMinutes: 20,
+    chartType: 'bar',
+    chartDescription:
+      'Sports participation by gender: Football had the largest gender discrepancy with 38% of males playing compared to only 12% of females. Basketball also favoured males (28% vs 14%). Conversely, Swimming was the most popular sport for females (35% vs 18% males), as was Badminton (22% females vs 15% males). Tennis had near parity (20% males, 21% females). Cycling showed 16% males and 14% females.',
+    chartDataKeys: [
+      { key: 'Male', name: 'Male Students (%)', color: '#2563eb' },
+      { key: 'Female', name: 'Female Students (%)', color: '#ec4899' },
+    ],
+    chartData: [
+      { label: 'Football', Male: 38, Female: 12 },
+      { label: 'Swimming', Male: 18, Female: 35 },
+      { label: 'Basketball', Male: 28, Female: 14 },
+      { label: 'Tennis', Male: 20, Female: 21 },
+      { label: 'Badminton', Male: 15, Female: 22 },
+      { label: 'Cycling', Male: 16, Female: 14 },
+    ],
+    chartTable: {
+      headers: ['Sport', 'Male (%)', 'Female (%)', 'Leading Gender'],
+      rows: [
+        ['Football', '38%', '12%', 'Male (+26%)'],
+        ['Swimming', '18%', '35%', 'Female (+17%)'],
+        ['Basketball', '28%', '14%', 'Male (+14%)'],
+        ['Tennis', '20%', '21%', 'Near Equal (Female +1%)'],
+        ['Badminton', '15%', '22%', 'Female (+7%)'],
+        ['Cycling', '16%', '14%', 'Male (+2%)'],
+      ],
+    },
+  },
+  {
+    id: 't1-table-underground-railways',
+    taskType: 'task1',
+    title: 'Underground Railway Systems in Six Major Cities (Forecast)',
+    category: 'Table Chart',
+    instruction:
+      'Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.',
+    question:
+      'The table below gives information about the underground railway systems in six major cities worldwide, including their opening dates, total route lengths, and annual passenger numbers.',
+    minWords: 150,
+    timeMinutes: 20,
+    chartDescription:
+      'Underground networks comparison: London is the oldest system opened in 1863, followed by Paris in 1900. London also boasts the longest route at 394 km, though Paris carries significantly more passengers (1191 million vs 775 million for London). Tokyo, opened in 1927, has by far the highest annual passenger volume at 1927 million despite a moderate route of 155 km. Washington DC has 126 km of track carrying 144 million. Kyoto and Los Angeles are the newest (1981 and 2001) with the shortest routes (11 km and 28 km) and smallest passenger counts (45 million and 50 million).',
+    chartTable: {
+      headers: ['City', 'Date Opened', 'Kilometres of Route', 'Passengers per year (millions)'],
+      rows: [
+        ['London', '1863', '394 km', '775 million'],
+        ['Paris', '1900', '199 km', '1,191 million'],
+        ['Tokyo', '1927', '155 km', '1,927 million'],
+        ['Washington DC', '1976', '126 km', '144 million'],
+        ['Kyoto', '1981', '11 km', '45 million'],
+        ['Los Angeles', '2001', '28 km', '50 million'],
+      ],
+    },
+  },
+  {
+    id: 't1-map-stockham-village',
+    taskType: 'task1',
+    title: 'Coastal Village Transformation: Stockham 1990 - Present (Forecast)',
+    category: 'Map / Plan',
+    instruction:
+      'Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.',
+    question:
+      'The two maps illustrate the changes that have taken place in the coastal village of Stockham between 1990 and the present day.',
+    minWords: 150,
+    timeMinutes: 20,
+    chartDescription:
+      'Maps of Stockham (1990 vs Present): In 1990, Stockham was a quiet rural fishing village. The northern farmland and ancient woods have been largely converted into a modern residential estate with a shopping precinct. The small fishing port on the southern coast was demolished and replaced by a large marina for private yachts, luxury holiday apartments, and a beachfront promenade. A dual carriageway was constructed to link the newly built hotels directly to the airport to the east, replacing the old narrow country road.',
+    chartTable: {
+      headers: ['Feature', 'Situation in 1990', 'Present Day Status'],
+      rows: [
+        ['Farmland & Woods (North)', 'Agricultural land and woodland', 'Suburban housing complex & shopping centre'],
+        ['Harbour (South)', 'Small commercial fishing docks', 'Modern recreational marina & luxury apartments'],
+        ['Infrastructure', 'Narrow single lane country road', 'Dual carriageway highway connecting to new airport'],
+        ['Amenities', 'Local village market & 1 small inn', 'Several international resort hotels & beachfront promenade'],
+      ],
+    },
+  },
+  {
+    id: 't1-process-salmon-cycle',
+    taskType: 'task1',
+    title: 'The Life Cycle of Salmon (Forecast)',
+    category: 'Process Diagram',
+    instruction:
+      'Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.',
+    question:
+      'The diagram illustrates the natural life cycle of the salmon, from egg to adult spawning fish.',
+    minWords: 150,
+    timeMinutes: 20,
+    chartDescription:
+      'Salmon Life Cycle Process: 1. Spawning: Adult salmon lay thousands of eggs in shallow gravel beds in upper freshwater rivers. 2. Fry stage: After 5-6 months, the eggs hatch into alevins and mature into fry (5-8 cm long). 3. Smolt stage: The young fish swim downstream to lower, faster-flowing river sections, growing into "smolts" (12-15 cm) over 1-2 years. 4. Ocean maturation: Smolts migrate out to the open sea, where they spend 1-5 years feeding, growing into mature adult salmon (70-76 cm). 5. Upstream migration: Adult salmon swim against powerful river currents back to their exact natal riverbed to spawn and begin the cycle anew, usually dying shortly after.',
+    chartTable: {
+      headers: ['Stage', 'Environment / Location', 'Size / Duration', 'Key Biological Milestone'],
+      rows: [
+        ['1. Eggs / Alevin', 'Upper slow-flowing river gravel', '5-6 months incubation', 'Hatching in protected freshwater'],
+        ['2. Fry', 'Fast-flowing freshwater streams', '5 - 8 cm', 'Free swimming and feeding on river insects'],
+        ['3. Smolt', 'Estuary and lower river', '12 - 15 cm (1-2 years)', 'Physiological adaptation to saltwater'],
+        ['4. Adult', 'Open Ocean / Sea', '70 - 76 cm (1-5 years)', 'Rapid growth and sexual maturation'],
+        ['5. Spawner', 'Upstream migration to birth river', 'Adult size', 'Spawning eggs in gravel beds, completing cycle'],
+      ],
+    },
+  },
 ];
 
 export const TASK_2_SEEDS: PromptSeed[] = [
@@ -159,6 +308,67 @@ export const TASK_2_SEEDS: PromptSeed[] = [
       'Give reasons for your answer and include any relevant examples from your own knowledge or experience. Write at least 250 words.',
     question:
       'In many cities around the world, housing prices have skyrocketed, making it difficult for young adults to buy a home. What are the causes of this issue, and what measures can be taken to solve it?',
+    minWords: 250,
+    timeMinutes: 40,
+  },
+  // --- 5 NEW TASK 2 FORECAST PROMPTS ---
+  {
+    id: 't2-opinion-later-parenting',
+    taskType: 'task2',
+    title: 'Having Children Later in Life (Forecast)',
+    category: 'Advantages & Disadvantages',
+    instruction:
+      'Give reasons for your answer and include any relevant examples from your own knowledge or experience. Write at least 250 words.',
+    question:
+      'In many developed nations today, people are choosing to have children later in life. What are the reasons for this trend, and do the advantages outweigh the disadvantages?',
+    minWords: 250,
+    timeMinutes: 40,
+  },
+  {
+    id: 't2-discussion-university-purpose',
+    taskType: 'task2',
+    title: 'The Purpose of Higher Education (Forecast)',
+    category: 'Discussion (Both Views & Opinion)',
+    instruction:
+      'Give reasons for your answer and include any relevant examples from your own knowledge or experience. Write at least 250 words.',
+    question:
+      'Some people believe that the primary purpose of university education is to prepare students for employment by teaching practical job skills. Others argue that university should focus on pure knowledge and academic theory regardless of workplace utility. Discuss both views and give your opinion.',
+    minWords: 250,
+    timeMinutes: 40,
+  },
+  {
+    id: 't2-problem-ageing-population',
+    taskType: 'task2',
+    title: 'The Global Ageing Population (Forecast)',
+    category: 'Problem & Solution',
+    instruction:
+      'Give reasons for your answer and include any relevant examples from your own knowledge or experience. Write at least 250 words.',
+    question:
+      'In many parts of the world, people are living longer, resulting in an increasingly ageing population. What social and economic challenges does this phenomenon create, and what measures should governments implement to address them?',
+    minWords: 250,
+    timeMinutes: 40,
+  },
+  {
+    id: 't2-opinion-online-shopping',
+    taskType: 'task2',
+    title: 'Online Shopping vs Physical High Street Stores (Forecast)',
+    category: 'Positive or Negative Development',
+    instruction:
+      'Give reasons for your answer and include any relevant examples from your own knowledge or experience. Write at least 250 words.',
+    question:
+      'Nowadays, an increasing proportion of consumer goods are purchased through online e-commerce platforms rather than in physical brick-and-mortar shops. Is this a positive or negative development for society?',
+    minWords: 250,
+    timeMinutes: 40,
+  },
+  {
+    id: 't2-opinion-fuel-price-environment',
+    taskType: 'task2',
+    title: 'Fuel Taxation to Solve Environmental Issues (Forecast)',
+    category: 'Opinion (Agree / Disagree)',
+    instruction:
+      'Give reasons for your answer and include any relevant examples from your own knowledge or experience. Write at least 250 words.',
+    question:
+      'The most effective way to solve global environmental problems is to significantly increase the price of fuel and petrol. To what extent do you agree or disagree with this statement?',
     minWords: 250,
     timeMinutes: 40,
   },
