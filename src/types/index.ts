@@ -25,6 +25,13 @@ export interface PromptSeed {
     headers: string[];
     rows: (string | number)[][];
   };
+  outline?: {
+    overviewOrThesis?: string;
+    body1?: string;
+    body2?: string;
+    conclusion?: string;
+    note?: string;
+  };
 }
 
 export interface SentenceCorrection {

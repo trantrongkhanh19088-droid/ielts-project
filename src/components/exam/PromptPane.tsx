@@ -9,6 +9,7 @@ import {
   Table as TableIcon,
   Upload,
   Info,
+  Sparkles,
 } from 'lucide-react';
 import { PromptSeed, ContrastMode, FontSize } from '@/types';
 import Task1LineChart from '@/components/charts/Task1LineChart';
@@ -46,6 +47,7 @@ export default function PromptPane({
 }: PromptPaneProps) {
   const [activeTab, setActiveTab] = useState<'prompt' | 'scratchpad'>('prompt');
   const [showTable, setShowTable] = useState(false);
+  const [showOutline, setShowOutline] = useState(false);
   const [isZoomOpen, setIsZoomOpen] = useState(false);
   const [highlightTooltip, setHighlightTooltip] = useState<{
     visible: boolean;
@@ -277,6 +279,61 @@ export default function PromptPane({
 
             {/* Instruction */}
             <p className="text-xs italic opacity-85 font-medium">{prompt.instruction}</p>
+
+            {/* Forecast Outline & Hints */}
+            {prompt.outline && (
+              <div className="rounded-lg border border-sky-200 dark:border-sky-900 bg-sky-50/50 dark:bg-sky-950/20 overflow-hidden text-xs">
+                <button
+                  type="button"
+                  onClick={() => setShowOutline(!showOutline)}
+                  className="w-full flex items-center justify-between px-3.5 py-2 font-bold text-sky-800 dark:text-sky-300 hover:bg-sky-100/50 dark:hover:bg-sky-900/30 transition text-left"
+                >
+                  <span className="flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-sky-600" />
+                    <span>Dàn ý &amp; Luận điểm gợi ý (Forecast Outline Band 8.0+)</span>
+                  </span>
+                  <span className="text-[11px] font-semibold text-sky-600 dark:text-sky-400 underline">
+                    {showOutline ? 'Thu gọn ▲' : 'Xem gợi ý ▼'}
+                  </span>
+                </button>
+                {showOutline && (
+                  <div className="p-3.5 pt-2 space-y-2.5 border-t border-sky-200/60 dark:border-sky-900/50 text-gray-700 dark:text-gray-300 leading-relaxed font-sans">
+                    {prompt.outline.overviewOrThesis && (
+                      <div className="p-2 rounded bg-white/70 dark:bg-zinc-900/60 border border-sky-100 dark:border-zinc-800">
+                        <strong className="text-sky-800 dark:text-sky-300">
+                          {prompt.taskType === 'task1' ? 'Overview (Tổng quan): ' : 'Thesis Statement (Luận điểm mở bài): '}
+                        </strong>
+                        <span>{prompt.outline.overviewOrThesis}</span>
+                      </div>
+                    )}
+                    {prompt.outline.body1 && (
+                      <div className="p-2 rounded bg-white/70 dark:bg-zinc-900/60 border border-sky-100 dark:border-zinc-800">
+                        <strong className="text-sky-800 dark:text-sky-300">Body 1: </strong>
+                        <span>{prompt.outline.body1}</span>
+                      </div>
+                    )}
+                    {prompt.outline.body2 && (
+                      <div className="p-2 rounded bg-white/70 dark:bg-zinc-900/60 border border-sky-100 dark:border-zinc-800">
+                        <strong className="text-sky-800 dark:text-sky-300">Body 2: </strong>
+                        <span>{prompt.outline.body2}</span>
+                      </div>
+                    )}
+                    {prompt.outline.conclusion && (
+                      <div className="p-2 rounded bg-white/70 dark:bg-zinc-900/60 border border-sky-100 dark:border-zinc-800">
+                        <strong className="text-sky-800 dark:text-sky-300">Conclusion: </strong>
+                        <span>{prompt.outline.conclusion}</span>
+                      </div>
+                    )}
+                    {prompt.outline.note && (
+                      <div className="text-[11px] text-amber-700 dark:text-amber-400 font-medium italic pt-1">
+                        <strong>Lưu ý làm bài: </strong>
+                        <span>{prompt.outline.note}</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Custom Image Upload for Task 1 */}
             {isCustomPrompt && prompt.taskType === 'task1' && (
