@@ -5,10 +5,16 @@ import {
   Clock,
   Eye,
   EyeOff,
-  Type,
-  SunMoon,
   Send,
   AlertTriangle,
+  Home,
+  RotateCcw,
+  SlidersHorizontal,
+  Pause,
+  Play,
+  X,
+  Check,
+  Sparkles,
 } from 'lucide-react';
 import { ContrastMode, FontSize } from '@/types';
 import { formatDuration } from '@/lib/utils';
@@ -23,6 +29,12 @@ interface ExamHeaderProps {
   onFontSizeChange: (size: FontSize) => void;
   onSubmit: () => void;
   isSubmitting: boolean;
+  onGoHome?: () => void;
+  onResetTime?: (newSeconds?: number) => void;
+  onSetCustomTime?: (minutes: number) => void;
+  isTimerPaused?: boolean;
+  onTogglePauseTimer?: () => void;
+  defaultMinutes?: number;
 }
 
 export default function ExamHeader({
@@ -35,10 +47,35 @@ export default function ExamHeader({
   onFontSizeChange,
   onSubmit,
   isSubmitting,
+  onGoHome,
+  onResetTime,
+  onSetCustomTime,
+  isTimerPaused,
+  onTogglePauseTimer,
+  defaultMinutes = 60,
 }: ExamHeaderProps) {
   const [showTime, setShowTime] = useState(true);
+  const [isTimeSettingsOpen, setIsTimeSettingsOpen] = useState(false);
+  const [customInputMinutes, setCustomInputMinutes] = useState<string>(String(defaultMinutes));
 
-  const isLowTime = timeRemainingSeconds <= 300; // Under 5 minutes
+  const isLowTime = timeRemainingSeconds <= 300 && timeRemainingSeconds > 0; // Under 5 minutes
+
+  const handleApplyCustomMinutes = (mins: number) => {
+    if (onSetCustomTime && mins > 0) {
+      onSetCustomTime(mins);
+      setIsTimeSettingsOpen(false);
+    }
+  };
+
+  const handleManualInputApply = (e: React.FormEvent) => {
+    e.preventDefault();
+    const val = parseInt(customInputMinutes, 10);
+    if (!isNaN(val) && val > 0 && val <= 180) {
+      handleApplyCustomMinutes(val);
+    } else {
+      alert('Vui lòng nhập số phút hợp lệ (từ 1 đến 180 phút).');
+    }
+  };
 
   return (
     <>
@@ -48,18 +85,55 @@ export default function ExamHeader({
             ? 'bg-black border-[#ffe600] text-[#ffe600]'
             : contrastMode === 'white-on-black'
             ? 'bg-zinc-950 border-zinc-800 text-white'
-            : 'bg-white border-gray-200 text-gray-800 shadow-sm'
+            : 'bg-white border-gray-200 text-gray-800 shadow-xs'
         }`}
       >
-        <div className="flex items-center justify-between px-4 py-2.5 max-w-full">
-          {/* Left section: Test Info & Mode */}
-          <div className="flex items-center gap-3">
+        <div className="flex items-center justify-between px-3 sm:px-4 py-2 max-w-full gap-2">
+          {/* Left section: Logo, Home button, Test Info */}
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            {/* Custom Avatar Logo */}
             <div className="flex items-center gap-2">
-              <span className="font-bold tracking-tight text-base font-cdielts">
-                IELTS Writing Simulator
-              </span>
+              <div className="w-8 h-8 rounded-lg overflow-hidden border border-sky-400/50 shadow-xs shrink-0 bg-white dark:bg-zinc-800">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/avatar-logo.png"
+                  alt="CD-IELTS Logo"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              <div className="hidden lg:flex flex-col">
+                <span className="font-extrabold text-xs tracking-tight leading-tight">
+                  CD-IELTS <span className="text-sky-600">Writing</span>
+                </span>
+                <span className="text-[9px] text-gray-400 font-medium uppercase tracking-wider">
+                  Inspera Simulator
+                </span>
+              </div>
+            </div>
+
+            {/* Back to Home Button with Auto-save */}
+            {onGoHome && (
+              <button
+                type="button"
+                onClick={onGoHome}
+                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs font-semibold transition ${
+                  contrastMode === 'yellow-on-black'
+                    ? 'border-[#ffe600] text-[#ffe600] hover:bg-[#ffe600]/10'
+                    : contrastMode === 'white-on-black'
+                    ? 'border-zinc-700 bg-zinc-900 text-zinc-200 hover:bg-zinc-800'
+                    : 'border-gray-200 bg-gray-50 hover:bg-gray-100 text-gray-700 shadow-2xs'
+                }`}
+                title="Lưu tiến độ bài viết & thời gian làm bài rồi quay về Trang chủ"
+              >
+                <Home className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" />
+                <span className="hidden sm:inline">Về trang chủ</span>
+              </button>
+            )}
+
+            <div className="flex items-center gap-1.5">
               <span
-                className={`text-xs px-2 py-0.5 rounded font-medium border ${
+                className={`text-[11px] px-2 py-0.5 rounded font-semibold border ${
                   contrastMode === 'yellow-on-black'
                     ? 'border-[#ffe600] text-[#ffe600]'
                     : contrastMode === 'white-on-black'
@@ -69,42 +143,91 @@ export default function ExamHeader({
               >
                 {modeLabel}
               </span>
+              <span className="hidden xl:inline text-xs truncate max-w-[180px] opacity-75 font-medium">
+                {title}
+              </span>
             </div>
-            <span className="hidden md:inline-block text-xs opacity-60">|</span>
-            <span className="hidden lg:inline-block text-xs truncate max-w-xs opacity-75">
-              {title}
-            </span>
           </div>
 
-          {/* Center section: Countdown Timer */}
-          <div className="flex items-center gap-2">
+          {/* Center section: Countdown Timer & Controls */}
+          <div className="flex items-center gap-1 sm:gap-2">
+            {/* Timer Box */}
             <div
-              className={`flex items-center gap-2 px-3 py-1 rounded-md border font-mono font-bold text-sm tracking-wider transition-colors ${
+              className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 rounded-lg border font-mono font-bold text-xs sm:text-sm tracking-wider transition-colors ${
                 isLowTime
                   ? 'bg-red-500/10 border-red-500 text-red-500 animate-pulse'
+                  : isTimerPaused
+                  ? 'bg-amber-500/10 border-amber-500 text-amber-500'
                   : contrastMode === 'yellow-on-black'
                   ? 'border-[#ffe600] bg-black text-[#ffe600]'
                   : contrastMode === 'white-on-black'
                   ? 'border-zinc-700 bg-zinc-900 text-white'
-                  : 'border-gray-300 bg-gray-50 text-gray-800'
+                  : 'border-gray-200 bg-gray-50 text-gray-800 shadow-2xs'
               }`}
             >
               {isLowTime ? (
                 <AlertTriangle className="w-4 h-4 text-red-500" />
+              ) : isTimerPaused ? (
+                <Pause className="w-4 h-4 text-amber-500 animate-pulse" />
               ) : (
-                <Clock className="w-4 h-4" />
+                <Clock className="w-4 h-4 text-sky-600" />
               )}
               {showTime ? (
-                <span>{formatDuration(timeRemainingSeconds)}</span>
+                <div className="flex items-center gap-1">
+                  <span>{formatDuration(timeRemainingSeconds)}</span>
+                  {isTimerPaused && (
+                    <span className="text-[10px] font-sans font-normal opacity-85 text-amber-500">
+                      (Tạm dừng)
+                    </span>
+                  )}
+                </div>
               ) : (
                 <span className="text-xs font-sans font-normal opacity-80">--:-- (Ẩn)</span>
               )}
             </div>
 
+            {/* Pause / Resume Button */}
+            {onTogglePauseTimer && (
+              <button
+                type="button"
+                onClick={onTogglePauseTimer}
+                className={`p-1.5 rounded-lg border text-xs flex items-center transition ${
+                  isTimerPaused
+                    ? 'bg-amber-500 text-white border-amber-500'
+                    : contrastMode === 'yellow-on-black'
+                    ? 'border-[#ffe600] hover:bg-[#ffe600]/10 text-[#ffe600]'
+                    : contrastMode === 'white-on-black'
+                    ? 'border-zinc-700 hover:bg-zinc-800 text-zinc-300'
+                    : 'border-gray-200 hover:bg-gray-100 text-gray-600'
+                }`}
+                title={isTimerPaused ? 'Tiếp tục tính giờ làm bài' : 'Tạm dừng đồng hồ'}
+              >
+                {isTimerPaused ? <Play className="w-3.5 h-3.5 fill-current" /> : <Pause className="w-3.5 h-3.5" />}
+              </button>
+            )}
+
+            {/* Time Settings & Reset Button */}
+            <button
+              type="button"
+              onClick={() => setIsTimeSettingsOpen(true)}
+              className={`p-1.5 rounded-lg border text-xs flex items-center gap-1 transition ${
+                contrastMode === 'yellow-on-black'
+                  ? 'border-[#ffe600] hover:bg-[#ffe600]/10 text-[#ffe600]'
+                  : contrastMode === 'white-on-black'
+                  ? 'border-zinc-700 hover:bg-zinc-800 text-zinc-300'
+                  : 'border-gray-200 hover:bg-gray-100 text-gray-600'
+              }`}
+              title="Tùy chỉnh thời gian làm bài & Reset đồng hồ"
+            >
+              <SlidersHorizontal className="w-3.5 h-3.5" />
+              <span className="hidden md:inline">Tùy chỉnh giờ</span>
+            </button>
+
+            {/* Toggle Hide/Show time */}
             <button
               type="button"
               onClick={() => setShowTime(!showTime)}
-              className={`p-1.5 rounded border text-xs flex items-center gap-1 transition ${
+              className={`p-1.5 rounded-lg border text-xs flex items-center gap-1 transition ${
                 contrastMode === 'yellow-on-black'
                   ? 'border-[#ffe600] hover:bg-[#ffe600]/10 text-[#ffe600]'
                   : contrastMode === 'white-on-black'
@@ -114,7 +237,7 @@ export default function ExamHeader({
               title={showTime ? 'Ẩn đồng hồ' : 'Hiện đồng hồ'}
             >
               {showTime ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-              <span className="hidden sm:inline">{showTime ? 'Hide' : 'Show'}</span>
+              <span className="hidden sm:inline">{showTime ? 'Ẩn' : 'Hiện'}</span>
             </button>
           </div>
 
@@ -122,7 +245,7 @@ export default function ExamHeader({
           <div className="flex items-center gap-2">
             {/* Font size switcher */}
             <div
-              className={`hidden sm:flex items-center border rounded overflow-hidden text-xs ${
+              className={`hidden sm:flex items-center border rounded-lg overflow-hidden text-xs ${
                 contrastMode === 'yellow-on-black'
                   ? 'border-[#ffe600]'
                   : contrastMode === 'white-on-black'
@@ -170,7 +293,7 @@ export default function ExamHeader({
 
             {/* Contrast Mode Selector */}
             <div
-              className={`flex items-center border rounded overflow-hidden text-xs ${
+              className={`flex items-center border rounded-lg overflow-hidden text-xs ${
                 contrastMode === 'yellow-on-black'
                   ? 'border-[#ffe600]'
                   : contrastMode === 'white-on-black'
@@ -221,20 +344,115 @@ export default function ExamHeader({
               type="button"
               onClick={onSubmit}
               disabled={isSubmitting}
-              className={`inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-md font-semibold text-xs sm:text-sm shadow-sm transition ${
+              className={`inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-xl font-bold text-xs sm:text-sm shadow-md transition ${
                 isSubmitting
                   ? 'opacity-50 cursor-not-allowed bg-gray-400 text-white'
                   : contrastMode === 'yellow-on-black'
-                  ? 'bg-[#ffe600] text-black hover:bg-yellow-400'
-                  : 'bg-emerald-600 text-white hover:bg-emerald-700'
+                  ? 'bg-[#ffe600] text-black hover:bg-yellow-400 shadow-yellow-500/20'
+                  : 'bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-emerald-600/20'
               }`}
             >
               <Send className="w-3.5 h-3.5" />
-              <span>{isSubmitting ? 'Đang chấm bài...' : 'Finish test'}</span>
+              <span>{isSubmitting ? 'Đang chấm...' : 'Nộp bài & Chấm AI'}</span>
             </button>
           </div>
         </div>
       </header>
+
+      {/* Timer Settings & Reset Modal */}
+      {isTimeSettingsOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-150">
+          <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-100 dark:border-zinc-800 bg-gray-50/50 dark:bg-zinc-800/40">
+              <div className="flex items-center gap-2">
+                <Clock className="w-4 h-4 text-sky-600" />
+                <h3 className="font-bold text-sm text-gray-900 dark:text-zinc-100">
+                  Cài Đặt Thời Gian Làm Bài
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsTimeSettingsOpen(false)}
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-zinc-200"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-5 space-y-4 text-xs">
+              {/* Reset to default button */}
+              <div>
+                <label className="font-bold text-gray-700 dark:text-zinc-300 block mb-1.5">
+                  1. Khôi phục thời gian gốc:
+                </label>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (onResetTime) onResetTime();
+                    setIsTimeSettingsOpen(false);
+                  }}
+                  className="w-full flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl border border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 font-semibold text-gray-700 dark:text-zinc-200 transition"
+                >
+                  <RotateCcw className="w-3.5 h-3.5 text-sky-600" />
+                  <span>Reset về mặc định ({defaultMinutes} phút)</span>
+                </button>
+              </div>
+
+              {/* Quick Preset Buttons */}
+              <div className="space-y-1.5 pt-2 border-t border-gray-100 dark:border-zinc-800">
+                <label className="font-bold text-gray-700 dark:text-zinc-300 block">
+                  2. Chọn nhanh thời gian luyện tập:
+                </label>
+                <div className="grid grid-cols-4 gap-1.5">
+                  {[15, 20, 30, 40, 45, 60, 75, 90].map((m) => (
+                    <button
+                      key={m}
+                      type="button"
+                      onClick={() => handleApplyCustomMinutes(m)}
+                      className={`py-1.5 rounded-lg border text-xs font-mono font-bold transition ${
+                        Math.round(timeRemainingSeconds / 60) === m
+                          ? 'bg-sky-600 text-white border-sky-600 shadow-xs'
+                          : 'border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-gray-700 dark:text-zinc-300'
+                      }`}
+                    >
+                      {m}p
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Custom Minutes Input */}
+              <form onSubmit={handleManualInputApply} className="space-y-1.5 pt-2 border-t border-gray-100 dark:border-zinc-800">
+                <label className="font-bold text-gray-700 dark:text-zinc-300 block">
+                  3. Hoặc tự nhập số phút tùy ý:
+                </label>
+                <div className="flex items-center gap-2">
+                  <div className="relative flex-1">
+                    <input
+                      type="number"
+                      min={1}
+                      max={180}
+                      value={customInputMinutes}
+                      onChange={(e) => setCustomInputMinutes(e.target.value)}
+                      placeholder="Ví dụ: 45"
+                      className="w-full px-3 py-2 rounded-xl border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    />
+                    <span className="absolute right-3 top-2.5 text-xs text-gray-400">phút</span>
+                  </div>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl transition shadow-xs"
+                  >
+                    Áp dụng
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

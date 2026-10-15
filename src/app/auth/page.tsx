@@ -99,8 +99,9 @@ export default function AuthPage() {
     <div className="flex-1 flex items-center justify-center p-4 py-12">
       <div className="max-w-md w-full bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl shadow-xl overflow-hidden p-8 space-y-6">
         <div className="text-center space-y-2">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-sky-600 text-white shadow-md shadow-sky-500/20 mb-1">
-            <PenTool className="w-6 h-6" />
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl overflow-hidden border-2 border-sky-400/50 shadow-md shadow-sky-500/20 mb-1 bg-white">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/avatar-logo.png" alt="Logo" className="w-full h-full object-cover" />
           </div>
           <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white">
             {isSignUp ? 'Tạo Tài Khoản Luyện Thi' : 'Đăng Nhập Tài Khoản'}

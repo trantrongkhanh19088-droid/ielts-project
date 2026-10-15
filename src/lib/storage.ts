@@ -121,7 +121,7 @@ export function deleteLocalEssayRecord(id: string): void {
 }
 
 // Auto-save draft utilities
-export function saveDraft(key: string, content: string, notes?: string): void {
+export function saveDraft(key: string, content: string, notes?: string, timeRemaining?: number): void {
   if (typeof window === 'undefined') return;
   try {
     localStorage.setItem(
@@ -129,6 +129,7 @@ export function saveDraft(key: string, content: string, notes?: string): void {
       JSON.stringify({
         content,
         notes: notes || '',
+        timeRemaining: typeof timeRemaining === 'number' ? timeRemaining : undefined,
         updatedAt: Date.now(),
       })
     );
@@ -137,7 +138,7 @@ export function saveDraft(key: string, content: string, notes?: string): void {
   }
 }
 
-export function loadDraft(key: string): { content: string; notes: string; updatedAt: number } | null {
+export function loadDraft(key: string): { content: string; notes: string; timeRemaining?: number; updatedAt: number } | null {
   if (typeof window === 'undefined') return null;
   try {
     const raw = localStorage.getItem(`${DRAFT_PREFIX}${key}`);

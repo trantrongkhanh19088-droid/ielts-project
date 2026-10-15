@@ -66,27 +66,37 @@ function PracticeContent() {
   const [isEditorFullscreen, setIsEditorFullscreen] = useState(false);
 
   // Countdown Timer
-  const initialSeconds = isFullTest ? 60 * 60 : modeParam === 'task2' ? 40 * 60 : 20 * 60;
+  const defaultMinutes = isFullTest ? 60 : modeParam === 'task2' ? 40 : 20;
+  const initialSeconds = defaultMinutes * 60;
   const [timeRemaining, setTimeRemaining] = useState<number>(initialSeconds);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isTimerPaused, setIsTimerPaused] = useState(false);
 
-  // Load existing draft if present
+  // Load existing draft if present (including saved time remaining)
   useEffect(() => {
     const draft1 = loadDraft(isFullTest ? 'full_task1' : `single_task1_${task1Prompt.id}`);
     if (draft1) {
-      setTask1Essay(draft1.content || '');
-      setTask1Notes(draft1.notes || '');
+      if (draft1.content) setTask1Essay(draft1.content);
+      if (draft1.notes) setTask1Notes(draft1.notes);
+      if (typeof draft1.timeRemaining === 'number' && draft1.timeRemaining > 0) {
+        setTimeRemaining(draft1.timeRemaining);
+      }
     }
 
     const draft2 = loadDraft(isFullTest ? 'full_task2' : `single_task2_${task2Prompt.id}`);
     if (draft2) {
-      setTask2Essay(draft2.content || '');
-      setTask2Notes(draft2.notes || '');
+      if (draft2.content) setTask2Essay(draft2.content);
+      if (draft2.notes) setTask2Notes(draft2.notes);
+      if (!draft1 && typeof draft2.timeRemaining === 'number' && draft2.timeRemaining > 0) {
+        setTimeRemaining(draft2.timeRemaining);
+      }
     }
   }, [isFullTest, task1Prompt.id, task2Prompt.id]);
 
-  // Timer Tick Interval
+  // Timer Tick Interval (respects pause state)
   useEffect(() => {
+    if (isTimerPaused || isSubmitting) return;
+
     const timer = setInterval(() => {
       setTimeRemaining((prev) => {
         if (prev <= 1) {
@@ -98,24 +108,59 @@ function PracticeContent() {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [isTimerPaused, isSubmitting]);
 
-  // Auto-save drafts every 3 seconds
+  // Auto-save drafts every 3 seconds (including timeRemaining)
   useEffect(() => {
     const autoSaveInterval = setInterval(() => {
       if (isFullTest) {
-        saveDraft('full_task1', task1Essay, task1Notes);
-        saveDraft('full_task2', task2Essay, task2Notes);
+        saveDraft('full_task1', task1Essay, task1Notes, timeRemaining);
+        saveDraft('full_task2', task2Essay, task2Notes, timeRemaining);
       } else if (mode === 'task1') {
-        saveDraft(`single_task1_${task1Prompt.id}`, task1Essay, task1Notes);
+        saveDraft(`single_task1_${task1Prompt.id}`, task1Essay, task1Notes, timeRemaining);
       } else {
-        saveDraft(`single_task2_${task2Prompt.id}`, task2Essay, task2Notes);
+        saveDraft(`single_task2_${task2Prompt.id}`, task2Essay, task2Notes, timeRemaining);
       }
       setLastSavedAt(Date.now());
     }, 3000);
 
     return () => clearInterval(autoSaveInterval);
-  }, [isFullTest, mode, task1Essay, task1Notes, task2Essay, task2Notes, task1Prompt.id, task2Prompt.id]);
+  }, [isFullTest, mode, task1Essay, task1Notes, task2Essay, task2Notes, timeRemaining, task1Prompt.id, task2Prompt.id]);
+
+  // Home navigation with save
+  const handleSaveAndGoHome = () => {
+    if (isFullTest) {
+      saveDraft('full_task1', task1Essay, task1Notes, timeRemaining);
+      saveDraft('full_task2', task2Essay, task2Notes, timeRemaining);
+    } else if (mode === 'task1') {
+      saveDraft(`single_task1_${task1Prompt.id}`, task1Essay, task1Notes, timeRemaining);
+    } else {
+      saveDraft(`single_task2_${task2Prompt.id}`, task2Essay, task2Notes, timeRemaining);
+    }
+
+    const minutesLeft = Math.floor(timeRemaining / 60);
+    const secondsLeft = timeRemaining % 60;
+    const confirmExit = confirm(
+      `Đã tự động lưu toàn bộ tiến độ bài viết và thời gian còn lại (${minutesLeft} phút ${secondsLeft} giây).\n\nBạn có muốn quay về Trang chủ ngay bây giờ? Bạn có thể mở lại đề bất kỳ lúc nào để tiếp tục làm bài.`
+    );
+    if (confirmExit) {
+      router.push('/');
+    }
+  };
+
+  const handleResetTime = (seconds?: number) => {
+    setTimeRemaining(seconds || initialSeconds);
+    setIsTimerPaused(false);
+  };
+
+  const handleSetCustomTime = (minutes: number) => {
+    setTimeRemaining(Math.max(1, Math.round(minutes * 60)));
+    setIsTimerPaused(false);
+  };
+
+  const handleTogglePauseTimer = () => {
+    setIsTimerPaused((prev) => !prev);
+  };
 
   // Current active prompt & content based on mode & active part
   const currentPrompt = isFullTest
@@ -395,6 +440,12 @@ function PracticeContent() {
         onFontSizeChange={setFontSize}
         onSubmit={handleSubmit}
         isSubmitting={isSubmitting}
+        onGoHome={handleSaveAndGoHome}
+        onResetTime={handleResetTime}
+        onSetCustomTime={handleSetCustomTime}
+        isTimerPaused={isTimerPaused}
+        onTogglePauseTimer={handleTogglePauseTimer}
+        defaultMinutes={defaultMinutes}
       />
 
       {/* Main Split-Pane Examination Area (Prompt / Editor) */}
