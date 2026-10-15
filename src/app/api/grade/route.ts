@@ -41,13 +41,6 @@ export async function POST(req: NextRequest) {
     }
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({
-      model: 'gemini-2.5-flash',
-      generationConfig: {
-        responseMimeType: 'application/json',
-        temperature: 0.2,
-      },
-    });
 
     const isTask1 = taskType === 'task1';
     const minWords = isTask1 ? 150 : 250;
@@ -143,9 +136,38 @@ Output JSON Schema:
       promptParts.push('\n[Please examine the attached chart image carefully to check if candidate cited numbers accurately.]\n');
     }
 
-    const result = await model.generateContent(promptParts);
-    const responseText = result.response.text();
+    const candidateModels = [
+      'gemini-3.8-flash',
+      'gemini-2.5-flash',
+      'gemini-2.0-flash',
+      'gemini-1.5-flash',
+    ];
 
+    let result = null;
+    let lastError: any = null;
+
+    for (const modelName of candidateModels) {
+      try {
+        const model = genAI.getGenerativeModel({
+          model: modelName,
+          generationConfig: {
+            responseMimeType: 'application/json',
+            temperature: 0.2,
+          },
+        });
+        result = await model.generateContent(promptParts);
+        if (result) break;
+      } catch (err: any) {
+        lastError = err;
+        console.warn(`Model ${modelName} failed, trying next candidate...`, err.message);
+      }
+    }
+
+    if (!result) {
+      throw lastError || new Error('Không thể kết nối đến mô hình AI Gemini.');
+    }
+
+    const responseText = result.response.text();
     const parsedJson = JSON.parse(responseText);
 
     return NextResponse.json(parsedJson);
