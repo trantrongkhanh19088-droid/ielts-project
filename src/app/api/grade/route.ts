@@ -137,10 +137,11 @@ Output JSON Schema:
     }
 
     const candidateModels = [
+      'gemini-3.6-flash',
+      'gemini-3.5-flash-lite',
+      'gemini-flash-lite-latest',
       'gemini-3.8-flash',
-      'gemini-2.5-flash',
-      'gemini-2.0-flash',
-      'gemini-1.5-flash',
+      'gemini-3.7-flash',
     ];
 
     let result = null;
@@ -159,7 +160,7 @@ Output JSON Schema:
         if (result) break;
       } catch (err: any) {
         lastError = err;
-        console.warn(`Model ${modelName} failed, trying next candidate...`, err.message);
+        console.warn(`Model ${modelName} failed (${err.message}), trying next candidate...`);
       }
     }
 
@@ -168,7 +169,13 @@ Output JSON Schema:
     }
 
     const responseText = result.response.text();
-    const parsedJson = JSON.parse(responseText);
+    let cleanJson = responseText.trim();
+    if (cleanJson.startsWith('```json')) {
+      cleanJson = cleanJson.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+    } else if (cleanJson.startsWith('```')) {
+      cleanJson = cleanJson.replace(/^```\s*/, '').replace(/\s*```$/, '');
+    }
+    const parsedJson = JSON.parse(cleanJson);
 
     return NextResponse.json(parsedJson);
   } catch (error: any) {
