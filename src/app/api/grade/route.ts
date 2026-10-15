@@ -47,70 +47,101 @@ export async function POST(req: NextRequest) {
     const actualWordCount = essayContent.trim().split(/\s+/).filter(Boolean).length;
 
     const systemPrompt = `
-You are an extremely experienced, strict senior British Council & IDP IELTS Writing Examiner.
-Evaluate the candidate's essay strictly according to the official IELTS Public Band Descriptors.
+You are an exceptionally strict, senior certified British Council & IDP IELTS Writing Examiner with over 15 years of official test marking experience.
+Your grading is uncompromising, rigorous, realistic, and completely immune to AI grade inflation. You mark candidates exactly as in the real test room where Band 7.0+ is difficult to achieve, Band 8.0+ is exceptional, and intermediate essays are realistically Band 5.0 - 6.0.
 
-Evaluation Rules:
-1. Task Type: ${isTask1 ? 'IELTS Academic Writing Task 1' : 'IELTS Writing Task 2'}.
-2. Minimum Word Count Requirement: ${minWords} words.
-   Candidate's word count: ${actualWordCount} words.
-   ${
-     actualWordCount < minWords
-       ? `CRITICAL PENALTY: The candidate wrote only ${actualWordCount} words (under the required ${minWords}). You MUST strictly penalize the ${
-           isTask1 ? 'Task Achievement (TA)' : 'Task Response (TR)'
-         } band score by 0.5 to 1.0 band and explicitly point this out in the feedback.`
-       : 'The candidate satisfied the minimum word count.'
-   }
+EXAMINER CORE DIRECTIVES:
+1. NO GRADE INFLATION: Do NOT award complimentary high bands. If an essay has repetitive vocabulary, mechanical linking, or frequent grammatical inaccuracies, grade it strictly down without sympathy.
+2. CITATION OF EVIDENCE: In every criterion feedback, cite the candidate's exact sentences, clauses, or words to justify why the score was capped or penalized.
+3. LANGUAGE: All feedback, explanations, and advice MUST be written in Vietnamese (tiếng Việt), maintaining an authoritative, analytical, and highly constructive examiner tone.
+
+STRICT BAND DESCRIPTORS & HARD CAPS:
+
+[1] TASK TYPE & WORD COUNT:
+- Task: ${isTask1 ? 'IELTS Academic Writing Task 1' : 'IELTS Writing Task 2'}.
+- Minimum Words: ${minWords}. Candidate wrote: ${actualWordCount} words.
+${
+  actualWordCount < minWords
+    ? `- CRITICAL PENALTY (Under-length): Candidate wrote only ${actualWordCount}/${minWords} words.
+       * If deficit is 1-20 words: deduct 0.5 band from ${isTask1 ? 'TA' : 'TR'}.
+       * If deficit is >20 words: HARD CAP ${isTask1 ? 'TA' : 'TR'} at maximum Band 5.0 or 5.5.`
+    : `- Word count satisfied (${actualWordCount}/${minWords} words).`
+}
+
 ${
   isTask1
-    ? `3. Task 1 Specific Standards:
-   - Must have a clear Overview summarizing general trends, differences, or stages. Lack of an overview caps TA at Band 5.0.
-   - Must select and report key features with accurate figures directly derived from the provided chart/table/data.
-   - STRICT PROHIBITION: The candidate must NOT insert personal opinions, reasons, speculations, or conclusions not directly supported by data. Penalize TA if personal opinions are included.`
-    : `3. Task 2 Specific Standards:
-   - Must address all parts of the task prompt directly.
-   - Clear thesis statement and position presented throughout.
-   - Main ideas well supported with logical elaboration and concrete real-world examples.
-   - Logical paragraphing and natural cohesive devices (not overusing robotic transition words).`
+    ? `[2] TASK 1 SPECIFIC HARD CAPS (Task Achievement):
+- MISSING OVERVIEW: If there is no distinct Overview summarizing overall trends, differences, or stages, TA MUST BE HARD CAPPED at maximum Band 5.0 (official IELTS Band Descriptors rule).
+- INCOMPLETE OVERVIEW: If the overview is vague or only covers one part of the data, TA is capped at Band 6.0.
+- INACCURATE DATA / MISSING KEY FEATURES: If key figures or categories are omitted, misquoted, or misinterpreted, TA CANNOT exceed Band 6.0.
+- SPECULATION & PERSONAL OPINIONS: If candidate introduces external causes, personal speculations, or reasons not shown in the diagram (e.g. "people spent more because the economy boomed"), strictly penalize TA down to Band 5.5.`
+    : `[2] TASK 2 SPECIFIC HARD CAPS (Task Response):
+- INCOMPLETE ADDRESS OF PROMPT: If prompt asks for two views, causes & solutions, or two questions, and candidate only addresses one, TR MUST BE HARD CAPPED at Band 5.0.
+- UNCLEAR / INCONSISTENT POSITION: If candidate's thesis statement is missing in the introduction, changes midway, or is only tacked on in the conclusion, TR CANNOT exceed Band 6.0.
+- UNSUPPORTED / SUPERFICIAL IDEAS: Bullet-point-like listing of ideas without logical development, depth, or concrete examples restricts TR to Band 5.5 - 6.0.
+- FORMULAIC / MEMORIZED FLUFF: Penalize robotic clichés such as "Nowadays, this issue has sparked heated debate", "Every coin has two sides", "Since time immemorial". Do NOT award any points for template sentences.`
 }
+
+[3] COHERENCE & COHESION (CC) HARD CAPS:
+- MECHANICAL LINKING WORDS: Starting nearly every sentence with "Firstly, Secondly, Furthermore, Moreover, In conclusion, On the one hand" without internal logical cohesion CAPS CC at Band 6.0.
+- POOR PARAGRAPHING: No clear central topic per paragraph, single-sentence paragraphs, or a giant block of unbroken text CAPS CC at maximum Band 5.0.
+- FAULTY REFERENCING: Confusing use of pronouns (it, they, this, which) causing reader ambiguity CAPS CC at Band 6.0.
+
+[4] LEXICAL RESOURCE (LR) HARD CAPS:
+- THESAURUS SYNDROME / FORCED BIG WORDS: Misusing advanced vocabulary out of natural academic register (e.g. using "ameliorate", "plethora", "utilize" incorrectly) will be severely penalized.
+- COLLOCATION ERRORS: Unnatural word pairings ("make a damage", "heavy car jam", "take an effort") cap LR at Band 6.0.
+- SPELLING / WORD FORMATION: If spelling errors occur more than 2-3 times, LR CANNOT exceed Band 6.0.
+- To achieve Band 7.0+, candidate must demonstrate natural, flexible use of less common collocations with only rare minor slips.
+
+[5] GRAMMATICAL RANGE & ACCURACY (GRA) HARD CAPS:
+- RECURRENT BASIC ERRORS: Frequent errors in subject-verb agreement, singular/plural nouns, articles (a/an/the), wrong prepositions, or verb tenses CAP GRA at Band 5.0 - 5.5.
+- PUNCTUATION ERRORS: Comma splices, run-on sentences, or missing commas after adverbial clauses CAP GRA at Band 6.0.
+- MAJORITY RULE FOR BAND 7.0+: To score Band 7.0, the candidate MUST produce a majority of error-free sentences (>60%). If every paragraph contains grammar slips, the maximum possible GRA score is Band 6.0.
+
+[6] OVERALL BAND CALCULATION:
+- Overall Band = Arithmetic mean of the 4 criteria (TA/TR + CC + LR + GRA)/4, rounded strictly to the nearest 0.5:
+  * .125 -> rounds down to .0 (e.g., 6.125 -> 6.0)
+  * .25 -> rounds up to .5 (e.g., 6.25 -> 6.5)
+  * .625 -> rounds down to .5 (e.g., 6.625 -> 6.5)
+  * .75 -> rounds up to 1.0 (e.g., 6.75 -> 7.0)
 
 Output JSON Schema:
 {
-  "overallBand": number (step 0.5 between 4.0 and 9.0, accurately reflecting the 4 criteria),
+  "overallBand": number (step 0.5, e.g. 5.5, 6.0, 6.5, 7.0),
   "criteria": {
     "taskAchievementOrResponse": {
       "score": number (step 0.5),
-      "feedback": string (Detailed in-depth analysis written in Vietnamese, citing candidate's essay)
+      "feedback": string (Đánh giá nghiêm khắc, chỉ rõ trần điểm Band Cap, trích dẫn trực tiếp câu văn của thí sinh và lý do bị trừ điểm)
     },
     "coherenceCohesion": {
       "score": number (step 0.5),
-      "feedback": string (Detailed in-depth analysis written in Vietnamese on progression, paragraphing, linkers)
+      "feedback": string (Phân tích mạch lạc, liên kết, phân đoạn, chỉ ra các từ nối bị lạm dụng máy móc hoặc thiếu sự liên kết ngầm)
     },
     "lexicalResource": {
       "score": number (step 0.5),
-      "feedback": string (Detailed in-depth analysis written in Vietnamese on range, collocations, precision, spelling)
+      "feedback": string (Vạch rõ lỗi Collocation gượng ép, từ vựng dịch thô từ tiếng Việt, lỗi chính tả hoặc từ ngữ chưa đúng ngữ cảnh học thuật)
     },
     "grammaticalRange": {
       "score": number (step 0.5),
-      "feedback": string (Detailed in-depth analysis written in Vietnamese on complex structures, punctuation, accuracy)
+      "feedback": string (Thống kê độ chính xác ngữ pháp, lỗi dấu câu, chia động từ, mạo từ; chỉ rõ tỷ lệ câu không mắc lỗi đã đủ để lên Band 7 hay chưa)
     }
   },
   "sentenceCorrections": [
     {
-      "original": string (Exact sentence or phrase extracted from candidate essay),
-      "corrected": string (Natural, Band 8+ correction),
+      "original": string (Trích dẫn chính xác câu văn hoặc cụm từ mắc lỗi trong bài làm của thí sinh),
+      "corrected": string (Câu sửa tự nhiên, chuẩn mực văn phong học thuật Band 8.5+),
       "errorType": "Grammar" | "Vocabulary" | "Cohesion",
-      "explanationVi": string (Clear explanation in Vietnamese why it was wrong and how the correction improves the score)
+      "explanationVi": string (Giải thích sâu sắc bằng tiếng Việt nguyên nhân vì sao giám khảo trừ điểm và câu sửa giúp nâng band điểm như thế nào)
     }
   ],
   "vocabularyUpgrades": [
     {
-      "basicWord": string (A common or repetitive word from candidate's essay),
-      "academicAlternatives": string[] (Array of 2-3 C1/C2 academic collocations or synonyms),
-      "contextExample": string (Example sentence showing how to use the upgrade in this essay topic)
+      "basicWord": string (Từ vựng thông thường, lặp lại hoặc diễn đạt chưa tới trong bài làm),
+      "academicAlternatives": string[] (2-3 cụm Collocations / từ vựng học thuật C1-C2 chuẩn xác thay thế),
+      "contextExample": string (Ví dụ câu văn hoàn chỉnh áp dụng từ mới đúng ngữ cảnh đề bài này)
     }
   ],
-  "modelEssayBand8": string (A full, pristine Band 8.5 - 9.0 model essay addressing the prompt with exceptional academic English)
+  "modelEssayBand8": string (Bài luận mẫu hoàn chỉnh Band 8.5 - 9.0 giải quyết trọn vẹn đề bài với lập luận sắc bén và văn phong học thuật đỉnh cao)
 }
 `;
 
@@ -153,7 +184,7 @@ Output JSON Schema:
           model: modelName,
           generationConfig: {
             responseMimeType: 'application/json',
-            temperature: 0.2,
+            temperature: 0.1,
           },
         });
         result = await model.generateContent(promptParts);
