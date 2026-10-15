@@ -6,55 +6,120 @@ import { usePathname } from 'next/navigation';
 import {
   PenTool,
   BarChart2,
-  FileText,
-  Key,
   User,
   LogOut,
   Layers,
   Sparkles,
+  Target,
+  ChevronDown,
+  X,
+  Check,
 } from 'lucide-react';
-import ApiKeyModal from '@/components/exam/ApiKeyModal';
 import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase/client';
 
 export default function Navbar() {
   const pathname = usePathname();
-  const [isKeyModalOpen, setIsKeyModalOpen] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [userName, setUserName] = useState<string | null>(null);
+  const [targetBand, setTargetBand] = useState<number>(7.0);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [bandSaved, setBandSaved] = useState(false);
 
   useEffect(() => {
+    // Check Supabase session
     if (isSupabaseConfigured()) {
       const supabase = getSupabaseBrowserClient();
       if (supabase) {
         supabase.auth.getUser().then(({ data: { user } }) => {
-          if (user?.email) setUserEmail(user.email);
+          if (user?.email) {
+            setUserEmail(user.email);
+            setUserName(user.user_metadata?.full_name || user.email.split('@')[0]);
+            // Load profile target band
+            supabase
+              .from('profiles')
+              .select('target_band, full_name')
+              .eq('id', user.id)
+              .single()
+              .then(({ data }) => {
+                if (data?.target_band) setTargetBand(Number(data.target_band));
+                if (data?.full_name) setUserName(data.full_name);
+              });
+          }
         });
 
         const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
-          setUserEmail(session?.user?.email || null);
+          if (session?.user) {
+            setUserEmail(session.user.email || null);
+            setUserName(session.user.user_metadata?.full_name || session.user.email?.split('@')[0] || null);
+          } else {
+            setUserEmail(null);
+            setUserName(null);
+          }
         });
 
         return () => {
           authListener.subscription.unsubscribe();
         };
       }
+    } else {
+      // Local profile fallback
+      const savedProfile = localStorage.getItem('cd_ielts_local_user');
+      if (savedProfile) {
+        try {
+          const parsed = JSON.parse(savedProfile);
+          setUserEmail(parsed.email || null);
+          setUserName(parsed.fullName || null);
+          if (parsed.targetBand) setTargetBand(Number(parsed.targetBand));
+        } catch {}
+      }
     }
   }, []);
+
+  const handleUpdateTargetBand = async (newBand: number) => {
+    setTargetBand(newBand);
+    setBandSaved(true);
+    setTimeout(() => setBandSaved(false), 2000);
+
+    // Save to local profile
+    const savedProfile = localStorage.getItem('cd_ielts_local_user');
+    const existing = savedProfile ? JSON.parse(savedProfile) : {};
+    localStorage.setItem(
+      'cd_ielts_local_user',
+      JSON.stringify({ ...existing, targetBand: newBand })
+    );
+
+    // Save to Supabase if logged in
+    if (isSupabaseConfigured()) {
+      const supabase = getSupabaseBrowserClient();
+      if (supabase) {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          await supabase.from('profiles').update({ target_band: newBand }).eq('id', user.id);
+        }
+      }
+    }
+  };
 
   const handleSignOut = async () => {
     if (isSupabaseConfigured()) {
       const supabase = getSupabaseBrowserClient();
       if (supabase) {
         await supabase.auth.signOut();
-        setUserEmail(null);
-        window.location.reload();
       }
     }
+    localStorage.removeItem('cd_ielts_local_user');
+    setUserEmail(null);
+    setUserName(null);
+    setIsProfileModalOpen(false);
+    window.location.reload();
   };
 
   // Do not show full navbar inside the actual exam simulation room to avoid distractions
   if (pathname === '/practice') {
     return null;
   }
+
+  const initials = (userName || userEmail || 'U').slice(0, 2).toUpperCase();
 
   return (
     <>
@@ -115,46 +180,41 @@ export default function Navbar() {
             </div>
 
             {/* Right actions */}
-            <div className="flex items-center gap-2">
-              {/* BYOK button */}
-              <button
-                type="button"
-                onClick={() => setIsKeyModalOpen(true)}
-                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-zinc-800 text-xs font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-900 transition shadow-sm"
-                title="Cài đặt Gemini API Key cá nhân"
-              >
-                <Key className="w-3.5 h-3.5 text-sky-600" />
-                <span className="hidden sm:inline">Gemini Key</span>
-              </button>
-
-              {/* Supabase Auth State */}
+            <div className="flex items-center gap-3">
+              {/* Account State */}
               {userEmail ? (
-                <div className="flex items-center gap-2 pl-2">
-                  <span className="text-xs text-gray-600 dark:text-gray-300 font-medium hidden sm:inline max-w-[130px] truncate">
-                    {userEmail}
-                  </span>
-                  <button
-                    onClick={handleSignOut}
-                    className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-900 text-gray-500 hover:text-red-600 transition"
-                    title="Đăng xuất"
-                  >
-                    <LogOut className="w-4 h-4" />
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsProfileModalOpen(true)}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-gray-200 dark:border-zinc-800 hover:bg-gray-50 dark:hover:bg-zinc-900 transition text-left"
+                >
+                  <div className="w-7 h-7 rounded-full bg-sky-600 text-white flex items-center justify-center font-bold text-xs shadow-sm">
+                    {initials}
+                  </div>
+                  <div className="hidden sm:flex flex-col">
+                    <span className="text-xs font-semibold text-gray-900 dark:text-gray-100 truncate max-w-[120px]">
+                      {userName || userEmail}
+                    </span>
+                    <span className="text-[10px] text-sky-600 dark:text-sky-400 font-bold flex items-center gap-1">
+                      <Target className="w-3 h-3" /> Target {targetBand.toFixed(1)}
+                    </span>
+                  </div>
+                  <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
+                </button>
               ) : (
                 <Link
                   href="/auth"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-900 transition"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border border-gray-300 dark:border-zinc-700 hover:bg-gray-100 dark:hover:bg-zinc-900 text-xs font-semibold text-gray-700 dark:text-gray-200 transition"
                 >
                   <User className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Tài khoản</span>
+                  <span>Tài khoản</span>
                 </Link>
               )}
 
               {/* Start Writing button */}
               <Link
                 href="/practice?mode=full_test"
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold transition shadow-sm"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold transition shadow-md shadow-sky-600/20"
               >
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Bắt đầu thi</span>
@@ -164,7 +224,91 @@ export default function Navbar() {
         </div>
       </nav>
 
-      <ApiKeyModal isOpen={isKeyModalOpen} onClose={() => setIsKeyModalOpen(false)} />
+      {/* User Profile Modal */}
+      {isProfileModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-zinc-800 bg-gray-50/50 dark:bg-zinc-800/40">
+              <h3 className="font-bold text-sm text-gray-900 dark:text-gray-100">
+                Hồ Sơ Thí Sinh
+              </h3>
+              <button
+                onClick={() => setIsProfileModalOpen(false)}
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-5">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-sky-600 to-blue-700 text-white flex items-center justify-center font-bold text-lg shadow-md">
+                  {initials}
+                </div>
+                <div>
+                  <h4 className="font-bold text-base text-gray-900 dark:text-white">
+                    {userName || 'Thí sinh IELTS'}
+                  </h4>
+                  <p className="text-xs text-gray-500 truncate max-w-[200px]">{userEmail}</p>
+                </div>
+              </div>
+
+              {/* Target Band Selector */}
+              <div className="space-y-2 pt-2 border-t border-gray-100 dark:border-zinc-800">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-gray-700 dark:text-gray-300 flex items-center gap-1.5">
+                    <Target className="w-3.5 h-3.5 text-sky-600" />
+                    Mục tiêu Band điểm Writing:
+                  </label>
+                  {bandSaved && (
+                    <span className="text-[11px] text-emerald-600 font-semibold flex items-center gap-1">
+                      <Check className="w-3 h-3" /> Đã lưu
+                    </span>
+                  )}
+                </div>
+                <div className="grid grid-cols-5 gap-1.5">
+                  {[6.0, 6.5, 7.0, 7.5, 8.0].map((b) => (
+                    <button
+                      key={b}
+                      type="button"
+                      onClick={() => handleUpdateTargetBand(b)}
+                      className={`py-1.5 rounded-lg text-xs font-bold font-mono transition border ${
+                        targetBand === b
+                          ? 'bg-sky-600 text-white border-sky-600 shadow-sm'
+                          : 'border-gray-200 dark:border-zinc-700 hover:bg-gray-100 dark:hover:bg-zinc-800 text-gray-700 dark:text-gray-300'
+                      }`}
+                    >
+                      {b.toFixed(1)}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Quick Navigation */}
+              <div className="space-y-1.5 pt-2 border-t border-gray-100 dark:border-zinc-800 text-xs">
+                <Link
+                  href="/dashboard"
+                  onClick={() => setIsProfileModalOpen(false)}
+                  className="w-full flex items-center justify-between p-2.5 rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-800 text-gray-700 dark:text-gray-300 transition"
+                >
+                  <span className="font-semibold">Xem Lịch sử &amp; Thống kê bài viết</span>
+                  <BarChart2 className="w-4 h-4 text-sky-600" />
+                </Link>
+              </div>
+
+              {/* Logout button */}
+              <button
+                type="button"
+                onClick={handleSignOut}
+                className="w-full py-2.5 rounded-xl border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 text-xs font-bold transition flex items-center justify-center gap-1.5"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                <span>Đăng xuất tài khoản</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

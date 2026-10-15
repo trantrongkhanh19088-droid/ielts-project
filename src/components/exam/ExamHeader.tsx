@@ -7,13 +7,11 @@ import {
   EyeOff,
   Type,
   SunMoon,
-  Key,
   Send,
   AlertTriangle,
 } from 'lucide-react';
 import { ContrastMode, FontSize } from '@/types';
 import { formatDuration } from '@/lib/utils';
-import ApiKeyModal from './ApiKeyModal';
 
 interface ExamHeaderProps {
   title: string;
@@ -39,7 +37,6 @@ export default function ExamHeader({
   isSubmitting,
 }: ExamHeaderProps) {
   const [showTime, setShowTime] = useState(true);
-  const [isKeyModalOpen, setIsKeyModalOpen] = useState(false);
 
   const isLowTime = timeRemainingSeconds <= 300; // Under 5 minutes
 
@@ -219,22 +216,6 @@ export default function ExamHeader({
               </button>
             </div>
 
-            {/* BYOK Settings button */}
-            <button
-              type="button"
-              onClick={() => setIsKeyModalOpen(true)}
-              className={`p-1.5 rounded border transition ${
-                contrastMode === 'yellow-on-black'
-                  ? 'border-[#ffe600] hover:bg-[#ffe600]/10 text-[#ffe600]'
-                  : contrastMode === 'white-on-black'
-                  ? 'border-zinc-700 hover:bg-zinc-800 text-zinc-300'
-                  : 'border-gray-200 hover:bg-gray-100 text-gray-600'
-              }`}
-              title="Cài đặt Gemini API Key cá nhân (BYOK)"
-            >
-              <Key className="w-4 h-4" />
-            </button>
-
             {/* Submit / Finish test button */}
             <button
               type="button"
@@ -254,9 +235,6 @@ export default function ExamHeader({
           </div>
         </div>
       </header>
-
-      {/* BYOK Modal */}
-      <ApiKeyModal isOpen={isKeyModalOpen} onClose={() => setIsKeyModalOpen(false)} />
     </>
   );
 }

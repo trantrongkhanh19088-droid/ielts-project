@@ -3,7 +3,17 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ShieldCheck, Mail, Lock, User, ArrowRight, CheckCircle2, AlertCircle } from 'lucide-react';
+import {
+  ShieldCheck,
+  Mail,
+  Lock,
+  User,
+  ArrowRight,
+  CheckCircle2,
+  AlertCircle,
+  Target,
+  PenTool,
+} from 'lucide-react';
 import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase/client';
 
 export default function AuthPage() {
@@ -14,6 +24,7 @@ export default function AuthPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
+  const [targetBand, setTargetBand] = useState<number>(7.0);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
@@ -22,35 +33,60 @@ export default function AuthPage() {
     e.preventDefault();
     setErrorMsg('');
     setSuccessMsg('');
-
-    if (!configured) {
-      setErrorMsg('Supabase chưa được cấu hình key thực. Hệ thống đang hoạt động ở chế độ Guest / LocalStorage 100% tính năng.');
-      return;
-    }
-
-    const supabase = getSupabaseBrowserClient();
-    if (!supabase) return;
-
     setLoading(true);
 
     try {
-      if (isSignUp) {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: { full_name: fullName },
-          },
-        });
-        if (error) throw error;
-        setSuccessMsg('Đăng ký thành công! Vui lòng kiểm tra email để xác nhận tài khoản (nếu bật email confirmation) hoặc đăng nhập.');
+      if (configured) {
+        const supabase = getSupabaseBrowserClient();
+        if (supabase) {
+          if (isSignUp) {
+            const { data, error } = await supabase.auth.signUp({
+              email,
+              password,
+              options: {
+                data: {
+                  full_name: fullName,
+                  target_band: targetBand,
+                },
+              },
+            });
+            if (error) throw error;
+            if (data.user) {
+              await supabase.from('profiles').upsert({
+                id: data.user.id,
+                email,
+                full_name: fullName,
+                target_band: targetBand,
+              });
+            }
+            setSuccessMsg('Đăng ký tài khoản thành công! Đang chuyển hướng...');
+            setTimeout(() => {
+              router.push('/dashboard');
+            }, 1200);
+          } else {
+            const { error } = await supabase.auth.signInWithPassword({
+              email,
+              password,
+            });
+            if (error) throw error;
+            router.push('/dashboard');
+          }
+        }
       } else {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-        if (error) throw error;
-        router.push('/dashboard');
+        // Local mode fallback
+        localStorage.setItem(
+          'cd_ielts_local_user',
+          JSON.stringify({
+            email,
+            fullName: fullName || email.split('@')[0],
+            targetBand,
+            signedInAt: Date.now(),
+          })
+        );
+        setSuccessMsg('Đăng nhập thành công! Đang chuyển đến Bảng điều khiển...');
+        setTimeout(() => {
+          router.push('/dashboard');
+        }, 800);
       }
     } catch (err: any) {
       setErrorMsg(err.message || 'Đã xảy ra lỗi trong quá trình xác thực.');
@@ -62,29 +98,19 @@ export default function AuthPage() {
   return (
     <div className="flex-1 flex items-center justify-center p-4 py-12">
       <div className="max-w-md w-full bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl shadow-xl overflow-hidden p-8 space-y-6">
-        <div className="text-center space-y-1">
+        <div className="text-center space-y-2">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-sky-600 text-white shadow-md shadow-sky-500/20 mb-1">
+            <PenTool className="w-6 h-6" />
+          </div>
           <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white">
             {isSignUp ? 'Tạo Tài Khoản Luyện Thi' : 'Đăng Nhập Tài Khoản'}
           </h2>
           <p className="text-xs text-gray-500 dark:text-gray-400">
             {isSignUp
-              ? 'Lưu trữ bài thi đồng bộ trên đám mây Supabase'
-              : 'Tiếp tục lộ trình nâng band điểm IELTS của bạn'}
+              ? 'Lưu lịch sử bài thi và theo dõi lộ trình nâng band điểm'
+              : 'Tiếp tục luyện tập và cải thiện kỹ năng IELTS Writing'}
           </p>
         </div>
-
-        {/* Guest Mode Notice */}
-        {!configured && (
-          <div className="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-xs text-amber-900 dark:text-amber-200 space-y-1">
-            <div className="flex items-center gap-1.5 font-bold">
-              <ShieldCheck className="w-4 h-4 text-amber-600 shrink-0" />
-              <span>Chế độ Khách (Guest / LocalStorage Mode)</span>
-            </div>
-            <p className="leading-relaxed opacity-90">
-              Supabase chưa được điền key thật trên môi trường này. Bạn hoàn toàn có thể sử dụng 100% tính năng luyện thi, chấm AI và lưu lịch sử vào trình duyệt mà không cần đăng nhập!
-            </p>
-          </div>
-        )}
 
         {errorMsg && (
           <div className="flex items-start gap-2 p-3 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 rounded-xl text-xs text-red-700 dark:text-red-300">
@@ -102,27 +128,51 @@ export default function AuthPage() {
 
         <form onSubmit={handleAuth} className="space-y-4">
           {isSignUp && (
-            <div>
-              <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
-                Họ và Tên
-              </label>
-              <div className="relative">
-                <User className="w-4 h-4 absolute left-3 top-2.5 text-gray-400" />
-                <input
-                  type="text"
-                  required
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  placeholder="Nguyễn Văn A"
-                  className="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 dark:border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white dark:bg-zinc-800 text-gray-900 dark:text-gray-100"
-                />
+            <>
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
+                  Họ và Tên
+                </label>
+                <div className="relative">
+                  <User className="w-4 h-4 absolute left-3 top-2.5 text-gray-400" />
+                  <input
+                    type="text"
+                    required
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    placeholder="Nguyễn Văn A"
+                    className="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 dark:border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white dark:bg-zinc-800 text-gray-900 dark:text-gray-100"
+                  />
+                </div>
               </div>
-            </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
+                  Mục tiêu Band điểm Writing mong muốn
+                </label>
+                <div className="grid grid-cols-5 gap-1.5">
+                  {[6.0, 6.5, 7.0, 7.5, 8.0].map((b) => (
+                    <button
+                      key={b}
+                      type="button"
+                      onClick={() => setTargetBand(b)}
+                      className={`py-1.5 rounded-lg text-xs font-bold font-mono transition border ${
+                        targetBand === b
+                          ? 'bg-sky-600 text-white border-sky-600 shadow-sm'
+                          : 'border-gray-200 dark:border-zinc-700 hover:bg-gray-100 dark:hover:bg-zinc-800 text-gray-700 dark:text-gray-300'
+                      }`}
+                    >
+                      {b.toFixed(1)}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </>
           )}
 
           <div>
             <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
-              Email
+              Địa chỉ Email
             </label>
             <div className="relative">
               <Mail className="w-4 h-4 absolute left-3 top-2.5 text-gray-400" />
@@ -131,7 +181,7 @@ export default function AuthPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="your.email@example.com"
+                placeholder="thi.sinh@example.com"
                 className="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 dark:border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white dark:bg-zinc-800 text-gray-900 dark:text-gray-100"
               />
             </div>
@@ -157,9 +207,9 @@ export default function AuthPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2.5 px-4 rounded-xl bg-sky-600 hover:bg-sky-700 disabled:opacity-50 text-white font-bold text-xs shadow-md transition flex items-center justify-center gap-1.5"
+            className="w-full py-2.5 px-4 rounded-xl bg-sky-600 hover:bg-sky-700 disabled:opacity-50 text-white font-bold text-xs shadow-md shadow-sky-600/20 transition flex items-center justify-center gap-1.5"
           >
-            <span>{loading ? 'Đang xử lý...' : isSignUp ? 'Đăng Ký Ngay' : 'Đăng Nhập'}</span>
+            <span>{loading ? 'Đang xử lý...' : isSignUp ? 'Đăng Ký Tài Khoản' : 'Đăng Nhập'}</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </form>
@@ -170,7 +220,11 @@ export default function AuthPage() {
               Đã có tài khoản?{' '}
               <button
                 type="button"
-                onClick={() => setIsSignUp(false)}
+                onClick={() => {
+                  setIsSignUp(false);
+                  setErrorMsg('');
+                  setSuccessMsg('');
+                }}
                 className="text-sky-600 font-semibold hover:underline"
               >
                 Đăng nhập
@@ -181,7 +235,11 @@ export default function AuthPage() {
               Chưa có tài khoản?{' '}
               <button
                 type="button"
-                onClick={() => setIsSignUp(true)}
+                onClick={() => {
+                  setIsSignUp(true);
+                  setErrorMsg('');
+                  setSuccessMsg('');
+                }}
                 className="text-sky-600 font-semibold hover:underline"
               >
                 Đăng ký miễn phí

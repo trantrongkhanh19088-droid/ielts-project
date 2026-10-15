@@ -9,24 +9,64 @@ import {
   FileText,
   Trash2,
   ExternalLink,
-  RotateCcw,
   Sparkles,
-  Layers,
   TrendingUp,
+  Target,
+  User,
+  CheckCircle2,
 } from 'lucide-react';
 import { EssayRecord } from '@/types';
 import { fetchAllEssayRecords, deleteLocalEssayRecord } from '@/lib/storage';
+import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import ProgressHistoryChart from '@/components/charts/ProgressHistoryChart';
 import { formatDuration } from '@/lib/utils';
 
 export default function DashboardPage() {
   const [records, setRecords] = useState<EssayRecord[]>([]);
   const [loading, setLoading] = useState(true);
+  const [userProfile, setUserProfile] = useState<{
+    fullName: string;
+    email: string;
+    targetBand: number;
+  }>({
+    fullName: 'Thí sinh IELTS',
+    email: '',
+    targetBand: 7.0,
+  });
 
   const loadData = async () => {
     setLoading(true);
     const list = await fetchAllEssayRecords();
     setRecords(list);
+
+    // Load profile
+    if (isSupabaseConfigured()) {
+      const supabase = getSupabaseBrowserClient();
+      if (supabase) {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single();
+          setUserProfile({
+            fullName: data?.full_name || user.user_metadata?.full_name || user.email?.split('@')[0] || 'Thí sinh',
+            email: user.email || '',
+            targetBand: data?.target_band ? Number(data.target_band) : 7.0,
+          });
+        }
+      }
+    } else {
+      const local = localStorage.getItem('cd_ielts_local_user');
+      if (local) {
+        try {
+          const parsed = JSON.parse(local);
+          setUserProfile({
+            fullName: parsed.fullName || 'Thí sinh',
+            email: parsed.email || '',
+            targetBand: parsed.targetBand ? Number(parsed.targetBand) : 7.0,
+          });
+        } catch {}
+      }
+    }
+
     setLoading(false);
   };
 
@@ -43,10 +83,11 @@ export default function DashboardPage() {
 
   // Compute Stats
   const totalEssays = records.length;
-  const avgBand =
+  const avgBandNum =
     totalEssays > 0
-      ? (records.reduce((acc, r) => acc + Number(r.overall_band), 0) / totalEssays).toFixed(1)
-      : '0.0';
+      ? records.reduce((acc, r) => acc + Number(r.overall_band), 0) / totalEssays
+      : 0;
+  const avgBand = avgBandNum.toFixed(1);
   const highestBand =
     totalEssays > 0
       ? Math.max(...records.map((r) => Number(r.overall_band))).toFixed(1)
@@ -54,31 +95,48 @@ export default function DashboardPage() {
   const totalSeconds = records.reduce((acc, r) => acc + (r.duration_seconds || 0), 0);
   const totalMinutes = Math.round(totalSeconds / 60);
 
+  const targetProgress = Math.min(100, Math.round((avgBandNum / (userProfile.targetBand || 7.0)) * 100));
+
   return (
     <div className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      {/* Dashboard Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-gray-200 dark:border-zinc-800">
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs px-2.5 py-0.5 rounded-full font-bold bg-sky-100 dark:bg-sky-950/60 text-sky-800 dark:text-sky-300 border border-sky-200 dark:border-sky-800">
-              Lịch sử &amp; Thống kê
-            </span>
+      {/* Candidate Profile Header Card */}
+      <div className="p-6 rounded-2xl bg-gradient-to-r from-sky-900 via-indigo-900 to-slate-900 text-white shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div className="flex items-center gap-4">
+          <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur border border-white/20 flex items-center justify-center font-bold text-2xl text-sky-300 shadow-inner">
+            {userProfile.fullName.slice(0, 2).toUpperCase()}
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white mt-1">
-            Bảng Điều Khiển Luyện Thi
-          </h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-            Theo dõi sự tiến bộ Band Score và xem lại toàn bộ bài viết đã được AI chấm điểm
-          </p>
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <h1 className="text-xl sm:text-2xl font-extrabold">{userProfile.fullName}</h1>
+              <span className="text-[11px] px-2.5 py-0.5 rounded-full font-bold bg-sky-500/20 text-sky-300 border border-sky-400/30">
+                Học viên IELTS
+              </span>
+            </div>
+            <p className="text-xs text-sky-200/80 font-mono">
+              {userProfile.email || 'Lưu trữ cục bộ (Guest Profile)'}
+            </p>
+          </div>
         </div>
 
-        <Link
-          href="/practice"
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs shadow-md transition"
-        >
-          <Sparkles className="w-4 h-4" />
-          <span>Luyện thi ngay</span>
-        </Link>
+        {/* Target Progress Bar */}
+        <div className="w-full md:w-80 bg-white/10 backdrop-blur p-4 rounded-xl border border-white/10 space-y-2">
+          <div className="flex items-center justify-between text-xs">
+            <span className="text-sky-200 flex items-center gap-1 font-semibold">
+              <Target className="w-3.5 h-3.5 text-yellow-300" /> Mục tiêu Band {userProfile.targetBand.toFixed(1)}
+            </span>
+            <span className="font-mono text-yellow-300 font-bold">{targetProgress}% đạt được</span>
+          </div>
+          <div className="w-full h-2.5 bg-black/30 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-gradient-to-r from-yellow-400 to-emerald-400 rounded-full transition-all duration-500"
+              style={{ width: `${targetProgress}%` }}
+            />
+          </div>
+          <div className="flex justify-between text-[10px] text-sky-300/70 font-mono">
+            <span>Điểm hiện tại: {avgBand}</span>
+            <span>Mục tiêu: {userProfile.targetBand.toFixed(1)}</span>
+          </div>
+        </div>
       </div>
 
       {/* 4 Overview Statistics Cards */}
@@ -147,10 +205,20 @@ export default function DashboardPage() {
 
       {/* History Table */}
       <div className="space-y-4">
-        <h3 className="font-bold text-base text-gray-900 dark:text-white flex items-center gap-2">
-          <BarChart3 className="w-4 h-4 text-sky-600" />
-          <span>Danh sách bài viết đã lưu ({records.length})</span>
-        </h3>
+        <div className="flex items-center justify-between">
+          <h3 className="font-bold text-base text-gray-900 dark:text-white flex items-center gap-2">
+            <BarChart3 className="w-4 h-4 text-sky-600" />
+            <span>Danh sách bài viết đã lưu ({records.length})</span>
+          </h3>
+
+          <Link
+            href="/practice"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold shadow transition"
+          >
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Luyện bài mới</span>
+          </Link>
+        </div>
 
         {loading ? (
           <div className="p-8 text-center text-sm text-gray-500">Đang tải lịch sử...</div>
