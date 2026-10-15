@@ -21,6 +21,7 @@ import InteractiveEssay from '@/components/results/InteractiveEssay';
 import CriteriaFeedbackTab from '@/components/results/CriteriaFeedbackTab';
 import VocabUpgradesTab from '@/components/results/VocabUpgradesTab';
 import ModelEssayTab from '@/components/results/ModelEssayTab';
+import LowScoreMemeModal from '@/components/results/LowScoreMemeModal';
 import { formatDuration } from '@/lib/utils';
 
 function ResultsContent() {
@@ -32,21 +33,37 @@ function ResultsContent() {
   const [loading, setLoading] = useState(true);
   const [activeFullTestTab, setActiveFullTestTab] = useState<'task1' | 'task2'>('task1');
   const [activeDetailTab, setActiveDetailTab] = useState<'essay' | 'criteria' | 'vocab' | 'model'>('essay');
+  const [showMemeModal, setShowMemeModal] = useState(false);
+  const [dismissedResultIds, setDismissedResultIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     const list = getLocalEssayRecords();
+    let currentRecord: EssayRecord | null = null;
     if (resultId) {
       const found = list.find((r) => r.id === resultId);
       if (found) {
-        setRecord(found);
+        currentRecord = found;
       } else if (list.length > 0) {
-        setRecord(list[0]);
+        currentRecord = list[0];
       }
     } else if (list.length > 0) {
-      setRecord(list[0]);
+      currentRecord = list[0];
     }
+    setRecord(currentRecord);
     setLoading(false);
-  }, [resultId]);
+
+    // Trigger popup if band is strictly below 6.0 and hasn't been dismissed yet
+    if (currentRecord && currentRecord.overall_band < 6.0 && !dismissedResultIds.has(currentRecord.id)) {
+      setShowMemeModal(true);
+    }
+  }, [resultId, dismissedResultIds]);
+
+  const handleCloseMeme = () => {
+    setShowMemeModal(false);
+    if (record) {
+      setDismissedResultIds((prev) => new Set(prev).add(record.id));
+    }
+  };
 
   if (loading) {
     return (
@@ -94,6 +111,13 @@ function ResultsContent() {
 
   return (
     <div className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      {/* Low Score Meme Modal (< 6.0 Band) */}
+      <LowScoreMemeModal
+        isOpen={showMemeModal}
+        onClose={handleCloseMeme}
+        bandScore={record.overall_band}
+      />
+
       {/* Top Banner & Action Controls */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-gray-200 dark:border-zinc-800">
         <div>
