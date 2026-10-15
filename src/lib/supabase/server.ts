@@ -8,10 +8,13 @@ export function createSupabaseServerClient() {
   }
 
   const cookieStore = cookies();
+  let url = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').trim();
+  url = url.replace(/\/rest\/v1\/?$/i, '').replace(/\/+$/, '');
+  const anonKey = (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '').trim();
 
   return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    url,
+    anonKey,
     {
       cookies: {
         getAll() {

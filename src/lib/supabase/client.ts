@@ -25,8 +25,10 @@ export function getSupabaseBrowserClient(): SupabaseClient | null {
   }
 
   if (!browserClient) {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-    const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+    let url = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').trim();
+    // Strip accidental /rest/v1/ or trailing slashes that break auth endpoints
+    url = url.replace(/\/rest\/v1\/?$/i, '').replace(/\/+$/, '');
+    const anonKey = (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '').trim();
     browserClient = createBrowserClient(url, anonKey);
   }
 
