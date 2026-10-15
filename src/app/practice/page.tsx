@@ -63,6 +63,7 @@ function PracticeContent() {
   const [contrastMode, setContrastMode] = useState<ContrastMode>('default');
   const [fontSize, setFontSize] = useState<FontSize>('normal');
   const [lastSavedAt, setLastSavedAt] = useState<number>(Date.now());
+  const [isEditorFullscreen, setIsEditorFullscreen] = useState(false);
 
   // Countdown Timer
   const initialSeconds = isFullTest ? 60 * 60 : modeParam === 'task2' ? 40 * 60 : 20 * 60;
@@ -396,45 +397,51 @@ function PracticeContent() {
         isSubmitting={isSubmitting}
       />
 
-      {/* Main Split-Pane Examination Area (50% Prompt, 50% Editor) */}
-      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 overflow-hidden h-[calc(100vh-105px)]">
-        {/* Left Column (50%): Prompt, Charts, Highlighting, Scratchpad */}
-        <div className="h-full overflow-hidden">
-          <PromptPane
-            prompt={currentPrompt}
-            availablePrompts={isFullTest ? (activeFullTestPart === 'task1' ? TASK_1_SEEDS : TASK_2_SEEDS) : mode === 'task1' ? TASK_1_SEEDS : TASK_2_SEEDS}
-            onSelectPrompt={(selected) => {
-              if (isFullTest) {
-                if (activeFullTestPart === 'task1') setTask1Prompt(selected);
-                else setTask2Prompt(selected);
-              } else if (mode === 'task1') {
-                setTask1Prompt(selected);
-              } else {
-                setTask2Prompt(selected);
-              }
-            }}
-            contrastMode={contrastMode}
-            fontSize={fontSize}
-            scratchpadNotes={currentNotes}
-            onScratchpadChange={handleCurrentNotesChange}
-            customImageBase64={customImageBase64}
-            onCustomImageUpload={setCustomImageBase64}
-            onPromptTextChange={(newText) => {
-              if (isFullTest && activeFullTestPart === 'task1') {
-                setTask1Prompt((prev) => ({ ...prev, question: newText }));
-              } else if (isFullTest && activeFullTestPart === 'task2') {
-                setTask2Prompt((prev) => ({ ...prev, question: newText }));
-              } else if (mode === 'task1') {
-                setTask1Prompt((prev) => ({ ...prev, question: newText }));
-              } else {
-                setTask2Prompt((prev) => ({ ...prev, question: newText }));
-              }
-            }}
-            isCustomPrompt={isCustomMode}
-          />
-        </div>
+      {/* Main Split-Pane Examination Area (Prompt / Editor) */}
+      <div className={`flex-1 grid overflow-hidden h-[calc(100vh-105px)] ${
+        isEditorFullscreen
+          ? 'grid-cols-1'
+          : 'grid-cols-1 md:grid-cols-2'
+      }`}>
+        {/* Left Column (Prompt, Charts, Highlighting, Scratchpad) */}
+        {!isEditorFullscreen && (
+          <div className="h-full overflow-hidden border-r border-gray-200 dark:border-zinc-800">
+            <PromptPane
+              prompt={currentPrompt}
+              availablePrompts={isFullTest ? (activeFullTestPart === 'task1' ? TASK_1_SEEDS : TASK_2_SEEDS) : mode === 'task1' ? TASK_1_SEEDS : TASK_2_SEEDS}
+              onSelectPrompt={(selected) => {
+                if (isFullTest) {
+                  if (activeFullTestPart === 'task1') setTask1Prompt(selected);
+                  else setTask2Prompt(selected);
+                } else if (mode === 'task1') {
+                  setTask1Prompt(selected);
+                } else {
+                  setTask2Prompt(selected);
+                }
+              }}
+              contrastMode={contrastMode}
+              fontSize={fontSize}
+              scratchpadNotes={currentNotes}
+              onScratchpadChange={handleCurrentNotesChange}
+              customImageBase64={customImageBase64}
+              onCustomImageUpload={setCustomImageBase64}
+              onPromptTextChange={(newText) => {
+                if (isFullTest && activeFullTestPart === 'task1') {
+                  setTask1Prompt((prev) => ({ ...prev, question: newText }));
+                } else if (isFullTest && activeFullTestPart === 'task2') {
+                  setTask2Prompt((prev) => ({ ...prev, question: newText }));
+                } else if (mode === 'task1') {
+                  setTask1Prompt((prev) => ({ ...prev, question: newText }));
+                } else {
+                  setTask2Prompt((prev) => ({ ...prev, question: newText }));
+                }
+              }}
+              isCustomPrompt={isCustomMode}
+            />
+          </div>
+        )}
 
-        {/* Right Column (50%): Inspera Editor with No Spellcheck */}
+        {/* Right Column: Inspera Editor with No Spellcheck */}
         <div className="h-full overflow-hidden">
           <EditorPane
             content={currentEssay}
@@ -444,6 +451,9 @@ function PracticeContent() {
             contrastMode={contrastMode}
             fontSize={fontSize}
             lastSavedAt={lastSavedAt}
+            isFullscreen={isEditorFullscreen}
+            onToggleFullscreen={() => setIsEditorFullscreen(!isEditorFullscreen)}
+            onFontSizeChange={setFontSize}
           />
         </div>
       </div>

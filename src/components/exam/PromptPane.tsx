@@ -221,33 +221,37 @@ export default function PromptPane({
                   ? 'bg-zinc-950 border-[#ffe600]/30 text-[#ffe600]'
                   : contrastMode === 'white-on-black'
                   ? 'bg-zinc-900 border-zinc-800 text-zinc-300'
-                  : 'bg-sky-50 border-sky-100 text-sky-900'
+                  : 'bg-white dark:bg-zinc-900 border-gray-200 dark:border-zinc-800 text-gray-800 dark:text-zinc-200 shadow-xs'
               }`}
             >
-              <div className="flex flex-wrap items-center justify-between gap-2 font-bold">
-                <div className="flex items-center gap-1.5">
-                  <Info className="w-4 h-4 text-sky-600 shrink-0" />
-                  <span>
-                    {prompt.taskType === 'task1'
-                      ? 'IELTS Writing Task 1 (Academic)'
-                      : 'IELTS Writing Task 2'}
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold bg-sky-600 text-white shadow-xs">
+                    <Info className="w-3.5 h-3.5" />
+                    {prompt.taskType === 'task1' ? 'IELTS Academic Task 1' : 'IELTS Writing Task 2'}
                   </span>
+                  {prompt.category && (
+                    <span className="px-2 py-0.5 rounded text-[11px] font-semibold bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-zinc-300 border border-gray-200 dark:border-zinc-700">
+                      {prompt.category}
+                    </span>
+                  )}
                 </div>
+
                 {availablePrompts && availablePrompts.length > 1 && onSelectPrompt && (
                   <div className="flex items-center gap-1.5 font-normal">
-                    <span className="text-[11px] opacity-75">Đổi đề ({availablePrompts.length}):</span>
+                    <span className="text-[11px] text-gray-500 dark:text-zinc-400">Chọn đề ({availablePrompts.length}):</span>
                     <select
                       value={prompt.id}
                       onChange={(e) => {
                         const found = availablePrompts.find((p) => p.id === e.target.value);
                         if (found) onSelectPrompt(found);
                       }}
-                      className={`text-[11px] px-2 py-1 rounded border font-medium outline-none cursor-pointer max-w-[220px] truncate ${
+                      className={`text-xs px-2.5 py-1 rounded-lg border font-medium outline-none cursor-pointer max-w-[240px] truncate transition ${
                         contrastMode === 'yellow-on-black'
                           ? 'bg-black text-[#ffe600] border-[#ffe600]'
                           : contrastMode === 'white-on-black'
                           ? 'bg-zinc-800 text-white border-zinc-700'
-                          : 'bg-white text-gray-800 border-gray-300 shadow-sm'
+                          : 'bg-gray-50 dark:bg-zinc-800 text-gray-800 dark:text-zinc-200 border-gray-300 dark:border-zinc-700 hover:border-sky-500'
                       }`}
                     >
                       {availablePrompts.map((p, idx) => (
@@ -259,26 +263,41 @@ export default function PromptPane({
                   </div>
                 )}
               </div>
-              <p className="leading-relaxed">
-                You should spend about <strong>{prompt.timeMinutes} minutes</strong> on this task.
-                Write at least <strong>{prompt.minWords} words</strong>.
-              </p>
+
+              <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-zinc-400 pt-1">
+                <span>Thời gian khuyến nghị: <strong className="text-gray-800 dark:text-zinc-200">{prompt.timeMinutes} phút</strong></span>
+                <span>•</span>
+                <span>Độ dài tối thiểu: <strong className="text-gray-800 dark:text-zinc-200">{prompt.minWords} từ</strong></span>
+              </div>
             </div>
 
-            {/* Prompt Question */}
+            {/* Prompt Question Card */}
             <div className="space-y-2">
-              <h3 className="font-bold text-sm tracking-wide uppercase opacity-80">Đề bài:</h3>
+              <div className="flex items-center justify-between">
+                <h3 className="font-bold text-xs uppercase tracking-wider text-gray-500 dark:text-zinc-400">
+                  Nội dung đề bài thi:
+                </h3>
+              </div>
+
               {isCustomPrompt ? (
                 <textarea
                   value={prompt.question}
                   onChange={(e) => onPromptTextChange?.(e.target.value)}
                   placeholder="Dán câu hỏi đề bài thi tại đây..."
                   rows={4}
-                  className="w-full p-3 text-sm rounded-lg border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full p-4 text-sm rounded-xl border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
                 />
               ) : (
-                <div className="p-4 rounded-lg border border-dashed border-gray-300 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/60 leading-relaxed font-cdielts">
-                  {prompt.question}
+                <div className={`p-4 sm:p-5 rounded-r-xl border-l-4 border-l-sky-600 border-y border-r leading-relaxed transition-colors shadow-xs ${
+                  contrastMode === 'yellow-on-black'
+                    ? 'bg-zinc-950 border-[#ffe600]/40 text-[#ffe600]'
+                    : contrastMode === 'white-on-black'
+                    ? 'bg-zinc-900 border-zinc-800 text-zinc-100'
+                    : 'bg-white dark:bg-zinc-900 border-gray-200 dark:border-zinc-800 text-gray-900 dark:text-zinc-100'
+                }`}>
+                  <p className="text-sm md:text-[15px] font-sans font-medium leading-relaxed">
+                    {prompt.question}
+                  </p>
                 </div>
               )}
             </div>

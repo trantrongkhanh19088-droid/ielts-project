@@ -20,7 +20,9 @@ module.exports = {
         },
       },
       fontFamily: {
+        sans: ["var(--font-inter)", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
         cdielts: ["Arial", "Helvetica", "sans-serif"],
+        serif: ["Georgia", "Cambria", "serif"],
       },
     },
   },
