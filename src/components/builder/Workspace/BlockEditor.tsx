@@ -9,6 +9,8 @@ import {
   Sparkles,
   Layers,
   Check,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
 import {
   BuilderBlock,
@@ -34,6 +36,7 @@ export default function BlockEditor({
   onChangeBlocks,
 }: BlockEditorProps) {
   const [activeBlockIndex, setActiveBlockIndex] = useState(0);
+  const [showAllHints, setShowAllHints] = useState(true);
 
   // Safeguard index
   const safeIndex = Math.min(Math.max(0, activeBlockIndex), blocks.length - 1);
@@ -187,14 +190,36 @@ export default function BlockEditor({
             </p>
           </div>
 
-          <button
-            type="button"
-            onClick={handleAddSentence}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-dashed border-gray-300 dark:border-zinc-700 hover:border-emerald-500 text-xs font-bold text-gray-700 dark:text-zinc-300 hover:text-emerald-600 transition shrink-0 self-start sm:self-center"
-          >
-            <Plus className="w-3.5 h-3.5 text-emerald-600" />
-            <span>+ Thêm câu</span>
-          </button>
+          <div className="flex items-center gap-2 shrink-0 self-start sm:self-center">
+            {/* Master Toggle for Writing Hints */}
+            <button
+              type="button"
+              onClick={() => setShowAllHints(!showAllHints)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-gray-200 dark:border-zinc-700 hover:bg-gray-100 dark:hover:bg-zinc-800 text-xs font-semibold text-gray-700 dark:text-zinc-300 transition cursor-pointer"
+              title={showAllHints ? 'Ẩn tất cả gợi ý viết' : 'Hiện tất cả gợi ý viết'}
+            >
+              {showAllHints ? (
+                <>
+                  <Eye className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" />
+                  <span>Gợi ý: Bật</span>
+                </>
+              ) : (
+                <>
+                  <EyeOff className="w-3.5 h-3.5 text-gray-400" />
+                  <span>Gợi ý: Tắt</span>
+                </>
+              )}
+            </button>
+
+            <button
+              type="button"
+              onClick={handleAddSentence}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-dashed border-gray-300 dark:border-zinc-700 hover:border-emerald-500 text-xs font-bold text-gray-700 dark:text-zinc-300 hover:text-emerald-600 transition"
+            >
+              <Plus className="w-3.5 h-3.5 text-emerald-600" />
+              <span>+ Thêm câu</span>
+            </button>
+          </div>
         </div>
 
         {/* Sentence Cards Inside Active Block */}
@@ -216,6 +241,7 @@ export default function BlockEditor({
                 promptQuestion={promptQuestion}
                 targetBand={targetBand}
                 previousSentences={previousSentences}
+                globalShowHint={showAllHints}
                 onChangeText={(text) => handleSentenceTextChange(sIdx, text)}
                 onUpdateCheckResult={(res) => handleCheckResultChange(sIdx, res)}
                 onUpdateParaphraseResult={(res) => handleParaphraseResultChange(sIdx, res)}

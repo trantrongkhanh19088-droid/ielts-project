@@ -63,17 +63,17 @@ export default function BeanstalkMap({ levels, onSelectNode }: BeanstalkMapProps
         </div>
       </div>
 
-      {/* QUICK SCROLL SHORTCUT FLOATING PILL */}
+      {/* QUICK SCROLL SHORTCUT PILL - PLACED PROMINENTLY ABOVE THE CROWN */}
       {currentActiveLevel && (
-        <div className="sticky top-20 z-30 mb-6">
+        <div className="relative z-20 mb-8 flex justify-center">
           <button
             type="button"
             onClick={scrollToCurrentLevel}
-            className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-lg shadow-emerald-600/30 border border-emerald-400/40 backdrop-blur-md transition transform hover:scale-105"
+            className="group inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold shadow-xl shadow-emerald-600/30 border-2 border-emerald-400/50 transition-all transform hover:scale-105 active:scale-95 cursor-pointer"
           >
-            <Compass className="w-3.5 h-3.5 text-amber-300 animate-spin" style={{ animationDuration: '6s' }} />
+            <Compass className="w-4 h-4 text-amber-300 animate-spin" style={{ animationDuration: '6s' }} />
             <span>Tiếp tục leo: Tầng {currentActiveLevel.levelNumber}</span>
-            <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+            <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
       )}
