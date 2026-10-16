@@ -114,6 +114,27 @@ function ResultsContent() {
       : fullTestFeedback.task2Result
     : (record.ai_feedback_json as GradingResult);
 
+  // Filter out false positives (e.g. original == corrected or explanations claiming no error)
+  const validCorrectionsCount = (activeResult?.sentenceCorrections || []).filter((corr) => {
+    if (!corr || typeof corr.original !== 'string' || typeof corr.corrected !== 'string') return false;
+    const orig = corr.original.trim().toLowerCase().replace(/[.,!?;:"'“”]/g, '');
+    const fixed = corr.corrected.trim().toLowerCase().replace(/[.,!?;:"'“”]/g, '');
+    if (orig === fixed) return false;
+    const expl = (corr.explanationVi || '').toLowerCase();
+    if (
+      expl.includes('không cần chỉnh sửa') ||
+      expl.includes('không cần sửa') ||
+      expl.includes('hoàn toàn chính xác') ||
+      expl.includes('không có lỗi') ||
+      expl.includes('đã chuẩn xác') ||
+      expl.includes('rất chuẩn xác') ||
+      expl.includes('đã hoàn toàn chuẩn')
+    ) {
+      return false;
+    }
+    return true;
+  }).length;
+
   const handlePrint = () => {
     window.print();
   };
@@ -301,7 +322,11 @@ function ResultsContent() {
             }`}
           >
             <BookOpen className="w-4 h-4" />
-            <span>Sửa lỗi trong bài viết ({activeResult.sentenceCorrections.length})</span>
+            <span>
+              {validCorrectionsCount === 0
+                ? 'Sửa lỗi câu (0 - Không có lỗi)'
+                : `Sửa lỗi trong bài viết (${validCorrectionsCount})`}
+            </span>
           </button>
 
           <button

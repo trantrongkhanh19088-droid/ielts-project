@@ -10,9 +10,40 @@ interface InteractiveEssayProps {
 }
 
 export default function InteractiveEssay({ essay, corrections }: InteractiveEssayProps) {
+  // Sanitize and filter out false positives (e.g. original == corrected or explanations claiming no errors)
+  const validCorrections = React.useMemo(() => {
+    return (corrections || []).filter((corr) => {
+      if (!corr || typeof corr.original !== 'string' || typeof corr.corrected !== 'string') {
+        return false;
+      }
+      const orig = corr.original.trim().toLowerCase().replace(/[.,!?;:"'“”]/g, '');
+      const fixed = corr.corrected.trim().toLowerCase().replace(/[.,!?;:"'“”]/g, '');
+      if (orig === fixed) return false;
+
+      const expl = (corr.explanationVi || '').toLowerCase();
+      if (
+        expl.includes('không cần chỉnh sửa') ||
+        expl.includes('không cần sửa') ||
+        expl.includes('hoàn toàn chính xác') ||
+        expl.includes('không có lỗi') ||
+        expl.includes('đã chuẩn xác') ||
+        expl.includes('rất chuẩn xác') ||
+        expl.includes('đã hoàn toàn chuẩn')
+      ) {
+        return false;
+      }
+      return true;
+    });
+  }, [corrections]);
+
   const [selectedCorrection, setSelectedCorrection] = useState<SentenceCorrection | null>(
-    corrections.length > 0 ? corrections[0] : null
+    validCorrections.length > 0 ? validCorrections[0] : null
   );
+
+  // Keep selectedCorrection updated if validCorrections changes
+  React.useEffect(() => {
+    setSelectedCorrection(validCorrections.length > 0 ? validCorrections[0] : null);
+  }, [validCorrections]);
 
   const getErrorTypeBadge = (type: string) => {
     switch (type) {
@@ -29,7 +60,7 @@ export default function InteractiveEssay({ essay, corrections }: InteractiveEssa
 
   // Helper to render essay with highlighted error segments
   const renderHighlightedEssay = () => {
-    if (!corrections || corrections.length === 0) {
+    if (!validCorrections || validCorrections.length === 0) {
       return (
         <div className="whitespace-pre-wrap leading-relaxed text-sm text-gray-800 dark:text-gray-200">
           {essay}
@@ -46,7 +77,7 @@ export default function InteractiveEssay({ essay, corrections }: InteractiveEssa
           // Check if any correction is in this paragraph
           let renderedPara: React.ReactNode = para;
 
-          corrections.forEach((corr, cIdx) => {
+          validCorrections.forEach((corr, cIdx) => {
             if (typeof renderedPara === 'string' && corr.original && renderedPara.includes(corr.original)) {
               const parts = renderedPara.split(corr.original);
               const isSelected = selectedCorrection?.original === corr.original;
@@ -89,11 +120,17 @@ export default function InteractiveEssay({ essay, corrections }: InteractiveEssa
           <div className="flex items-center gap-2">
             <BookOpen className="w-4 h-4 text-sky-600" />
             <h3 className="font-bold text-sm text-gray-900 dark:text-gray-100">
-              Bài viết của bạn (Bấm vào câu màu để xem lỗi)
+              Bài viết của bạn {validCorrections.length > 0 ? '(Bấm vào câu màu để xem lỗi)' : ''}
             </h3>
           </div>
-          <span className="text-xs text-gray-500 dark:text-gray-400">
-            {corrections.length} lỗi cần sửa
+          <span
+            className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${
+              validCorrections.length === 0
+                ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800'
+                : 'bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300 border border-rose-200 dark:border-rose-800'
+            }`}
+          >
+            {validCorrections.length === 0 ? '✓ Không có lỗi' : `${validCorrections.length} lỗi cần sửa`}
           </span>
         </div>
 
@@ -104,7 +141,19 @@ export default function InteractiveEssay({ essay, corrections }: InteractiveEssa
 
       {/* Right (5 cols): Correction Detail Card + List */}
       <div className="lg:col-span-5 space-y-4">
-        {selectedCorrection ? (
+        {validCorrections.length === 0 ? (
+          <div className="bg-white dark:bg-zinc-900 border border-emerald-200 dark:border-emerald-800/60 rounded-xl p-6 shadow-sm text-center space-y-3 sticky top-20">
+            <div className="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-900/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto">
+              <Check className="w-6 h-6 stroke-[2.5]" />
+            </div>
+            <h4 className="font-bold text-sm text-emerald-900 dark:text-emerald-200">
+              Không phát hiện lỗi ngữ pháp hay từ vựng!
+            </h4>
+            <p className="text-xs text-gray-600 dark:text-zinc-400 leading-relaxed">
+              Bài viết của bạn được kiểm soát ngữ pháp và từ vựng rất tốt, câu văn chuẩn xác và tự nhiên theo chuẩn IELTS. Không có câu nào cần phải chỉnh sửa.
+            </p>
+          </div>
+        ) : selectedCorrection ? (
           <div className="bg-white dark:bg-zinc-900 border-2 border-sky-500/40 dark:border-sky-500/30 rounded-xl p-5 shadow-sm space-y-4 sticky top-20">
             <div className="flex items-center justify-between">
               <span
@@ -147,20 +196,16 @@ export default function InteractiveEssay({ essay, corrections }: InteractiveEssa
               </p>
             </div>
           </div>
-        ) : (
-          <div className="p-6 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl text-center text-sm text-gray-500">
-            Tuyệt vời! Không phát hiện lỗi nghiêm trọng trong bài.
-          </div>
-        )}
+        ) : null}
 
         {/* List of all corrections */}
-        {corrections.length > 1 && (
+        {validCorrections.length > 1 && (
           <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-4 shadow-sm space-y-2">
             <h4 className="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-2">
-              Danh sách toàn bộ {corrections.length} lỗi trong bài:
+              Danh sách toàn bộ {validCorrections.length} lỗi trong bài:
             </h4>
             <div className="space-y-1.5 max-h-60 overflow-y-auto pr-1">
-              {corrections.map((corr, idx) => {
+              {validCorrections.map((corr, idx) => {
                 const isSelected = selectedCorrection?.original === corr.original;
                 return (
                   <button

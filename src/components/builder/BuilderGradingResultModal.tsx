@@ -67,6 +67,27 @@ export default function BuilderGradingResultModal({
   const achievedBand = gradingResult?.overallBand || 0;
   const isTargetMet = achievedBand >= targetBandNum;
 
+  // Filter out false positives (e.g. original == corrected or explanations claiming no errors)
+  const validCorrections = (gradingResult?.sentenceCorrections || []).filter((corr) => {
+    if (!corr || typeof corr.original !== 'string' || typeof corr.corrected !== 'string') return false;
+    const orig = corr.original.trim().toLowerCase().replace(/[.,!?;:"'“”]/g, '');
+    const fixed = corr.corrected.trim().toLowerCase().replace(/[.,!?;:"'“”]/g, '');
+    if (orig === fixed) return false;
+    const expl = (corr.explanationVi || '').toLowerCase();
+    if (
+      expl.includes('không cần chỉnh sửa') ||
+      expl.includes('không cần sửa') ||
+      expl.includes('hoàn toàn chính xác') ||
+      expl.includes('không có lỗi') ||
+      expl.includes('đã chuẩn xác') ||
+      expl.includes('rất chuẩn xác') ||
+      expl.includes('đã hoàn toàn chuẩn')
+    ) {
+      return false;
+    }
+    return true;
+  });
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-md animate-in fade-in duration-200">
       <div className="max-w-3xl w-full bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
@@ -173,7 +194,7 @@ export default function BuilderGradingResultModal({
               >
                 <CheckCircle2 className="w-3.5 h-3.5" />
                 <span>
-                  Sửa Lỗi ({gradingResult.sentenceCorrections?.length || 0})
+                  Sửa Lỗi ({validCorrections.length === 0 ? '0 - Không có lỗi' : validCorrections.length})
                 </span>
               </button>
 
@@ -276,8 +297,8 @@ export default function BuilderGradingResultModal({
               {/* TAB 2: SENTENCE CORRECTIONS */}
               {activeTab === 'corrections' && (
                 <div className="space-y-3">
-                  {gradingResult.sentenceCorrections && gradingResult.sentenceCorrections.length > 0 ? (
-                    gradingResult.sentenceCorrections.map((corr, idx) => (
+                  {validCorrections.length > 0 ? (
+                    validCorrections.map((corr, idx) => (
                       <div
                         key={idx}
                         className="p-3.5 rounded-2xl border border-gray-200 dark:border-zinc-800 bg-gray-50/50 dark:bg-zinc-800/40 space-y-2 text-xs"
@@ -303,7 +324,10 @@ export default function BuilderGradingResultModal({
                   ) : (
                     <div className="p-8 text-center text-gray-500 text-xs">
                       <CheckCircle2 className="w-8 h-8 text-emerald-500 mx-auto mb-2" />
-                      <span>Không phát hiện lỗi ngữ pháp hay từ vựng nghiêm trọng nào! Bài viết rất mạch lạc.</span>
+                      <span className="font-bold text-emerald-700 dark:text-emerald-400 block mb-1">
+                        Không phát hiện lỗi ngữ pháp hay từ vựng!
+                      </span>
+                      <span>Bài viết của bạn được kiểm soát cấu trúc câu và từ vựng rất tốt, không cần chỉnh sửa gì thêm.</span>
                     </div>
                   )}
                 </div>
