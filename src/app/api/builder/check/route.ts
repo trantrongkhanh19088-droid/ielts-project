@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { validateRequestOrigin } from '@/lib/security';
 
 export const maxDuration = 30;
 
@@ -14,6 +15,10 @@ interface CheckRequestBody {
 
 export async function POST(req: NextRequest) {
   try {
+    if (!validateRequestOrigin(req)) {
+      return NextResponse.json({ error: 'Yêu cầu không hợp lệ' }, { status: 403 });
+    }
+
     const body: CheckRequestBody = await req.json();
     const { sentence, blockId, taskType, promptText, previousSentences, userApiKey } = body;
 

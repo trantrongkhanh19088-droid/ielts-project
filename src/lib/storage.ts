@@ -121,6 +121,32 @@ export function deleteLocalEssayRecord(id: string): void {
   }
 }
 
+export function clearAllEssayRecords(): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.removeItem(ESSAYS_STORAGE_KEY);
+  } catch (err) {
+    console.error('Failed to clear essay records from localStorage', err);
+  }
+}
+
+export async function clearAllEssayRecordsAsync(): Promise<void> {
+  clearAllEssayRecords();
+  if (isSupabaseConfigured()) {
+    try {
+      const supabase = getSupabaseBrowserClient();
+      if (supabase) {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          await supabase.from('essays').delete().eq('user_id', user.id);
+        }
+      }
+    } catch (err) {
+      console.warn('Could not delete all essays from Supabase', err);
+    }
+  }
+}
+
 // Auto-save draft utilities
 export function saveDraft(key: string, content: string, notes?: string, timeRemaining?: number): void {
   if (typeof window === 'undefined') return;

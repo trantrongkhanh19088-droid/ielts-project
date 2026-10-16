@@ -63,6 +63,29 @@ function PracticeContent() {
   const [timeRemaining, setTimeRemaining] = useState<number>(initialSeconds);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isTimerPaused, setIsTimerPaused] = useState(false);
+  const [examSessionToken, setExamSessionToken] = useState<string>('');
+
+  // Fetch cryptographic exam session token from server
+  useEffect(() => {
+    let isMounted = true;
+    async function initSession() {
+      try {
+        const res = await fetch(`/api/exam/session?taskType=${modeParam}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (isMounted && data.token) {
+            setExamSessionToken(data.token);
+          }
+        }
+      } catch (err) {
+        console.warn('Could not initialize session token', err);
+      }
+    }
+    initSession();
+    return () => {
+      isMounted = false;
+    };
+  }, [modeParam]);
 
   // Load or generate active random session and drafts
   useEffect(() => {
@@ -358,9 +381,16 @@ function PracticeContent() {
       return;
     }
 
+    const timeSpent = initialSeconds - timeRemaining;
+    if (timeSpent < 30) {
+      alert(
+        `Thời gian làm bài quá nhanh (${timeSpent} giây). Để AI đánh giá chính xác và phản ánh đúng năng lực, bạn cần dành thời gian làm bài thực tế (tối thiểu 30 giây).`
+      );
+      return;
+    }
+
     setIsSubmitting(true);
     const userApiKey = getUserApiKey();
-    const timeSpent = initialSeconds - timeRemaining;
 
     try {
       if (isFullTest) {
@@ -376,6 +406,8 @@ function PracticeContent() {
               imageBase64: undefined,
               essayContent: task1Essay,
               userApiKey,
+              sessionToken: examSessionToken,
+              securityTrap: '',
             }),
           }),
           fetch('/api/grade', {
@@ -388,6 +420,8 @@ function PracticeContent() {
               imageBase64: undefined,
               essayContent: task2Essay,
               userApiKey,
+              sessionToken: examSessionToken,
+              securityTrap: '',
             }),
           }),
         ]);
@@ -467,6 +501,8 @@ function PracticeContent() {
             imageBase64: undefined,
             essayContent: activeEssay,
             userApiKey,
+            sessionToken: examSessionToken,
+            securityTrap: '',
           }),
         });
 

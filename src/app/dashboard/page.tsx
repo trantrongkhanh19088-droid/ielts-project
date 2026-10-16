@@ -16,7 +16,7 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import { EssayRecord } from '@/types';
-import { fetchAllEssayRecords, deleteLocalEssayRecord } from '@/lib/storage';
+import { fetchAllEssayRecords, deleteLocalEssayRecord, clearAllEssayRecordsAsync } from '@/lib/storage';
 import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import ProgressHistoryChart from '@/components/charts/ProgressHistoryChart';
 import { formatDuration } from '@/lib/utils';
@@ -24,6 +24,7 @@ import { formatDuration } from '@/lib/utils';
 export default function DashboardPage() {
   const [records, setRecords] = useState<EssayRecord[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showResetModal, setShowResetModal] = useState(false);
   const [userProfile, setUserProfile] = useState<{
     fullName: string;
     email: string;
@@ -79,6 +80,12 @@ export default function DashboardPage() {
       deleteLocalEssayRecord(id);
       setRecords((prev) => prev.filter((r) => r.id !== id));
     }
+  };
+
+  const handleClearAll = async () => {
+    await clearAllEssayRecordsAsync();
+    setRecords([]);
+    setShowResetModal(false);
   };
 
   // Compute Stats
@@ -205,19 +212,33 @@ export default function DashboardPage() {
 
       {/* History Table */}
       <div className="space-y-4">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between flex-wrap gap-2">
           <h3 className="font-bold text-base text-gray-900 dark:text-white flex items-center gap-2">
             <BarChart3 className="w-4 h-4 text-sky-600" />
             <span>Danh sách bài viết đã lưu ({records.length})</span>
           </h3>
 
-          <Link
-            href="/practice"
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold shadow transition"
-          >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Luyện bài mới</span>
-          </Link>
+          <div className="flex items-center gap-2">
+            {records.length > 0 && (
+              <button
+                type="button"
+                onClick={() => setShowResetModal(true)}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-red-200 dark:border-red-900/60 bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/50 text-xs font-semibold transition"
+                title="Xóa toàn bộ lịch sử bài thi và đặt lại thống kê về 0"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+                <span>Đặt lại dữ liệu</span>
+              </button>
+            )}
+
+            <Link
+              href="/practice"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold shadow transition"
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Luyện bài mới</span>
+            </Link>
+          </div>
         </div>
 
         {loading ? (
@@ -322,6 +343,41 @@ export default function DashboardPage() {
           </div>
         )}
       </div>
+
+      {/* Reset Confirmation Modal */}
+      {showResetModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="max-w-md w-full bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-zinc-800 p-6 space-y-4">
+            <div className="w-12 h-12 rounded-2xl bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 flex items-center justify-center mx-auto">
+              <Trash2 className="w-6 h-6" />
+            </div>
+            <div className="text-center space-y-2">
+              <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                Đặt lại toàn bộ dữ liệu luyện tập?
+              </h3>
+              <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+                Hành động này sẽ xóa toàn bộ <span className="font-bold text-red-600">{records.length} bài thi</span> khỏi lịch sử lưu trữ. Điểm trung bình, kỷ lục band điểm và tổng thời gian luyện tập sẽ được đưa về 0.
+              </p>
+            </div>
+            <div className="flex items-center gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() => setShowResetModal(false)}
+                className="flex-1 py-2.5 px-4 rounded-xl border border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-800 transition"
+              >
+                Hủy bỏ
+              </button>
+              <button
+                type="button"
+                onClick={handleClearAll}
+                className="flex-1 py-2.5 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-xs font-bold text-white shadow-lg shadow-red-600/30 transition"
+              >
+                Xác nhận xóa sạch
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
