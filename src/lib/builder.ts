@@ -578,13 +578,30 @@ export function completeNodeInState(
 // 6. INTERACTIVE MULTIPLE CHOICE QUESTIONS (MCQs) GENERATOR
 // ==============================================================================
 
+function deterministicShuffle<T>(array: T[], seedStr: string): T[] {
+  let hash = 0;
+  for (let i = 0; i < seedStr.length; i++) {
+    hash = (hash << 5) - hash + seedStr.charCodeAt(i);
+    hash |= 0;
+  }
+  const result = [...array];
+  for (let i = result.length - 1; i > 0; i--) {
+    hash = (hash * 9301 + 49297) % 233280;
+    const rnd = Math.abs(hash) / 233280;
+    const j = Math.floor(rnd * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
 export function getInteractiveMCQsForPrompt(prompt: PromptSeed, targetBand: BuilderTargetBand): InteractiveMCQ[] {
+  let rawQuestions: InteractiveMCQ[] = [];
   if (prompt.taskType === 'task1') {
     const isDynamic = prompt.category.includes('Line') || prompt.category.includes('Bar') || prompt.category.includes('Table');
     const isProcessOrMap = prompt.category.includes('Process') || prompt.category.includes('Map');
 
     if (isProcessOrMap) {
-      return [
+      rawQuestions = [
         {
           id: 1,
           question: 'Dạng bài này có đặc điểm trọng tâm nào bạn cần xác định ngay từ đầu?',
@@ -654,7 +671,7 @@ export function getInteractiveMCQsForPrompt(prompt: PromptSeed, targetBand: Buil
       ];
     } else {
       // Standard Charts (Line, Bar, Pie, Table)
-      return [
+      rawQuestions = [
         {
           id: 1,
           question: 'Đâu là cách phân đoạn thân bài (Body 1 & Body 2) hợp lý nhất cho đề bài này?',
@@ -725,7 +742,7 @@ export function getInteractiveMCQsForPrompt(prompt: PromptSeed, targetBand: Buil
     }
   } else {
     // Task 2 MCQs
-    return [
+    rawQuestions = [
       {
         id: 1,
         question: 'Dạng đề bài này thuộc loại nào và đòi hỏi bạn phải giải quyết những gì?',
@@ -794,6 +811,12 @@ export function getInteractiveMCQsForPrompt(prompt: PromptSeed, targetBand: Buil
       },
     ];
   }
+
+  // Shuffle options deterministically based on prompt.id and question id so correct answer is randomized across A, B, C!
+  return rawQuestions.map((q) => ({
+    ...q,
+    options: deterministicShuffle(q.options, `${prompt.id}_mcq_${q.id}`),
+  }));
 }
 
 export function assembleFullEssayFromBlocks(blocks: BuilderBlock[]): { text: string; wordCount: number } {
