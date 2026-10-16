@@ -260,13 +260,6 @@ export default function HomePage() {
                 Gồm 30 đề Task 1 (Biểu đồ, Bản đồ, Quy trình) và 29 đề Task 2 (Nghị luận xã hội) kèm dàn ý chi tiết.
               </p>
             </div>
-            <Link
-              href="/practice?mode=task1&custom=true"
-              className="inline-flex items-center gap-1 text-xs font-semibold text-sky-600 hover:text-sky-700 hover:underline"
-            >
-              <span>Tự nhập đề &amp; tải ảnh riêng của bạn</span>
-              <ChevronRight className="w-3.5 h-3.5" />
-            </Link>
           </div>
 
           {/* Quick Search Bar */}

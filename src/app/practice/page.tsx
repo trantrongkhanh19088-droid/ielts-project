@@ -25,7 +25,6 @@ function PracticeContent() {
   // Mode and seed prompt initialization
   const modeParam = (searchParams.get('mode') as TaskType) || 'task1';
   const promptIdParam = searchParams.get('promptId') || '';
-  const isCustomMode = searchParams.get('custom') === 'true';
 
   const [mode, setMode] = useState<TaskType>(modeParam);
   const isFullTest = mode === 'full_test';
@@ -49,9 +48,6 @@ function PracticeContent() {
     }
     return TASK_2_SEEDS[0];
   });
-
-  // Custom inputs
-  const [customImageBase64, setCustomImageBase64] = useState<string>('');
 
   // Essay Contents & Scratchpads
   const [task1Essay, setTask1Essay] = useState('');
@@ -276,7 +272,7 @@ function PracticeContent() {
               taskType: 'task1',
               promptText: task1Prompt.question,
               chartDataOrDescription: task1Prompt.chartDescription,
-              imageBase64: customImageBase64 || undefined,
+              imageBase64: undefined,
               essayContent: task1Essay,
               userApiKey,
             }),
@@ -335,7 +331,7 @@ function PracticeContent() {
           task_type: 'full_test',
           prompt_title: `Full Test: ${task1Prompt.title} & ${task2Prompt.title}`,
           prompt_text: `Task 1: ${task1Prompt.question}\n\nTask 2: ${task2Prompt.question}`,
-          chart_image_url: customImageBase64 || task1Prompt.imageUrl || undefined,
+          chart_image_url: task1Prompt.imageUrl || undefined,
           essay_content: `--- TASK 1 ---\n${task1Essay}\n\n--- TASK 2 ---\n${task2Essay}`,
           word_count: t1Words + t2Words,
           duration_seconds: timeSpent,
@@ -364,7 +360,7 @@ function PracticeContent() {
             taskType: isT1 ? 'task1' : 'task2',
             promptText: activePrompt.question,
             chartDataOrDescription: activePrompt.chartDescription,
-            imageBase64: isT1 && customImageBase64 ? customImageBase64 : undefined,
+            imageBase64: undefined,
             essayContent: activeEssay,
             userApiKey,
           }),
@@ -389,7 +385,7 @@ function PracticeContent() {
           task_type: isT1 ? 'task1' : 'task2',
           prompt_title: activePrompt.title,
           prompt_text: activePrompt.question,
-          chart_image_url: customImageBase64 || activePrompt.imageUrl || undefined,
+          chart_image_url: activePrompt.imageUrl || undefined,
           essay_content: activeEssay,
           word_count: data.wordCount,
           duration_seconds: timeSpent,
@@ -474,20 +470,6 @@ function PracticeContent() {
               fontSize={fontSize}
               scratchpadNotes={currentNotes}
               onScratchpadChange={handleCurrentNotesChange}
-              customImageBase64={customImageBase64}
-              onCustomImageUpload={setCustomImageBase64}
-              onPromptTextChange={(newText) => {
-                if (isFullTest && activeFullTestPart === 'task1') {
-                  setTask1Prompt((prev) => ({ ...prev, question: newText }));
-                } else if (isFullTest && activeFullTestPart === 'task2') {
-                  setTask2Prompt((prev) => ({ ...prev, question: newText }));
-                } else if (mode === 'task1') {
-                  setTask1Prompt((prev) => ({ ...prev, question: newText }));
-                } else {
-                  setTask2Prompt((prev) => ({ ...prev, question: newText }));
-                }
-              }}
-              isCustomPrompt={isCustomMode}
             />
           </div>
         )}

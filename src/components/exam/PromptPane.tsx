@@ -7,7 +7,6 @@ import {
   Highlighter,
   Maximize2,
   Table as TableIcon,
-  Upload,
   Info,
   Sparkles,
 } from 'lucide-react';
@@ -16,7 +15,6 @@ import Task1LineChart from '@/components/charts/Task1LineChart';
 import Task1BarChart from '@/components/charts/Task1BarChart';
 import Task1PieChart from '@/components/charts/Task1PieChart';
 import ImageZoomModal from './ImageZoomModal';
-import { compressImage } from '@/lib/utils';
 
 interface PromptPaneProps {
   prompt: PromptSeed;
@@ -26,10 +24,6 @@ interface PromptPaneProps {
   fontSize: FontSize;
   scratchpadNotes: string;
   onScratchpadChange: (notes: string) => void;
-  customImageBase64?: string;
-  onCustomImageUpload?: (base64: string) => void;
-  onPromptTextChange?: (newText: string) => void;
-  isCustomPrompt?: boolean;
 }
 
 export default function PromptPane({
@@ -40,10 +34,6 @@ export default function PromptPane({
   fontSize,
   scratchpadNotes,
   onScratchpadChange,
-  customImageBase64,
-  onCustomImageUpload,
-  onPromptTextChange,
-  isCustomPrompt,
 }: PromptPaneProps) {
   const [activeTab, setActiveTab] = useState<'prompt' | 'scratchpad'>('prompt');
   const [showTable, setShowTable] = useState(false);
@@ -57,7 +47,6 @@ export default function PromptPane({
   }>({ visible: false, x: 0, y: 0 });
 
   const questionContainerRef = useRef<HTMLDivElement>(null);
-  const [uploadingImage, setUploadingImage] = useState(false);
 
   useEffect(() => {
     setChartViewMode('image');
@@ -121,21 +110,6 @@ export default function PromptPane({
       parent?.removeChild(mark);
     });
     setHighlightTooltip({ visible: false, x: 0, y: 0 });
-  };
-
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file || !onCustomImageUpload) return;
-    try {
-      setUploadingImage(true);
-      const compressed = await compressImage(file);
-      onCustomImageUpload(compressed);
-    } catch (err) {
-      console.error('Failed to compress and upload image', err);
-      alert('Không thể tải ảnh. Vui lòng thử lại với định dạng PNG hoặc JPG.');
-    } finally {
-      setUploadingImage(false);
-    }
   };
 
   const fontSizeClass =
@@ -279,27 +253,17 @@ export default function PromptPane({
                 </h3>
               </div>
 
-              {isCustomPrompt ? (
-                <textarea
-                  value={prompt.question}
-                  onChange={(e) => onPromptTextChange?.(e.target.value)}
-                  placeholder="Dán câu hỏi đề bài thi tại đây..."
-                  rows={4}
-                  className="w-full p-4 text-sm rounded-xl border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
-                />
-              ) : (
-                <div className={`p-4 sm:p-5 rounded-r-xl border-l-4 border-l-sky-600 border-y border-r leading-relaxed transition-colors shadow-xs ${
-                  contrastMode === 'yellow-on-black'
-                    ? 'bg-zinc-950 border-[#ffe600]/40 text-[#ffe600]'
-                    : contrastMode === 'white-on-black'
-                    ? 'bg-zinc-900 border-zinc-800 text-zinc-100'
-                    : 'bg-white dark:bg-zinc-900 border-gray-200 dark:border-zinc-800 text-gray-900 dark:text-zinc-100'
-                }`}>
-                  <p className="text-sm md:text-[15px] font-sans font-medium leading-relaxed">
-                    {prompt.question}
-                  </p>
-                </div>
-              )}
+              <div className={`p-4 sm:p-5 rounded-r-xl border-l-4 border-l-sky-600 border-y border-r leading-relaxed transition-colors shadow-xs ${
+                contrastMode === 'yellow-on-black'
+                  ? 'bg-zinc-950 border-[#ffe600]/40 text-[#ffe600]'
+                  : contrastMode === 'white-on-black'
+                  ? 'bg-zinc-900 border-zinc-800 text-zinc-100'
+                  : 'bg-white dark:bg-zinc-900 border-gray-200 dark:border-zinc-800 text-gray-900 dark:text-zinc-100'
+              }`}>
+                <p className="text-sm md:text-[15px] font-sans font-medium leading-relaxed">
+                  {prompt.question}
+                </p>
+              </div>
             </div>
 
             {/* Instruction */}
@@ -360,55 +324,8 @@ export default function PromptPane({
               </div>
             )}
 
-            {/* Custom Image Upload for Task 1 */}
-            {isCustomPrompt && prompt.taskType === 'task1' && (
-              <div className="p-4 rounded-lg border-2 border-dashed border-sky-300 dark:border-sky-800 bg-sky-50/50 dark:bg-sky-950/20 space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-xs font-semibold text-sky-900 dark:text-sky-300">
-                    <Upload className="w-4 h-4" />
-                    Tải lên ảnh biểu đồ / bản đồ / quy trình Task 1 (Tùy chọn)
-                  </div>
-                  {uploadingImage && (
-                    <span className="text-xs text-sky-600 animate-pulse">Đang nén ảnh...</span>
-                  )}
-                </div>
-                <input
-                  type="file"
-                  accept="image/png, image/jpeg, image/webp"
-                  onChange={handleFileUpload}
-                  className="block w-full text-xs text-gray-500 file:mr-4 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-sky-600 file:text-white hover:file:bg-sky-700"
-                />
-                <p className="text-[11px] text-gray-500 dark:text-gray-400">
-                  Hệ thống tự động nén kích thước &lt;500KB bằng Canvas trước khi gửi lên AI Gemini Vision.
-                </p>
-              </div>
-            )}
-
-            {/* Uploaded Custom Image View */}
-            {customImageBase64 && (
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold">Ảnh đề bài đã tải lên:</span>
-                  <button
-                    type="button"
-                    onClick={() => setIsZoomOpen(true)}
-                    className="inline-flex items-center gap-1 text-xs text-sky-600 dark:text-sky-400 hover:underline"
-                  >
-                    <Maximize2 className="w-3 h-3" /> Phóng to ảnh
-                  </button>
-                </div>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={customImageBase64}
-                  alt="Custom Chart"
-                  onClick={() => setIsZoomOpen(true)}
-                  className="w-full max-h-72 object-contain rounded border border-gray-200 dark:border-zinc-800 bg-white cursor-pointer hover:opacity-95 transition"
-                />
-              </div>
-            )}
-
             {/* Built-in Visual Diagram / Interactive Charts for Task 1 */}
-            {prompt.taskType === 'task1' && !customImageBase64 && (
+            {prompt.taskType === 'task1' && (
               <div className="space-y-3 pt-2">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center gap-1.5">
@@ -584,12 +501,12 @@ export default function PromptPane({
         </div>
       )}
 
-      {/* Zoom Modal for Custom Image or Built-in Forecast Image */}
-      {(customImageBase64 || prompt.imageUrl) && (
+      {/* Zoom Modal for Forecast Image */}
+      {prompt.imageUrl && (
         <ImageZoomModal
           isOpen={isZoomOpen}
           onClose={() => setIsZoomOpen(false)}
-          imageUrl={customImageBase64 || prompt.imageUrl || ''}
+          imageUrl={prompt.imageUrl}
           title={prompt.title}
         />
       )}
