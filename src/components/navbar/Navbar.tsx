@@ -15,6 +15,8 @@ import {
   X,
   Check,
   Sprout,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase/client';
 
@@ -25,6 +27,33 @@ export default function Navbar() {
   const [targetBand, setTargetBand] = useState<number>(7.0);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [bandSaved, setBandSaved] = useState(false);
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
+  // Load and sync theme from localStorage on mount
+  useEffect(() => {
+    try {
+      const savedTheme = localStorage.getItem('cd_ielts_theme') as 'light' | 'dark' | null;
+      if (savedTheme === 'dark') {
+        setTheme('dark');
+        document.documentElement.classList.add('dark');
+      } else {
+        setTheme('light');
+        document.documentElement.classList.remove('dark');
+      }
+    } catch {}
+  }, []);
+
+  const handleThemeChange = (newTheme: 'light' | 'dark') => {
+    setTheme(newTheme);
+    try {
+      localStorage.setItem('cd_ielts_theme', newTheme);
+      if (newTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    } catch {}
+  };
 
   useEffect(() => {
     // Check Supabase session
@@ -301,6 +330,51 @@ export default function Navbar() {
                       {b.toFixed(1)}
                     </button>
                   ))}
+                </div>
+              </div>
+
+              {/* Theme Selector (Light / Dark Mode) */}
+              <div className="space-y-2 pt-2 border-t border-gray-100 dark:border-zinc-800">
+                <label className="text-xs font-bold text-gray-700 dark:text-gray-300 flex items-center justify-between">
+                  <span className="flex items-center gap-1.5">
+                    {theme === 'dark' ? (
+                      <Moon className="w-3.5 h-3.5 text-indigo-400" />
+                    ) : (
+                      <Sun className="w-3.5 h-3.5 text-amber-500" />
+                    )}
+                    Chế độ giao diện:
+                  </span>
+                  <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-300">
+                    {theme === 'dark' ? 'Tối (Dark)' : 'Sáng (Light)'}
+                  </span>
+                </label>
+
+                <div className="grid grid-cols-2 gap-2 p-1 bg-gray-100/80 dark:bg-zinc-800/80 rounded-xl border border-gray-200 dark:border-zinc-700/60">
+                  <button
+                    type="button"
+                    onClick={() => handleThemeChange('light')}
+                    className={`flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold transition cursor-pointer ${
+                      theme === 'light'
+                        ? 'bg-white text-gray-900 shadow-sm border border-gray-200 dark:border-transparent'
+                        : 'text-gray-500 hover:text-gray-900 dark:hover:text-white'
+                    }`}
+                  >
+                    <Sun className="w-3.5 h-3.5 text-amber-500" />
+                    <span>Sáng (Light)</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleThemeChange('dark')}
+                    className={`flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold transition cursor-pointer ${
+                      theme === 'dark'
+                        ? 'bg-zinc-900 text-white shadow-sm border border-zinc-700'
+                        : 'text-gray-500 hover:text-gray-900 dark:hover:text-white'
+                    }`}
+                  >
+                    <Moon className="w-3.5 h-3.5 text-indigo-400" />
+                    <span>Tối (Dark)</span>
+                  </button>
                 </div>
               </div>
 
