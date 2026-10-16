@@ -99,6 +99,7 @@ export interface EssayRecord {
   lr_score?: number;
   gra_score?: number;
   ai_feedback_json: GradingResult | FullTestGradingResult;
+  server_signature?: string;
   created_at: string;
 }
 

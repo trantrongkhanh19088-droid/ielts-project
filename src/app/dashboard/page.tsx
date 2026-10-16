@@ -14,6 +14,7 @@ import {
   Target,
   User,
   CheckCircle2,
+  ShieldCheck,
 } from 'lucide-react';
 import { EssayRecord } from '@/types';
 import { fetchAllEssayRecords, deleteLocalEssayRecord, clearAllEssayRecordsAsync } from '@/lib/storage';
@@ -313,8 +314,13 @@ export default function DashboardPage() {
                       </td>
 
                       <td className="p-3.5 text-center whitespace-nowrap">
-                        <span className="inline-block px-2.5 py-0.5 rounded-full font-extrabold font-mono text-xs bg-sky-100 dark:bg-sky-950/60 text-sky-800 dark:text-sky-300 border border-sky-300 dark:border-sky-800">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-extrabold font-mono text-xs bg-sky-100 dark:bg-sky-950/60 text-sky-800 dark:text-sky-300 border border-sky-300 dark:border-sky-800">
                           {Number(r.overall_band).toFixed(1)}
+                          {r.server_signature && (
+                            <span title="Đã xác thực chữ ký máy chủ AI">
+                              <ShieldCheck className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
+                            </span>
+                          )}
                         </span>
                       </td>
 

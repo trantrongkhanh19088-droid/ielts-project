@@ -9,6 +9,7 @@ import PromptPane from '@/components/exam/PromptPane';
 import EditorPane from '@/components/exam/EditorPane';
 import FullTestNavBar from '@/components/exam/FullTestNavBar';
 import GradingProgressModal from '@/components/exam/GradingProgressModal';
+import { ShieldCheck, Lock, CheckCircle2, AlertTriangle, X } from 'lucide-react';
 import {
   calculateOverallBand,
   checkRateLimit,
@@ -64,6 +65,43 @@ function PracticeContent() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isTimerPaused, setIsTimerPaused] = useState(false);
   const [examSessionToken, setExamSessionToken] = useState<string>('');
+
+  // Human Verification & Anti-Bot Challenge Modal State
+  const [showChallengeModal, setShowChallengeModal] = useState(false);
+  const [challengeProblem, setChallengeProblem] = useState({ q: '9 + 7', a: 16 });
+  const [challengeAnswer, setChallengeAnswer] = useState('');
+  const [challengeError, setChallengeError] = useState('');
+
+  // Behavioral Telemetry for bot detection
+  const telemetryRef = useRef({
+    keystrokes: 0,
+    mouseEvents: 0,
+    pasteCount: 0,
+    focusSeconds: 0,
+  });
+
+  useEffect(() => {
+    const handleKey = () => { telemetryRef.current.keystrokes++; };
+    const handleMouse = () => { telemetryRef.current.mouseEvents++; };
+    const handlePaste = () => { telemetryRef.current.pasteCount++; };
+
+    window.addEventListener('keydown', handleKey);
+    window.addEventListener('mousemove', handleMouse);
+    window.addEventListener('paste', handlePaste);
+
+    const timer = setInterval(() => {
+      if (typeof document !== 'undefined' && document.hasFocus()) {
+        telemetryRef.current.focusSeconds++;
+      }
+    }, 1000);
+
+    return () => {
+      window.removeEventListener('keydown', handleKey);
+      window.removeEventListener('mousemove', handleMouse);
+      window.removeEventListener('paste', handlePaste);
+      clearInterval(timer);
+    };
+  }, []);
 
   // Fetch cryptographic exam session token from server
   useEffect(() => {
@@ -382,15 +420,51 @@ function PracticeContent() {
     }
 
     const timeSpent = initialSeconds - timeRemaining;
-    if (timeSpent < 30) {
+    if (timeSpent < 60) {
       alert(
-        `Thời gian làm bài quá nhanh (${timeSpent} giây). Để AI đánh giá chính xác và phản ánh đúng năng lực, bạn cần dành thời gian làm bài thực tế (tối thiểu 30 giây).`
+        `Thời gian làm bài quá nhanh (${timeSpent} giây). Để AI đánh giá chính xác và phản ánh đúng năng lực, bài thi IELTS cần tối thiểu 60 giây viết thực tế.`
       );
       return;
     }
 
+    // Generate random human verification math challenge
+    const num1 = Math.floor(Math.random() * 15) + 5;
+    const num2 = Math.floor(Math.random() * 9) + 3;
+    setChallengeProblem({ q: `${num1} + ${num2}`, a: num1 + num2 });
+    setChallengeAnswer('');
+    setChallengeError('');
+    setShowChallengeModal(true);
+  };
+
+  const handleConfirmHumanChallengeAndSubmit = async () => {
+    if (!challengeAnswer.trim()) {
+      setChallengeError('Vui lòng nhập kết quả xác minh bạn là người thật.');
+      return;
+    }
+
+    if (parseInt(challengeAnswer.trim(), 10) !== challengeProblem.a) {
+      setChallengeError('Đáp án xác minh chưa đúng, vui lòng thử lại.');
+      return;
+    }
+
+    setShowChallengeModal(false);
+    await executeSubmission();
+  };
+
+  const executeSubmission = async () => {
     setIsSubmitting(true);
     const userApiKey = getUserApiKey();
+    const timeSpent = initialSeconds - timeRemaining;
+    const t1Words = countWords(task1Essay);
+    const t2Words = countWords(task2Essay);
+
+    const telemetryPayload = {
+      keystrokes: telemetryRef.current.keystrokes,
+      mouseEvents: telemetryRef.current.mouseEvents,
+      pasteCount: telemetryRef.current.pasteCount,
+      focusSeconds: telemetryRef.current.focusSeconds,
+      humanProofSolved: true,
+    };
 
     try {
       if (isFullTest) {
@@ -408,6 +482,7 @@ function PracticeContent() {
               userApiKey,
               sessionToken: examSessionToken,
               securityTrap: '',
+              telemetry: telemetryPayload,
             }),
           }),
           fetch('/api/grade', {
@@ -422,6 +497,7 @@ function PracticeContent() {
               userApiKey,
               sessionToken: examSessionToken,
               securityTrap: '',
+              telemetry: telemetryPayload,
             }),
           }),
         ]);
@@ -476,6 +552,7 @@ function PracticeContent() {
           lr_score: (data1.criteria.lexicalResource.score + data2.criteria.lexicalResource.score) / 2,
           gra_score: (data1.criteria.grammaticalRange.score + data2.criteria.grammaticalRange.score) / 2,
           ai_feedback_json: fullTestResult,
+          server_signature: (data1 as any).serverVerificationSignature || (data2 as any).serverVerificationSignature,
         });
 
         clearDraft('full_task1');
@@ -503,6 +580,7 @@ function PracticeContent() {
             userApiKey,
             sessionToken: examSessionToken,
             securityTrap: '',
+            telemetry: telemetryPayload,
           }),
         });
 
@@ -535,6 +613,7 @@ function PracticeContent() {
           lr_score: data.criteria.lexicalResource.score,
           gra_score: data.criteria.grammaticalRange.score,
           ai_feedback_json: data,
+          server_signature: (data as any).serverVerificationSignature,
         });
 
         clearDraft(`single_${mode}_${activePrompt.id}`);
@@ -642,6 +721,102 @@ function PracticeContent() {
           task2WordCount={countWords(task2Essay)}
           contrastMode={contrastMode}
         />
+      )}
+
+      {/* Anti-Bot Human Verification Challenge Modal */}
+      {showChallengeModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="max-w-md w-full bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-zinc-800 p-6 space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-sky-100 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 flex items-center justify-center">
+                  <ShieldCheck className="w-4 h-4" />
+                </div>
+                <h3 className="font-bold text-sm text-gray-900 dark:text-white">
+                  Xác nhận nộp bài thi
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowChallengeModal(false)}
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="bg-sky-50/60 dark:bg-sky-950/20 rounded-xl p-3 border border-sky-100 dark:border-sky-900/40 text-xs space-y-1.5">
+              <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                <span>Chế độ thi:</span>
+                <span className="font-semibold text-gray-900 dark:text-white uppercase font-mono">
+                  {mode.replace('_', ' ')}
+                </span>
+              </div>
+              <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                <span>Thời gian làm bài:</span>
+                <span className="font-semibold text-gray-900 dark:text-white font-mono">
+                  {Math.floor((initialSeconds - timeRemaining) / 60)} phút {(initialSeconds - timeRemaining) % 60} giây
+                </span>
+              </div>
+              <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                <span>Tổng số từ:</span>
+                <span className="font-semibold text-gray-900 dark:text-white font-mono">
+                  {isFullTest
+                    ? countWords(task1Essay) + countWords(task2Essay)
+                    : countWords(mode === 'task1' ? task1Essay : task2Essay)}{' '}
+                  từ
+                </span>
+              </div>
+            </div>
+
+            <div className="space-y-2 pt-1">
+              <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300">
+                Xác thực thí sinh (Anti-Bot Check):{' '}
+                <span className="text-sky-600 font-mono font-bold text-sm ml-1">
+                  {challengeProblem.q} = ?
+                </span>
+              </label>
+              <input
+                type="number"
+                autoFocus
+                value={challengeAnswer}
+                onChange={(e) => {
+                  setChallengeAnswer(e.target.value);
+                  setChallengeError('');
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') handleConfirmHumanChallengeAndSubmit();
+                }}
+                placeholder="Nhập kết quả số..."
+                className="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm font-mono text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500"
+              />
+              {challengeError && (
+                <p className="text-[11px] text-red-500 font-medium flex items-center gap-1">
+                  <AlertTriangle className="w-3 h-3" />
+                  <span>{challengeError}</span>
+                </p>
+              )}
+            </div>
+
+            <div className="flex items-center gap-2 pt-2">
+              <button
+                type="button"
+                onClick={() => setShowChallengeModal(false)}
+                className="flex-1 py-2 px-3.5 rounded-xl border border-gray-200 dark:border-zinc-700 text-xs font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-800 transition"
+              >
+                Tiếp tục làm bài
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmHumanChallengeAndSubmit}
+                className="flex-1 py-2 px-3.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-xs font-bold text-white shadow-md shadow-sky-600/30 transition flex items-center justify-center gap-1.5"
+              >
+                <ShieldCheck className="w-3.5 h-3.5" />
+                <span>Xác nhận &amp; Chấm bài</span>
+              </button>
+            </div>
+          </div>
+        </div>
       )}
 
       {/* AI Grading Progress Modal */}

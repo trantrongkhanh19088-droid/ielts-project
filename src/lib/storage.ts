@@ -18,6 +18,7 @@ export async function saveEssayRecord(record: {
   lr_score?: number;
   gra_score?: number;
   ai_feedback_json: GradingResult | FullTestGradingResult;
+  server_signature?: string;
 }): Promise<EssayRecord> {
   const newRecord: EssayRecord = {
     id: typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `essay_${Date.now()}`,
