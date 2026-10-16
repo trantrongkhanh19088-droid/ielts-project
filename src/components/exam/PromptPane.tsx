@@ -9,6 +9,7 @@ import {
   Table as TableIcon,
   Info,
   Sparkles,
+  Shuffle,
 } from 'lucide-react';
 import { PromptSeed, ContrastMode, FontSize } from '@/types';
 import Task1LineChart from '@/components/charts/Task1LineChart';
@@ -24,6 +25,7 @@ interface PromptPaneProps {
   fontSize: FontSize;
   scratchpadNotes: string;
   onScratchpadChange: (notes: string) => void;
+  onRandomizePrompt?: () => void;
 }
 
 export default function PromptPane({
@@ -32,6 +34,7 @@ export default function PromptPane({
   fontSize,
   scratchpadNotes,
   onScratchpadChange,
+  onRandomizePrompt,
 }: PromptPaneProps) {
   const [activeTab, setActiveTab] = useState<'prompt' | 'scratchpad'>('prompt');
   const [showTable, setShowTable] = useState(false);
@@ -209,7 +212,7 @@ export default function PromptPane({
                   )}
                 </div>
 
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-2">
                   <span
                     className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-semibold border ${
                       contrastMode === 'yellow-on-black'
@@ -220,8 +223,26 @@ export default function PromptPane({
                     }`}
                   >
                     <Sparkles className="w-3 h-3 text-emerald-500 shrink-0" />
-                    <span>Đề thi chỉ định ngẫu nhiên</span>
+                    <span>Đề ngẫu nhiên</span>
                   </span>
+
+                  {onRandomizePrompt && (
+                    <button
+                      type="button"
+                      onClick={onRandomizePrompt}
+                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold border transition shadow-xs hover:scale-105 active:scale-95 ${
+                        contrastMode === 'yellow-on-black'
+                          ? 'bg-[#ffe600] text-black border-[#ffe600] hover:bg-[#ffe600]/80'
+                          : contrastMode === 'white-on-black'
+                          ? 'bg-zinc-800 border-zinc-600 text-white hover:bg-zinc-700'
+                          : 'bg-sky-50 dark:bg-sky-950/60 border-sky-300 dark:border-sky-800 text-sky-700 dark:text-sky-300 hover:bg-sky-100 dark:hover:bg-sky-900/60'
+                      }`}
+                      title="Đổi sang đề thi ngẫu nhiên khác (đặt lại đồng hồ và làm mới bài viết)"
+                    >
+                      <Shuffle className="w-3 h-3 text-sky-600 dark:text-sky-400 shrink-0" />
+                      <span>Đổi đề khác (Random)</span>
+                    </button>
+                  )}
                 </div>
               </div>
 

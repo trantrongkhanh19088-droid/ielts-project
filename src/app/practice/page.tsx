@@ -21,6 +21,7 @@ import {
   saveDraft,
   loadDraft,
   clearDraft,
+  clearAllDrafts,
   getActiveSession,
   saveActiveSession,
   clearActiveSession,
@@ -140,6 +141,14 @@ function PracticeContent() {
       }
 
       if (!t1P || !t2P) {
+        // Brand new session: completely clear out old essays/notes
+        setTask1Essay('');
+        setTask2Essay('');
+        setTask1Notes('');
+        setTask2Notes('');
+        clearDraft('full_task1');
+        clearDraft('full_task2');
+
         const lastT1 = getLastCompletedPromptId('task1');
         const lastT2 = getLastCompletedPromptId('task2');
         t1P = getRandomPrompt('task1', lastT1);
@@ -150,24 +159,26 @@ function PracticeContent() {
           task2PromptId: t2P.id,
           startedAt: Date.now(),
         });
+        setTimeRemaining(60 * 60);
+      } else {
+        // Continuing ongoing active session
+        const draft1 = loadDraft('full_task1');
+        const draft2 = loadDraft('full_task2');
+        setTask1Essay(draft1?.content || '');
+        setTask1Notes(draft1?.notes || '');
+        setTask2Essay(draft2?.content || '');
+        setTask2Notes(draft2?.notes || '');
+
+        const savedTime = draft1?.timeRemaining ?? draft2?.timeRemaining;
+        if (typeof savedTime === 'number' && savedTime > 0) {
+          setTimeRemaining(savedTime);
+        } else {
+          setTimeRemaining(60 * 60);
+        }
       }
 
       setTask1Prompt(t1P);
       setTask2Prompt(t2P);
-
-      const draft1 = loadDraft('full_task1');
-      const draft2 = loadDraft('full_task2');
-      if (draft1?.content) setTask1Essay(draft1.content);
-      if (draft1?.notes) setTask1Notes(draft1.notes);
-      if (draft2?.content) setTask2Essay(draft2.content);
-      if (draft2?.notes) setTask2Notes(draft2.notes);
-
-      const savedTime = draft1?.timeRemaining ?? draft2?.timeRemaining;
-      if (typeof savedTime === 'number' && savedTime > 0) {
-        setTimeRemaining(savedTime);
-      } else {
-        setTimeRemaining(60 * 60);
-      }
     } else if (modeParam === 'task1') {
       let t1P: PromptSeed | undefined;
 
@@ -176,25 +187,31 @@ function PracticeContent() {
       }
 
       if (!t1P) {
+        // Brand new session: reset editor
+        setTask1Essay('');
+        setTask1Notes('');
         const lastT1 = getLastCompletedPromptId('task1');
         t1P = getRandomPrompt('task1', lastT1);
+        clearDraft(`single_task1_${t1P.id}`);
         saveActiveSession({
           mode: 'task1',
           promptId: t1P.id,
           startedAt: Date.now(),
         });
+        setTimeRemaining(20 * 60);
+      } else {
+        // Continuing ongoing active session
+        const draft = loadDraft(`single_task1_${t1P.id}`);
+        setTask1Essay(draft?.content || '');
+        setTask1Notes(draft?.notes || '');
+        if (typeof draft?.timeRemaining === 'number' && draft.timeRemaining > 0) {
+          setTimeRemaining(draft.timeRemaining);
+        } else {
+          setTimeRemaining(20 * 60);
+        }
       }
 
       setTask1Prompt(t1P);
-
-      const draft = loadDraft(`single_task1_${t1P.id}`);
-      if (draft?.content) setTask1Essay(draft.content);
-      if (draft?.notes) setTask1Notes(draft.notes);
-      if (typeof draft?.timeRemaining === 'number' && draft.timeRemaining > 0) {
-        setTimeRemaining(draft.timeRemaining);
-      } else {
-        setTimeRemaining(20 * 60);
-      }
     } else {
       // task2
       let t2P: PromptSeed | undefined;
@@ -204,25 +221,31 @@ function PracticeContent() {
       }
 
       if (!t2P) {
+        // Brand new session: reset editor
+        setTask2Essay('');
+        setTask2Notes('');
         const lastT2 = getLastCompletedPromptId('task2');
         t2P = getRandomPrompt('task2', lastT2);
+        clearDraft(`single_task2_${t2P.id}`);
         saveActiveSession({
           mode: 'task2',
           promptId: t2P.id,
           startedAt: Date.now(),
         });
+        setTimeRemaining(40 * 60);
+      } else {
+        // Continuing ongoing active session
+        const draft = loadDraft(`single_task2_${t2P.id}`);
+        setTask2Essay(draft?.content || '');
+        setTask2Notes(draft?.notes || '');
+        if (typeof draft?.timeRemaining === 'number' && draft.timeRemaining > 0) {
+          setTimeRemaining(draft.timeRemaining);
+        } else {
+          setTimeRemaining(40 * 60);
+        }
       }
 
       setTask2Prompt(t2P);
-
-      const draft = loadDraft(`single_task2_${t2P.id}`);
-      if (draft?.content) setTask2Essay(draft.content);
-      if (draft?.notes) setTask2Notes(draft.notes);
-      if (typeof draft?.timeRemaining === 'number' && draft.timeRemaining > 0) {
-        setTimeRemaining(draft.timeRemaining);
-      } else {
-        setTimeRemaining(40 * 60);
-      }
     }
 
     setIsSessionLoaded(true);
@@ -555,8 +578,14 @@ function PracticeContent() {
         clearDraft('full_task1');
         clearDraft('full_task2');
         clearActiveSession('full_test');
+        clearAllDrafts();
         setLastCompletedPromptId('task1', task1Prompt.id);
         setLastCompletedPromptId('task2', task2Prompt.id);
+
+        setTask1Essay('');
+        setTask2Essay('');
+        setTask1Notes('');
+        setTask2Notes('');
 
         router.push(`/results?id=${record.id}`);
       } else {
@@ -613,8 +642,16 @@ function PracticeContent() {
         });
 
         clearDraft(`single_${mode}_${activePrompt.id}`);
+        clearDraft(`single_task1_${activePrompt.id}`);
+        clearDraft(`single_task2_${activePrompt.id}`);
         clearActiveSession(mode);
+        clearAllDrafts();
         setLastCompletedPromptId(isT1 ? 'task1' : 'task2', activePrompt.id);
+
+        setTask1Essay('');
+        setTask2Essay('');
+        setTask1Notes('');
+        setTask2Notes('');
 
         router.push(`/results?id=${record.id}`);
       }
@@ -635,6 +672,97 @@ function PracticeContent() {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleRandomizePrompt = () => {
+    const isT1 = isFullTest ? activeFullTestPart === 'task1' : mode === 'task1';
+    const currentText = isFullTest
+      ? (activeFullTestPart === 'task1' ? task1Essay : task2Essay)
+      : (mode === 'task1' ? task1Essay : task2Essay);
+
+    if (currentText && currentText.trim().length > 10) {
+      const confirmMsg = isFullTest
+        ? `Bạn có chắc muốn đổi sang đề thi ngẫu nhiên khác cho ${activeFullTestPart === 'task1' ? 'Part 1 (Task 1)' : 'Part 2 (Task 2)'}? Bài viết của phần này sẽ bị xóa và đồng hồ bấm giờ sẽ được đặt lại từ đầu.`
+        : 'Bạn có chắc muốn đổi sang đề thi ngẫu nhiên khác? Bài viết đã nhập trong khối này sẽ bị xóa và đồng hồ bấm giờ sẽ được đặt lại từ đầu.';
+      if (!confirm(confirmMsg)) return;
+    }
+
+    if (isFullTest) {
+      if (activeFullTestPart === 'task1') {
+        const lastT1 = getLastCompletedPromptId('task1');
+        const newT1 = getRandomPrompt('task1', task1Prompt.id || lastT1);
+        setTask1Prompt(newT1);
+        setTask1Essay('');
+        setTask1Notes('');
+        clearDraft('full_task1');
+        saveActiveSession({
+          mode: 'full_test',
+          task1PromptId: newT1.id,
+          task2PromptId: task2Prompt.id,
+          startedAt: Date.now(),
+        });
+      } else {
+        const lastT2 = getLastCompletedPromptId('task2');
+        const newT2 = getRandomPrompt('task2', task2Prompt.id || lastT2);
+        setTask2Prompt(newT2);
+        setTask2Essay('');
+        setTask2Notes('');
+        clearDraft('full_task2');
+        saveActiveSession({
+          mode: 'full_test',
+          task1PromptId: task1Prompt.id,
+          task2PromptId: newT2.id,
+          startedAt: Date.now(),
+        });
+      }
+      setTimeRemaining(60 * 60);
+    } else if (mode === 'task1') {
+      const lastT1 = getLastCompletedPromptId('task1');
+      const newT1 = getRandomPrompt('task1', task1Prompt.id || lastT1);
+      setTask1Prompt(newT1);
+      setTask1Essay('');
+      setTask1Notes('');
+      clearDraft(`single_task1_${task1Prompt.id}`);
+      clearDraft(`single_task1_${newT1.id}`);
+      clearActiveSession('task1');
+      saveActiveSession({
+        mode: 'task1',
+        promptId: newT1.id,
+        startedAt: Date.now(),
+      });
+      setTimeRemaining(20 * 60);
+    } else {
+      // task2
+      const lastT2 = getLastCompletedPromptId('task2');
+      const newT2 = getRandomPrompt('task2', task2Prompt.id || lastT2);
+      setTask2Prompt(newT2);
+      setTask2Essay('');
+      setTask2Notes('');
+      clearDraft(`single_task2_${task2Prompt.id}`);
+      clearDraft(`single_task2_${newT2.id}`);
+      clearActiveSession('task2');
+      saveActiveSession({
+        mode: 'task2',
+        promptId: newT2.id,
+        startedAt: Date.now(),
+      });
+      setTimeRemaining(40 * 60);
+    }
+
+    // Refresh exam security token & reset telemetry
+    fetch(`/api/exam/session?taskType=${modeParam}`)
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.token) setExamSessionToken(d.token);
+      })
+      .catch(() => {});
+
+    telemetryRef.current = {
+      keystrokes: 0,
+      mouseEvents: 0,
+      pasteCount: 0,
+      focusSeconds: 0,
+    };
   };
 
   const modeLabel = isFullTest
@@ -680,6 +808,7 @@ function PracticeContent() {
         onSetCustomTime={handleSetCustomTime}
         isTimerPaused={isTimerPaused}
         onTogglePauseTimer={handleTogglePauseTimer}
+        onRandomizePrompt={handleRandomizePrompt}
         defaultMinutes={defaultMinutes}
       />
 
@@ -698,6 +827,7 @@ function PracticeContent() {
               fontSize={fontSize}
               scratchpadNotes={currentNotes}
               onScratchpadChange={handleCurrentNotesChange}
+              onRandomizePrompt={handleRandomizePrompt}
             />
           </div>
         )}

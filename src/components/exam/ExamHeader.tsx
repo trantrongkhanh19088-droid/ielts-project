@@ -15,6 +15,7 @@ import {
   X,
   Check,
   Sparkles,
+  Shuffle,
 } from 'lucide-react';
 import { ContrastMode, FontSize } from '@/types';
 import { formatDuration } from '@/lib/utils';
@@ -34,6 +35,7 @@ interface ExamHeaderProps {
   onSetCustomTime?: (minutes: number) => void;
   isTimerPaused?: boolean;
   onTogglePauseTimer?: () => void;
+  onRandomizePrompt?: () => void;
   defaultMinutes?: number;
 }
 
@@ -52,6 +54,7 @@ export default function ExamHeader({
   onSetCustomTime,
   isTimerPaused,
   onTogglePauseTimer,
+  onRandomizePrompt,
   defaultMinutes = 60,
 }: ExamHeaderProps) {
   const [showTime, setShowTime] = useState(true);
@@ -222,6 +225,25 @@ export default function ExamHeader({
               <SlidersHorizontal className="w-3.5 h-3.5" />
               <span className="hidden md:inline">Tùy chỉnh giờ</span>
             </button>
+
+            {/* Randomize Prompt Button */}
+            {onRandomizePrompt && (
+              <button
+                type="button"
+                onClick={onRandomizePrompt}
+                className={`p-1.5 rounded-lg border text-xs flex items-center gap-1 transition ${
+                  contrastMode === 'yellow-on-black'
+                    ? 'border-[#ffe600] hover:bg-[#ffe600]/10 text-[#ffe600]'
+                    : contrastMode === 'white-on-black'
+                    ? 'border-zinc-700 hover:bg-zinc-800 text-zinc-300'
+                    : 'border-sky-300 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/50 hover:bg-sky-100 text-sky-700 dark:text-sky-300'
+                }`}
+                title="Đổi sang đề thi ngẫu nhiên khác (đặt lại đồng hồ và làm mới bài viết)"
+              >
+                <Shuffle className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" />
+                <span className="hidden sm:inline">Đổi đề khác</span>
+              </button>
+            )}
 
             {/* Toggle Hide/Show time */}
             <button

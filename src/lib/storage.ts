@@ -301,6 +301,20 @@ export function clearDraft(key: string): void {
   }
 }
 
+export function clearAllDrafts(): void {
+  if (typeof window === 'undefined') return;
+  try {
+    const keys = Object.keys(localStorage);
+    for (const k of keys) {
+      if (k.startsWith(DRAFT_PREFIX)) {
+        localStorage.removeItem(k);
+      }
+    }
+  } catch (err) {
+    console.error('Failed to clear all drafts', err);
+  }
+}
+
 // Active session data interface & persistence
 export interface ActiveSessionData {
   mode: TaskType;
