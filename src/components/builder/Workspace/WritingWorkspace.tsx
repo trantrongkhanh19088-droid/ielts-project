@@ -188,7 +188,17 @@ export default function WritingWorkspace({
 
       onCompleteNode(wordCount, result, recId);
     } catch (err: any) {
-      alert(`Chấm bài thất bại: ${err.message || 'Lỗi kết nối'}`);
+      const is503 =
+        err.message?.includes('503') ||
+        err.message?.includes('quá tải') ||
+        err.message?.includes('High Demand') ||
+        err.message?.includes('Service Unavailable');
+
+      alert(
+        is503
+          ? 'Máy chủ chấm bài Google AI hiện đang có lượng truy cập tăng đột biến tạm thời (503 Service Unavailable). Bài viết của bạn đã được giữ an toàn, vui lòng đợi 5 - 10 giây và bấm nộp lại nhé!'
+          : `Chấm bài thất bại: ${err.message || 'Lỗi kết nối'}`
+      );
       setIsGradingModalOpen(false);
     } finally {
       setIsGrading(false);

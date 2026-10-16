@@ -86,13 +86,11 @@ You MUST output ONLY a valid JSON object matching this exact schema:
 }
 `;
 
-    // Priority: Fastest lightweight models (Flash-Lite) for real-time sentence checking
+    // Priority: Fastest lightweight models for real-time sentence checking
     const candidateModels = [
+      'gemini-3-flash-preview',
       'gemini-3.5-flash-lite',
       'gemini-flash-lite-latest',
-      'gemini-3.8-flash',
-      'gemini-3.7-flash',
-      'gemini-3.6-flash',
       'gemini-3.5-flash',
       'gemini-flash-latest',
     ];
@@ -120,7 +118,8 @@ You MUST output ONLY a valid JSON object matching this exact schema:
             (err.message &&
               (err.message.includes('503') ||
                 err.message.includes('429') ||
-                err.message.includes('high demand')));
+                err.message.includes('high demand') ||
+                err.message.includes('quota')));
 
           if (isOverloaded && attempt < 2) {
             await new Promise((resolve) => setTimeout(resolve, 1500));
@@ -154,14 +153,15 @@ You MUST output ONLY a valid JSON object matching this exact schema:
       (error.message &&
         (error.message.includes('503') ||
           error.message.includes('429') ||
-          error.message.includes('high demand')));
+          error.message.includes('high demand') ||
+          error.message.includes('quota')));
 
     const errorMessage = isOverloaded
-      ? 'Hệ thống máy chủ Google AI hiện đang có lượng truy cập tăng đột biến tạm thời (503 High Demand). Vui lòng thử lại sau vài giây.'
+      ? 'Hệ thống máy chủ Google AI hiện đang có lượng truy cập tăng đột biến tạm thời (503 Service Unavailable). Vui lòng thử lại sau vài giây.'
       : error.message || 'Lỗi khi phân tích ngữ pháp câu văn. Vui lòng thử lại.';
 
     return NextResponse.json(
-      { error: errorMessage },
+      { error: errorMessage, isOverloaded },
       { status: isOverloaded ? 503 : 500 }
     );
   }

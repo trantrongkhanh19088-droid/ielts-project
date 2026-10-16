@@ -9,7 +9,7 @@ import PromptPane from '@/components/exam/PromptPane';
 import EditorPane from '@/components/exam/EditorPane';
 import FullTestNavBar from '@/components/exam/FullTestNavBar';
 import GradingProgressModal from '@/components/exam/GradingProgressModal';
-import { ShieldCheck, Lock, CheckCircle2, AlertTriangle, X } from 'lucide-react';
+import { ShieldCheck, Lock, CheckCircle2, AlertTriangle, X, RotateCcw } from 'lucide-react';
 import {
   calculateOverallBand,
   checkRateLimit,
@@ -62,6 +62,7 @@ function PracticeContent() {
   const initialSeconds = defaultMinutes * 60;
   const [timeRemaining, setTimeRemaining] = useState<number>(initialSeconds);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<{ message: string; is503: boolean } | null>(null);
   const [isTimerPaused, setIsTimerPaused] = useState(false);
   const [examSessionToken, setExamSessionToken] = useState<string>('');
 
@@ -619,7 +620,18 @@ function PracticeContent() {
       }
     } catch (err: any) {
       console.error('Submission failed', err);
-      alert(`Chấm bài thất bại: ${err.message || 'Lỗi kết nối'}`);
+      const is503 =
+        err.message?.includes('503') ||
+        err.message?.includes('quá tải') ||
+        err.message?.includes('High Demand') ||
+        err.message?.includes('Service Unavailable');
+
+      setSubmitError({
+        message: is503
+          ? 'Máy chủ chấm bài Google AI hiện đang có lượng truy cập tăng đột biến tạm thời (503 Service Unavailable). Bài viết của bạn ĐÃ ĐƯỢC LƯU AN TOÀN nguyên vẹn trong hệ thống. Vui lòng bấm "Thử chấm lại ngay".'
+          : err.message || 'Lỗi khi kết nối đến hệ thống chấm thi.',
+        is503,
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -816,6 +828,53 @@ function PracticeContent() {
 
       {/* AI Grading Progress Modal */}
       <GradingProgressModal isOpen={isSubmitting} isFullTest={isFullTest} />
+
+      {/* Submission / 503 Overload Retry Modal */}
+      {submitError && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-200 dark:border-zinc-800 space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+                <AlertTriangle className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="text-base font-bold text-gray-900 dark:text-gray-100">
+                  {submitError.is503 ? 'Máy chủ Google AI đang bận (503)' : 'Chưa thể hoàn tất chấm bài'}
+                </h3>
+                <p className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1 mt-0.5">
+                  <CheckCircle2 className="w-3.5 h-3.5" />
+                  Bài làm của bạn vẫn được lưu an toàn 100%
+                </p>
+              </div>
+            </div>
+
+            <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed bg-amber-50/50 dark:bg-amber-950/20 p-3.5 rounded-xl border border-amber-200/50 dark:border-amber-900/30">
+              {submitError.message}
+            </p>
+
+            <div className="flex items-center justify-end gap-2.5 pt-2">
+              <button
+                type="button"
+                onClick={() => setSubmitError(null)}
+                className="px-4 py-2 rounded-xl border border-gray-200 dark:border-zinc-700 hover:bg-gray-100 dark:hover:bg-zinc-800 text-xs font-semibold text-gray-700 dark:text-gray-300 transition"
+              >
+                Quay lại bài viết
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setSubmitError(null);
+                  handleSubmit();
+                }}
+                className="px-5 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold shadow-md shadow-sky-600/20 transition flex items-center gap-1.5"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>Thử chấm lại ngay</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
