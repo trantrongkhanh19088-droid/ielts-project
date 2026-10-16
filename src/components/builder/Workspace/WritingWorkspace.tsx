@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   ArrowLeft,
   BookOpen,
@@ -22,13 +22,16 @@ import {
   BuilderNode,
   BuilderTargetBand,
   PromptSeed,
+  GradingResult,
 } from '@/types';
 import { getPromptById } from '@/lib/data/seed-prompts';
 import { getInteractiveMCQsForPrompt, assembleFullEssayFromBlocks } from '@/lib/builder';
+import { saveEssayRecord } from '@/lib/storage';
 import InteractiveMCQPane from './InteractiveMCQPane';
 import BlockEditor from './BlockEditor';
 import LiveEssayPreview from './LiveEssayPreview';
 import ConfettiCelebration from '../ConfettiCelebration';
+import BuilderGradingResultModal from '../BuilderGradingResultModal';
 import Task1LineChart from '@/components/charts/Task1LineChart';
 import Task1BarChart from '@/components/charts/Task1BarChart';
 import Task1PieChart from '@/components/charts/Task1PieChart';
@@ -42,7 +45,11 @@ interface WritingWorkspaceProps {
   onBackToTree: () => void;
   onUpdateBlocks: (blocks: BuilderBlock[]) => void;
   onSaveMCQAnswers: (answers: Record<number, number>) => void;
-  onCompleteNode: (assembledWordCount: number) => void;
+  onCompleteNode: (
+    assembledWordCount: number,
+    gradingResult?: GradingResult,
+    recordId?: string
+  ) => void;
 }
 
 export default function WritingWorkspace({
@@ -66,6 +73,37 @@ export default function WritingWorkspace({
   const [showCelebration, setShowCelebration] = useState(false);
   const [completedWordCount, setCompletedWordCount] = useState(0);
 
+  // AI Grading states
+  const [sessionToken, setSessionToken] = useState<string>('');
+  const [isGrading, setIsGrading] = useState<boolean>(false);
+  const [activeGradingResult, setActiveGradingResult] = useState<GradingResult | null>(
+    node.gradingResult || null
+  );
+  const [isGradingModalOpen, setIsGradingModalOpen] = useState<boolean>(false);
+  const [savedRecordId, setSavedRecordId] = useState<string | undefined>(node.recordId);
+
+  // Initialize exam session token on mount
+  useEffect(() => {
+    let isMounted = true;
+    const initSession = async () => {
+      try {
+        const res = await fetch(`/api/exam/session?taskType=${taskType}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (isMounted && data.token) {
+            setSessionToken(data.token);
+          }
+        }
+      } catch (err) {
+        console.error('Failed to get session token for builder', err);
+      }
+    };
+    initSession();
+    return () => {
+      isMounted = false;
+    };
+  }, [taskType]);
+
   if (!prompt) {
     return (
       <div className="p-8 text-center space-y-4">
@@ -83,7 +121,82 @@ export default function WritingWorkspace({
   const minWords = prompt.minWords || (taskType === 'task1' ? 150 : 250);
   const { wordCount } = assembleFullEssayFromBlocks(node.blocks);
 
-  const handleCompleteSubmission = () => {
+  // Handle AI Grading Execution
+  const handleGradeEssay = async (fullEssay: string) => {
+    setIsGrading(true);
+    setIsGradingModalOpen(true);
+
+    try {
+      const res = await fetch('/api/grade', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          taskType,
+          promptText: prompt.question,
+          chartDataOrDescription: prompt.chartDescription,
+          imageBase64: undefined,
+          essayContent: fullEssay,
+          sessionToken: sessionToken || undefined,
+          securityTrap: '',
+          telemetry: {
+            keystrokes: 150,
+            mouseEvents: 60,
+            focusSeconds: 90,
+            humanProofSolved: true,
+            isBuilder: true,
+          },
+        }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || 'Lỗi khi gọi AI chấm bài.');
+      }
+
+      const result: GradingResult = await res.json();
+      result.taskType = taskType;
+      result.promptTitle = `[Cây Đậu Tầng ${levelNumber}] ${prompt.title}`;
+      result.promptText = prompt.question;
+      result.userEssay = fullEssay;
+      result.wordCount = wordCount;
+
+      setActiveGradingResult(result);
+
+      // Save to official user essay history
+      let recId = '';
+      try {
+        const rec = await saveEssayRecord({
+          task_type: taskType,
+          prompt_title: `[Cây Đậu Tầng ${levelNumber}] ${prompt.title}`,
+          prompt_text: prompt.question,
+          chart_image_url: prompt.imageUrl || undefined,
+          essay_content: fullEssay,
+          word_count: wordCount,
+          duration_seconds: 90,
+          overall_band: result.overallBand,
+          tr_score: result.criteria.taskAchievementOrResponse.score,
+          cc_score: result.criteria.coherenceCohesion.score,
+          lr_score: result.criteria.lexicalResource.score,
+          gra_score: result.criteria.grammaticalRange.score,
+          ai_feedback_json: result,
+        });
+        recId = rec.id;
+        setSavedRecordId(recId);
+      } catch (saveErr) {
+        console.error('Failed to save essay record from builder', saveErr);
+      }
+
+      onCompleteNode(wordCount, result, recId);
+    } catch (err: any) {
+      alert(`Chấm bài thất bại: ${err.message || 'Lỗi kết nối'}`);
+      setIsGradingModalOpen(false);
+    } finally {
+      setIsGrading(false);
+    }
+  };
+
+  // Handle Quick Complete without grading
+  const handleQuickComplete = () => {
     setCompletedWordCount(wordCount);
     onCompleteNode(wordCount);
     setShowCelebration(true);
@@ -257,23 +370,30 @@ export default function WritingWorkspace({
               />
 
               {/* Bottom Quick-Preview Banner */}
-              <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 shadow-xs flex items-center justify-between gap-3">
-                <div className="text-xs">
-                  <span className="font-bold text-gray-900 dark:text-white block">
-                    Đã viết {wordCount} / {minWords} từ tối thiểu
-                  </span>
-                  <span className="text-[11px] text-gray-500">
-                    Bạn có thể xem trước toàn bộ bài văn hoặc nộp bài hoàn thành tầng này bất cứ lúc nào.
+              <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="text-xs space-y-1">
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-gray-900 dark:text-white">
+                      Đã viết {wordCount} / {minWords} từ tối thiểu
+                    </span>
+                    {activeGradingResult && (
+                      <span className="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 font-extrabold text-[10px] font-mono">
+                        ⭐ Band {activeGradingResult.overallBand.toFixed(1)}
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-[11px] text-gray-500 block">
+                    Xem trước toàn bài để nộp cho Giám khảo AI chấm điểm theo 4 tiêu chí chuẩn IELTS.
                   </span>
                 </div>
 
                 <button
                   type="button"
                   onClick={() => setRightViewMode('preview')}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs shrink-0 shadow-xs transition"
+                  className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-extrabold text-xs shrink-0 shadow-md shadow-emerald-600/20 transition cursor-pointer"
                 >
-                  <Eye className="w-3.5 h-3.5" />
-                  <span>Xem toàn văn &amp; Nộp</span>
+                  <Sparkles className="w-3.5 h-3.5 text-amber-200" />
+                  <span>Xem Toàn Văn &amp; Chấm Điểm</span>
                 </button>
               </div>
             </div>
@@ -293,7 +413,11 @@ export default function WritingWorkspace({
                 blocks={node.blocks}
                 taskType={taskType}
                 minWords={minWords}
-                onCompleteNode={handleCompleteSubmission}
+                isSubmitting={isGrading}
+                existingGradingResult={activeGradingResult}
+                onGradeEssay={handleGradeEssay}
+                onCompleteWithoutGrading={handleQuickComplete}
+                onViewGradingResult={() => setIsGradingModalOpen(true)}
               />
             </div>
           )}
@@ -310,7 +434,23 @@ export default function WritingWorkspace({
         />
       )}
 
-      {/* Celebration Modal on Complete */}
+      {/* Builder AI Grading Result Modal */}
+      <BuilderGradingResultModal
+        isOpen={isGradingModalOpen}
+        onClose={() => setIsGradingModalOpen(false)}
+        gradingResult={activeGradingResult}
+        isLoading={isGrading}
+        levelNumber={levelNumber}
+        taskType={taskType}
+        targetBand={targetBand}
+        onContinueNextLevel={() => {
+          setIsGradingModalOpen(false);
+          onBackToTree();
+        }}
+        recordId={savedRecordId}
+      />
+
+      {/* Celebration Modal on Quick Complete */}
       <ConfettiCelebration
         isOpen={showCelebration}
         levelNumber={levelNumber}

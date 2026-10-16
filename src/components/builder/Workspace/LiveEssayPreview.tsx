@@ -10,7 +10,7 @@ import {
   Award,
   Sparkles,
 } from 'lucide-react';
-import { BuilderBlock } from '@/types';
+import { BuilderBlock, GradingResult } from '@/types';
 import { assembleFullEssayFromBlocks } from '@/lib/builder';
 
 interface LiveEssayPreviewProps {
@@ -18,7 +18,10 @@ interface LiveEssayPreviewProps {
   taskType: 'task1' | 'task2';
   minWords: number;
   isSubmitting?: boolean;
-  onCompleteNode: () => void;
+  existingGradingResult?: GradingResult | null;
+  onGradeEssay: (fullEssay: string) => void;
+  onCompleteWithoutGrading: () => void;
+  onViewGradingResult?: () => void;
 }
 
 export default function LiveEssayPreview({
@@ -26,7 +29,10 @@ export default function LiveEssayPreview({
   taskType,
   minWords,
   isSubmitting = false,
-  onCompleteNode,
+  existingGradingResult,
+  onGradeEssay,
+  onCompleteWithoutGrading,
+  onViewGradingResult,
 }: LiveEssayPreviewProps) {
   const [copied, setCopied] = React.useState(false);
   const { text: fullEssay, wordCount } = assembleFullEssayFromBlocks(blocks);
@@ -41,20 +47,28 @@ export default function LiveEssayPreview({
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleCompleteClick = () => {
+  const handleGradeClick = () => {
     if (wordCount < 30) {
-      alert('Bài viết quá ngắn. Vui lòng viết ít nhất một đoạn văn hoàn chỉnh trước khi bấm Hoàn thành tầng này.');
+      alert('Bài viết quá ngắn. Vui lòng viết ít nhất một đoạn văn hoàn chỉnh để Giám khảo AI chấm điểm chính xác.');
       return;
     }
 
     if (!isWordCountMet) {
       const confirmShort = confirm(
-        `Bài viết của bạn hiện đạt ${wordCount}/${minWords} từ tối thiểu theo quy định IELTS.\n\nBạn có chắc chắn muốn nộp và hoàn thành tầng này không?`
+        `Bài viết của bạn hiện đạt ${wordCount}/${minWords} từ tối thiểu theo quy định IELTS.\n\nViết dưới số từ tối thiểu có thể bị trừ điểm tiêu chí Task Achievement / Response.\nBạn có muốn tiếp tục gửi chấm không?`
       );
       if (!confirmShort) return;
     }
 
-    onCompleteNode();
+    onGradeEssay(fullEssay);
+  };
+
+  const handleQuickCompleteClick = () => {
+    if (wordCount < 10) {
+      alert('Vui lòng viết ít nhất một câu trước khi hoàn thành tầng.');
+      return;
+    }
+    onCompleteWithoutGrading();
   };
 
   return (
@@ -115,8 +129,37 @@ export default function LiveEssayPreview({
         </div>
       </div>
 
+      {/* Existing Graded Score Banner */}
+      {existingGradingResult && (
+        <div className="p-3.5 rounded-2xl bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-sky-500/10 border border-emerald-500/30 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <span className="w-8 h-8 rounded-xl bg-emerald-600 text-white font-black text-xs flex items-center justify-center shadow-xs">
+              {existingGradingResult.overallBand.toFixed(1)}
+            </span>
+            <div>
+              <span className="text-xs font-bold text-gray-900 dark:text-white block">
+                Đã được Giám khảo AI chấm điểm
+              </span>
+              <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold">
+                Overall Band {existingGradingResult.overallBand.toFixed(1)} &bull; {existingGradingResult.wordCount} từ
+              </span>
+            </div>
+          </div>
+
+          {onViewGradingResult && (
+            <button
+              type="button"
+              onClick={onViewGradingResult}
+              className="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] shadow-xs transition shrink-0"
+            >
+              Xem Chi Tiết Điểm
+            </button>
+          )}
+        </div>
+      )}
+
       {/* Formatted Essay Body */}
-      <div className="min-h-[220px] max-h-[360px] overflow-y-auto p-4 rounded-2xl bg-gray-50/70 dark:bg-zinc-950/60 border border-gray-200 dark:border-zinc-800 text-xs sm:text-sm text-gray-800 dark:text-zinc-200 leading-relaxed space-y-3 font-serif">
+      <div className="min-h-[200px] max-h-[340px] overflow-y-auto p-4 rounded-2xl bg-gray-50/70 dark:bg-zinc-950/60 border border-gray-200 dark:border-zinc-800 text-xs sm:text-sm text-gray-800 dark:text-zinc-200 leading-relaxed space-y-3 font-serif">
         {fullEssay ? (
           fullEssay.split('\n\n').map((para, idx) => (
             <p key={idx} className="indent-4 leading-relaxed">
@@ -133,20 +176,38 @@ export default function LiveEssayPreview({
         )}
       </div>
 
-      {/* Completion Button */}
-      <div className="pt-2">
+      {/* Dual Submission / Completion Actions */}
+      <div className="pt-2 space-y-2">
+        {/* Primary Action: Grade with AI Examiner */}
         <button
           type="button"
           disabled={isSubmitting || wordCount < 10}
-          onClick={handleCompleteClick}
-          className={`w-full py-3.5 rounded-2xl font-bold text-xs shadow-md transition flex items-center justify-center gap-2 ${
-            wordCount < 10
-              ? 'bg-gray-200 dark:bg-zinc-800 text-gray-400 cursor-not-allowed'
-              : 'bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-emerald-600/25 transform hover:-translate-y-0.5'
+          onClick={handleGradeClick}
+          className={`w-full py-3.5 rounded-2xl font-extrabold text-xs shadow-lg transition flex items-center justify-center gap-2 cursor-pointer ${
+            wordCount < 10 || isSubmitting
+              ? 'bg-gray-200 dark:bg-zinc-800 text-gray-400 cursor-not-allowed shadow-none'
+              : 'bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-700 hover:via-teal-700 hover:to-cyan-700 text-white shadow-emerald-600/30 transform hover:-translate-y-0.5'
           }`}
         >
-          <Award className="w-4 h-4 text-lime-200" />
-          <span>Hoàn Thành Tầng Này &amp; Mở Khóa Tầng Kế Tiếp</span>
+          <Sparkles className="w-4 h-4 text-amber-300 fill-amber-300" />
+          <span>
+            {isSubmitting
+              ? 'Đang gửi bài cho Giám khảo AI...'
+              : existingGradingResult
+              ? 'Chấm Lại Bài Viết Với Giám Khảo AI'
+              : 'Nộp Bài & Chấm Điểm Với Giám Khảo AI'}
+          </span>
+        </button>
+
+        {/* Secondary Action: Complete without grading */}
+        <button
+          type="button"
+          disabled={isSubmitting || wordCount < 10}
+          onClick={handleQuickCompleteClick}
+          className="w-full py-2.5 rounded-xl border border-gray-200 dark:border-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-800/60 font-semibold text-[11px] text-gray-600 dark:text-zinc-400 transition flex items-center justify-center gap-1.5"
+        >
+          <Award className="w-3.5 h-3.5 text-gray-400" />
+          <span>Hoàn thành tầng này (Không cần chấm điểm)</span>
         </button>
       </div>
     </div>

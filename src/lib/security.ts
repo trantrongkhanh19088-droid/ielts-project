@@ -99,6 +99,7 @@ export interface ClientTelemetry {
   focusSeconds?: number;
   pasteCount?: number;
   humanProofSolved?: boolean;
+  isBuilder?: boolean;
 }
 
 export interface SessionVerificationResult {
@@ -150,9 +151,10 @@ export function verifyExamSessionToken(
     }
 
     const elapsedSeconds = Math.floor((Date.now() - data.startedAt) / 1000);
+    const isBuilder = Boolean(telemetry?.isBuilder);
 
-    // Anti-Speed Bot: Essay must take at least MIN_EXAM_DURATION_SECONDS
-    if (!bypassTimeCheck && elapsedSeconds < MIN_EXAM_DURATION_SECONDS) {
+    // Anti-Speed Bot: Essay must take at least MIN_EXAM_DURATION_SECONDS (bypassed for builder learning mode)
+    if (!bypassTimeCheck && !isBuilder && elapsedSeconds < MIN_EXAM_DURATION_SECONDS) {
       return {
         valid: false,
         elapsedSeconds,
@@ -161,7 +163,7 @@ export function verifyExamSessionToken(
     }
 
     // Behavioral & Telemetry Bot Detection
-    if (telemetry && process.env.NODE_ENV === 'production') {
+    if (telemetry && process.env.NODE_ENV === 'production' && !isBuilder) {
       const keys = Number(telemetry.keystrokes || 0);
       const mouse = Number(telemetry.mouseEvents || 0);
       const paste = Number(telemetry.pasteCount || 0);

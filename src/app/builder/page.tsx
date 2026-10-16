@@ -181,11 +181,22 @@ function BuilderMainContent() {
   };
 
   // Complete node
-  const handleCompleteNode = (assembledWordCount: number) => {
+  const handleCompleteNode = (
+    assembledWordCount: number,
+    gradingResult?: any,
+    recordId?: string
+  ) => {
     if (!state || !activeNode) return;
     const { levelNumber, taskType } = activeNode;
 
-    const updatedState = completeNodeInState(state, levelNumber, taskType, assembledWordCount);
+    const updatedState = completeNodeInState(
+      state,
+      levelNumber,
+      taskType,
+      assembledWordCount,
+      gradingResult,
+      recordId
+    );
     setState(updatedState);
   };
 

@@ -10,6 +10,7 @@ import {
   InteractiveMCQ,
   PromptSeed,
   SentenceInput,
+  GradingResult,
 } from '@/types';
 
 const BUILDER_STORAGE_KEY = 'cd_ielts_writing_builder_state_v1';
@@ -826,7 +827,9 @@ export function completeNodeInState(
   state: BuilderState,
   levelNumber: number,
   taskType: 'task1' | 'task2',
-  assembledWordCount: number
+  assembledWordCount: number,
+  gradingResult?: GradingResult,
+  recordId?: string
 ): BuilderState {
   const updatedLevels = state.levels.map((lvl) => {
     if (lvl.levelNumber === levelNumber) {
@@ -838,6 +841,8 @@ export function completeNodeInState(
             status: 'completed' as const,
             completedAt: new Date().toISOString(),
             wordCount: assembledWordCount,
+            gradingResult: gradingResult || lvl.task1Node.gradingResult,
+            recordId: recordId || lvl.task1Node.recordId,
           },
         };
       } else {
@@ -848,6 +853,8 @@ export function completeNodeInState(
             status: 'completed' as const,
             completedAt: new Date().toISOString(),
             wordCount: assembledWordCount,
+            gradingResult: gradingResult || lvl.task2Node.gradingResult,
+            recordId: recordId || lvl.task2Node.recordId,
           },
         };
       }

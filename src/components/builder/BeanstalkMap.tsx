@@ -405,8 +405,17 @@ function GamifiedNodeCard({
         {/* Status Pill */}
         {isCompleted ? (
           <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-[10px] font-extrabold border border-emerald-300 dark:border-emerald-800">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-            <span>Đã xong</span>
+            {node.gradingResult ? (
+              <>
+                <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
+                <span>Band {node.gradingResult.overallBand.toFixed(1)}</span>
+              </>
+            ) : (
+              <>
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                <span>Đã xong</span>
+              </>
+            )}
           </span>
         ) : isAvailable ? (
           <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 text-white text-[10px] font-black uppercase tracking-wider shadow-xs animate-pulse">
@@ -441,10 +450,14 @@ function GamifiedNodeCard({
         {isCompleted ? (
           <>
             <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-bold">
-              {node.wordCount ? `${node.wordCount} từ đã nộp` : 'Đã hoàn thành'}
+              {node.gradingResult
+                ? `Đã chấm Band ${node.gradingResult.overallBand.toFixed(1)}`
+                : node.wordCount
+                ? `${node.wordCount} từ đã nộp`
+                : 'Đã hoàn thành'}
             </span>
             <span className="text-emerald-700 dark:text-emerald-300 inline-flex items-center gap-1 text-[11px] font-extrabold hover:underline">
-              <span>Xem lại bài</span>
+              <span>Xem lại bài &amp; điểm</span>
               <ChevronRight className="w-3.5 h-3.5" />
             </span>
           </>

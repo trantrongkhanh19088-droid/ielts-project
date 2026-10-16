@@ -1,4 +1,4 @@
-import { TaskType, PromptSeed } from './index';
+import { TaskType, PromptSeed, GradingResult } from './index';
 
 export type BuilderTargetBand = '5.5' | '6.0' | '6.5' | '7.0' | '7.5' | '8.0+';
 
@@ -55,6 +55,8 @@ export interface BuilderNode {
   completedAt?: string;
   wordCount?: number;
   mcqAnswers?: Record<number, number>; // question index -> selected option index
+  gradingResult?: GradingResult;
+  recordId?: string;
 }
 
 export interface BuilderLevel {
