@@ -90,11 +90,10 @@ You MUST output ONLY a valid JSON object matching this exact schema:
     const candidateModels = [
       'gemini-3.5-flash-lite',
       'gemini-flash-lite-latest',
-      'gemini-2.5-flash-lite',
-      'gemini-3.6-flash',
-      'gemini-3.7-flash',
       'gemini-3.8-flash',
-      'gemini-2.5-flash',
+      'gemini-3.7-flash',
+      'gemini-3.6-flash',
+      'gemini-3.5-flash',
       'gemini-flash-latest',
     ];
 
@@ -102,19 +101,35 @@ You MUST output ONLY a valid JSON object matching this exact schema:
     let lastError: any = null;
 
     for (const modelName of candidateModels) {
-      try {
-        const model = genAI.getGenerativeModel({
-          model: modelName,
-          generationConfig: {
-            responseMimeType: 'application/json',
-            temperature: 0.1,
-          },
-        });
-        result = await model.generateContent(systemPrompt);
-        if (result) break;
-      } catch (err: any) {
-        lastError = err;
+      for (let attempt = 1; attempt <= 2; attempt++) {
+        try {
+          const model = genAI.getGenerativeModel({
+            model: modelName,
+            generationConfig: {
+              responseMimeType: 'application/json',
+              temperature: 0.1,
+            },
+          });
+          result = await model.generateContent(systemPrompt);
+          if (result) break;
+        } catch (err: any) {
+          lastError = err;
+          const isOverloaded =
+            err.status === 503 ||
+            err.status === 429 ||
+            (err.message &&
+              (err.message.includes('503') ||
+                err.message.includes('429') ||
+                err.message.includes('high demand')));
+
+          if (isOverloaded && attempt < 2) {
+            await new Promise((resolve) => setTimeout(resolve, 1500));
+          } else {
+            break;
+          }
+        }
       }
+      if (result) break;
     }
 
     if (!result) {
@@ -133,11 +148,21 @@ You MUST output ONLY a valid JSON object matching this exact schema:
     return NextResponse.json(parsed);
   } catch (error: any) {
     console.error('Error during sentence checking:', error);
+    const isOverloaded =
+      error.status === 503 ||
+      error.status === 429 ||
+      (error.message &&
+        (error.message.includes('503') ||
+          error.message.includes('429') ||
+          error.message.includes('high demand')));
+
+    const errorMessage = isOverloaded
+      ? 'Hệ thống máy chủ Google AI hiện đang có lượng truy cập tăng đột biến tạm thời (503 High Demand). Vui lòng thử lại sau vài giây.'
+      : error.message || 'Lỗi khi phân tích ngữ pháp câu văn. Vui lòng thử lại.';
+
     return NextResponse.json(
-      {
-        error: error.message || 'Lỗi khi phân tích ngữ pháp câu văn. Vui lòng thử lại.',
-      },
-      { status: 500 }
+      { error: errorMessage },
+      { status: isOverloaded ? 503 : 500 }
     );
   }
 }
