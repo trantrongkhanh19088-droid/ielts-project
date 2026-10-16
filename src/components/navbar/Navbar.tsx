@@ -393,7 +393,7 @@ export default function Navbar() {
         </div>
       )}
 
-      {/* Settings Modal (Theme, Builder Auto-Suggest, BYOK Gemini) */}
+      {/* Settings Modal (Theme & Builder Auto-Suggest) */}
       <SettingsModal
         isOpen={isSettingsModalOpen}
         onClose={() => setIsSettingsModalOpen(false)}

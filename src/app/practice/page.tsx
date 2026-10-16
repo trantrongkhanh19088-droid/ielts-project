@@ -14,7 +14,6 @@ import {
   calculateOverallBand,
   checkRateLimit,
   recordSubmission,
-  getUserApiKey,
   countWords,
 } from '@/lib/utils';
 import {
@@ -453,7 +452,6 @@ function PracticeContent() {
 
   const executeSubmission = async () => {
     setIsSubmitting(true);
-    const userApiKey = getUserApiKey();
     const timeSpent = initialSeconds - timeRemaining;
     const t1Words = countWords(task1Essay);
     const t2Words = countWords(task2Essay);
@@ -479,7 +477,6 @@ function PracticeContent() {
               chartDataOrDescription: task1Prompt.chartDescription,
               imageBase64: undefined,
               essayContent: task1Essay,
-              userApiKey,
               sessionToken: examSessionToken,
               securityTrap: '',
               telemetry: telemetryPayload,
@@ -494,7 +491,6 @@ function PracticeContent() {
               chartDataOrDescription: undefined,
               imageBase64: undefined,
               essayContent: task2Essay,
-              userApiKey,
               sessionToken: examSessionToken,
               securityTrap: '',
               telemetry: telemetryPayload,
@@ -577,7 +573,6 @@ function PracticeContent() {
             chartDataOrDescription: activePrompt.chartDescription,
             imageBase64: undefined,
             essayContent: activeEssay,
-            userApiKey,
             sessionToken: examSessionToken,
             securityTrap: '',
             telemetry: telemetryPayload,

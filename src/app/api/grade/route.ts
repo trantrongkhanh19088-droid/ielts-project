@@ -52,7 +52,6 @@ interface GradeRequestBody {
   chartDataOrDescription?: string;
   imageBase64?: string;
   essayContent: string;
-  userApiKey?: string;
   sessionToken?: string;
   securityTrap?: string;
   telemetry?: ClientTelemetry;
@@ -107,7 +106,6 @@ export async function POST(req: NextRequest) {
       chartDataOrDescription,
       imageBase64,
       essayContent,
-      userApiKey,
       sessionToken,
       securityTrap,
       telemetry,
@@ -171,16 +169,14 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Determine API Key: Prioritize Bring-Your-Own-Key (BYOK), fallback to system env
-    const apiKey = (userApiKey && userApiKey.trim().length > 10)
-      ? userApiKey.trim()
-      : process.env.GEMINI_API_KEY;
+    // Determine API Key from system environment
+    const apiKey = process.env.GEMINI_API_KEY;
 
     if (!apiKey || apiKey === 'your-gemini-api-key') {
       return NextResponse.json(
         {
           error:
-            'Chưa cấu hình GEMINI_API_KEY. Vui lòng thêm GEMINI_API_KEY vào .env.local hoặc nhấn vào biểu tượng chìa khóa (BYOK) trên thanh menu để nhập API key cá nhân miễn phí từ Google AI Studio.',
+            'Chưa cấu hình GEMINI_API_KEY trên máy chủ hệ thống. Vui lòng liên hệ quản trị viên để được hỗ trợ.',
         },
         { status: 500 }
       );

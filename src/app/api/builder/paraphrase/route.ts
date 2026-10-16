@@ -10,7 +10,6 @@ interface ParaphraseRequestBody {
   blockId?: string;
   taskType?: 'task1' | 'task2';
   promptText?: string;
-  userApiKey?: string;
 }
 
 export async function POST(req: NextRequest) {
@@ -20,7 +19,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body: ParaphraseRequestBody = await req.json();
-    const { sentence, targetBand, blockId, taskType, promptText, userApiKey } = body;
+    const { sentence, targetBand, blockId, taskType, promptText } = body;
 
     if (!sentence || sentence.trim().length === 0) {
       return NextResponse.json(
@@ -36,12 +35,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const apiKey = userApiKey || process.env.GEMINI_API_KEY;
+    const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
       return NextResponse.json(
         {
           error:
-            'Chưa cấu hình GEMINI_API_KEY. Vui lòng thêm GEMINI_API_KEY hoặc nhập key cá nhân từ Google AI Studio.',
+            'Chưa cấu hình GEMINI_API_KEY trên máy chủ hệ thống. Vui lòng liên hệ quản trị viên.',
         },
         { status: 500 }
       );

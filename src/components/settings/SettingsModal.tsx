@@ -8,14 +8,11 @@ import {
   Moon,
   Eye,
   EyeOff,
-  Key,
   Check,
   Sparkles,
-  ExternalLink,
   ShieldCheck,
   Sliders,
 } from 'lucide-react';
-import { getUserApiKey, setUserApiKey } from '@/lib/utils';
 import { getBuilderAutoSuggest, setBuilderAutoSuggest } from '@/lib/builder';
 
 interface SettingsModalProps {
@@ -32,13 +29,13 @@ export default function SettingsModal({
   onThemeChange,
 }: SettingsModalProps) {
   const [autoSuggest, setAutoSuggestState] = useState<boolean>(true);
-  const [apiKey, setApiKey] = useState('');
-  const [isApiKeySaved, setIsApiKeySaved] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
       setAutoSuggestState(getBuilderAutoSuggest());
-      setApiKey(getUserApiKey() || '');
+      try {
+        localStorage.removeItem('cd_ielts_user_gemini_key');
+      } catch {}
     }
   }, [isOpen]);
 
@@ -48,12 +45,6 @@ export default function SettingsModal({
     const nextVal = !autoSuggest;
     setAutoSuggestState(nextVal);
     setBuilderAutoSuggest(nextVal);
-  };
-
-  const handleSaveApiKey = () => {
-    setUserApiKey(apiKey.trim());
-    setIsApiKeySaved(true);
-    setTimeout(() => setIsApiKeySaved(false), 2000);
   };
 
   return (
@@ -204,53 +195,6 @@ export default function SettingsModal({
                   {autoSuggest ? 'Đang BẬT gợi ý' : 'Đang TẮT (Ẩn mặc định)'}
                 </span>
               </div>
-            </div>
-          </div>
-
-          {/* Section 3: Optional Personal BYOK Gemini Key */}
-          <div className="space-y-3 pt-3 border-t border-gray-100 dark:border-zinc-800">
-            <div className="flex items-center justify-between">
-              <label className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
-                <Key className="w-3.5 h-3.5 text-sky-600" />
-                <span>API Key cá nhân (Tùy chọn)</span>
-              </label>
-              <a
-                href="https://aistudio.google.com/app/apikey"
-                target="_blank"
-                rel="noreferrer"
-                className="text-[11px] text-sky-600 hover:underline flex items-center gap-0.5"
-              >
-                <span>Lấy key Google AI</span>
-                <ExternalLink className="w-2.5 h-2.5" />
-              </a>
-            </div>
-
-            <p className="text-[11px] text-gray-500 dark:text-gray-400">
-              Mặc định hệ thống dùng API server. Bạn có thể nhập key Gemini cá nhân miễn phí từ Google AI Studio nếu muốn không giới hạn.
-            </p>
-
-            <div className="flex items-center gap-2">
-              <input
-                type="password"
-                value={apiKey}
-                onChange={(e) => setApiKey(e.target.value)}
-                placeholder="Dán mã AIzaSy... (Để trống nếu dùng mặc định)"
-                className="flex-1 px-3 py-2 rounded-xl border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-xs font-mono text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500"
-              />
-              <button
-                type="button"
-                onClick={handleSaveApiKey}
-                className="px-3 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold transition flex items-center gap-1 shrink-0"
-              >
-                {isApiKeySaved ? (
-                  <>
-                    <Check className="w-3.5 h-3.5" />
-                    <span>Đã lưu</span>
-                  </>
-                ) : (
-                  <span>Lưu Key</span>
-                )}
-              </button>
             </div>
           </div>
         </div>

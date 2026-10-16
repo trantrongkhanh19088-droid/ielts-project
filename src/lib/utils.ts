@@ -120,20 +120,3 @@ export function recordSubmission(): void {
     console.error('Failed to record submission timestamp', err);
   }
 }
-
-// Bring Your Own Key (BYOK) Local Storage Helper
-const BYOK_KEY = 'cd_ielts_user_gemini_key';
-
-export function getUserApiKey(): string {
-  if (typeof window === 'undefined') return '';
-  return localStorage.getItem(BYOK_KEY) || '';
-}
-
-export function setUserApiKey(key: string): void {
-  if (typeof window === 'undefined') return;
-  if (!key.trim()) {
-    localStorage.removeItem(BYOK_KEY);
-  } else {
-    localStorage.setItem(BYOK_KEY, key.trim());
-  }
-}

@@ -23,7 +23,6 @@ import {
   SentenceParaphraseResult,
   BuilderTargetBand,
 } from '@/types';
-import { getUserApiKey } from '@/lib/utils';
 
 interface SentenceInputCardProps {
   sentence: SentenceInput;
@@ -94,7 +93,6 @@ export default function SentenceInputCard({
     setIsChecking(true);
     setActiveTab('check');
     try {
-      const userApiKey = getUserApiKey();
       const res = await fetch('/api/builder/check', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -104,7 +102,6 @@ export default function SentenceInputCard({
           taskType,
           promptText: promptQuestion,
           previousSentences,
-          userApiKey,
         }),
       });
 
@@ -132,7 +129,6 @@ export default function SentenceInputCard({
     setIsParaphrasing(true);
     setActiveTab('update');
     try {
-      const userApiKey = getUserApiKey();
       const res = await fetch('/api/builder/paraphrase', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -142,7 +138,6 @@ export default function SentenceInputCard({
           blockId,
           taskType,
           promptText: promptQuestion,
-          userApiKey,
         }),
       });
 
