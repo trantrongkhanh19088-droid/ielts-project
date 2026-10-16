@@ -141,6 +141,7 @@ export default function Navbar() {
       }
     }
     localStorage.removeItem('cd_ielts_local_user');
+    localStorage.removeItem('cd_ielts_essay_records');
     setUserEmail(null);
     setUserName(null);
     setIsProfileModalOpen(false);

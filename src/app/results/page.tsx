@@ -15,7 +15,7 @@ import {
   BookOpen,
 } from 'lucide-react';
 import { EssayRecord, GradingResult, FullTestGradingResult } from '@/types';
-import { getLocalEssayRecords } from '@/lib/storage';
+import { fetchEssayRecordById, fetchAllEssayRecords } from '@/lib/storage';
 import ScoreCard from '@/components/results/ScoreCard';
 import InteractiveEssay from '@/components/results/InteractiveEssay';
 import CriteriaFeedbackTab from '@/components/results/CriteriaFeedbackTab';
@@ -37,25 +37,34 @@ function ResultsContent() {
   const [dismissedResultIds, setDismissedResultIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
-    const list = getLocalEssayRecords();
-    let currentRecord: EssayRecord | null = null;
-    if (resultId) {
-      const found = list.find((r) => r.id === resultId);
-      if (found) {
-        currentRecord = found;
-      } else if (list.length > 0) {
-        currentRecord = list[0];
+    let isMounted = true;
+    async function loadResult() {
+      setLoading(true);
+      let currentRecord: EssayRecord | null = null;
+      if (resultId) {
+        currentRecord = await fetchEssayRecordById(resultId);
       }
-    } else if (list.length > 0) {
-      currentRecord = list[0];
-    }
-    setRecord(currentRecord);
-    setLoading(false);
+      if (!currentRecord) {
+        const list = await fetchAllEssayRecords();
+        if (list.length > 0) {
+          currentRecord = list[0];
+        }
+      }
+      if (isMounted) {
+        setRecord(currentRecord);
+        setLoading(false);
 
-    // Trigger popup if band is strictly below 6.0 and hasn't been dismissed yet
-    if (currentRecord && currentRecord.overall_band < 6.0 && !dismissedResultIds.has(currentRecord.id)) {
-      setShowMemeModal(true);
+        // Trigger popup if band is strictly below 6.0 and hasn't been dismissed yet
+        if (currentRecord && currentRecord.overall_band < 6.0 && !dismissedResultIds.has(currentRecord.id)) {
+          setShowMemeModal(true);
+        }
+      }
     }
+
+    loadResult();
+    return () => {
+      isMounted = false;
+    };
   }, [resultId, dismissedResultIds]);
 
   const handleCloseMeme = () => {

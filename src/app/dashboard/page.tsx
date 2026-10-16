@@ -17,7 +17,7 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { EssayRecord } from '@/types';
-import { fetchAllEssayRecords, deleteLocalEssayRecord, clearAllEssayRecordsAsync } from '@/lib/storage';
+import { fetchAllEssayRecords, deleteEssayRecordAsync, clearAllEssayRecordsAsync } from '@/lib/storage';
 import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import ProgressHistoryChart from '@/components/charts/ProgressHistoryChart';
 import { formatDuration } from '@/lib/utils';
@@ -76,9 +76,9 @@ export default function DashboardPage() {
     loadData();
   }, []);
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (confirm('Bạn có chắc chắn muốn xóa bài viết này khỏi lịch sử không?')) {
-      deleteLocalEssayRecord(id);
+      await deleteEssayRecordAsync(id);
       setRecords((prev) => prev.filter((r) => r.id !== id));
     }
   };

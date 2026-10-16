@@ -4,6 +4,30 @@ import { getSupabaseBrowserClient, isSupabaseConfigured } from './supabase/clien
 const ESSAYS_STORAGE_KEY = 'cd_ielts_essay_records';
 const DRAFT_PREFIX = 'cd_ielts_draft_';
 
+export function getUserStorageKey(userId?: string | null): string {
+  if (userId) return `cd_ielts_essay_records_${userId}`;
+  return 'cd_ielts_essay_records_guest';
+}
+
+export function getLocalRecordsByKey(key: string): EssayRecord[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+export function saveLocalRecordsByKey(key: string, records: EssayRecord[]): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(key, JSON.stringify(records));
+  } catch (err) {
+    console.error('Failed to save essay records to localStorage', err);
+  }
+}
+
 export async function saveEssayRecord(record: {
   task_type: TaskType;
   prompt_title: string;
@@ -26,6 +50,8 @@ export async function saveEssayRecord(record: {
     created_at: new Date().toISOString(),
   };
 
+  let currentUserId: string | null = null;
+
   // Try saving to Supabase if configured & user logged in
   if (isSupabaseConfigured()) {
     try {
@@ -33,6 +59,7 @@ export async function saveEssayRecord(record: {
       if (supabase) {
         const { data: { user } } = await supabase.auth.getUser();
         if (user) {
+          currentUserId = user.id;
           newRecord.user_id = user.id;
           const { data, error } = await supabase.from('essays').insert([
             {
@@ -63,31 +90,48 @@ export async function saveEssayRecord(record: {
     }
   }
 
-  // Always save to localStorage for instant local access
-  try {
-    const existing = getLocalEssayRecords();
-    existing.unshift(newRecord);
-    localStorage.setItem(ESSAYS_STORAGE_KEY, JSON.stringify(existing));
-  } catch (err) {
-    console.error('Failed to save essay to localStorage', err);
+  // Save to user-scoped local storage
+  const userKey = getUserStorageKey(currentUserId);
+  const existing = getLocalRecordsByKey(userKey);
+  existing.unshift(newRecord);
+  saveLocalRecordsByKey(userKey, existing);
+
+  // Clean legacy shared storage to prevent leaking between accounts on same device
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem(ESSAYS_STORAGE_KEY);
   }
 
   return newRecord;
 }
 
-export function getLocalEssayRecords(): EssayRecord[] {
+export function getLocalEssayRecords(userId?: string | null): EssayRecord[] {
   if (typeof window === 'undefined') return [];
-  try {
-    const raw = localStorage.getItem(ESSAYS_STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch {
-    return [];
+  if (userId) {
+    return getLocalRecordsByKey(getUserStorageKey(userId));
   }
+  // Try to find if user is logged in via Supabase local session
+  try {
+    const sbKey = Object.keys(localStorage).find((k) => k.startsWith('sb-') && k.endsWith('-auth-token'));
+    if (sbKey) {
+      const rawSb = localStorage.getItem(sbKey);
+      if (rawSb) {
+        const parsed = JSON.parse(rawSb);
+        const uid = parsed?.user?.id;
+        if (uid) {
+          const userRecs = getLocalRecordsByKey(getUserStorageKey(uid));
+          return userRecs;
+        }
+      }
+    }
+  } catch {}
+
+  const guest = getLocalRecordsByKey('cd_ielts_essay_records_guest');
+  if (guest.length > 0) return guest;
+
+  return getLocalRecordsByKey(ESSAYS_STORAGE_KEY);
 }
 
 export async function fetchAllEssayRecords(): Promise<EssayRecord[]> {
-  const localList = getLocalEssayRecords();
-
   if (isSupabaseConfigured()) {
     try {
       const supabase = getSupabaseBrowserClient();
@@ -100,51 +144,123 @@ export async function fetchAllEssayRecords(): Promise<EssayRecord[]> {
             .eq('user_id', user.id)
             .order('created_at', { ascending: false });
 
-          if (!error && data && data.length > 0) {
+          if (!error && data) {
+            // Keep user-scoped local cache in sync
+            saveLocalRecordsByKey(getUserStorageKey(user.id), data as EssayRecord[]);
+            // Return user's own essays (even if empty [] for new users!)
             return data as EssayRecord[];
           }
+
+          // In case of network error, return this user's local cache ONLY
+          return getLocalRecordsByKey(getUserStorageKey(user.id));
         }
       }
     } catch (err) {
-      console.warn('Failed to fetch from Supabase, returning local list', err);
+      console.warn('Failed to fetch from Supabase, checking local cache', err);
     }
   }
 
-  return localList;
+  // Guest / unauthenticated fallback
+  const guestRecords = getLocalRecordsByKey('cd_ielts_essay_records_guest');
+  if (guestRecords.length > 0) return guestRecords;
+  return getLocalRecordsByKey(ESSAYS_STORAGE_KEY);
 }
 
-export function deleteLocalEssayRecord(id: string): void {
-  try {
-    const list = getLocalEssayRecords().filter((r) => r.id !== id);
-    localStorage.setItem(ESSAYS_STORAGE_KEY, JSON.stringify(list));
-  } catch (err) {
-    console.error('Failed to delete local essay record', err);
+export async function fetchEssayRecordById(id: string): Promise<EssayRecord | null> {
+  if (isSupabaseConfigured()) {
+    try {
+      const supabase = getSupabaseBrowserClient();
+      if (supabase) {
+        const { data, error } = await supabase
+          .from('essays')
+          .select('*')
+          .eq('id', id)
+          .maybeSingle();
+
+        if (!error && data) {
+          return data as EssayRecord;
+        }
+      }
+    } catch (err) {
+      console.warn('Failed to fetch essay by id from Supabase', err);
+    }
   }
+
+  // Fallback to searching user cache or guest cache
+  const all = await fetchAllEssayRecords();
+  const found = all.find((r) => r.id === id);
+  if (found) return found;
+
+  const legacy = getLocalRecordsByKey(ESSAYS_STORAGE_KEY).find((r) => r.id === id);
+  return legacy || null;
 }
 
-export function clearAllEssayRecords(): void {
-  if (typeof window === 'undefined') return;
-  try {
-    localStorage.removeItem(ESSAYS_STORAGE_KEY);
-  } catch (err) {
-    console.error('Failed to clear essay records from localStorage', err);
-  }
-}
-
-export async function clearAllEssayRecordsAsync(): Promise<void> {
-  clearAllEssayRecords();
+export async function deleteEssayRecordAsync(id: string): Promise<void> {
+  // 1. Delete from Supabase if logged in
   if (isSupabaseConfigured()) {
     try {
       const supabase = getSupabaseBrowserClient();
       if (supabase) {
         const { data: { user } } = await supabase.auth.getUser();
         if (user) {
+          await supabase.from('essays').delete().eq('id', id).eq('user_id', user.id);
+          const userKey = getUserStorageKey(user.id);
+          const list = getLocalRecordsByKey(userKey).filter((r) => r.id !== id);
+          saveLocalRecordsByKey(userKey, list);
+        }
+      }
+    } catch (err) {
+      console.warn('Could not delete essay from Supabase', err);
+    }
+  }
+
+  // 2. Also remove from local caches
+  const guestKey = 'cd_ielts_essay_records_guest';
+  const guestList = getLocalRecordsByKey(guestKey).filter((r) => r.id !== id);
+  saveLocalRecordsByKey(guestKey, guestList);
+
+  const legacyList = getLocalRecordsByKey(ESSAYS_STORAGE_KEY).filter((r) => r.id !== id);
+  saveLocalRecordsByKey(ESSAYS_STORAGE_KEY, legacyList);
+}
+
+export function deleteLocalEssayRecord(id: string): void {
+  // Synchronous delete for legacy callers, also dispatches async Supabase delete
+  deleteEssayRecordAsync(id);
+}
+
+export function clearAllEssayRecords(): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.removeItem(ESSAYS_STORAGE_KEY);
+    localStorage.removeItem('cd_ielts_essay_records_guest');
+  } catch (err) {
+    console.error('Failed to clear essay records from localStorage', err);
+  }
+}
+
+export async function clearAllEssayRecordsAsync(): Promise<void> {
+  let userId: string | null = null;
+  if (isSupabaseConfigured()) {
+    try {
+      const supabase = getSupabaseBrowserClient();
+      if (supabase) {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          userId = user.id;
           await supabase.from('essays').delete().eq('user_id', user.id);
         }
       }
     } catch (err) {
       console.warn('Could not delete all essays from Supabase', err);
     }
+  }
+
+  if (typeof window !== 'undefined') {
+    if (userId) {
+      localStorage.removeItem(getUserStorageKey(userId));
+    }
+    localStorage.removeItem('cd_ielts_essay_records_guest');
+    localStorage.removeItem(ESSAYS_STORAGE_KEY);
   }
 }
 
