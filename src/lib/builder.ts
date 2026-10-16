@@ -163,156 +163,420 @@ export function selectDistributedPrompts(seeds: PromptSeed[], count: number): Pr
 // 3. INITIAL BLOCK TEMPLATES FOR GUIDED WRITING
 // ==============================================================================
 
-export function createInitialBlocksForTask(taskType: 'task1' | 'task2', promptId: string): BuilderBlock[] {
-  if (taskType === 'task1') {
+// ==============================================================================
+// 3. AI-TAILORED BLOCK & SENTENCE GENERATOR PER PROMPT
+// ==============================================================================
+
+/**
+ * Extracts distinct bullet points or clauses from prompt outline notes
+ */
+function extractOutlineGuidancePoints(outlineText?: string, maxPoints: number = 3): string[] {
+  if (!outlineText) return [];
+  // Split on '.', '->', ';', or ':'
+  const rawParts = outlineText
+    .split(/(?:\.\s+|->|;)/)
+    .map((s) => s.trim().replace(/^[\-\*\d\.\s]+/, ''))
+    .filter((s) => s.length > 5);
+
+  if (rawParts.length === 0) {
+    return [outlineText.trim()];
+  }
+  return rawParts.slice(0, maxPoints);
+}
+
+/**
+ * AI-tailored block and sentence generator:
+ * Analyzes the prompt's specific category, topic, question, chart details, and outline
+ * to determine the optimal number of sentences and write targeted prompts for each sentence.
+ */
+export function generateTailoredBlocksForPrompt(prompt: PromptSeed): BuilderBlock[] {
+  const isTask1 = prompt.taskType === 'task1';
+  const promptId = prompt.id;
+  const category = prompt.category || (isTask1 ? 'Line Graph' : 'Opinion');
+
+  if (isTask1) {
+    // TASK 1: Introduction (1-2 sentences), Overview (2 sentences), Body 1 (2-4 sentences), Body 2 (2-4 sentences)
+    const b1Points = extractOutlineGuidancePoints(prompt.outline?.body1, 3);
+    const b2Points = extractOutlineGuidancePoints(prompt.outline?.body2, 3);
+    const overviewPoints = extractOutlineGuidancePoints(prompt.outline?.overviewOrThesis, 2);
+
+    // 1. Introduction: 1 sentence for single chart, 2 for complex/multi-chart
+    const isMultiChart = category.toLowerCase().includes('mixed') || category.toLowerCase().includes('table');
+    const introSentences: SentenceInput[] = [
+      {
+        id: `${promptId}_intro_1`,
+        text: '',
+        placeholderHint: `Câu 1 (Paraphrase đề bài): Paraphrase lại chủ đề và mốc thời gian của biểu đồ: "${prompt.question || prompt.title}"`,
+      },
+    ];
+    if (isMultiChart) {
+      introSentences.push({
+        id: `${promptId}_intro_2`,
+        text: '',
+        placeholderHint: 'Câu 2 (Đơn vị & Đối tượng): Nêu rõ các đơn vị đo lường và phạm vi các đối tượng khảo sát chính',
+      });
+    }
+
+    // 2. Overview: 2 sentences
+    const overviewSentences: SentenceInput[] = [
+      {
+        id: `${promptId}_over_1`,
+        text: '',
+        placeholderHint: overviewPoints[0]
+          ? `Câu 1 (Xu hướng bao quát): ${overviewPoints[0]}`
+          : 'Câu 1 (Xu hướng bao quát): Nêu đặc điểm / xu hướng tổng thể nổi bật nhất (Overall, it is evident that...)',
+      },
+      {
+        id: `${promptId}_over_2`,
+        text: '',
+        placeholderHint: overviewPoints[1]
+          ? `Câu 2 (So sánh nổi bật): ${overviewPoints[1]}`
+          : 'Câu 2 (So sánh nổi bật): Nêu điểm cao nhất/thấp nhất hoặc sự phân hóa lớn nhất giữa các đối tượng (Additionally, ...)',
+      },
+    ];
+
+    // 3. Body 1: Tailored to prompt.outline.body1
+    const b1Sentences: SentenceInput[] = [];
+    if (b1Points.length >= 3) {
+      b1Sentences.push(
+        {
+          id: `${promptId}_b1_1`,
+          text: '',
+          placeholderHint: `Câu 1 (Topic & Điểm xuất phát): ${b1Points[0]}`,
+        },
+        {
+          id: `${promptId}_b1_2`,
+          text: '',
+          placeholderHint: `Câu 2 (Diễn biến chi tiết / Điểm nhấn): ${b1Points[1]}`,
+        },
+        {
+          id: `${promptId}_b1_3`,
+          text: '',
+          placeholderHint: `Câu 3 (So sánh then chốt / Điểm kết): ${b1Points[2]}`,
+        }
+      );
+    } else if (b1Points.length === 2) {
+      b1Sentences.push(
+        {
+          id: `${promptId}_b1_1`,
+          text: '',
+          placeholderHint: `Câu 1 (Mô tả nhóm số liệu 1): ${b1Points[0]}`,
+        },
+        {
+          id: `${promptId}_b1_2`,
+          text: '',
+          placeholderHint: `Câu 2 (Diễn biến và so sánh chi tiết): ${b1Points[1]}`,
+        }
+      );
+    } else {
+      b1Sentences.push(
+        {
+          id: `${promptId}_b1_1`,
+          text: '',
+          placeholderHint: `Câu 1 (Topic sentence nhóm 1): Báo cáo điểm khởi đầu hoặc nhóm số liệu đầu tiên`,
+        },
+        {
+          id: `${promptId}_b1_2`,
+          text: '',
+          placeholderHint: `Câu 2 (Chi tiết biến động): Nêu đỉnh điểm, mức sụt giảm hoặc sự thay đổi quan trọng`,
+        },
+        {
+          id: `${promptId}_b1_3`,
+          text: '',
+          placeholderHint: `Câu 3 (So sánh đối chiếu): Đối chiếu số liệu với thời điểm cuối hoặc đối tượng liên quan`,
+        }
+      );
+    }
+
+    // 4. Body 2: Tailored to prompt.outline.body2
+    const b2Sentences: SentenceInput[] = [];
+    if (b2Points.length >= 3) {
+      b2Sentences.push(
+        {
+          id: `${promptId}_b2_1`,
+          text: '',
+          placeholderHint: `Câu 1 (Chuyển ý & Nhóm 2): ${b2Points[0]}`,
+        },
+        {
+          id: `${promptId}_b2_2`,
+          text: '',
+          placeholderHint: `Câu 2 (Chi tiết đối lập / Biến động): ${b2Points[1]}`,
+        },
+        {
+          id: `${promptId}_b2_3`,
+          text: '',
+          placeholderHint: `Câu 3 (Số liệu kết thúc & So sánh tổng): ${b2Points[2]}`,
+        }
+      );
+    } else if (b2Points.length === 2) {
+      b2Sentences.push(
+        {
+          id: `${promptId}_b2_1`,
+          text: '',
+          placeholderHint: `Câu 1 (Chuyển sang nhóm số liệu 2): ${b2Points[0]}`,
+        },
+        {
+          id: `${promptId}_b2_2`,
+          text: '',
+          placeholderHint: `Câu 2 (Số liệu chi tiết và đối chiếu kết thúc): ${b2Points[1]}`,
+        }
+      );
+    } else {
+      b2Sentences.push(
+        {
+          id: `${promptId}_b2_1`,
+          text: '',
+          placeholderHint: `Câu 1 (Chuyển ý sang nhóm 2): Mô tả nhóm dữ liệu hoặc giai đoạn thứ hai`,
+        },
+        {
+          id: `${promptId}_b2_2`,
+          text: '',
+          placeholderHint: `Câu 2 (Số liệu chi tiết): Báo cáo các mốc số liệu cụ thể và sự tăng/giảm`,
+        },
+        {
+          id: `${promptId}_b2_3`,
+          text: '',
+          placeholderHint: `Câu 3 (Kết luận so sánh): So sánh tổng tương quan giữa nhóm 2 và nhóm 1`,
+        }
+      );
+    }
+
     return [
       {
         id: 'intro',
         title: '1. Introduction (Mở bài)',
-        descriptionVi: 'Paraphrase lại đề bài bằng cấu trúc câu và từ đồng nghĩa học thuật (1-2 câu).',
-        sentences: [
-          {
-            id: `${promptId}_intro_1`,
-            text: '',
-            placeholderHint: 'Câu 1: Paraphrase đề bài (VD: The given line graph illustrates the proportion of...)',
-          },
-        ],
+        descriptionVi: 'Paraphrase lại đề bài bằng cấu trúc câu và từ vựng học thuật.',
+        sentences: introSentences,
       },
       {
         id: 'overview',
         title: '2. Overview (Tổng quan)',
-        descriptionVi: 'Nêu 1-2 đặc điểm nổi bật nhất (xu hướng chung tăng/giảm hoặc điểm cao nhất/thấp nhất) không dẫn số liệu chi tiết.',
-        sentences: [
-          {
-            id: `${promptId}_over_1`,
-            text: '',
-            placeholderHint: 'Câu 1: Nêu xu hướng chung nổi bật nhất (VD: Overall, it is evident that...)',
-          },
-          {
-            id: `${promptId}_over_2`,
-            text: '',
-            placeholderHint: 'Câu 2: Nêu sự so sánh hoặc khác biệt lớn nhất giữa các đối tượng (VD: Additionally, X consistently accounted for the highest...)',
-          },
-        ],
+        descriptionVi: 'Nêu các xu hướng bao quát và điểm nổi bật nhất không dẫn số liệu cụ thể.',
+        sentences: overviewSentences,
       },
       {
         id: 'body1',
         title: '3. Body Paragraph 1 (Thân bài 1)',
-        descriptionVi: 'Mô tả chi tiết nhóm số liệu đầu tiên (kèm số liệu cụ thể, thời gian và sự so sánh).',
-        sentences: [
-          {
-            id: `${promptId}_b1_1`,
-            text: '',
-            placeholderHint: 'Câu 1: Giới thiệu nhóm số liệu / điểm khởi đầu (VD: In terms of X, the figure commenced at...)',
-          },
-          {
-            id: `${promptId}_b1_2`,
-            text: '',
-            placeholderHint: 'Câu 2: Diễn biến tiếp theo hoặc sự so sánh với đối tượng khác (VD: This was followed by a sharp increase to...)',
-          },
-        ],
+        descriptionVi: 'Mô tả chi tiết nhóm số liệu đầu tiên (kèm số liệu mốc, đỉnh, đáy và sự so sánh).',
+        sentences: b1Sentences,
       },
       {
         id: 'body2',
         title: '4. Body Paragraph 2 (Thân bài 2)',
-        descriptionVi: 'Mô tả chi tiết nhóm số liệu còn lại và các điểm giao nhau/kết thúc.',
-        sentences: [
-          {
-            id: `${promptId}_b2_1`,
-            text: '',
-            placeholderHint: 'Câu 1: Chuyển ý sang nhóm số liệu thứ hai (VD: Looking at the remaining categories, Y witnessed...)',
-          },
-          {
-            id: `${promptId}_b2_2`,
-            text: '',
-            placeholderHint: 'Câu 2: Số liệu thời điểm cuối hoặc điểm tương phản nổi bật (VD: By the end of the period, this number had reached...)',
-          },
-        ],
+        descriptionVi: 'Mô tả chi tiết nhóm số liệu còn lại và đối chiếu với nhóm đầu tiên.',
+        sentences: b2Sentences,
       },
     ];
   } else {
-    // Task 2
+    // TASK 2: Introduction (2 sentences), Body 1 (3-4 sentences), Body 2 (3-4 sentences), Conclusion (2 sentences)
+    const b1Points = extractOutlineGuidancePoints(prompt.outline?.body1, 3);
+    const b2Points = extractOutlineGuidancePoints(prompt.outline?.body2, 3);
+    const thesisText = prompt.outline?.overviewOrThesis || '';
+    const conclusionText = prompt.outline?.conclusion || '';
+
+    // 1. Introduction: 2 sentences (Hook/Background + Direct Thesis)
+    const introSentences: SentenceInput[] = [
+      {
+        id: `${promptId}_t2_intro_1`,
+        text: '',
+        placeholderHint: `Câu 1 (Background): Dẫn dắt chủ đề xã hội và paraphrase đề bài: "${prompt.question}"`,
+      },
+      {
+        id: `${promptId}_t2_intro_2`,
+        text: '',
+        placeholderHint: thesisText
+          ? `Câu 2 (Thesis Statement): Khẳng định lập trường của bạn: ${thesisText}`
+          : 'Câu 2 (Thesis Statement): Trả lời trực tiếp câu hỏi đề bài và nêu phương hướng nghị luận chính của bạn',
+      },
+    ];
+
+    // 2. Body 1: Tailored to category & prompt.outline.body1
+    const b1Sentences: SentenceInput[] = [];
+    const b1Main = b1Points[0] || 'Nêu luận điểm chính thứ nhất ủng hộ lập trường của bạn';
+    const b1Detail = b1Points[1] || 'Phân tích sâu nguyên nhân, cơ chế hoặc logic tại sao luận điểm này xác đáng';
+    const b1Example = b1Points[2] || 'Đưa ra ví dụ thực tế hoặc bằng chứng cụ thể minh chứng cho luận điểm này';
+
+    b1Sentences.push(
+      {
+        id: `${promptId}_t2_b1_1`,
+        text: '',
+        placeholderHint: `Câu 1 (Topic Sentence): ${b1Main}`,
+      },
+      {
+        id: `${promptId}_t2_b1_2`,
+        text: '',
+        placeholderHint: `Câu 2 (Explanation): ${b1Detail}`,
+      },
+      {
+        id: `${promptId}_t2_b1_3`,
+        text: '',
+        placeholderHint: `Câu 3 (Example/Evidence): ${b1Example}`,
+      }
+    );
+
+    // If Discuss Both Views or 4 points available, add impact/evaluation sentence
+    if (category.toLowerCase().includes('discuss') || b1Points.length >= 4) {
+      b1Sentences.push({
+        id: `${promptId}_t2_b1_4`,
+        text: '',
+        placeholderHint: b1Points[3]
+          ? `Câu 4 (Evaluation/Mini-conclusion): ${b1Points[3]}`
+          : 'Câu 4 (Mini-conclusion): Đánh giá sức nặng hoặc tính xác đáng của góc nhìn trên',
+      });
+    }
+
+    // 3. Body 2: Tailored to category & prompt.outline.body2
+    const b2Sentences: SentenceInput[] = [];
+    const b2Main = b2Points[0] || 'Nêu luận điểm chính thứ hai (hoặc phân tích góc nhìn ưu tiên của bạn)';
+    const b2Detail = b2Points[1] || 'Đào sâu phân tích tác động dài hạn, cơ chế hoặc giải pháp cụ thể';
+    const b2Example = b2Points[2] || 'Dẫn chứng thực tiễn hoặc chính sách điển hình chứng minh';
+
+    b2Sentences.push(
+      {
+        id: `${promptId}_t2_b2_1`,
+        text: '',
+        placeholderHint: `Câu 1 (Topic Sentence): ${b2Main}`,
+      },
+      {
+        id: `${promptId}_t2_b2_2`,
+        text: '',
+        placeholderHint: `Câu 2 (Explanation/Solution): ${b2Detail}`,
+      },
+      {
+        id: `${promptId}_t2_b2_3`,
+        text: '',
+        placeholderHint: `Câu 3 (Example/Impact): ${b2Example}`,
+      }
+    );
+
+    // If Problem & Solution or Discuss Both Views, add expected outcome/affirmation
+    if (category.toLowerCase().includes('discuss') || category.toLowerCase().includes('problem') || b2Points.length >= 4) {
+      b2Sentences.push({
+        id: `${promptId}_t2_b2_4`,
+        text: '',
+        placeholderHint: b2Points[3]
+          ? `Câu 4 (Outcome/Affirmation): ${b2Points[3]}`
+          : 'Câu 4 (Affirmation): Khẳng định lại giá trị vượt trội hoặc kết quả kỳ vọng đạt được',
+      });
+    }
+
+    // 4. Conclusion: 2 sentences
+    const concSentences: SentenceInput[] = [
+      {
+        id: `${promptId}_t2_conc_1`,
+        text: '',
+        placeholderHint: conclusionText
+          ? `Câu 1 (Restatement): ${conclusionText}`
+          : 'Câu 1 (Restatement): Khẳng định lại lập trường chính và tóm tắt ngắn gọn 2 luận điểm trọng tâm',
+      },
+      {
+        id: `${promptId}_t2_conc_2`,
+        text: '',
+        placeholderHint: 'Câu 2 (Final Outlook): Đưa ra một dự đoán tương lai, khuyến nghị hành động hoặc thông điệp đúc kết sâu sắc',
+      },
+    ];
+
     return [
       {
         id: 'intro',
         title: '1. Introduction (Mở bài)',
-        descriptionVi: 'Dẫn dắt chủ đề (Background statement) và nêu rõ lập trường / câu luận đề (Thesis statement).',
-        sentences: [
-          {
-            id: `${promptId}_t2_intro_1`,
-            text: '',
-            placeholderHint: 'Câu 1: Paraphrase chủ đề xã hội được nêu trong đề bài (Background sentence)',
-          },
-          {
-            id: `${promptId}_t2_intro_2`,
-            text: '',
-            placeholderHint: 'Câu 2: Nêu quan điểm / định hướng bài viết của bạn (Thesis statement)',
-          },
-        ],
+        descriptionVi: 'Dẫn dắt chủ đề (Background) và khẳng định rõ lập trường / câu luận đề (Thesis statement).',
+        sentences: introSentences,
       },
       {
         id: 'body1',
         title: '2. Body Paragraph 1 (Thân bài 1)',
-        descriptionVi: 'Phát triển luận điểm thứ nhất (Topic sentence + Giải thích nguyên nhân/hệ quả + Ví dụ minh họa).',
-        sentences: [
-          {
-            id: `${promptId}_t2_b1_1`,
-            text: '',
-            placeholderHint: 'Câu 1 (Topic Sentence): Nêu luận điểm chính thứ nhất ủng hộ lập trường của bạn',
-          },
-          {
-            id: `${promptId}_t2_b1_2`,
-            text: '',
-            placeholderHint: 'Câu 2 (Explanation): Đào sâu phân tích lý do tại sao luận điểm này xác đáng',
-          },
-          {
-            id: `${promptId}_t2_b1_3`,
-            text: '',
-            placeholderHint: 'Câu 3 (Example/Evidence): Đưa ra một ví dụ thực tế hoặc kết quả cụ thể để chứng minh',
-          },
-        ],
+        descriptionVi: 'Phát triển luận điểm thứ nhất (Topic sentence + Phân tích cơ chế + Dẫn chứng thực tế).',
+        sentences: b1Sentences,
       },
       {
         id: 'body2',
         title: '3. Body Paragraph 2 (Thân bài 2)',
-        descriptionVi: 'Phát triển luận điểm thứ hai (hoặc phản biện góc nhìn đối lập + củng cố lại quan điểm của bạn).',
-        sentences: [
-          {
-            id: `${promptId}_t2_b2_1`,
-            text: '',
-            placeholderHint: 'Câu 1 (Topic Sentence): Nêu luận điểm chính thứ hai (hoặc phân tích khía cạnh thứ hai)',
-          },
-          {
-            id: `${promptId}_t2_b2_2`,
-            text: '',
-            placeholderHint: 'Câu 2 (Explanation): Mở rộng phân tích cơ chế, tác động sâu xa đến cá nhân hoặc xã hội',
-          },
-          {
-            id: `${promptId}_t2_b2_3`,
-            text: '',
-            placeholderHint: 'Câu 3 (Example/Mini-conclusion): Đưa ra ví dụ minh chứng hoặc câu chốt khẳng định tác động',
-          },
-        ],
+        descriptionVi: 'Phát triển luận điểm thứ hai (Topic sentence + Mở rộng phân tích + Khẳng định tác động).',
+        sentences: b2Sentences,
       },
       {
         id: 'conclusion',
         title: '4. Conclusion (Kết bài)',
-        descriptionVi: 'Khẳng định lại lập trường chính và tóm tắt ngắn gọn các ý quan trọng (không đưa thêm ý tưởng mới).',
-        sentences: [
-          {
-            id: `${promptId}_t2_conc_1`,
-            text: '',
-            placeholderHint: 'Câu 1: Tóm tắt lại 2 luận điểm trọng tâm đã phân tích ở 2 thân bài',
-          },
-          {
-            id: `${promptId}_t2_conc_2`,
-            text: '',
-            placeholderHint: 'Câu 2: Tái khẳng định lập trường cuối cùng hoặc đưa ra một lời dự đoán/khuyến nghị ngắn gọn',
-          },
-        ],
+        descriptionVi: 'Khẳng định lại lập trường và đúc kết thông điệp tương lai (không thêm ý tưởng mới).',
+        sentences: concSentences,
       },
     ];
   }
+}
+
+export function createInitialBlocksForTask(taskType: 'task1' | 'task2', promptId: string): BuilderBlock[] {
+  const prompt = getPromptById(promptId);
+  if (prompt) {
+    return generateTailoredBlocksForPrompt(prompt);
+  }
+
+  // Fallback if prompt not found
+  return [
+    {
+      id: 'intro',
+      title: '1. Introduction (Mở bài)',
+      descriptionVi: 'Paraphrase lại đề bài bằng cấu trúc câu và từ đồng nghĩa học thuật.',
+      sentences: [
+        {
+          id: `${promptId}_intro_1`,
+          text: '',
+          placeholderHint: 'Câu 1: Paraphrase đề bài bằng từ đồng nghĩa học thuật',
+        },
+      ],
+    },
+    {
+      id: taskType === 'task1' ? 'overview' : 'body1',
+      title: taskType === 'task1' ? '2. Overview (Tổng quan)' : '2. Body Paragraph 1 (Thân bài 1)',
+      descriptionVi: 'Phân tích các luận điểm hoặc đặc điểm tổng thể.',
+      sentences: [
+        {
+          id: `${promptId}_b1_1`,
+          text: '',
+          placeholderHint: 'Câu 1: Luận điểm chính hoặc xu hướng nổi bật',
+        },
+        {
+          id: `${promptId}_b1_2`,
+          text: '',
+          placeholderHint: 'Câu 2: Phân tích chi tiết và dẫn chứng minh họa',
+        },
+      ],
+    },
+    {
+      id: taskType === 'task1' ? 'body1' : 'body2',
+      title: taskType === 'task1' ? '3. Body Paragraph 1 (Thân bài 1)' : '3. Body Paragraph 2 (Thân bài 2)',
+      descriptionVi: 'Mô tả chi tiết nhóm số liệu hoặc luận điểm kế tiếp.',
+      sentences: [
+        {
+          id: `${promptId}_b2_1`,
+          text: '',
+          placeholderHint: 'Câu 1: Luận điểm thứ hai hoặc nhóm số liệu tiếp theo',
+        },
+        {
+          id: `${promptId}_b2_2`,
+          text: '',
+          placeholderHint: 'Câu 2: Dữ liệu chi tiết hoặc đối chiếu so sánh',
+        },
+      ],
+    },
+    {
+      id: taskType === 'task1' ? 'body2' : 'conclusion',
+      title: taskType === 'task1' ? '4. Body Paragraph 2 (Thân bài 2)' : '4. Conclusion (Kết bài)',
+      descriptionVi: 'Hoàn thiện đoạn thân bài còn lại hoặc đúc kết toàn bài.',
+      sentences: [
+        {
+          id: `${promptId}_end_1`,
+          text: '',
+          placeholderHint: 'Câu 1: Khẳng định lại luận điểm hoặc số liệu chốt cuối',
+        },
+        {
+          id: `${promptId}_end_2`,
+          text: '',
+          placeholderHint: 'Câu 2: Đưa ra nhận định hoặc thông điệp kết luận',
+        },
+      ],
+    },
+  ];
 }
 
 // ==============================================================================
@@ -421,6 +685,53 @@ export function loadBuilderState(): BuilderState | null {
       };
 
       saveBuilderState(parsed);
+    }
+
+    // Upgrade any unwritten nodes to the new AI-tailored block structure
+    let hasUpgrades = false;
+    if (parsed.levels && parsed.levels.length > 0) {
+      parsed.levels = parsed.levels.map((lvl: BuilderLevel) => {
+        let t1Node = lvl.task1Node;
+        let t2Node = lvl.task2Node;
+
+        const isT1Unwritten =
+          t1Node.status !== 'completed' &&
+          t1Node.blocks.every((b) => b.sentences.every((s) => !s.text || s.text.trim() === ''));
+        if (isT1Unwritten) {
+          const p1 = getPromptById(t1Node.promptId);
+          if (p1) {
+            t1Node = {
+              ...t1Node,
+              blocks: generateTailoredBlocksForPrompt(p1),
+            };
+            hasUpgrades = true;
+          }
+        }
+
+        const isT2Unwritten =
+          t2Node.status !== 'completed' &&
+          t2Node.blocks.every((b) => b.sentences.every((s) => !s.text || s.text.trim() === ''));
+        if (isT2Unwritten) {
+          const p2 = getPromptById(t2Node.promptId);
+          if (p2) {
+            t2Node = {
+              ...t2Node,
+              blocks: generateTailoredBlocksForPrompt(p2),
+            };
+            hasUpgrades = true;
+          }
+        }
+
+        return {
+          ...lvl,
+          task1Node: t1Node,
+          task2Node: t2Node,
+        };
+      });
+
+      if (hasUpgrades) {
+        saveBuilderState(parsed);
+      }
     }
 
     return parsed;

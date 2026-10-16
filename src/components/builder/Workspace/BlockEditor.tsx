@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import {
-  Plus,
   ArrowRight,
   ArrowLeft,
   CheckCircle2,
@@ -84,29 +83,6 @@ export default function BlockEditor({
   ) => {
     const updated = [...blocks];
     updated[safeIndex].sentences[sentenceIdx].paraphraseResult = result;
-    onChangeBlocks(updated);
-  };
-
-  // Add new sentence to current active block
-  const handleAddSentence = () => {
-    const updated = [...blocks];
-    const currentBlock = updated[safeIndex];
-    const newIdx = currentBlock.sentences.length + 1;
-    const newId = `${currentBlock.id}_extra_${Date.now()}`;
-
-    currentBlock.sentences.push({
-      id: newId,
-      text: '',
-      placeholderHint: `Câu ${newIdx}: Viết tiếp ý bổ trợ cho đoạn ${currentBlock.title}...`,
-    });
-
-    onChangeBlocks(updated);
-  };
-
-  // Delete sentence
-  const handleDeleteSentence = (sentenceIdx: number) => {
-    const updated = [...blocks];
-    updated[safeIndex].sentences.splice(sentenceIdx, 1);
     onChangeBlocks(updated);
   };
 
@@ -211,14 +187,10 @@ export default function BlockEditor({
               )}
             </button>
 
-            <button
-              type="button"
-              onClick={handleAddSentence}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-dashed border-gray-300 dark:border-zinc-700 hover:border-emerald-500 text-xs font-bold text-gray-700 dark:text-zinc-300 hover:text-emerald-600 transition"
-            >
-              <Plus className="w-3.5 h-3.5 text-emerald-600" />
-              <span>+ Thêm câu</span>
-            </button>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 text-xs font-bold">
+              <Sparkles className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+              <span>Lộ trình AI: {activeBlock.sentences.length} câu</span>
+            </span>
           </div>
         </div>
 
@@ -247,21 +219,10 @@ export default function BlockEditor({
                 onUpdateParaphraseResult={(res) => handleParaphraseResultChange(sIdx, res)}
                 onMoveUp={() => handleMoveUp(sIdx)}
                 onMoveDown={() => handleMoveDown(sIdx)}
-                onDelete={() => handleDeleteSentence(sIdx)}
               />
             );
           })}
         </div>
-
-        {/* Add another sentence button */}
-        <button
-          type="button"
-          onClick={handleAddSentence}
-          className="w-full py-2.5 rounded-xl border border-dashed border-gray-300 dark:border-zinc-700 hover:border-emerald-500 hover:bg-emerald-50/50 dark:hover:bg-emerald-950/20 text-xs font-bold text-gray-600 dark:text-zinc-400 hover:text-emerald-700 dark:hover:text-emerald-400 transition flex items-center justify-center gap-1.5"
-        >
-          <Plus className="w-4 h-4 text-emerald-600" />
-          <span>Thêm câu văn tiếp theo vào {activeBlock.title}</span>
-        </button>
 
         {/* 3. BOTTOM BLOCK NAVIGATION CONTROLS */}
         <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-zinc-800">
