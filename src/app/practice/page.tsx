@@ -35,6 +35,7 @@ function PracticeContent() {
 
   // Mode initialization
   const modeParam = (searchParams.get('mode') as TaskType) || 'task1';
+  const promptIdParam = searchParams.get('promptId');
   const [mode, setMode] = useState<TaskType>(modeParam);
   const isFullTest = mode === 'full_test';
 
@@ -182,16 +183,23 @@ function PracticeContent() {
     } else if (modeParam === 'task1') {
       let t1P: PromptSeed | undefined;
 
-      if (existingSession && existingSession.promptId) {
+      if (promptIdParam) {
+        t1P = getPromptById(promptIdParam);
+      } else if (existingSession && existingSession.promptId) {
         t1P = getPromptById(existingSession.promptId);
       }
 
-      if (!t1P) {
+      // If user comes from a specific prompt link and it differs from existing session
+      const isSwitchingPrompt = promptIdParam && existingSession?.promptId !== promptIdParam;
+
+      if (!t1P || isSwitchingPrompt) {
+        if (!t1P) {
+          const lastT1 = getLastCompletedPromptId('task1');
+          t1P = getRandomPrompt('task1', lastT1);
+        }
         // Brand new session: reset editor
         setTask1Essay('');
         setTask1Notes('');
-        const lastT1 = getLastCompletedPromptId('task1');
-        t1P = getRandomPrompt('task1', lastT1);
         clearDraft(`single_task1_${t1P.id}`);
         saveActiveSession({
           mode: 'task1',
@@ -216,16 +224,23 @@ function PracticeContent() {
       // task2
       let t2P: PromptSeed | undefined;
 
-      if (existingSession && existingSession.promptId) {
+      if (promptIdParam) {
+        t2P = getPromptById(promptIdParam);
+      } else if (existingSession && existingSession.promptId) {
         t2P = getPromptById(existingSession.promptId);
       }
 
-      if (!t2P) {
+      // If user comes from a specific prompt link and it differs from existing session
+      const isSwitchingPrompt = promptIdParam && existingSession?.promptId !== promptIdParam;
+
+      if (!t2P || isSwitchingPrompt) {
+        if (!t2P) {
+          const lastT2 = getLastCompletedPromptId('task2');
+          t2P = getRandomPrompt('task2', lastT2);
+        }
         // Brand new session: reset editor
         setTask2Essay('');
         setTask2Notes('');
-        const lastT2 = getLastCompletedPromptId('task2');
-        t2P = getRandomPrompt('task2', lastT2);
         clearDraft(`single_task2_${t2P.id}`);
         saveActiveSession({
           mode: 'task2',
@@ -249,7 +264,7 @@ function PracticeContent() {
     }
 
     setIsSessionLoaded(true);
-  }, [modeParam]);
+  }, [modeParam, promptIdParam]);
 
   // Timer Tick Interval (respects pause state and session load)
   useEffect(() => {
@@ -731,6 +746,9 @@ function PracticeContent() {
         startedAt: Date.now(),
       });
       setTimeRemaining(20 * 60);
+      if (typeof window !== 'undefined') {
+        window.history.replaceState(null, '', `/practice?mode=task1&promptId=${newT1.id}`);
+      }
     } else {
       // task2
       const lastT2 = getLastCompletedPromptId('task2');
@@ -747,6 +765,9 @@ function PracticeContent() {
         startedAt: Date.now(),
       });
       setTimeRemaining(40 * 60);
+      if (typeof window !== 'undefined') {
+        window.history.replaceState(null, '', `/practice?mode=task2&promptId=${newT2.id}`);
+      }
     }
 
     // Refresh exam security token & reset telemetry

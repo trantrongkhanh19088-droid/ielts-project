@@ -352,10 +352,10 @@ export default function HomePage() {
                       <p className="text-xs text-gray-500 line-clamp-2 mt-1">{p.question}</p>
                     </div>
                     <Link
-                      href="/practice?mode=task1"
+                      href={`/practice?mode=task1&promptId=${p.id}`}
                       className="inline-flex items-center justify-between text-xs font-semibold text-sky-600 hover:text-sky-700 pt-2 border-t border-gray-100 dark:border-zinc-800"
                     >
-                      <span>Vào luyện Task 1 (Ngẫu nhiên)</span>
+                      <span>Vào luyện đề này</span>
                       <ChevronRight className="w-3.5 h-3.5" />
                     </Link>
                   </div>
@@ -412,10 +412,10 @@ export default function HomePage() {
                       <p className="text-xs text-gray-500 line-clamp-2 mt-1">{p.question}</p>
                     </div>
                     <Link
-                      href="/practice?mode=task2"
+                      href={`/practice?mode=task2&promptId=${p.id}`}
                       className="inline-flex items-center justify-between text-xs font-semibold text-emerald-600 hover:text-emerald-700 pt-2 border-t border-gray-100 dark:border-zinc-800"
                     >
-                      <span>Vào luyện Task 2 (Ngẫu nhiên)</span>
+                      <span>Vào luyện đề này</span>
                       <ChevronRight className="w-3.5 h-3.5" />
                     </Link>
                   </div>
