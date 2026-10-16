@@ -132,7 +132,7 @@ export default function AuthPage() {
             <>
               <div>
                 <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
-                  Họ và Tên
+                  Tên người dùng:
                 </label>
                 <div className="relative">
                   <User className="w-4 h-4 absolute left-3 top-2.5 text-gray-400" />
@@ -141,7 +141,7 @@ export default function AuthPage() {
                     required
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    placeholder="Nguyễn Văn A"
+                    placeholder="Enter your username"
                     className="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 dark:border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white dark:bg-zinc-800 text-gray-900 dark:text-gray-100"
                   />
                 </div>
@@ -173,7 +173,7 @@ export default function AuthPage() {
 
           <div>
             <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
-              Địa chỉ Email
+              Email:
             </label>
             <div className="relative">
               <Mail className="w-4 h-4 absolute left-3 top-2.5 text-gray-400" />
@@ -182,7 +182,7 @@ export default function AuthPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="thi.sinh@example.com"
+                placeholder="Enter your email"
                 className="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 dark:border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white dark:bg-zinc-800 text-gray-900 dark:text-gray-100"
               />
             </div>
@@ -190,7 +190,7 @@ export default function AuthPage() {
 
           <div>
             <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
-              Mật khẩu
+              Mật khẩu:
             </label>
             <div className="relative">
               <Lock className="w-4 h-4 absolute left-3 top-2.5 text-gray-400" />

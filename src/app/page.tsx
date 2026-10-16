@@ -91,26 +91,6 @@ export default function HomePage() {
               <span>Luyện Riêng Task 2</span>
             </Link>
           </div>
-
-          {/* Stats / Trust Badges */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto pt-8 text-center">
-            <div className="p-3 bg-white dark:bg-zinc-900 rounded-lg border border-gray-200/80 dark:border-zinc-800">
-              <div className="text-xl font-extrabold text-sky-600 font-mono">100%</div>
-              <div className="text-[11px] text-gray-500 font-medium">Chuẩn Inspera IDP/BC</div>
-            </div>
-            <div className="p-3 bg-white dark:bg-zinc-900 rounded-lg border border-gray-200/80 dark:border-zinc-800">
-              <div className="text-xl font-extrabold text-sky-600 font-mono">Gemini 2.5</div>
-              <div className="text-[11px] text-gray-500 font-medium">AI Multimodal Vision</div>
-            </div>
-            <div className="p-3 bg-white dark:bg-zinc-900 rounded-lg border border-gray-200/80 dark:border-zinc-800">
-              <div className="text-xl font-extrabold text-sky-600 font-mono">Band 8.5+</div>
-              <div className="text-[11px] text-gray-500 font-medium">Bài mẫu &amp; Nâng cấp từ vựng</div>
-            </div>
-            <div className="p-3 bg-white dark:bg-zinc-900 rounded-lg border border-gray-200/80 dark:border-zinc-800">
-              <div className="text-xl font-extrabold text-sky-600 font-mono">BYOK Free</div>
-              <div className="text-[11px] text-gray-500 font-medium">Hỗ trợ API Key cá nhân</div>
-            </div>
-          </div>
         </div>
       </section>
 
