@@ -14,6 +14,7 @@ import {
   ChevronDown,
   X,
   Check,
+  Sprout,
 } from 'lucide-react';
 import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase/client';
 
@@ -148,6 +149,20 @@ export default function Navbar() {
 
             {/* Nav links */}
             <div className="hidden md:flex items-center gap-1 text-sm font-medium">
+              <Link
+                href="/builder"
+                className={`px-3 py-2 rounded-lg transition flex items-center gap-1.5 ${
+                  pathname === '/builder'
+                    ? 'text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 font-bold'
+                    : 'text-gray-700 dark:text-gray-200 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50/50 dark:hover:bg-zinc-900'
+                }`}
+              >
+                <Sprout className="w-4 h-4 text-emerald-600 animate-pulse" />
+                <span className="font-bold">Writing Builder</span>
+                <span className="px-1.5 py-0.5 rounded text-[9px] font-extrabold uppercase bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
+                  Mới
+                </span>
+              </Link>
               <Link
                 href="/practice?mode=task1"
                 className={`px-3 py-2 rounded-lg transition ${

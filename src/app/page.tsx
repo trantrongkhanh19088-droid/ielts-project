@@ -18,6 +18,7 @@ import {
   MessageSquare,
   HelpCircle,
   Search,
+  Sprout,
 } from 'lucide-react';
 import { TASK_1_SEEDS, TASK_2_SEEDS } from '@/lib/data/seed-prompts';
 
@@ -67,6 +68,17 @@ export default function HomePage() {
 
           {/* Action CTAs */}
           <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+            <Link
+              href="/builder"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-extrabold text-sm shadow-xl shadow-emerald-600/30 transition transform hover:-translate-y-0.5"
+            >
+              <Sprout className="w-4 h-4 text-lime-200 animate-pulse" />
+              <span>Writing Builder (Cây Đậu N Tầng)</span>
+              <span className="px-1.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-white/20 text-white">
+                Mới
+              </span>
+            </Link>
+
             <Link
               href="/practice?mode=full_test"
               className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm shadow-lg shadow-sky-600/25 transition transform hover:-translate-y-0.5"
@@ -218,6 +230,34 @@ export default function HomePage() {
               >
                 <span>Bắt đầu Thi Full Test</span>
                 <ChevronRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+
+          {/* Writing Builder Gamified Banner */}
+          <div className="p-8 rounded-3xl bg-gradient-to-r from-emerald-900 via-teal-900 to-slate-900 text-white relative overflow-hidden shadow-2xl border border-emerald-500/30">
+            <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
+              <div className="space-y-3 max-w-2xl">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-lime-300 border border-emerald-500/40 text-xs font-bold uppercase tracking-wider">
+                  <Sprout className="w-3.5 h-3.5" />
+                  <span>Tính năng mới &bull; Gamified Learning Path</span>
+                </div>
+                <h3 className="text-2xl sm:text-3xl font-black tracking-tight">
+                  Writing Builder: Lộ Trình Cây Đậu N Tầng &amp; Viết Từng Câu Cùng AI
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
+                  Thiết lập số ngày học và band điểm mục tiêu để tạo Cây Đậu thông minh. Trải nghiệm phương pháp cầm tay chỉ việc: phân tích đề qua câu hỏi trắc nghiệm, lập dàn ý, soạn thảo theo từng khối câu văn với 2 nút AI chuyên biệt <strong>Check</strong> (kiểm tra lỗi) và <strong>Update</strong> (nâng cấp câu kèm từ vựng &amp; collocations).
+                </p>
+              </div>
+
+              <Link
+                href="/builder"
+                className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-sm shadow-xl shadow-emerald-500/25 transition transform hover:-translate-y-0.5 shrink-0"
+              >
+                <Sprout className="w-5 h-5 text-emerald-950" />
+                <span>Trồng Cây Đậu Của Bạn Ngay</span>
+                <ChevronRight className="w-4 h-4 text-emerald-950" />
               </Link>
             </div>
           </div>

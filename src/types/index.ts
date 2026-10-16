@@ -107,3 +107,5 @@ export interface HighlightItem {
   text: string;
   color?: string;
 }
+
+export * from './builder';
