@@ -157,3 +157,61 @@ export function clearDraft(key: string): void {
     console.error('Failed to clear draft', err);
   }
 }
+
+// Active session data interface & persistence
+export interface ActiveSessionData {
+  mode: TaskType;
+  promptId?: string;
+  task1PromptId?: string;
+  task2PromptId?: string;
+  startedAt: number;
+}
+
+const ACTIVE_SESSION_PREFIX = 'cd_ielts_active_session_';
+const LAST_COMPLETED_PREFIX = 'cd_ielts_last_completed_';
+
+export function getActiveSession(mode: TaskType): ActiveSessionData | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = localStorage.getItem(`${ACTIVE_SESSION_PREFIX}${mode}`);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+export function saveActiveSession(session: ActiveSessionData): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(`${ACTIVE_SESSION_PREFIX}${session.mode}`, JSON.stringify(session));
+  } catch (err) {
+    console.error('Failed to save active session', err);
+  }
+}
+
+export function clearActiveSession(mode: TaskType): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.removeItem(`${ACTIVE_SESSION_PREFIX}${mode}`);
+  } catch (err) {
+    console.error('Failed to clear active session', err);
+  }
+}
+
+export function getLastCompletedPromptId(taskType: 'task1' | 'task2'): string | undefined {
+  if (typeof window === 'undefined') return undefined;
+  try {
+    return localStorage.getItem(`${LAST_COMPLETED_PREFIX}${taskType}`) || undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+export function setLastCompletedPromptId(taskType: 'task1' | 'task2', id: string): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(`${LAST_COMPLETED_PREFIX}${taskType}`, id);
+  } catch (err) {
+    console.error('Failed to save last completed prompt id', err);
+  }
+}

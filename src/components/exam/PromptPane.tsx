@@ -28,8 +28,6 @@ interface PromptPaneProps {
 
 export default function PromptPane({
   prompt,
-  availablePrompts,
-  onSelectPrompt,
   contrastMode,
   fontSize,
   scratchpadNotes,
@@ -211,31 +209,20 @@ export default function PromptPane({
                   )}
                 </div>
 
-                {availablePrompts && availablePrompts.length > 1 && onSelectPrompt && (
-                  <div className="flex items-center gap-1.5 font-normal">
-                    <span className="text-[11px] text-gray-500 dark:text-zinc-400">Chọn đề ({availablePrompts.length}):</span>
-                    <select
-                      value={prompt.id}
-                      onChange={(e) => {
-                        const found = availablePrompts.find((p) => p.id === e.target.value);
-                        if (found) onSelectPrompt(found);
-                      }}
-                      className={`text-xs px-2.5 py-1 rounded-lg border font-medium outline-none cursor-pointer max-w-[240px] truncate transition ${
-                        contrastMode === 'yellow-on-black'
-                          ? 'bg-black text-[#ffe600] border-[#ffe600]'
-                          : contrastMode === 'white-on-black'
-                          ? 'bg-zinc-800 text-white border-zinc-700'
-                          : 'bg-gray-50 dark:bg-zinc-800 text-gray-800 dark:text-zinc-200 border-gray-300 dark:border-zinc-700 hover:border-sky-500'
-                      }`}
-                    >
-                      {availablePrompts.map((p, idx) => (
-                        <option key={p.id} value={p.id}>
-                          {idx + 1}. [{p.category}] {p.title}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                )}
+                <div className="flex items-center gap-1.5">
+                  <span
+                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-semibold border ${
+                      contrastMode === 'yellow-on-black'
+                        ? 'bg-black border-[#ffe600] text-[#ffe600]'
+                        : contrastMode === 'white-on-black'
+                        ? 'bg-zinc-800 border-zinc-700 text-zinc-300'
+                        : 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400'
+                    }`}
+                  >
+                    <Sparkles className="w-3 h-3 text-emerald-500 shrink-0" />
+                    <span>Đề thi chỉ định ngẫu nhiên</span>
+                  </span>
+                </div>
               </div>
 
               <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-zinc-400 pt-1">

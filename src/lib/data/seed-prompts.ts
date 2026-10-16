@@ -3078,8 +3078,10 @@ export function getPromptById(id: string): PromptSeed | undefined {
   return [...TASK_1_SEEDS, ...TASK_2_SEEDS].find((p) => p.id === id);
 }
 
-export function getRandomPrompt(taskType: 'task1' | 'task2'): PromptSeed {
-  const pool = taskType === 'task1' ? TASK_1_SEEDS : TASK_2_SEEDS;
-  const randomIndex = Math.floor(Math.random() * pool.length);
-  return pool[randomIndex];
+export function getRandomPrompt(taskType: 'task1' | 'task2', excludeId?: string): PromptSeed {
+  const all = taskType === 'task1' ? TASK_1_SEEDS : TASK_2_SEEDS;
+  const pool = excludeId ? all.filter((p) => p.id !== excludeId) : all;
+  const finalPool = pool.length > 0 ? pool : all;
+  const randomIndex = Math.floor(Math.random() * finalPool.length);
+  return finalPool[randomIndex];
 }
