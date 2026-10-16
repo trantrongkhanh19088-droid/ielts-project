@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Lock,
   CheckCircle2,
@@ -30,6 +30,7 @@ export default function BeanstalkMap({ levels, onSelectNode }: BeanstalkMapProps
   // We display levels from N down to 1 (top to bottom on screen), so level 1 is at the bottom like a real beanstalk!
   const reversedLevels = [...levels].sort((a, b) => b.levelNumber - a.levelNumber);
   const currentLevelRef = useRef<HTMLDivElement | null>(null);
+  const [isCurrentLevelVisible, setIsCurrentLevelVisible] = useState(false);
 
   // Find the lowest active level (the current climbing front)
   const currentActiveLevel = levels.find((lvl) => {
@@ -39,6 +40,27 @@ export default function BeanstalkMap({ levels, onSelectNode }: BeanstalkMapProps
     );
   }) || levels[0];
 
+  // Observer to track whether the active climbing level is in user's viewport
+  useEffect(() => {
+    const el = currentLevelRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsCurrentLevelVisible(entry.isIntersecting);
+      },
+      {
+        threshold: 0.2,
+      }
+    );
+
+    observer.observe(el);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [currentActiveLevel?.levelNumber]);
+
   const scrollToCurrentLevel = () => {
     if (currentLevelRef.current) {
       currentLevelRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -46,7 +68,7 @@ export default function BeanstalkMap({ levels, onSelectNode }: BeanstalkMapProps
   };
 
   return (
-    <div className="relative w-full max-w-6xl mx-auto px-3 sm:px-6 py-10 flex flex-col items-center select-none overflow-hidden">
+    <div className="relative w-full max-w-6xl mx-auto px-3 sm:px-6 py-6 flex flex-col items-center select-none overflow-hidden">
       {/* BACKGROUND FLOATING CLOUDS & SKY PARTICLES */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-40 dark:opacity-20 z-0">
         <div className="absolute top-10 left-8 animate-pulse duration-1000">
@@ -63,25 +85,10 @@ export default function BeanstalkMap({ levels, onSelectNode }: BeanstalkMapProps
         </div>
       </div>
 
-      {/* QUICK SCROLL SHORTCUT PILL - PLACED PROMINENTLY ABOVE THE CROWN */}
-      {currentActiveLevel && (
-        <div className="relative z-20 mb-8 flex justify-center">
-          <button
-            type="button"
-            onClick={scrollToCurrentLevel}
-            className="group inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold shadow-xl shadow-emerald-600/30 border-2 border-emerald-400/50 transition-all transform hover:scale-105 active:scale-95 cursor-pointer"
-          >
-            <Compass className="w-4 h-4 text-amber-300 animate-spin" style={{ animationDuration: '6s' }} />
-            <span>Tiếp tục leo: Tầng {currentActiveLevel.levelNumber}</span>
-            <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </button>
-        </div>
-      )}
-
       {/* ========================================================================= */}
       {/* 1. SUMMIT: THE GOLDEN CLOUD CASTLE AT LEVEL N */}
       {/* ========================================================================= */}
-      <div className="flex flex-col items-center mb-10 relative z-10 text-center">
+      <div className="flex flex-col items-center pt-4 mb-10 relative z-10 text-center">
         {/* Castle Visual Container */}
         <div className="relative group">
           {/* Glowing Aura */}
@@ -276,6 +283,29 @@ export default function BeanstalkMap({ levels, onSelectNode }: BeanstalkMapProps
           </div>
         </div>
       </div>
+
+      {/* FLOATING ACTION BUBBLE: TIẾP TỤC LEO (ONLY SHOWN WHEN CURRENT LEVEL IS NOT IN VIEW) */}
+      {currentActiveLevel && (
+        <div
+          className={`fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-50 transition-all duration-300 transform ${
+            isCurrentLevelVisible
+              ? 'opacity-0 translate-y-6 pointer-events-none scale-90'
+              : 'opacity-100 translate-y-0 scale-100'
+          }`}
+        >
+          <button
+            type="button"
+            onClick={scrollToCurrentLevel}
+            className="group flex items-center gap-2.5 px-5 py-3 rounded-full bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-700 hover:to-teal-700 text-white text-xs sm:text-sm font-extrabold shadow-2xl shadow-emerald-600/40 border-2 border-emerald-300/60 backdrop-blur-md transition-all hover:scale-105 active:scale-95 animate-bounce hover:animate-none cursor-pointer"
+          >
+            <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+              <Compass className="w-3.5 h-3.5 text-amber-300 animate-spin" style={{ animationDuration: '6s' }} />
+            </div>
+            <span>Tiếp tục leo: Tầng {currentActiveLevel.levelNumber}</span>
+            <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </button>
+        </div>
+      )}
     </div>
   );
 }
