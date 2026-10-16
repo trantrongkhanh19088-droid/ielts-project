@@ -17,8 +17,10 @@ import {
   Sprout,
   Sun,
   Moon,
+  Settings,
 } from 'lucide-react';
 import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import SettingsModal from '@/components/settings/SettingsModal';
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -26,6 +28,7 @@ export default function Navbar() {
   const [userName, setUserName] = useState<string | null>(null);
   const [targetBand, setTargetBand] = useState<number>(7.0);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [bandSaved, setBandSaved] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
@@ -260,6 +263,17 @@ export default function Navbar() {
                 </Link>
               )}
 
+              {/* System Settings Button (Theme & Builder Config) */}
+              <button
+                type="button"
+                onClick={() => setIsSettingsModalOpen(true)}
+                className="p-2 rounded-xl border border-gray-200 dark:border-zinc-800 text-gray-600 dark:text-gray-300 hover:text-sky-600 dark:hover:text-sky-400 hover:bg-gray-100 dark:hover:bg-zinc-900 transition flex items-center justify-center shadow-xs"
+                title="Cài đặt hệ thống (Giao diện & Builder)"
+                aria-label="Cài đặt"
+              >
+                <Settings className="w-4 h-4" />
+              </button>
+
               {/* Start Writing button */}
               <Link
                 href="/practice?mode=full_test"
@@ -333,49 +347,24 @@ export default function Navbar() {
                 </div>
               </div>
 
-              {/* Theme Selector (Light / Dark Mode) */}
-              <div className="space-y-2 pt-2 border-t border-gray-100 dark:border-zinc-800">
-                <label className="text-xs font-bold text-gray-700 dark:text-gray-300 flex items-center justify-between">
-                  <span className="flex items-center gap-1.5">
-                    {theme === 'dark' ? (
-                      <Moon className="w-3.5 h-3.5 text-indigo-400" />
-                    ) : (
-                      <Sun className="w-3.5 h-3.5 text-amber-500" />
-                    )}
-                    Chế độ giao diện:
+              {/* Settings Shortcut */}
+              <div className="pt-2 border-t border-gray-100 dark:border-zinc-800">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsProfileModalOpen(false);
+                    setIsSettingsModalOpen(true);
+                  }}
+                  className="w-full flex items-center justify-between p-2.5 rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-800 text-gray-700 dark:text-gray-300 transition text-xs"
+                >
+                  <span className="font-semibold flex items-center gap-2">
+                    <Settings className="w-3.5 h-3.5 text-sky-600" />
+                    Cài đặt hệ thống (Giao diện &amp; Builder)
                   </span>
-                  <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-300">
-                    {theme === 'dark' ? 'Tối (Dark)' : 'Sáng (Light)'}
+                  <span className="text-[11px] font-semibold text-gray-400">
+                    {theme === 'dark' ? '🌙 Tối' : '☀️ Sáng'}
                   </span>
-                </label>
-
-                <div className="grid grid-cols-2 gap-2 p-1 bg-gray-100/80 dark:bg-zinc-800/80 rounded-xl border border-gray-200 dark:border-zinc-700/60">
-                  <button
-                    type="button"
-                    onClick={() => handleThemeChange('light')}
-                    className={`flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold transition cursor-pointer ${
-                      theme === 'light'
-                        ? 'bg-white text-gray-900 shadow-sm border border-gray-200 dark:border-transparent'
-                        : 'text-gray-500 hover:text-gray-900 dark:hover:text-white'
-                    }`}
-                  >
-                    <Sun className="w-3.5 h-3.5 text-amber-500" />
-                    <span>Sáng (Light)</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => handleThemeChange('dark')}
-                    className={`flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold transition cursor-pointer ${
-                      theme === 'dark'
-                        ? 'bg-zinc-900 text-white shadow-sm border border-zinc-700'
-                        : 'text-gray-500 hover:text-gray-900 dark:hover:text-white'
-                    }`}
-                  >
-                    <Moon className="w-3.5 h-3.5 text-indigo-400" />
-                    <span>Tối (Dark)</span>
-                  </button>
-                </div>
+                </button>
               </div>
 
               {/* Quick Navigation */}
@@ -403,6 +392,14 @@ export default function Navbar() {
           </div>
         </div>
       )}
+
+      {/* Settings Modal (Theme, Builder Auto-Suggest, BYOK Gemini) */}
+      <SettingsModal
+        isOpen={isSettingsModalOpen}
+        onClose={() => setIsSettingsModalOpen(false)}
+        currentTheme={theme}
+        onThemeChange={handleThemeChange}
+      />
     </>
   );
 }

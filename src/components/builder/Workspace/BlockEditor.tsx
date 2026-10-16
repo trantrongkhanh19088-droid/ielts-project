@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ArrowRight,
   ArrowLeft,
@@ -17,6 +17,7 @@ import {
   SentenceCheckResult,
   SentenceParaphraseResult,
 } from '@/types';
+import { getBuilderAutoSuggest, setBuilderAutoSuggest } from '@/lib/builder';
 import SentenceInputCard from './SentenceInputCard';
 
 interface BlockEditorProps {
@@ -36,6 +37,26 @@ export default function BlockEditor({
 }: BlockEditorProps) {
   const [activeBlockIndex, setActiveBlockIndex] = useState(0);
   const [showAllHints, setShowAllHints] = useState(true);
+
+  // Sync auto-suggest setting on mount and listen to settings updates
+  useEffect(() => {
+    setShowAllHints(getBuilderAutoSuggest());
+
+    const handleSettingsChange = () => {
+      setShowAllHints(getBuilderAutoSuggest());
+    };
+
+    window.addEventListener('builder_settings_changed', handleSettingsChange);
+    return () => {
+      window.removeEventListener('builder_settings_changed', handleSettingsChange);
+    };
+  }, []);
+
+  const handleToggleHints = () => {
+    const nextVal = !showAllHints;
+    setShowAllHints(nextVal);
+    setBuilderAutoSuggest(nextVal);
+  };
 
   // Safeguard index
   const safeIndex = Math.min(Math.max(0, activeBlockIndex), blocks.length - 1);
@@ -170,7 +191,7 @@ export default function BlockEditor({
             {/* Master Toggle for Writing Hints */}
             <button
               type="button"
-              onClick={() => setShowAllHints(!showAllHints)}
+              onClick={handleToggleHints}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-gray-200 dark:border-zinc-700 hover:bg-gray-100 dark:hover:bg-zinc-800 text-xs font-semibold text-gray-700 dark:text-zinc-300 transition cursor-pointer"
               title={showAllHints ? 'Ẩn tất cả gợi ý viết' : 'Hiện tất cả gợi ý viết'}
             >

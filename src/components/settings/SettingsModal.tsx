@@ -1,0 +1,275 @@
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import {
+  Settings,
+  X,
+  Sun,
+  Moon,
+  Eye,
+  EyeOff,
+  Key,
+  Check,
+  Sparkles,
+  ExternalLink,
+  ShieldCheck,
+  Sliders,
+} from 'lucide-react';
+import { getUserApiKey, setUserApiKey } from '@/lib/utils';
+import { getBuilderAutoSuggest, setBuilderAutoSuggest } from '@/lib/builder';
+
+interface SettingsModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  currentTheme: 'light' | 'dark';
+  onThemeChange: (newTheme: 'light' | 'dark') => void;
+}
+
+export default function SettingsModal({
+  isOpen,
+  onClose,
+  currentTheme,
+  onThemeChange,
+}: SettingsModalProps) {
+  const [autoSuggest, setAutoSuggestState] = useState<boolean>(true);
+  const [apiKey, setApiKey] = useState('');
+  const [isApiKeySaved, setIsApiKeySaved] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setAutoSuggestState(getBuilderAutoSuggest());
+      setApiKey(getUserApiKey() || '');
+    }
+  }, [isOpen]);
+
+  if (!isOpen) return null;
+
+  const handleToggleAutoSuggest = () => {
+    const nextVal = !autoSuggest;
+    setAutoSuggestState(nextVal);
+    setBuilderAutoSuggest(nextVal);
+  };
+
+  const handleSaveApiKey = () => {
+    setUserApiKey(apiKey.trim());
+    setIsApiKeySaved(true);
+    setTimeout(() => setIsApiKeySaved(false), 2000);
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="max-w-md w-full bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-zinc-800 bg-gray-50/50 dark:bg-zinc-800/40">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-sky-100 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 flex items-center justify-center shadow-xs">
+              <Settings className="w-4 h-4" />
+            </div>
+            <div>
+              <h3 className="font-bold text-sm text-gray-900 dark:text-gray-100">
+                Cài Đặt Hệ Thống
+              </h3>
+              <p className="text-[11px] text-gray-500 dark:text-gray-400">
+                Tùy chỉnh giao diện &amp; tính năng luyện thi
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-zinc-800 transition"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+
+        {/* Content Body */}
+        <div className="p-6 space-y-6 overflow-y-auto">
+          {/* Section 1: Light / Dark Mode Toggle */}
+          <div className="space-y-3">
+            <label className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
+              <Sliders className="w-3.5 h-3.5 text-sky-600" />
+              <span>Chế độ giao diện (Appearance)</span>
+            </label>
+            <div className="grid grid-cols-2 gap-3">
+              {/* Light Mode Card */}
+              <button
+                type="button"
+                onClick={() => onThemeChange('light')}
+                className={`p-3.5 rounded-xl border-2 text-left transition flex flex-col gap-2 relative ${
+                  currentTheme === 'light'
+                    ? 'border-sky-600 bg-sky-50/60 dark:bg-sky-950/30 text-sky-950 dark:text-sky-100 shadow-sm'
+                    : 'border-gray-200 dark:border-zinc-800 hover:border-gray-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-800/60 text-gray-700 dark:text-gray-300'
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-950/60 text-amber-600 flex items-center justify-center">
+                    <Sun className="w-4 h-4" />
+                  </div>
+                  {currentTheme === 'light' && (
+                    <span className="w-4 h-4 rounded-full bg-sky-600 text-white flex items-center justify-center text-[10px]">
+                      <Check className="w-2.5 h-2.5 stroke-[3]" />
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <div className="font-bold text-xs">Giao diện Sáng</div>
+                  <div className="text-[10px] text-gray-500 dark:text-gray-400">
+                    Chuẩn phòng thi Inspera
+                  </div>
+                </div>
+              </button>
+
+              {/* Dark Mode Card */}
+              <button
+                type="button"
+                onClick={() => onThemeChange('dark')}
+                className={`p-3.5 rounded-xl border-2 text-left transition flex flex-col gap-2 relative ${
+                  currentTheme === 'dark'
+                    ? 'border-indigo-600 bg-indigo-50/60 dark:bg-indigo-950/30 text-indigo-950 dark:text-indigo-100 shadow-sm'
+                    : 'border-gray-200 dark:border-zinc-800 hover:border-gray-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-800/60 text-gray-700 dark:text-gray-300'
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="w-8 h-8 rounded-lg bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+                    <Moon className="w-4 h-4" />
+                  </div>
+                  {currentTheme === 'dark' && (
+                    <span className="w-4 h-4 rounded-full bg-indigo-600 text-white flex items-center justify-center text-[10px]">
+                      <Check className="w-2.5 h-2.5 stroke-[3]" />
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <div className="font-bold text-xs">Giao diện Tối</div>
+                  <div className="text-[10px] text-gray-500 dark:text-gray-400">
+                    Bảo vệ mắt ban đêm
+                  </div>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          {/* Section 2: Writing Builder Settings (Auto Suggestions Toggle) */}
+          <div className="space-y-3 pt-3 border-t border-gray-100 dark:border-zinc-800">
+            <label className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Phòng luyện câu Writing Builder</span>
+            </label>
+
+            <div className="p-4 rounded-xl border border-gray-200 dark:border-zinc-800 bg-gray-50/50 dark:bg-zinc-800/40 space-y-3">
+              <div className="flex items-start justify-between gap-4">
+                <div className="space-y-1">
+                  <div className="text-xs font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
+                    {autoSuggest ? (
+                      <Eye className="w-3.5 h-3.5 text-emerald-600" />
+                    ) : (
+                      <EyeOff className="w-3.5 h-3.5 text-gray-400" />
+                    )}
+                    <span>Tự động hiển thị gợi ý câu</span>
+                  </div>
+                  <p className="text-[11px] text-gray-500 dark:text-gray-400 leading-relaxed">
+                    Tự động mở cấu trúc mẫu và từ vựng gợi ý khi bạn chuyển sang câu mới. Tắt nếu bạn muốn tự suy nghĩ trước khi xem trợ giúp.
+                  </p>
+                </div>
+
+                {/* Custom Toggle Switch */}
+                <button
+                  type="button"
+                  onClick={handleToggleAutoSuggest}
+                  className={`w-11 h-6 shrink-0 flex items-center rounded-full p-1 transition-colors duration-200 ease-in-out cursor-pointer ${
+                    autoSuggest
+                      ? 'bg-emerald-600'
+                      : 'bg-gray-300 dark:bg-zinc-700'
+                  }`}
+                  aria-pressed={autoSuggest}
+                >
+                  <span
+                    className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform duration-200 ease-in-out ${
+                      autoSuggest ? 'translate-x-5' : 'translate-x-0'
+                    }`}
+                  />
+                </button>
+              </div>
+
+              <div className="flex items-center justify-between text-[11px] pt-1 text-gray-500 dark:text-gray-400 border-t border-gray-200/60 dark:border-zinc-700/60">
+                <span>Trạng thái:</span>
+                <span
+                  className={`font-bold px-2 py-0.5 rounded-full text-[10px] uppercase font-mono ${
+                    autoSuggest
+                      ? 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300'
+                      : 'bg-gray-200 dark:bg-zinc-700 text-gray-600 dark:text-gray-400'
+                  }`}
+                >
+                  {autoSuggest ? 'Đang BẬT gợi ý' : 'Đang TẮT (Ẩn mặc định)'}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 3: Optional Personal BYOK Gemini Key */}
+          <div className="space-y-3 pt-3 border-t border-gray-100 dark:border-zinc-800">
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
+                <Key className="w-3.5 h-3.5 text-sky-600" />
+                <span>API Key cá nhân (Tùy chọn)</span>
+              </label>
+              <a
+                href="https://aistudio.google.com/app/apikey"
+                target="_blank"
+                rel="noreferrer"
+                className="text-[11px] text-sky-600 hover:underline flex items-center gap-0.5"
+              >
+                <span>Lấy key Google AI</span>
+                <ExternalLink className="w-2.5 h-2.5" />
+              </a>
+            </div>
+
+            <p className="text-[11px] text-gray-500 dark:text-gray-400">
+              Mặc định hệ thống dùng API server. Bạn có thể nhập key Gemini cá nhân miễn phí từ Google AI Studio nếu muốn không giới hạn.
+            </p>
+
+            <div className="flex items-center gap-2">
+              <input
+                type="password"
+                value={apiKey}
+                onChange={(e) => setApiKey(e.target.value)}
+                placeholder="Dán mã AIzaSy... (Để trống nếu dùng mặc định)"
+                className="flex-1 px-3 py-2 rounded-xl border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-xs font-mono text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500"
+              />
+              <button
+                type="button"
+                onClick={handleSaveApiKey}
+                className="px-3 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold transition flex items-center gap-1 shrink-0"
+              >
+                {isApiKeySaved ? (
+                  <>
+                    <Check className="w-3.5 h-3.5" />
+                    <span>Đã lưu</span>
+                  </>
+                ) : (
+                  <span>Lưu Key</span>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="px-6 py-3.5 bg-gray-50/80 dark:bg-zinc-800/40 border-t border-gray-100 dark:border-zinc-800 flex items-center justify-between text-[11px] text-gray-400">
+          <span className="flex items-center gap-1">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
+            <span>CD-IELTS v2.4 (Inspera Official Simulator)</span>
+          </span>
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-3.5 py-1.5 rounded-lg bg-gray-200 dark:bg-zinc-700 text-gray-700 dark:text-gray-200 text-xs font-bold hover:bg-gray-300 dark:hover:bg-zinc-600 transition"
+          >
+            Đóng
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -1150,3 +1150,23 @@ export function assembleFullEssayFromBlocks(blocks: BuilderBlock[]): { text: str
     wordCount: words.length,
   };
 }
+
+const BUILDER_AUTO_SUGGEST_KEY = 'cd_ielts_builder_auto_suggest';
+
+export function getBuilderAutoSuggest(): boolean {
+  if (typeof window === 'undefined') return true;
+  try {
+    const val = localStorage.getItem(BUILDER_AUTO_SUGGEST_KEY);
+    return val === null ? true : val === 'true';
+  } catch {
+    return true;
+  }
+}
+
+export function setBuilderAutoSuggest(enabled: boolean): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(BUILDER_AUTO_SUGGEST_KEY, enabled ? 'true' : 'false');
+    window.dispatchEvent(new Event('builder_settings_changed'));
+  } catch {}
+}

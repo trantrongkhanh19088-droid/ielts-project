@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import {
   ShieldCheck,
@@ -16,8 +16,10 @@ import {
 } from 'lucide-react';
 import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase/client';
 
-export default function AuthPage() {
+function AuthContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTarget = searchParams.get('redirect') || '/dashboard';
   const configured = isSupabaseConfigured();
 
   const [isSignUp, setIsSignUp] = useState(false);
@@ -61,15 +63,15 @@ export default function AuthPage() {
             }
             setSuccessMsg('Đăng ký tài khoản thành công! Đang chuyển hướng...');
             setTimeout(() => {
-              router.push('/dashboard');
-            }, 1200);
+              router.push(redirectTarget);
+            }, 1000);
           } else {
             const { error } = await supabase.auth.signInWithPassword({
               email,
               password,
             });
             if (error) throw error;
-            router.push('/dashboard');
+            router.push(redirectTarget);
           }
         }
       } else {
@@ -83,10 +85,10 @@ export default function AuthPage() {
             signedInAt: Date.now(),
           })
         );
-        setSuccessMsg('Đăng nhập thành công! Đang chuyển đến Bảng điều khiển...');
+        setSuccessMsg('Đăng nhập thành công! Đang chuyển hướng...');
         setTimeout(() => {
-          router.push('/dashboard');
-        }, 800);
+          router.push(redirectTarget);
+        }, 600);
       }
     } catch (err: any) {
       setErrorMsg(err.message || 'Đã xảy ra lỗi trong quá trình xác thực.');
@@ -250,5 +252,19 @@ export default function AuthPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function AuthPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex-1 flex items-center justify-center p-8">
+          <div className="w-8 h-8 border-4 border-sky-600 border-t-transparent rounded-full animate-spin" />
+        </div>
+      }
+    >
+      <AuthContent />
+    </Suspense>
   );
 }
