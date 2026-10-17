@@ -7,44 +7,16 @@ import {
   checkCookieRateLimit,
   getRateLimitCookieConfig,
   signOfficialEssayRecord,
-  MAX_GRADE_REQUESTS_PER_10_MIN,
+  MAX_GRADE_REQUESTS_PER_WINDOW,
+  RATE_LIMIT_WINDOW_MS,
+  IP_BAN_DURATION_MS,
+  checkIpRateLimitAndBan,
+  createBanCookieValue,
   ClientTelemetry,
 } from '@/lib/security';
 
 // Technical guard for Vercel Hobby serverless execution limit
 export const maxDuration = 60;
-
-// In-memory fallback tracking
-const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
-const ipRequestTimestamps = new Map<string, number[]>();
-
-function checkMemoryRateLimit(ip: string): { allowed: boolean; remainingWaitSeconds: number } {
-  const now = Date.now();
-  const timestamps = ipRequestTimestamps.get(ip) || [];
-  const validTimestamps = timestamps.filter((ts) => now - ts < RATE_LIMIT_WINDOW_MS);
-
-  if (validTimestamps.length >= MAX_GRADE_REQUESTS_PER_10_MIN) {
-    const oldest = validTimestamps[0];
-    const remainingMs = RATE_LIMIT_WINDOW_MS - (now - oldest);
-    const remainingWaitSeconds = Math.max(1, Math.ceil(remainingMs / 1000));
-    ipRequestTimestamps.set(ip, validTimestamps);
-    return { allowed: false, remainingWaitSeconds };
-  }
-
-  validTimestamps.push(now);
-  ipRequestTimestamps.set(ip, validTimestamps);
-
-  // Periodic garbage collection if map grows large
-  if (ipRequestTimestamps.size > 2000) {
-    ipRequestTimestamps.forEach((list, key) => {
-      if (list.every((ts) => now - ts >= RATE_LIMIT_WINDOW_MS)) {
-        ipRequestTimestamps.delete(key);
-      }
-    });
-  }
-
-  return { allowed: true, remainingWaitSeconds: 0 };
-}
 
 interface GradeRequestBody {
   taskType: 'task1' | 'task2';
@@ -67,35 +39,33 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 2. Multi-tier Rate Limiting (Serverless-Safe Signed Cookie + IP in-memory fallback)
-    const cookieRateCheck = checkCookieRateLimit(req, MAX_GRADE_REQUESTS_PER_10_MIN, RATE_LIMIT_WINDOW_MS);
-    if (!cookieRateCheck.allowed) {
-      if (cookieRateCheck.isCooldownViolation) {
-        return NextResponse.json(
-          {
-            error: `Bạn vừa gửi bài chấm. Vui lòng chờ ít nhất ${cookieRateCheck.remainingWaitSeconds} giây trước khi gửi bài tiếp theo để bảo vệ hạn mức hệ thống.`,
-          },
-          { status: 429 }
-        );
-      }
-      const waitMinutes = Math.ceil(cookieRateCheck.remainingWaitSeconds / 60);
-      return NextResponse.json(
-        {
-          error: `Bạn đã nộp bài quá số lần quy định (tối đa ${MAX_GRADE_REQUESTS_PER_10_MIN} bài / 10 phút). Vui lòng đợi thêm khoảng ${waitMinutes} phút trước khi gửi yêu cầu chấm tiếp theo.`,
-        },
-        { status: 429 }
+    // 2. Multi-tier Rate Limiting & Anti-Spam Ban Enforcement
+    const clientIp = getTrustedClientIp(req);
+
+    // 2a. IP Rate Limit & 2-Hour Ban Check (Max 10 / 5 min; ban 2hr on repeated violations)
+    const ipCheck = checkIpRateLimitAndBan(clientIp);
+    if (!ipCheck.allowed) {
+      const response = NextResponse.json(
+        { error: ipCheck.error },
+        { status: ipCheck.isBanned ? 403 : 429 }
       );
+      if (ipCheck.isBanned) {
+        const banCookieVal = createBanCookieValue();
+        const cookieConfig = getRateLimitCookieConfig();
+        response.cookies.set(cookieConfig.name, banCookieVal, {
+          ...cookieConfig.options,
+          maxAge: Math.ceil(IP_BAN_DURATION_MS / 1000),
+        });
+      }
+      return response;
     }
 
-    const clientIp = getTrustedClientIp(req);
-    const memRateCheck = checkMemoryRateLimit(clientIp);
-    if (!memRateCheck.allowed) {
-      const waitMinutes = Math.ceil(memRateCheck.remainingWaitSeconds / 60);
+    // 2b. Serverless Signed Cookie Rate Limit (Cross-instance sync)
+    const cookieRateCheck = checkCookieRateLimit(req, MAX_GRADE_REQUESTS_PER_WINDOW, RATE_LIMIT_WINDOW_MS);
+    if (!cookieRateCheck.allowed) {
       return NextResponse.json(
-        {
-          error: `Bạn đã nộp bài quá số lần quy định (tối đa ${MAX_GRADE_REQUESTS_PER_10_MIN} bài / 10 phút). Vui lòng đợi thêm khoảng ${waitMinutes} phút trước khi gửi yêu cầu chấm tiếp theo.`,
-        },
-        { status: 429 }
+        { error: cookieRateCheck.error },
+        { status: cookieRateCheck.isBanned ? 403 : 429 }
       );
     }
 
@@ -119,12 +89,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 4. Anti-Speedbot & Session Cryptographic Token Verification (with Telemetry)
+    // 4. Session Cryptographic Token Verification (with Telemetry and taskType)
     if (sessionToken) {
-      const sessionCheck = verifyExamSessionToken(sessionToken, telemetry);
+      const sessionCheck = verifyExamSessionToken(sessionToken, telemetry, false, taskType);
       if (!sessionCheck.valid) {
         return NextResponse.json(
-          { error: sessionCheck.error || 'Phiên làm bài không hợp lệ hoặc quá nhanh.' },
+          { error: sessionCheck.error || 'Phiên làm bài không hợp lệ hoặc đã nộp.' },
           { status: 429 }
         );
       }

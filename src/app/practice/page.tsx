@@ -448,22 +448,16 @@ function PracticeContent() {
       }
     }
 
-    // Rate Limit Check (Max 3 submissions in 5 minutes)
+    // Rate Limit Check (Max 10 submissions in 5 minutes)
     const rateCheck = checkRateLimit();
     if (!rateCheck.allowed) {
       alert(
-        `Bạn đã gửi chấm quá nhiều lần trong thời gian ngắn. Vui lòng đợi ${rateCheck.remainingWaitSeconds} giây nữa trước khi gửi chấm tiếp để bảo vệ hạn mức API.`
+        `Bạn đã gửi chấm quá 10 lần trong 5 phút. Vui lòng đợi ${rateCheck.remainingWaitSeconds} giây nữa trước khi gửi chấm tiếp để bảo vệ hạn mức hệ thống.`
       );
       return;
     }
 
     const timeSpent = initialSeconds - timeRemaining;
-    if (timeSpent < 60) {
-      alert(
-        `Thời gian làm bài quá nhanh (${timeSpent} giây). Để AI đánh giá chính xác và phản ánh đúng năng lực, bài thi IELTS cần tối thiểu 60 giây viết thực tế.`
-      );
-      return;
-    }
 
     // Generate random human verification math challenge
     const num1 = Math.floor(Math.random() * 15) + 5;

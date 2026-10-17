@@ -80,7 +80,7 @@ export async function compressImage(file: File): Promise<string> {
 }
 
 const RATE_LIMIT_KEY = 'cd_ielts_submission_timestamps';
-const MAX_SUBMISSIONS_IN_WINDOW = 3;
+const MAX_SUBMISSIONS_IN_WINDOW = 10;
 const WINDOW_MS = 5 * 60 * 1000; // 5 minutes
 
 export function checkRateLimit(): { allowed: boolean; remainingWaitSeconds: number } {

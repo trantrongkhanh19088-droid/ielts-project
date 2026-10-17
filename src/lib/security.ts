@@ -8,10 +8,12 @@ const SECURITY_SECRET =
   'cd-ielts-secure-token-salt-2026-production';
 
 // Strict timing guards
-export const MIN_EXAM_DURATION_SECONDS = 60; // Must spend at least 60 seconds on essay
-export const MIN_SUBMISSION_COOLDOWN_SECONDS = 45; // Must wait at least 45 seconds between submissions
-export const MAX_GRADE_REQUESTS_PER_10_MIN = 4; // Max 4 grading calls per 10 minutes (supports 1 full test or 2 single tasks)
-export const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000; // 10 minutes
+export const MIN_EXAM_DURATION_SECONDS = 0; // Bỏ yêu cầu 60s trước khi nộp bài
+export const MIN_SUBMISSION_COOLDOWN_SECONDS = 0; // Không ép chờ giữa các lần nộp
+export const MAX_GRADE_REQUESTS_PER_WINDOW = 10; // Tối đa 10 lần nộp trong 5 phút
+export const MAX_GRADE_REQUESTS_PER_10_MIN = 10; // Alias tương thích ngược
+export const RATE_LIMIT_WINDOW_MS = 5 * 60 * 1000; // Cửa sổ trượt 5 phút
+export const IP_BAN_DURATION_MS = 2 * 60 * 60 * 1000; // Khóa IP 2 tiếng nếu spam liên tục
 
 // In-memory nonce cache to prevent token replay attacks
 const usedNonces = new Map<string, number>();
@@ -115,7 +117,8 @@ export interface SessionVerificationResult {
 export function verifyExamSessionToken(
   token: string,
   telemetry?: ClientTelemetry,
-  bypassTimeCheck: boolean = false
+  bypassTimeCheck: boolean = false,
+  taskType?: string
 ): SessionVerificationResult {
   if (!token || typeof token !== 'string' || !token.includes('.')) {
     return {
@@ -142,8 +145,9 @@ export function verifyExamSessionToken(
       return { valid: false, error: 'Dữ liệu thời gian của phiên không hợp lệ.' };
     }
 
-    // Replay Attack Guard
-    if (data.nonce && usedNonces.has(data.nonce)) {
+    // Replay Attack Guard with task-type differentiation for full tests
+    const replayKey = `${data.nonce}:${taskType || data.taskType || ''}`;
+    if (data.nonce && usedNonces.has(replayKey)) {
       return {
         valid: false,
         error: 'Phiên thi này đã được nộp bài trước đó (Replay attempt detected). Vui lòng bắt đầu đề thi mới.',
@@ -153,12 +157,11 @@ export function verifyExamSessionToken(
     const elapsedSeconds = Math.floor((Date.now() - data.startedAt) / 1000);
     const isBuilder = Boolean(telemetry?.isBuilder);
 
-    // Anti-Speed Bot: Essay must take at least MIN_EXAM_DURATION_SECONDS (bypassed for builder learning mode)
-    if (!bypassTimeCheck && !isBuilder && elapsedSeconds < MIN_EXAM_DURATION_SECONDS) {
+    // Bỏ yêu cầu 60s làm bài tối thiểu theo yêu cầu người dùng
+    if (elapsedSeconds < 0) {
       return {
         valid: false,
-        elapsedSeconds,
-        error: `Thời gian làm bài quá nhanh (${elapsedSeconds}s / tối thiểu ${MIN_EXAM_DURATION_SECONDS}s). Bài thi IELTS yêu cầu thời gian suy nghĩ và viết bài thực tế để đảm bảo tính công bằng.`,
+        error: 'Thời gian làm bài không hợp lệ.',
       };
     }
 
@@ -167,7 +170,6 @@ export function verifyExamSessionToken(
       const keys = Number(telemetry.keystrokes || 0);
       const mouse = Number(telemetry.mouseEvents || 0);
       const paste = Number(telemetry.pasteCount || 0);
-      const focus = Number(telemetry.focusSeconds || 0);
 
       // If zero keyboard, mouse, and paste interactions: headless bot script
       if (keys === 0 && mouse === 0 && paste === 0) {
@@ -176,19 +178,12 @@ export function verifyExamSessionToken(
           error: 'Phát hiện hành vi tự động bất thường (Thiếu tương tác chuột/bàn phím từ người dùng thật).',
         };
       }
-
-      if (focus < 15 && elapsedSeconds < 90) {
-        return {
-          valid: false,
-          error: 'Thời gian tập trung viết bài quá ngắn. Vui lòng thao tác trực tiếp trên giao diện bài thi.',
-        };
-      }
     }
 
     // Record nonce as used (mark after successful check)
     if (data.nonce) {
       cleanExpiredNonces();
-      usedNonces.set(data.nonce, Date.now());
+      usedNonces.set(replayKey, Date.now());
     }
 
     return {
@@ -202,23 +197,126 @@ export function verifyExamSessionToken(
 }
 
 /**
+ * IP Spam Tracker & 2-Hour Ban Enforcement
+ */
+interface IpRateLimitRecord {
+  timestamps: number[];
+  violationCount: number;
+  lastViolationAt?: number;
+  bannedUntil?: number;
+}
+
+const ipTrackingMap = new Map<string, IpRateLimitRecord>();
+
+export function checkIpRateLimitAndBan(ip: string): {
+  allowed: boolean;
+  isBanned: boolean;
+  remainingWaitSeconds: number;
+  error?: string;
+} {
+  const now = Date.now();
+  let record = ipTrackingMap.get(ip);
+  if (!record) {
+    record = { timestamps: [], violationCount: 0 };
+    ipTrackingMap.set(ip, record);
+  }
+
+  // 1. Check if IP is currently banned for 2 hours
+  if (record.bannedUntil && record.bannedUntil > now) {
+    const remainingMs = record.bannedUntil - now;
+    const remainingMinutes = Math.ceil(remainingMs / 60000);
+    return {
+      allowed: false,
+      isBanned: true,
+      remainingWaitSeconds: Math.ceil(remainingMs / 1000),
+      error: `Địa chỉ IP của bạn đã bị tạm khóa nộp bài trong 2 tiếng do hệ thống phát hiện hành vi spam nộp bài liên tục nhiều lần. Thời gian khóa còn lại: ${remainingMinutes} phút.`,
+    };
+  } else if (record.bannedUntil && record.bannedUntil <= now) {
+    record.bannedUntil = undefined;
+    record.violationCount = 0;
+  }
+
+  // 2. Filter timestamps in the sliding 5-minute window
+  record.timestamps = record.timestamps.filter((ts) => now - ts < RATE_LIMIT_WINDOW_MS);
+
+  // 3. Check if current 5-minute window exceeded 10 submissions
+  if (record.timestamps.length >= MAX_GRADE_REQUESTS_PER_WINDOW) {
+    const timeSinceLastViolation = record.lastViolationAt ? now - record.lastViolationAt : Infinity;
+    record.lastViolationAt = now;
+
+    // Track consecutive spam windows or aggressive submissions while blocked
+    if (timeSinceLastViolation < 15 * 60 * 1000) {
+      record.violationCount += 1;
+    } else {
+      record.violationCount = 1;
+    }
+
+    // If spamming repeatedly across consecutive periods or multiple attempts while blocked: Ban for 2 hours!
+    if (record.violationCount >= 3) {
+      record.bannedUntil = now + IP_BAN_DURATION_MS;
+      return {
+        allowed: false,
+        isBanned: true,
+        remainingWaitSeconds: Math.ceil(IP_BAN_DURATION_MS / 1000),
+        error: `Địa chỉ IP của bạn đã bị tạm khóa nộp bài trong 2 tiếng do hệ thống phát hiện hành vi spam nộp bài liên tục nhiều lần. Vui lòng quay lại sau 2 tiếng.`,
+      };
+    }
+
+    const oldest = record.timestamps[0];
+    const remainingMs = RATE_LIMIT_WINDOW_MS - (now - oldest);
+    const remainingWaitSeconds = Math.max(1, Math.ceil(remainingMs / 1000));
+    const waitMinutes = Math.ceil(remainingWaitSeconds / 60);
+
+    return {
+      allowed: false,
+      isBanned: false,
+      remainingWaitSeconds,
+      error: `Bạn đã nộp bài quá ${MAX_GRADE_REQUESTS_PER_WINDOW} lần trong vòng 5 phút. Vui lòng đợi ${waitMinutes} phút (${remainingWaitSeconds}s) trước khi gửi bài tiếp theo.`,
+    };
+  }
+
+  // Allowed: add timestamp
+  record.timestamps.push(now);
+
+  // Periodic cleanup
+  if (ipTrackingMap.size > 2000) {
+    ipTrackingMap.forEach((rec, key) => {
+      if ((!rec.bannedUntil || rec.bannedUntil <= now) && rec.timestamps.every((ts) => now - ts >= RATE_LIMIT_WINDOW_MS)) {
+        ipTrackingMap.delete(key);
+      }
+    });
+  }
+
+  return { allowed: true, isBanned: false, remainingWaitSeconds: 0 };
+}
+
+/**
  * Serverless-Resilient Rate Limiter using Signed HTTP-Only Cookie.
- * Stores up to MAX_REQUESTS timestamps in a signed cookie and enforces cooldown.
  */
 const RATE_LIMIT_COOKIE_NAME = '__ielts_rl_token';
 
+export function createBanCookieValue(): string {
+  const bannedUntil = Date.now() + IP_BAN_DURATION_MS;
+  const cookiePayload = { timestamps: [], bannedUntil };
+  const b64 = Buffer.from(JSON.stringify(cookiePayload)).toString('base64url');
+  const sig = signPayload(b64);
+  return `${b64}.${sig}`;
+}
+
 export function checkCookieRateLimit(
   req: NextRequest,
-  maxRequests: number = MAX_GRADE_REQUESTS_PER_10_MIN,
+  maxRequests: number = MAX_GRADE_REQUESTS_PER_WINDOW,
   windowMs: number = RATE_LIMIT_WINDOW_MS
 ): {
   allowed: boolean;
   remainingWaitSeconds: number;
   newCookieValue?: string;
-  isCooldownViolation?: boolean;
+  isBanned?: boolean;
+  error?: string;
 } {
   const now = Date.now();
   let timestamps: number[] = [];
+  let bannedUntil: number | undefined;
 
   const rawCookie = req.cookies.get(RATE_LIMIT_COOKIE_NAME)?.value;
   if (rawCookie && rawCookie.includes('.')) {
@@ -226,7 +324,14 @@ export function checkCookieRateLimit(
     if (signPayload(b64) === sig) {
       try {
         const decoded = JSON.parse(Buffer.from(b64, 'base64url').toString('utf8'));
-        if (Array.isArray(decoded)) {
+        if (typeof decoded === 'object' && decoded !== null) {
+          if (decoded.bannedUntil && typeof decoded.bannedUntil === 'number') {
+            bannedUntil = decoded.bannedUntil;
+          }
+          if (Array.isArray(decoded.timestamps)) {
+            timestamps = decoded.timestamps.filter((ts: number) => typeof ts === 'number' && now - ts < windowMs);
+          }
+        } else if (Array.isArray(decoded)) {
           timestamps = decoded.filter((ts) => typeof ts === 'number' && now - ts < windowMs);
         }
       } catch {
@@ -235,39 +340,41 @@ export function checkCookieRateLimit(
     }
   }
 
-  // 1. Cooldown Check between successive submissions
-  if (timestamps.length > 0) {
-    const lastTimestamp = timestamps[timestamps.length - 1];
-    const timeSinceLast = (now - lastTimestamp) / 1000;
-    if (timeSinceLast < MIN_SUBMISSION_COOLDOWN_SECONDS) {
-      const waitSeconds = Math.ceil(MIN_SUBMISSION_COOLDOWN_SECONDS - timeSinceLast);
-      return {
-        allowed: false,
-        remainingWaitSeconds: waitSeconds,
-        isCooldownViolation: true,
-      };
-    }
+  // Check 2-hour ban in cookie
+  if (bannedUntil && bannedUntil > now) {
+    const remainingMs = bannedUntil - now;
+    const remainingMinutes = Math.ceil(remainingMs / 60000);
+    return {
+      allowed: false,
+      isBanned: true,
+      remainingWaitSeconds: Math.ceil(remainingMs / 1000),
+      error: `Hệ thống đã tạm khóa nộp bài của bạn trong 2 tiếng do phát hiện hành vi spam nộp bài liên tục nhiều lần. Thời gian khóa còn lại: ${remainingMinutes} phút.`,
+    };
   }
 
-  // 2. Sliding Window Limit Check
+  // Sliding Window Limit Check (Max 10 submissions in 5 minutes)
   if (timestamps.length >= maxRequests) {
     const oldest = timestamps[0];
     const remainingMs = windowMs - (now - oldest);
     const remainingWaitSeconds = Math.max(1, Math.ceil(remainingMs / 1000));
     return {
       allowed: false,
+      isBanned: false,
       remainingWaitSeconds,
+      error: `Bạn đã nộp bài quá ${maxRequests} lần trong vòng 5 phút. Vui lòng đợi ${remainingWaitSeconds} giây trước khi gửi bài tiếp theo.`,
     };
   }
 
   // Add current timestamp and prepare new cookie
   timestamps.push(now);
-  const updatedB64 = Buffer.from(JSON.stringify(timestamps)).toString('base64url');
+  const cookiePayload = { timestamps };
+  const updatedB64 = Buffer.from(JSON.stringify(cookiePayload)).toString('base64url');
   const updatedSig = signPayload(updatedB64);
   const newCookieValue = `${updatedB64}.${updatedSig}`;
 
   return {
     allowed: true,
+    isBanned: false,
     remainingWaitSeconds: 0,
     newCookieValue,
   };
