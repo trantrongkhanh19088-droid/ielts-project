@@ -190,8 +190,8 @@ export function OmamoriBadge({
         <div className="w-4 h-4 border-2 border-amber-300 rotate-45 mb-1 bg-amber-400/30" />
 
         {/* Kanji Inscription */}
-        <div className="flex-1 flex flex-col items-center justify-center">
-          <span className="font-serif text-xs sm:text-sm font-black tracking-widest text-amber-200 writing-vertical drop-shadow-md">
+        <div className="flex-1 flex-col items-center justify-center">
+          <span className="font-display text-xs sm:text-sm font-black tracking-widest text-amber-200 writing-vertical drop-shadow-md">
             {text}
           </span>
         </div>

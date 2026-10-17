@@ -888,7 +888,7 @@ function PracticeContent() {
                   <div className="font-mono text-[11px] tracking-wider text-vermilion uppercase">
                     00 // XÁC THỰC THÍ SINH
                   </div>
-                  <h3 className="font-serif font-medium text-base text-carbon dark:text-paper leading-snug">
+                  <h3 className="font-display font-bold text-base text-carbon dark:text-paper leading-snug">
                     Xác nhận nộp bài thi
                   </h3>
                 </div>
@@ -988,7 +988,7 @@ function PracticeContent() {
                 <AlertTriangle className="w-5 h-5 stroke-[1.75]" />
               </div>
               <div>
-                <h3 className="text-base font-serif font-medium text-carbon dark:text-paper">
+                <h3 className="text-base font-display font-bold text-carbon dark:text-paper">
                   {submitError.is503 ? 'Máy chủ Google AI đang bận (503)' : 'Chưa thể hoàn tất chấm bài'}
                 </h3>
                 <p className="text-xs font-mono text-vermilion flex items-center gap-1 mt-0.5">

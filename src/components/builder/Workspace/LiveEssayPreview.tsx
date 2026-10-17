@@ -159,7 +159,7 @@ export default function LiveEssayPreview({
       )}
 
       {/* Formatted Essay Body */}
-      <div className="min-h-[200px] max-h-[340px] overflow-y-auto p-4 rounded-2xl bg-gray-50/70 dark:bg-zinc-950/60 border border-gray-200 dark:border-zinc-800 text-xs sm:text-sm text-gray-800 dark:text-zinc-200 leading-relaxed space-y-3 font-serif">
+      <div className="min-h-[200px] max-h-[340px] overflow-y-auto p-4 rounded-2xl bg-gray-50/70 dark:bg-zinc-950/60 border border-gray-200 dark:border-zinc-800 text-xs sm:text-sm text-gray-800 dark:text-zinc-200 leading-relaxed space-y-3 font-cdielts">
         {fullEssay ? (
           fullEssay.split('\n\n').map((para, idx) => (
             <p key={idx} className="indent-4 leading-relaxed">

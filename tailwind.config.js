@@ -10,10 +10,11 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-sans)", "var(--font-inter)", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
-        serif: ["var(--font-serif)", "Newsreader", "Georgia", "Cambria", "serif"],
+        sans: ["var(--font-sans)", "Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
+        display: ["var(--font-display)", "var(--font-sans)", "Plus Jakarta Sans", "Inter", "Segoe UI", "sans-serif"],
+        serif: ["Georgia", "Cambria", '"Times New Roman"', "Times", "serif"],
         mono: ["var(--font-mono)", "JetBrains Mono", "Menlo", "monospace"],
-        cdielts: ["Arial", "Helvetica", "sans-serif"],
+        cdielts: ["Arial", "Helvetica", "Segoe UI", "sans-serif"],
       },
       colors: {
         inspera: {

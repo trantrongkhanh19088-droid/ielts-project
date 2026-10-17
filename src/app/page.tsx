@@ -83,9 +83,9 @@ export default function HomePage() {
 
           {/* Editorial Display Headline */}
           <div className="space-y-5">
-            <h1 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-normal tracking-[-0.02em] text-stone-900 dark:text-stone-100 leading-[1.3] sm:leading-[1.26] max-w-4xl mx-auto">
+            <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-stone-900 dark:text-stone-100 leading-[1.24] max-w-4xl mx-auto">
               Nền tảng Luyện thi{' '}
-              <span className="italic font-serif text-vermilion">IELTS Writing</span> Chuẩn Phòng Thi &amp; Chấm Điểm AI
+              <span className="text-vermilion">IELTS Writing</span> Chuẩn Phòng Thi &amp; Chấm Điểm AI
             </h1>
 
             {/* Readability constrained body paragraph */}
@@ -146,7 +146,7 @@ export default function HomePage() {
               <span className="font-mono text-[11px] text-vermilion tracking-[0.2em] uppercase font-semibold">
                 MODULES // 01 — 03
               </span>
-              <h2 className="font-serif text-3xl sm:text-4xl text-stone-900 dark:text-stone-100 font-normal tracking-tight mt-1 leading-snug">
+              <h2 className="font-display font-extrabold text-3xl sm:text-4xl text-stone-900 dark:text-stone-100 tracking-tight mt-1 leading-snug">
                 Ba Phương Thức Luyện Tập Thực Chiến
               </h2>
             </div>
@@ -175,8 +175,8 @@ export default function HomePage() {
                 </div>
 
                 <div className="space-y-2">
-                  <h3 className="font-serif text-2xl sm:text-3xl font-medium text-stone-900 dark:text-stone-100 tracking-tight leading-snug">
-                    Thi Thử Full Test <span className="text-vermilion font-serif italic">(Part 1 + Part 2)</span>
+                  <h3 className="font-display font-bold text-2xl sm:text-3xl text-stone-900 dark:text-stone-100 tracking-tight leading-snug">
+                    Thi Thử Full Test <span className="text-vermilion font-sans font-bold">(Part 1 + Part 2)</span>
                   </h3>
                   <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed font-normal max-w-xl">
                     Mô phỏng chính xác kỳ thi CD-IELTS 60 phút không gián đoạn: thanh điều hướng chuyển đổi linh hoạt giữa Task 1 và Task 2, bộ đếm từ trực tiếp, và tự động tính điểm Overall Writing theo công thức chuẩn British Council: <code>(Task 1 + Task 2 × 2) / 3</code>.
@@ -255,7 +255,7 @@ export default function HomePage() {
                     </span>
                   </div>
                   <div>
-                    <h3 className="font-serif text-xl sm:text-2xl font-medium text-stone-900 dark:text-stone-100 tracking-tight leading-snug">
+                    <h3 className="font-display font-bold text-xl sm:text-2xl text-stone-900 dark:text-stone-100 tracking-tight leading-snug">
                       Luyện Riêng Academic Task 1
                     </h3>
                     <p className="text-xs text-stone-600 dark:text-stone-300 mt-1.5 leading-relaxed">
@@ -294,7 +294,7 @@ export default function HomePage() {
                     </span>
                   </div>
                   <div>
-                    <h3 className="font-serif text-xl sm:text-2xl font-medium text-stone-900 dark:text-stone-100 tracking-tight leading-snug">
+                    <h3 className="font-display font-bold text-xl sm:text-2xl text-stone-900 dark:text-stone-100 tracking-tight leading-snug">
                       Luyện Riêng Task 2 (Discursive Essay)
                     </h3>
                     <p className="text-xs text-stone-600 dark:text-stone-300 mt-1.5 leading-relaxed">
@@ -341,9 +341,9 @@ export default function HomePage() {
                   <span className="text-[10px] text-emerald-100 font-sans tracking-tight">GAME HÓA HỌC TẬP</span>
                 </div>
 
-                <h3 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-stone-900 dark:text-stone-100 font-normal tracking-tight leading-snug">
+                <h3 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl text-stone-900 dark:text-stone-100 tracking-tight leading-snug">
                   Lộ Trình Cây Đậu N Tầng &amp; Soạn Thảo{' '}
-                  <span className="font-serif italic text-emerald-600 dark:text-emerald-400 font-medium underline decoration-emerald-400/50 decoration-wavy decoration-1 underline-offset-8">
+                  <span className="font-display font-extrabold text-emerald-600 dark:text-emerald-400 underline decoration-emerald-400/50 decoration-wavy decoration-1 underline-offset-8">
                     Từng Khối Câu Cùng AI
                   </span>
                 </h3>
@@ -468,7 +468,7 @@ export default function HomePage() {
               <span className="font-mono text-[11px] text-vermilion tracking-[0.2em] uppercase font-semibold">
                 ARCHIVE // 59 FORECAST PROMPTS
               </span>
-              <h2 className="font-serif text-3xl sm:text-4xl text-stone-900 dark:text-stone-100 font-normal tracking-tight mt-1 leading-snug">
+              <h2 className="font-display font-bold text-3xl sm:text-4xl text-stone-900 dark:text-stone-100 tracking-tight mt-1 leading-snug">
                 Kho Đề Forecast IELTS Writing 2026
               </h2>
               <p className="text-xs sm:text-sm text-stone-500 dark:text-stone-400 mt-1 max-w-xl font-normal">
@@ -546,7 +546,7 @@ export default function HomePage() {
                           </span>
                         )}
                       </div>
-                      <h4 className="font-serif text-base font-normal text-stone-900 dark:text-stone-100 leading-snug line-clamp-1 group-hover:text-vermilion transition-colors">
+                      <h4 className="font-display font-semibold text-base text-stone-900 dark:text-stone-100 leading-snug line-clamp-1 group-hover:text-vermilion transition-colors">
                         {p.title}
                       </h4>
                       <p className="text-xs text-stone-500 dark:text-stone-400 line-clamp-2 leading-relaxed">
@@ -614,7 +614,7 @@ export default function HomePage() {
                           </span>
                         )}
                       </div>
-                      <h4 className="font-serif text-base font-normal text-stone-900 dark:text-stone-100 leading-snug line-clamp-1 group-hover:text-vermilion transition-colors">
+                      <h4 className="font-display font-semibold text-base text-stone-900 dark:text-stone-100 leading-snug line-clamp-1 group-hover:text-vermilion transition-colors">
                         {p.title}
                       </h4>
                       <p className="text-xs text-stone-500 dark:text-stone-400 line-clamp-2 leading-relaxed">

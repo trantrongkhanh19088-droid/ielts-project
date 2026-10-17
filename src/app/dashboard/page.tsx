@@ -115,7 +115,7 @@ export default function DashboardPage() {
           </div>
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <h1 className="font-serif text-2xl font-normal text-stone-900 dark:text-stone-100 tracking-tight leading-snug">
+              <h1 className="font-display font-bold text-2xl text-stone-900 dark:text-stone-100 tracking-tight leading-snug">
                 {userProfile.fullName}
               </h1>
               <span className="font-mono text-[11px] px-2 py-0.5 rounded hairline-border bg-stone-100 dark:bg-stone-850 text-stone-700 dark:text-stone-300 font-semibold uppercase">

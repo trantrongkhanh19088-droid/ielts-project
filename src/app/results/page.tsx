@@ -93,7 +93,7 @@ function ResultsContent() {
         <div className="font-mono text-xs tracking-wider text-vermilion uppercase">
           00 // KHÔNG CÓ DỮ LIỆU
         </div>
-        <h2 className="font-serif text-2xl font-medium text-carbon dark:text-paper tracking-tight leading-snug">
+        <h2 className="font-display font-bold text-2xl text-carbon dark:text-paper tracking-tight leading-snug">
           Chưa tìm thấy bài thi nào
         </h2>
         <p className="font-sans text-xs text-carbon-muted dark:text-paper-muted max-w-[45ch] leading-relaxed">
@@ -164,7 +164,7 @@ function ResultsContent() {
               {new Date(record.created_at).toLocaleString('vi-VN')}
             </span>
           </div>
-          <h1 className="font-serif text-2xl sm:text-3xl font-medium text-carbon dark:text-paper mt-2 tracking-tight leading-snug">
+          <h1 className="font-display font-bold text-2xl sm:text-3xl text-carbon dark:text-paper mt-2 tracking-tight leading-snug">
             {record.prompt_title}
           </h1>
         </div>
@@ -206,7 +206,7 @@ function ResultsContent() {
               <Layers className="w-3.5 h-3.5" />
               <span>01 // IELTS Full Writing Test Summary</span>
             </div>
-            <h2 className="font-serif text-2xl font-medium tracking-tight leading-snug">
+            <h2 className="font-display font-bold text-2xl tracking-tight leading-snug">
               Điểm Tổng Kết Overall Writing
             </h2>
             <p className="font-sans text-xs text-paper-muted leading-relaxed max-w-[55ch]">

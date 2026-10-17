@@ -200,7 +200,7 @@ export default function Navbar() {
                     <span className="font-bold text-sm tracking-tight text-stone-900 dark:text-stone-100">
                       CD-IELTS
                     </span>
-                    <span className="text-vermilion font-serif italic text-base font-normal ml-1">
+                    <span className="text-vermilion font-display font-extrabold text-base ml-1">
                       Writing
                     </span>
                   </div>

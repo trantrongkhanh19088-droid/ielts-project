@@ -351,7 +351,7 @@ export default function BuilderGradingResultModal({
                             {voc.academicAlternatives.join(', ')}
                           </span>
                         </div>
-                        <p className="text-[11px] text-gray-600 dark:text-zinc-400 bg-white dark:bg-zinc-900 p-2 rounded-xl border border-gray-100 dark:border-zinc-800 font-serif">
+                        <p className="text-[11px] text-gray-600 dark:text-zinc-400 bg-white dark:bg-zinc-900 p-2 rounded-xl border border-gray-100 dark:border-zinc-800 font-sans">
                           &ldquo;{voc.contextExample}&rdquo;
                         </p>
                       </div>
@@ -366,7 +366,7 @@ export default function BuilderGradingResultModal({
 
               {/* TAB 4: MODEL ESSAY */}
               {activeTab === 'model' && (
-                <div className="p-4 rounded-2xl bg-gray-50/70 dark:bg-zinc-950/60 border border-gray-200 dark:border-zinc-800 text-xs sm:text-sm text-gray-800 dark:text-zinc-200 leading-relaxed space-y-3 font-serif">
+                <div className="p-4 rounded-2xl bg-gray-50/70 dark:bg-zinc-950/60 border border-gray-200 dark:border-zinc-800 text-xs sm:text-sm text-gray-800 dark:text-zinc-200 leading-relaxed space-y-3 font-cdielts">
                   {gradingResult.modelEssayBand8 ? (
                     gradingResult.modelEssayBand8.split('\n\n').map((para, idx) => (
                       <p key={idx} className="indent-4 leading-relaxed">

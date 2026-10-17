@@ -103,7 +103,7 @@ export default function CharacterSelectionModal({
         {/* Header with Japanese Traditional Accent */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-zinc-800 bg-gradient-to-r from-rose-500/10 via-amber-500/10 to-sky-500/10 dark:from-rose-950/30 dark:via-zinc-900 dark:to-zinc-950">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-rose-600 to-amber-500 text-white flex items-center justify-center shadow-md font-serif text-lg font-black">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-rose-600 to-amber-500 text-white flex items-center justify-center shadow-md font-display text-lg font-black">
               侍
             </div>
             <div>
@@ -410,7 +410,7 @@ export default function CharacterSelectionModal({
                     {c.name}
                   </h4>
                   {c.jpName && (
-                    <div className="text-[11px] text-gray-400 dark:text-gray-500 font-serif truncate">
+                    <div className="text-[11px] text-gray-400 dark:text-gray-500 font-sans truncate">
                       {c.jpName}
                     </div>
                   )}
