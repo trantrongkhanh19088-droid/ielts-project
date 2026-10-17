@@ -76,10 +76,12 @@ function ResultsContent() {
 
   if (loading) {
     return (
-      <div className="flex-1 flex items-center justify-center min-h-[60vh]">
+      <div className="flex-1 flex items-center justify-center min-h-[60vh] bg-paper dark:bg-carbon">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 border-4 border-sky-600 border-t-transparent rounded-full animate-spin" />
-          <p className="text-sm text-gray-500">Đang tải kết quả bài chấm...</p>
+          <div className="w-7 h-7 border-2 border-vermilion border-t-transparent animate-spin" />
+          <p className="font-mono text-xs uppercase tracking-wider text-carbon-muted dark:text-paper-muted">
+            00 // Đang tải kết quả bài chấm...
+          </p>
         </div>
       </div>
     );
@@ -87,18 +89,21 @@ function ResultsContent() {
 
   if (!record) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center min-h-[60vh] p-6 text-center space-y-4">
-        <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+      <div className="flex-1 flex flex-col items-center justify-center min-h-[60vh] p-8 text-center space-y-4 bg-paper dark:bg-carbon">
+        <div className="font-mono text-xs tracking-wider text-vermilion uppercase">
+          00 // KHÔNG CÓ DỮ LIỆU
+        </div>
+        <h2 className="font-serif text-2xl font-medium text-carbon dark:text-paper tracking-tight">
           Chưa tìm thấy bài thi nào
         </h2>
-        <p className="text-sm text-gray-500 max-w-md">
+        <p className="font-sans text-xs text-carbon-muted dark:text-paper-muted max-w-[45ch] leading-relaxed">
           Có vẻ bạn chưa nộp bài viết nào hoặc dữ liệu đã được làm mới. Hãy bắt đầu một bài luyện tập mới ngay bây giờ!
         </p>
         <Link
           href="/practice"
-          className="px-5 py-2.5 rounded-xl bg-sky-600 text-white font-semibold text-xs shadow-md hover:bg-sky-700 transition"
+          className="px-6 py-3 hairline-border bg-carbon dark:bg-paper text-paper dark:text-carbon hover:bg-vermilion dark:hover:bg-vermilion dark:hover:text-white font-mono text-xs uppercase tracking-wider transition-colors duration-200"
         >
-          Bắt đầu luyện tập
+          Bắt đầu luyện tập →
         </Link>
       </div>
     );
@@ -140,7 +145,7 @@ function ResultsContent() {
   };
 
   return (
-    <div className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 bg-paper dark:bg-carbon">
       {/* Low Score Meme Modal (< 6.0 Band) */}
       <LowScoreMemeModal
         isOpen={showMemeModal}
@@ -149,93 +154,93 @@ function ResultsContent() {
       />
 
       {/* Top Banner & Action Controls */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-gray-200 dark:border-zinc-800">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 hairline-b">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs px-2.5 py-0.5 rounded-full font-bold bg-sky-100 dark:bg-sky-950/60 text-sky-800 dark:text-sky-300 border border-sky-200 dark:border-sky-800">
-              Kết Quả Chấm Bài AI Examiner
+          <div className="flex items-center gap-2.5">
+            <span className="font-mono text-[10px] tracking-wider px-2.5 py-0.5 hairline-border bg-paper-subtle dark:bg-carbon-subtle text-vermilion uppercase">
+              00 // BÁO CÁO ĐÁNH GIÁ AI EXAMINER
             </span>
-            <span className="text-xs text-gray-400">
+            <span className="font-mono text-[11px] text-carbon-muted dark:text-paper-muted">
               {new Date(record.created_at).toLocaleString('vi-VN')}
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white mt-1">
+          <h1 className="font-serif text-2xl sm:text-3xl font-medium text-carbon dark:text-paper mt-2 tracking-tight">
             {record.prompt_title}
           </h1>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center gap-2.5 print-hidden">
+        <div className="flex items-center gap-2 print-hidden flex-wrap">
           <button
             type="button"
             onClick={handlePrint}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-zinc-800 text-xs font-semibold shadow-sm transition"
+            className="inline-flex items-center gap-1.5 px-4 py-2 hairline-border bg-paper dark:bg-carbon text-carbon dark:text-paper hover:bg-paper-subtle dark:hover:bg-carbon-subtle font-mono text-xs uppercase tracking-wider transition-colors"
           >
-            <Printer className="w-4 h-4 text-sky-600" />
-            <span>In / Xuất PDF</span>
+            <Printer className="w-3.5 h-3.5 text-vermilion" />
+            <span>In / PDF</span>
           </button>
 
           <Link
             href="/practice"
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-zinc-800 text-xs font-semibold shadow-sm transition"
+            className="inline-flex items-center gap-1.5 px-4 py-2 hairline-border bg-paper dark:bg-carbon text-carbon dark:text-paper hover:bg-paper-subtle dark:hover:bg-carbon-subtle font-mono text-xs uppercase tracking-wider transition-colors"
           >
-            <RotateCcw className="w-4 h-4 text-sky-600" />
+            <RotateCcw className="w-3.5 h-3.5 text-vermilion" />
             <span>Luyện bài mới</span>
           </Link>
 
           <Link
             href="/dashboard"
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold shadow-md transition"
+            className="inline-flex items-center gap-1.5 px-4 py-2 hairline-border bg-carbon dark:bg-paper text-paper dark:text-carbon hover:bg-vermilion dark:hover:bg-vermilion dark:hover:text-white font-mono text-xs uppercase tracking-wider transition-colors"
           >
-            <BarChart2 className="w-4 h-4" />
-            <span>Xem Dashboard</span>
+            <BarChart2 className="w-3.5 h-3.5" />
+            <span>Dashboard</span>
           </Link>
         </div>
       </div>
 
       {/* Full Test Overall Band Banner */}
       {isFullTest && fullTestFeedback && (
-        <div className="p-6 rounded-2xl bg-gradient-to-r from-sky-900 to-indigo-900 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="p-6 sm:p-8 hairline-border bg-carbon text-paper dark:bg-carbon-subtle shadow-xs flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="space-y-2 text-center md:text-left">
-            <div className="flex items-center justify-center md:justify-start gap-2 text-sky-300 text-xs font-bold uppercase tracking-wider">
-              <Layers className="w-4 h-4" />
-              <span>IELTS Full Writing Test Summary</span>
+            <div className="flex items-center justify-center md:justify-start gap-2 font-mono text-xs text-vermilion uppercase tracking-wider">
+              <Layers className="w-3.5 h-3.5" />
+              <span>01 // IELTS Full Writing Test Summary</span>
             </div>
-            <h2 className="text-2xl font-extrabold tracking-tight">
+            <h2 className="font-serif text-2xl font-medium tracking-tight">
               Điểm Tổng Kết Overall Writing
             </h2>
-            <p className="text-xs text-sky-200 max-w-lg leading-relaxed">
-              Tính theo công thức chuẩn British Council &amp; IDP: làm tròn đến 0.5 gần nhất của{' '}
-              <code className="bg-white/10 px-1 py-0.5 rounded font-mono">
-                (Band Task 1 + Band Task 2 * 2) / 3
+            <p className="font-sans text-xs text-paper-muted leading-relaxed max-w-[55ch]">
+              Tính theo chuẩn IDP &amp; British Council: làm tròn đến 0.5 gần nhất của{' '}
+              <code className="bg-carbon-subtle dark:bg-carbon px-1.5 py-0.5 font-mono text-[11px] hairline-border">
+                (Band Task 1 + Band Task 2 &times; 2) / 3
               </code>
             </p>
           </div>
 
-          <div className="flex items-center gap-6 bg-white/10 backdrop-blur-md px-6 py-4 rounded-xl border border-white/20">
+          <div className="flex items-center gap-6 bg-carbon-subtle dark:bg-carbon px-6 py-4 hairline-border">
             <div className="text-center">
-              <span className="text-[11px] uppercase tracking-wider text-sky-300 block">
+              <span className="font-mono text-[10px] uppercase tracking-wider text-paper-muted block">
                 Task 1
               </span>
-              <span className="text-2xl font-extrabold font-mono">
+              <span className="text-2xl font-mono font-bold text-paper">
                 {fullTestFeedback.task1Result.overallBand.toFixed(1)}
               </span>
             </div>
-            <div className="text-xl text-sky-400 font-light">+</div>
+            <div className="text-xl text-paper-muted font-light">+</div>
             <div className="text-center">
-              <span className="text-[11px] uppercase tracking-wider text-sky-300 block">
+              <span className="font-mono text-[10px] uppercase tracking-wider text-paper-muted block">
                 Task 2 (&times;2)
               </span>
-              <span className="text-2xl font-extrabold font-mono">
+              <span className="text-2xl font-mono font-bold text-paper">
                 {fullTestFeedback.task2Result.overallBand.toFixed(1)}
               </span>
             </div>
-            <div className="text-xl text-sky-400 font-light">=</div>
-            <div className="text-center pl-2 border-l border-white/20">
-              <span className="text-[11px] uppercase tracking-wider text-yellow-300 font-bold block">
+            <div className="text-xl text-paper-muted font-light">=</div>
+            <div className="text-center pl-3 border-l border-white/15">
+              <span className="font-mono text-[10px] uppercase tracking-wider text-vermilion font-bold block">
                 Overall Band
               </span>
-              <span className="text-4xl font-black text-yellow-300 font-mono">
+              <span className="text-3xl sm:text-4xl font-mono font-bold text-vermilion">
                 {fullTestFeedback.overallBand.toFixed(1)}
               </span>
             </div>
@@ -245,21 +250,21 @@ function ResultsContent() {
 
       {/* Full Test Navigation: Part 1 vs Part 2 Switcher */}
       {isFullTest && (
-        <div className="flex items-center gap-3 border-b border-gray-200 dark:border-zinc-800 pb-3 print-hidden">
-          <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-            Xem chi tiết bài chấm:
+        <div className="flex items-center gap-2 hairline-b pb-4 print-hidden flex-wrap">
+          <span className="font-mono text-[11px] text-carbon-muted dark:text-paper-muted uppercase tracking-wider mr-2">
+            Xem chi tiết:
           </span>
           <button
             type="button"
             onClick={() => setActiveFullTestTab('task1')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
+            className={`px-4 py-2 hairline-border font-mono text-xs uppercase tracking-wider transition-colors flex items-center gap-2 ${
               activeFullTestTab === 'task1'
-                ? 'bg-sky-600 text-white shadow-sm'
-                : 'bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200'
+                ? 'bg-carbon text-paper dark:bg-paper dark:text-carbon'
+                : 'bg-transparent text-carbon-muted dark:text-paper-muted hover:text-carbon dark:hover:text-paper hover:bg-paper-subtle dark:hover:bg-carbon-subtle'
             }`}
           >
             <span>Part 1 (Academic Task 1)</span>
-            <span className="font-mono text-[11px] opacity-85">
+            <span className="font-mono text-[11px] text-vermilion">
               Band {fullTestFeedback?.task1Result.overallBand.toFixed(1)}
             </span>
           </button>
@@ -267,14 +272,14 @@ function ResultsContent() {
           <button
             type="button"
             onClick={() => setActiveFullTestTab('task2')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
+            className={`px-4 py-2 hairline-border font-mono text-xs uppercase tracking-wider transition-colors flex items-center gap-2 ${
               activeFullTestTab === 'task2'
-                ? 'bg-sky-600 text-white shadow-sm'
-                : 'bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200'
+                ? 'bg-carbon text-paper dark:bg-paper dark:text-carbon'
+                : 'bg-transparent text-carbon-muted dark:text-paper-muted hover:text-carbon dark:hover:text-paper hover:bg-paper-subtle dark:hover:bg-carbon-subtle'
             }`}
           >
             <span>Part 2 (Writing Task 2)</span>
-            <span className="font-mono text-[11px] opacity-85">
+            <span className="font-mono text-[11px] text-vermilion">
               Band {fullTestFeedback?.task2Result.overallBand.toFixed(1)}
             </span>
           </button>
@@ -282,16 +287,16 @@ function ResultsContent() {
       )}
 
       {/* Prompt Reference & Chart Image */}
-      <div className="p-4 rounded-xl border border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-sm space-y-2">
+      <div className="hairline-border bg-paper-subtle dark:bg-carbon-subtle p-5 space-y-2">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
-            Đề bài thi ({activeResult.taskType === 'task1' ? 'Task 1' : 'Task 2'}):
+          <span className="font-mono text-[10px] tracking-wider text-vermilion uppercase">
+            02 // ĐỀ BÀI THI ({activeResult.taskType === 'task1' ? 'TASK 1' : 'TASK 2'})
           </span>
-          <span className="text-xs font-semibold text-sky-600 dark:text-sky-400">
+          <span className="font-mono text-xs font-semibold text-carbon dark:text-paper">
             {activeResult.promptTitle}
           </span>
         </div>
-        <p className="text-xs leading-relaxed text-gray-700 dark:text-gray-300 font-sans">
+        <p className="text-xs leading-relaxed text-carbon-muted dark:text-paper-muted font-sans">
           {activeResult.promptText}
         </p>
         {record.chart_image_url && (activeResult.taskType === 'task1' || !isFullTest) && (
@@ -300,7 +305,7 @@ function ResultsContent() {
             <img
               src={record.chart_image_url}
               alt="Biểu đồ đề bài"
-              className="max-h-56 object-contain rounded-lg border border-gray-200 dark:border-zinc-800 bg-white"
+              className="max-h-56 object-contain hairline-border bg-paper"
             />
           </div>
         )}
@@ -311,61 +316,61 @@ function ResultsContent() {
 
       {/* 4 Detail Tabs (Interactive Essay, Criteria, Vocab, Model Essay) */}
       <div className="space-y-6">
-        <div className="flex flex-wrap items-center gap-2 border-b border-gray-200 dark:border-zinc-800 pb-2 print-hidden">
+        <div className="flex flex-wrap items-center gap-2 hairline-b pb-3 print-hidden">
           <button
             type="button"
             onClick={() => setActiveDetailTab('essay')}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
+            className={`px-4 py-2 hairline-border font-mono text-xs uppercase tracking-wider transition-colors flex items-center gap-2 ${
               activeDetailTab === 'essay'
-                ? 'bg-sky-100 dark:bg-sky-950/60 text-sky-800 dark:text-sky-300 border border-sky-300 dark:border-sky-800'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                ? 'bg-carbon text-paper dark:bg-paper dark:text-carbon'
+                : 'bg-transparent text-carbon-muted dark:text-paper-muted hover:text-carbon dark:hover:text-paper hover:bg-paper-subtle dark:hover:bg-carbon-subtle'
             }`}
           >
-            <BookOpen className="w-4 h-4" />
+            <BookOpen className="w-3.5 h-3.5" />
             <span>
               {validCorrectionsCount === 0
-                ? 'Sửa lỗi câu (0 - Không có lỗi)'
-                : `Sửa lỗi trong bài viết (${validCorrectionsCount})`}
+                ? 'Sửa lỗi (0)'
+                : `Sửa lỗi bài viết (${validCorrectionsCount})`}
             </span>
           </button>
 
           <button
             type="button"
             onClick={() => setActiveDetailTab('criteria')}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
+            className={`px-4 py-2 hairline-border font-mono text-xs uppercase tracking-wider transition-colors flex items-center gap-2 ${
               activeDetailTab === 'criteria'
-                ? 'bg-sky-100 dark:bg-sky-950/60 text-sky-800 dark:text-sky-300 border border-sky-300 dark:border-sky-800'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                ? 'bg-carbon text-paper dark:bg-paper dark:text-carbon'
+                : 'bg-transparent text-carbon-muted dark:text-paper-muted hover:text-carbon dark:hover:text-paper hover:bg-paper-subtle dark:hover:bg-carbon-subtle'
             }`}
           >
-            <Award className="w-4 h-4" />
-            <span>Nhận xét 4 tiêu chí chi tiết</span>
+            <Award className="w-3.5 h-3.5" />
+            <span>4 Tiêu chí chi tiết</span>
           </button>
 
           <button
             type="button"
             onClick={() => setActiveDetailTab('vocab')}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
+            className={`px-4 py-2 hairline-border font-mono text-xs uppercase tracking-wider transition-colors flex items-center gap-2 ${
               activeDetailTab === 'vocab'
-                ? 'bg-sky-100 dark:bg-sky-950/60 text-sky-800 dark:text-sky-300 border border-sky-300 dark:border-sky-800'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                ? 'bg-carbon text-paper dark:bg-paper dark:text-carbon'
+                : 'bg-transparent text-carbon-muted dark:text-paper-muted hover:text-carbon dark:hover:text-paper hover:bg-paper-subtle dark:hover:bg-carbon-subtle'
             }`}
           >
-            <Sparkles className="w-4 h-4 text-amber-500" />
+            <Sparkles className="w-3.5 h-3.5 text-vermilion" />
             <span>Nâng cấp từ vựng C1/C2 ({activeResult.vocabularyUpgrades.length})</span>
           </button>
 
           <button
             type="button"
             onClick={() => setActiveDetailTab('model')}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
+            className={`px-4 py-2 hairline-border font-mono text-xs uppercase tracking-wider transition-colors flex items-center gap-2 ${
               activeDetailTab === 'model'
-                ? 'bg-sky-100 dark:bg-sky-950/60 text-sky-800 dark:text-sky-300 border border-sky-300 dark:border-sky-800'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                ? 'bg-carbon text-paper dark:bg-paper dark:text-carbon'
+                : 'bg-transparent text-carbon-muted dark:text-paper-muted hover:text-carbon dark:hover:text-paper hover:bg-paper-subtle dark:hover:bg-carbon-subtle'
             }`}
           >
-            <Award className="w-4 h-4 text-emerald-500" />
-            <span>Bài viết mẫu Band 8.5+</span>
+            <Award className="w-3.5 h-3.5 text-vermilion" />
+            <span>Bài mẫu Band 8.5+</span>
           </button>
         </div>
 
@@ -405,10 +410,12 @@ export default function ResultsPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex-1 flex items-center justify-center min-h-[60vh]">
+        <div className="flex-1 flex items-center justify-center min-h-[60vh] bg-paper dark:bg-carbon">
           <div className="flex flex-col items-center gap-3">
-            <div className="w-8 h-8 border-4 border-sky-600 border-t-transparent rounded-full animate-spin" />
-            <p className="text-sm text-gray-500">Đang tải kết quả bài chấm...</p>
+            <div className="w-7 h-7 border-2 border-vermilion border-t-transparent animate-spin" />
+            <p className="font-mono text-xs uppercase tracking-wider text-carbon-muted dark:text-paper-muted">
+              00 // Đang tải kết quả bài chấm...
+            </p>
           </div>
         </div>
       }

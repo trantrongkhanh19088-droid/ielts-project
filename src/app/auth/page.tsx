@@ -99,31 +99,33 @@ function AuthContent() {
   };
 
   return (
-    <div className="flex-1 flex items-center justify-center p-4 py-12">
-      <div className="max-w-md w-full bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl shadow-xl overflow-hidden p-8 space-y-6">
-        <div className="text-center space-y-2">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl overflow-hidden border-2 border-red-500/40 shadow-md shadow-red-500/20 mb-1 bg-gradient-to-b from-slate-900 to-black p-1">
-            <ToriiGate width={48} height={42} text="合格" glow={false} showShimenawa={true} />
+    <div className="flex-1 flex items-center justify-center p-4 py-16 bg-paper dark:bg-carbon">
+      <div className="max-w-md w-full bg-paper-subtle dark:bg-carbon-subtle hairline-border rounded-lg shadow-xs p-8 sm:p-10 space-y-6">
+        <div className="text-center space-y-3">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-md hairline-border bg-stone-950 p-1 shadow-xs">
+            <ToriiGate width={40} height={34} text="合格" glow={false} showShimenawa={true} />
           </div>
-          <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white">
-            {isSignUp ? 'Tạo Tài Khoản Luyện Thi' : 'Đăng Nhập Tài Khoản'}
-          </h2>
-          <p className="text-xs text-gray-500 dark:text-gray-400">
-            {isSignUp
-              ? 'Lưu lịch sử bài thi và theo dõi lộ trình nâng band điểm'
-              : 'Tiếp tục luyện tập và cải thiện kỹ năng IELTS Writing'}
-          </p>
+          <div>
+            <h2 className="font-serif text-3xl font-normal text-stone-900 dark:text-stone-100 tracking-tight">
+              {isSignUp ? 'Tạo Tài Khoản Luyện Thi' : 'Đăng Nhập Hệ Thống'}
+            </h2>
+            <p className="font-mono text-xs text-stone-500 dark:text-stone-400 mt-1">
+              {isSignUp
+                ? 'Lưu trữ tiến trình luyện thi & lịch sử bài viết'
+                : 'Tiếp tục luyện tập và đối chiếu chuẩn điểm Inspera'}
+            </p>
+          </div>
         </div>
 
         {errorMsg && (
-          <div className="flex items-start gap-2 p-3 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 rounded-xl text-xs text-red-700 dark:text-red-300">
+          <div className="flex items-start gap-2 p-3 bg-red-500/10 border border-red-500/30 rounded-md text-xs text-red-700 dark:text-red-400 font-mono">
             <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
             <span>{errorMsg}</span>
           </div>
         )}
 
         {successMsg && (
-          <div className="flex items-start gap-2 p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-xl text-xs text-emerald-700 dark:text-emerald-300">
+          <div className="flex items-start gap-2 p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-md text-xs text-emerald-700 dark:text-emerald-400 font-mono">
             <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" />
             <span>{successMsg}</span>
           </div>
@@ -133,36 +135,36 @@ function AuthContent() {
           {isSignUp && (
             <>
               <div>
-                <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
-                  Tên người dùng:
+                <label className="block font-mono text-[11px] uppercase tracking-wider text-stone-600 dark:text-stone-400 mb-1">
+                  Tên Thí Sinh:
                 </label>
                 <div className="relative">
-                  <User className="w-4 h-4 absolute left-3 top-2.5 text-gray-400" />
+                  <User className="w-4 h-4 absolute left-3 top-2.5 text-stone-400" />
                   <input
                     type="text"
                     required
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     placeholder="Enter your username"
-                    className="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 dark:border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white dark:bg-zinc-800 text-gray-900 dark:text-gray-100"
+                    className="w-full pl-9 pr-3 py-2 text-xs hairline-border rounded-md bg-paper dark:bg-carbon text-stone-900 dark:text-stone-100 focus:outline-none focus:border-stone-900 dark:focus:border-stone-100 transition-colors"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block font-mono text-[11px] uppercase tracking-wider text-stone-600 dark:text-stone-400 mb-1">
                   Mục tiêu Band điểm Writing mong muốn
                 </label>
-                <div className="grid grid-cols-5 gap-1.5">
+                <div className="grid grid-cols-5 gap-1.5 font-mono">
                   {[6.0, 6.5, 7.0, 7.5, 8.0].map((b) => (
                     <button
                       key={b}
                       type="button"
                       onClick={() => setTargetBand(b)}
-                      className={`py-1.5 rounded-lg text-xs font-bold font-mono transition border ${
+                      className={`py-1.5 rounded-md text-xs font-semibold transition-colors hairline-border ${
                         targetBand === b
-                          ? 'bg-sky-600 text-white border-sky-600 shadow-sm'
-                          : 'border-gray-200 dark:border-zinc-700 hover:bg-gray-100 dark:hover:bg-zinc-800 text-gray-700 dark:text-gray-300'
+                          ? 'bg-stone-900 text-stone-50 dark:bg-stone-100 dark:text-stone-950 font-bold'
+                          : 'text-stone-600 dark:text-stone-400 hover:bg-stone-200/50 dark:hover:bg-stone-850'
                       }`}
                     >
                       {b.toFixed(1)}
@@ -174,35 +176,35 @@ function AuthContent() {
           )}
 
           <div>
-            <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block font-mono text-[11px] uppercase tracking-wider text-stone-600 dark:text-stone-400 mb-1">
               Email:
             </label>
             <div className="relative">
-              <Mail className="w-4 h-4 absolute left-3 top-2.5 text-gray-400" />
+              <Mail className="w-4 h-4 absolute left-3 top-2.5 text-stone-400" />
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
-                className="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 dark:border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white dark:bg-zinc-800 text-gray-900 dark:text-gray-100"
+                className="w-full pl-9 pr-3 py-2 text-xs hairline-border rounded-md bg-paper dark:bg-carbon text-stone-900 dark:text-stone-100 focus:outline-none focus:border-stone-900 dark:focus:border-stone-100 transition-colors"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block font-mono text-[11px] uppercase tracking-wider text-stone-600 dark:text-stone-400 mb-1">
               Mật khẩu:
             </label>
             <div className="relative">
-              <Lock className="w-4 h-4 absolute left-3 top-2.5 text-gray-400" />
+              <Lock className="w-4 h-4 absolute left-3 top-2.5 text-stone-400" />
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 dark:border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white dark:bg-zinc-800 text-gray-900 dark:text-gray-100"
+                className="w-full pl-9 pr-3 py-2 text-xs hairline-border rounded-md bg-paper dark:bg-carbon text-stone-900 dark:text-stone-100 focus:outline-none focus:border-stone-900 dark:focus:border-stone-100 transition-colors"
               />
             </div>
           </div>
@@ -210,14 +212,14 @@ function AuthContent() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2.5 px-4 rounded-xl bg-sky-600 hover:bg-sky-700 disabled:opacity-50 text-white font-bold text-xs shadow-md shadow-sky-600/20 transition flex items-center justify-center gap-1.5"
+            className="w-full py-2.5 px-4 rounded-md bg-stone-900 text-stone-50 hover:bg-vermilion dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-vermilion dark:hover:text-stone-50 disabled:opacity-50 font-semibold text-xs tracking-wide transition-all duration-200 ease-spring flex items-center justify-center gap-1.5"
           >
             <span>{loading ? 'Đang xử lý...' : isSignUp ? 'Đăng Ký Tài Khoản' : 'Đăng Nhập'}</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </form>
 
-        <div className="text-center pt-2 border-t border-gray-100 dark:border-zinc-800 text-xs text-gray-500">
+        <div className="text-center pt-3 hairline-t font-mono text-xs text-stone-500">
           {isSignUp ? (
             <span>
               Đã có tài khoản?{' '}
@@ -228,7 +230,7 @@ function AuthContent() {
                   setErrorMsg('');
                   setSuccessMsg('');
                 }}
-                className="text-sky-600 font-semibold hover:underline"
+                className="text-stone-900 dark:text-stone-100 font-semibold underline underline-offset-4 hover:text-vermilion"
               >
                 Đăng nhập
               </button>
@@ -243,7 +245,7 @@ function AuthContent() {
                   setErrorMsg('');
                   setSuccessMsg('');
                 }}
-                className="text-sky-600 font-semibold hover:underline"
+                className="text-stone-900 dark:text-stone-100 font-semibold underline underline-offset-4 hover:text-vermilion"
               >
                 Đăng ký miễn phí
               </button>

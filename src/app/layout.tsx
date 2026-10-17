@@ -1,6 +1,11 @@
+import React from 'react';
 import type { Metadata } from 'next';
+import { Inter, Lora, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/navbar/Navbar';
+import SakuraCanvas from '@/components/japanese/SakuraCanvas';
+import ManekiNeko from '@/components/japanese/ManekiNeko';
+import PixelCompanion from '@/components/pixel-companion/PixelCompanion';
 
 export const metadata: Metadata = {
   title: 'CD-IELTS Writing Simulator | Nền tảng Luyện thi IELTS Chuẩn Inspera',
@@ -18,17 +23,24 @@ export const metadata: Metadata = {
   },
 };
 
-import { Inter } from 'next/font/google';
-
 const inter = Inter({
   subsets: ['latin', 'vietnamese'],
   display: 'swap',
-  variable: '--font-inter',
+  variable: '--font-sans',
 });
 
-import SakuraCanvas from '@/components/japanese/SakuraCanvas';
-import ManekiNeko from '@/components/japanese/ManekiNeko';
-import PixelCompanion from '@/components/pixel-companion/PixelCompanion';
+const lora = Lora({
+  subsets: ['latin', 'vietnamese'],
+  display: 'swap',
+  style: ['normal', 'italic'],
+  variable: '--font-serif',
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin', 'vietnamese'],
+  display: 'swap',
+  variable: '--font-mono',
+});
 
 export default function RootLayout({
   children,
@@ -36,7 +48,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="vi" suppressHydrationWarning className={inter.variable}>
+    <html
+      lang="vi"
+      suppressHydrationWarning
+      className={`${inter.variable} ${lora.variable} ${jetbrainsMono.variable}`}
+    >
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/torii-icon.svg" type="image/svg+xml" />
@@ -58,12 +74,15 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.className} min-h-screen flex flex-col bg-slate-50 dark:bg-zinc-950 text-slate-900 dark:text-slate-100 antialiased relative`}>
+      <body className="min-h-screen flex flex-col bg-paper dark:bg-carbon text-stone-900 dark:text-stone-100 antialiased selection:bg-vermilion/15 selection:text-vermilion relative font-sans">
+        {/* Subtle Physical Paper Grain Overlay */}
+        <div className="fixed inset-0 pointer-events-none noise-overlay z-0" aria-hidden="true" />
+
         {/* Ambient Falling Sakura Petals */}
         <SakuraCanvas />
 
         <Navbar />
-        <main className="flex-1 flex flex-col">{children}</main>
+        <main className="flex-1 flex flex-col relative z-10">{children}</main>
 
         {/* 55 Pixel Companion with Interactive Speech Bubbles & Settings */}
         <PixelCompanion />

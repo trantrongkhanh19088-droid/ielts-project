@@ -23,36 +23,36 @@ export default function ScoreCard({ result, title }: ScoreCardProps) {
   };
 
   return (
-    <div className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-6 shadow-sm space-y-6">
+    <div className="hairline-border bg-paper-subtle dark:bg-carbon-subtle p-6 sm:p-8 space-y-6 shadow-xs">
       {/* Top Banner: Title & Overall Band */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-gray-100 dark:border-zinc-800">
-        <div>
-          <span className="text-xs font-semibold uppercase tracking-wider text-sky-600 dark:text-sky-400">
-            {isTask1 ? 'IELTS Academic Task 1' : 'IELTS Writing Task 2'}
-          </span>
-          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mt-0.5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5 pb-5 hairline-b">
+        <div className="space-y-1.5">
+          <div className="font-mono text-[10px] tracking-wider text-vermilion uppercase">
+            03 // {isTask1 ? 'IELTS ACADEMIC TASK 1' : 'IELTS WRITING TASK 2'}
+          </div>
+          <h2 className="font-serif text-xl sm:text-2xl font-medium text-carbon dark:text-paper tracking-tight">
             {title || result.promptTitle}
           </h2>
-          <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400 mt-2">
-            <span className="flex items-center gap-1">
+          <div className="flex items-center gap-4 font-mono text-[11px] text-carbon-muted dark:text-paper-muted pt-1">
+            <span className="flex items-center gap-1.5">
               <FileText className="w-3.5 h-3.5" />
-              {result.wordCount} từ ({isTask1 ? 'Yêu cầu: >=150' : 'Yêu cầu: >=250'})
+              {result.wordCount} words ({isTask1 ? 'Target: ≥150' : 'Target: ≥250'})
             </span>
-            <span className="flex items-center gap-1">
+            <span className="flex items-center gap-1.5">
               <Clock className="w-3.5 h-3.5" />
-              Thời gian: {formatDuration(result.timeSpentSeconds)}
+              Time: {formatDuration(result.timeSpentSeconds)}
             </span>
           </div>
         </div>
 
         {/* Big Overall Band Score Display */}
-        <div className="flex items-center gap-3 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-zinc-800/80 dark:to-zinc-800/40 p-4 rounded-xl border border-gray-200 dark:border-zinc-700">
-          <Award className="w-8 h-8 text-sky-600 shrink-0" />
+        <div className="flex items-center gap-4 hairline-border bg-paper dark:bg-carbon px-5 py-3.5">
+          <Award className="w-7 h-7 text-vermilion shrink-0 stroke-[1.75]" />
           <div>
-            <div className="text-xs text-gray-500 dark:text-gray-400 font-medium uppercase">
+            <div className="font-mono text-[10px] uppercase tracking-wider text-carbon-muted dark:text-paper-muted">
               Band Score
             </div>
-            <div className="text-3xl font-extrabold text-gray-900 dark:text-white font-mono">
+            <div className="text-3xl font-mono font-bold text-carbon dark:text-paper">
               {Number(result.overallBand).toFixed(1)}
             </div>
           </div>
@@ -62,76 +62,60 @@ export default function ScoreCard({ result, title }: ScoreCardProps) {
       {/* 4 Criteria Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {/* TA / TR */}
-        <div className="p-3.5 rounded-lg border border-gray-200 dark:border-zinc-800 bg-gray-50/50 dark:bg-zinc-800/30">
-          <div className="text-xs font-medium text-gray-500 dark:text-gray-400 truncate">
+        <div className="hairline-border p-4 bg-paper dark:bg-carbon space-y-2">
+          <div className="font-mono text-[10px] uppercase tracking-wider text-carbon-muted dark:text-paper-muted truncate">
             {taLabel}
           </div>
-          <div className="flex items-center justify-between mt-1">
-            <span className="text-xl font-bold text-gray-900 dark:text-gray-100 font-mono">
+          <div className="flex items-baseline justify-between">
+            <span className="text-2xl font-mono font-bold text-carbon dark:text-paper">
               {Number(result.criteria.taskAchievementOrResponse.score).toFixed(1)}
             </span>
-            <span
-              className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${getBandBadgeColor(
-                result.criteria.taskAchievementOrResponse.score
-              )}`}
-            >
+            <span className="font-mono text-[10px] px-2 py-0.5 hairline-border bg-paper-subtle dark:bg-carbon-subtle text-vermilion uppercase">
               Band {result.criteria.taskAchievementOrResponse.score}
             </span>
           </div>
         </div>
 
         {/* CC */}
-        <div className="p-3.5 rounded-lg border border-gray-200 dark:border-zinc-800 bg-gray-50/50 dark:bg-zinc-800/30">
-          <div className="text-xs font-medium text-gray-500 dark:text-gray-400 truncate">
+        <div className="hairline-border p-4 bg-paper dark:bg-carbon space-y-2">
+          <div className="font-mono text-[10px] uppercase tracking-wider text-carbon-muted dark:text-paper-muted truncate">
             Coherence &amp; Cohesion
           </div>
-          <div className="flex items-center justify-between mt-1">
-            <span className="text-xl font-bold text-gray-900 dark:text-gray-100 font-mono">
+          <div className="flex items-baseline justify-between">
+            <span className="text-2xl font-mono font-bold text-carbon dark:text-paper">
               {Number(result.criteria.coherenceCohesion.score).toFixed(1)}
             </span>
-            <span
-              className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${getBandBadgeColor(
-                result.criteria.coherenceCohesion.score
-              )}`}
-            >
+            <span className="font-mono text-[10px] px-2 py-0.5 hairline-border bg-paper-subtle dark:bg-carbon-subtle text-vermilion uppercase">
               Band {result.criteria.coherenceCohesion.score}
             </span>
           </div>
         </div>
 
         {/* LR */}
-        <div className="p-3.5 rounded-lg border border-gray-200 dark:border-zinc-800 bg-gray-50/50 dark:bg-zinc-800/30">
-          <div className="text-xs font-medium text-gray-500 dark:text-gray-400 truncate">
+        <div className="hairline-border p-4 bg-paper dark:bg-carbon space-y-2">
+          <div className="font-mono text-[10px] uppercase tracking-wider text-carbon-muted dark:text-paper-muted truncate">
             Lexical Resource
           </div>
-          <div className="flex items-center justify-between mt-1">
-            <span className="text-xl font-bold text-gray-900 dark:text-gray-100 font-mono">
+          <div className="flex items-baseline justify-between">
+            <span className="text-2xl font-mono font-bold text-carbon dark:text-paper">
               {Number(result.criteria.lexicalResource.score).toFixed(1)}
             </span>
-            <span
-              className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${getBandBadgeColor(
-                result.criteria.lexicalResource.score
-              )}`}
-            >
+            <span className="font-mono text-[10px] px-2 py-0.5 hairline-border bg-paper-subtle dark:bg-carbon-subtle text-vermilion uppercase">
               Band {result.criteria.lexicalResource.score}
             </span>
           </div>
         </div>
 
         {/* GRA */}
-        <div className="p-3.5 rounded-lg border border-gray-200 dark:border-zinc-800 bg-gray-50/50 dark:bg-zinc-800/30">
-          <div className="text-xs font-medium text-gray-500 dark:text-gray-400 truncate">
+        <div className="hairline-border p-4 bg-paper dark:bg-carbon space-y-2">
+          <div className="font-mono text-[10px] uppercase tracking-wider text-carbon-muted dark:text-paper-muted truncate">
             Grammatical Range
           </div>
-          <div className="flex items-center justify-between mt-1">
-            <span className="text-xl font-bold text-gray-900 dark:text-gray-100 font-mono">
+          <div className="flex items-baseline justify-between">
+            <span className="text-2xl font-mono font-bold text-carbon dark:text-paper">
               {Number(result.criteria.grammaticalRange.score).toFixed(1)}
             </span>
-            <span
-              className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${getBandBadgeColor(
-                result.criteria.grammaticalRange.score
-              )}`}
-            >
+            <span className="font-mono text-[10px] px-2 py-0.5 hairline-border bg-paper-subtle dark:bg-carbon-subtle text-vermilion uppercase">
               Band {result.criteria.grammaticalRange.score}
             </span>
           </div>

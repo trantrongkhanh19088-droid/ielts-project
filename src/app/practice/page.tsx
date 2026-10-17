@@ -877,54 +877,59 @@ function PracticeContent() {
 
       {/* Anti-Bot Human Verification Challenge Modal */}
       {showChallengeModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="max-w-md w-full bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-zinc-800 p-6 space-y-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-carbon/70 dark:bg-black/80 backdrop-blur-xs animate-in fade-in duration-200">
+          <div className="max-w-md w-full bg-paper dark:bg-carbon hairline-border shadow-xl p-6 space-y-5">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-sky-100 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 flex items-center justify-center">
-                  <ShieldCheck className="w-4 h-4" />
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 hairline-border bg-paper-subtle dark:bg-carbon-subtle text-vermilion flex items-center justify-center">
+                  <ShieldCheck className="w-4 h-4 stroke-[1.75]" />
                 </div>
-                <h3 className="font-bold text-sm text-gray-900 dark:text-white">
-                  Xác nhận nộp bài thi
-                </h3>
+                <div>
+                  <div className="font-mono text-[10px] tracking-wider text-vermilion uppercase">
+                    00 // XÁC THỰC THÍ SINH
+                  </div>
+                  <h3 className="font-serif font-medium text-base text-carbon dark:text-paper">
+                    Xác nhận nộp bài thi
+                  </h3>
+                </div>
               </div>
               <button
                 type="button"
                 onClick={() => setShowChallengeModal(false)}
-                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+                className="text-carbon-muted dark:text-paper-muted hover:text-carbon dark:hover:text-paper p-1 transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="bg-sky-50/60 dark:bg-sky-950/20 rounded-xl p-3 border border-sky-100 dark:border-sky-900/40 text-xs space-y-1.5">
-              <div className="flex justify-between text-gray-600 dark:text-gray-400">
-                <span>Chế độ thi:</span>
-                <span className="font-semibold text-gray-900 dark:text-white uppercase font-mono">
+            <div className="bg-paper-subtle dark:bg-carbon-subtle hairline-border p-3.5 text-xs space-y-1.5 font-mono">
+              <div className="flex justify-between text-carbon-muted dark:text-paper-muted">
+                <span>Chế độ:</span>
+                <span className="font-semibold text-carbon dark:text-paper uppercase">
                   {mode.replace('_', ' ')}
                 </span>
               </div>
-              <div className="flex justify-between text-gray-600 dark:text-gray-400">
-                <span>Thời gian làm bài:</span>
-                <span className="font-semibold text-gray-900 dark:text-white font-mono">
-                  {Math.floor((initialSeconds - timeRemaining) / 60)} phút {(initialSeconds - timeRemaining) % 60} giây
+              <div className="flex justify-between text-carbon-muted dark:text-paper-muted">
+                <span>Thời gian:</span>
+                <span className="font-semibold text-carbon dark:text-paper">
+                  {Math.floor((initialSeconds - timeRemaining) / 60)}m {(initialSeconds - timeRemaining) % 60}s
                 </span>
               </div>
-              <div className="flex justify-between text-gray-600 dark:text-gray-400">
+              <div className="flex justify-between text-carbon-muted dark:text-paper-muted">
                 <span>Tổng số từ:</span>
-                <span className="font-semibold text-gray-900 dark:text-white font-mono">
+                <span className="font-semibold text-vermilion">
                   {isFullTest
                     ? countWords(task1Essay) + countWords(task2Essay)
                     : countWords(mode === 'task1' ? task1Essay : task2Essay)}{' '}
-                  từ
+                  words
                 </span>
               </div>
             </div>
 
             <div className="space-y-2 pt-1">
-              <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300">
-                Xác thực thí sinh (Anti-Bot Check):{' '}
-                <span className="text-sky-600 font-mono font-bold text-sm ml-1">
+              <label className="block text-xs font-mono text-carbon dark:text-paper uppercase tracking-wider">
+                Anti-Bot Verification:{' '}
+                <span className="text-vermilion font-bold text-sm ml-1">
                   {challengeProblem.q} = ?
                 </span>
               </label>
@@ -940,10 +945,10 @@ function PracticeContent() {
                   if (e.key === 'Enter') handleConfirmHumanChallengeAndSubmit();
                 }}
                 placeholder="Nhập kết quả số..."
-                className="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm font-mono text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500"
+                className="w-full px-3.5 py-2.5 hairline-border bg-paper dark:bg-carbon text-sm font-mono text-carbon dark:text-paper focus:outline-none focus:border-vermilion"
               />
               {challengeError && (
-                <p className="text-[11px] text-red-500 font-medium flex items-center gap-1">
+                <p className="text-[11px] text-vermilion font-mono flex items-center gap-1">
                   <AlertTriangle className="w-3 h-3" />
                   <span>{challengeError}</span>
                 </p>
@@ -954,17 +959,17 @@ function PracticeContent() {
               <button
                 type="button"
                 onClick={() => setShowChallengeModal(false)}
-                className="flex-1 py-2 px-3.5 rounded-xl border border-gray-200 dark:border-zinc-700 text-xs font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-800 transition"
+                className="flex-1 py-2.5 px-3.5 hairline-border text-xs font-mono tracking-wider uppercase text-carbon-muted dark:text-paper-muted hover:text-carbon dark:hover:text-paper hover:bg-paper-subtle dark:hover:bg-carbon-subtle transition-colors"
               >
-                Tiếp tục làm bài
+                Tiếp tục viết
               </button>
               <button
                 type="button"
                 onClick={handleConfirmHumanChallengeAndSubmit}
-                className="flex-1 py-2 px-3.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-xs font-bold text-white shadow-md shadow-sky-600/30 transition flex items-center justify-center gap-1.5"
+                className="flex-1 py-2.5 px-3.5 hairline-border bg-carbon dark:bg-paper text-paper dark:text-carbon hover:bg-vermilion dark:hover:bg-vermilion dark:hover:text-white text-xs font-mono tracking-wider uppercase transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <ShieldCheck className="w-3.5 h-3.5" />
-                <span>Xác nhận &amp; Chấm bài</span>
+                <span>Nộp &amp; Chấm bài</span>
               </button>
             </div>
           </div>
@@ -976,24 +981,24 @@ function PracticeContent() {
 
       {/* Submission / 503 Overload Retry Modal */}
       {submitError && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-white dark:bg-zinc-900 rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-200 dark:border-zinc-800 space-y-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-carbon/70 dark:bg-black/80 backdrop-blur-xs animate-in fade-in duration-200">
+          <div className="bg-paper dark:bg-carbon hairline-border max-w-md w-full p-6 shadow-xl space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
-                <AlertTriangle className="w-6 h-6" />
+              <div className="w-10 h-10 hairline-border bg-paper-subtle dark:bg-carbon-subtle text-vermilion flex items-center justify-center shrink-0">
+                <AlertTriangle className="w-5 h-5 stroke-[1.75]" />
               </div>
               <div>
-                <h3 className="text-base font-bold text-gray-900 dark:text-gray-100">
+                <h3 className="text-base font-serif font-medium text-carbon dark:text-paper">
                   {submitError.is503 ? 'Máy chủ Google AI đang bận (503)' : 'Chưa thể hoàn tất chấm bài'}
                 </h3>
-                <p className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1 mt-0.5">
+                <p className="text-xs font-mono text-vermilion flex items-center gap-1 mt-0.5">
                   <CheckCircle2 className="w-3.5 h-3.5" />
-                  Bài làm của bạn vẫn được lưu an toàn 100%
+                  Bài làm được bảo lưu trên bộ nhớ tạm
                 </p>
               </div>
             </div>
 
-            <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed bg-amber-50/50 dark:bg-amber-950/20 p-3.5 rounded-xl border border-amber-200/50 dark:border-amber-900/30">
+            <p className="text-xs text-carbon-muted dark:text-paper-muted leading-relaxed hairline-border bg-paper-subtle dark:bg-carbon-subtle p-3.5 font-sans">
               {submitError.message}
             </p>
 
@@ -1001,7 +1006,7 @@ function PracticeContent() {
               <button
                 type="button"
                 onClick={() => setSubmitError(null)}
-                className="px-4 py-2 rounded-xl border border-gray-200 dark:border-zinc-700 hover:bg-gray-100 dark:hover:bg-zinc-800 text-xs font-semibold text-gray-700 dark:text-gray-300 transition"
+                className="px-4 py-2 hairline-border text-xs font-mono tracking-wider uppercase text-carbon-muted dark:text-paper-muted hover:text-carbon dark:hover:text-paper hover:bg-paper-subtle dark:hover:bg-carbon-subtle transition-colors"
               >
                 Quay lại bài viết
               </button>
@@ -1011,7 +1016,7 @@ function PracticeContent() {
                   setSubmitError(null);
                   handleSubmit();
                 }}
-                className="px-5 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold shadow-md shadow-sky-600/20 transition flex items-center gap-1.5"
+                className="px-5 py-2 hairline-border bg-carbon dark:bg-paper text-paper dark:text-carbon hover:bg-vermilion dark:hover:bg-vermilion dark:hover:text-white text-xs font-mono tracking-wider uppercase transition-colors flex items-center gap-1.5 cursor-pointer"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>Thử chấm lại ngay</span>

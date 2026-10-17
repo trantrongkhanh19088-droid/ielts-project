@@ -202,10 +202,12 @@ function BuilderMainContent() {
 
   if (!isLoaded || isAuthenticated === null) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-zinc-950">
+      <div className="min-h-screen flex items-center justify-center bg-paper dark:bg-carbon">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 border-4 border-emerald-600 border-t-transparent rounded-full animate-spin" />
-          <p className="text-xs text-gray-500 font-medium">Đang kiểm tra tài khoản thí sinh...</p>
+          <div className="w-7 h-7 border-2 border-vermilion border-t-transparent animate-spin" />
+          <p className="font-mono text-xs text-carbon-muted dark:text-paper-muted uppercase tracking-wider">
+            00 // Đang kiểm tra tài khoản thí sinh...
+          </p>
         </div>
       </div>
     );
@@ -214,78 +216,84 @@ function BuilderMainContent() {
   // Authentication Guard: Writing Builder requires user account
   if (isAuthenticated === false) {
     return (
-      <div className="min-h-[85vh] flex items-center justify-center p-4 py-12 bg-gradient-to-b from-emerald-50/30 via-white to-sky-50/30 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950">
-        <div className="max-w-lg w-full bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-3xl shadow-2xl p-6 sm:p-8 space-y-6 text-center">
-          {/* Header Icon */}
-          <div className="relative inline-flex items-center justify-center">
-            <div className="w-16 h-16 rounded-3xl bg-gradient-to-tr from-emerald-500 to-teal-600 text-white shadow-xl shadow-emerald-500/25 flex items-center justify-center">
-              <Lock className="w-8 h-8" />
+      <div className="min-h-[85vh] flex items-center justify-center p-4 py-16 bg-paper dark:bg-carbon">
+        <div className="max-w-xl w-full hairline-border bg-paper-subtle dark:bg-carbon-subtle p-8 sm:p-10 space-y-8 text-center shadow-xs">
+          {/* Header Mark */}
+          <div className="inline-flex items-center justify-center">
+            <div className="w-14 h-14 hairline-border bg-paper dark:bg-carbon text-vermilion flex items-center justify-center">
+              <Lock className="w-6 h-6 stroke-[1.75]" />
             </div>
-            <span className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-amber-500 text-white text-xs flex items-center justify-center shadow">
-              <Sparkles className="w-3.5 h-3.5" />
-            </span>
           </div>
 
-          <div className="space-y-2">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-300 text-[11px] font-extrabold">
-              <span>Yêu cầu đăng nhập tài khoản thí sinh</span>
+          <div className="space-y-3">
+            <div className="inline-flex items-center gap-2 px-2.5 py-1 hairline-border bg-paper dark:bg-carbon text-[11px] font-mono tracking-wider text-vermilion uppercase">
+              <span>00 // YÊU CẦU ĐĂNG NHẬP</span>
             </div>
-            <h2 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">
+            <h2 className="font-serif text-2xl sm:text-3xl font-medium tracking-tight text-carbon dark:text-paper">
               Phòng Luyện Câu Writing Builder
             </h2>
-            <p className="text-xs sm:text-sm text-gray-600 dark:text-zinc-400 max-w-md mx-auto leading-relaxed">
-              Tính năng Writing Builder đòi hỏi lưu trữ tiến trình Cây Đậu (Beanstalk Tree) và đồng bộ câu viết qua AI. Vui lòng tạo tài khoản hoặc đăng nhập để bắt đầu.
+            <p className="font-sans text-xs sm:text-sm text-carbon-muted dark:text-paper-muted max-w-[50ch] mx-auto leading-relaxed">
+              Tính năng Writing Builder lưu trữ tiến trình theo cấu trúc Cây Đậu (Beanstalk Tree) và đồng bộ từng đơn vị câu qua AI. Vui lòng đăng nhập để bắt đầu.
             </p>
           </div>
 
           {/* 3 Value Pillars */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
-            <div className="p-3.5 rounded-2xl bg-gray-50 dark:bg-zinc-800/60 border border-gray-100 dark:border-zinc-800 space-y-1">
-              <div className="text-emerald-600 dark:text-emerald-400 font-bold text-xs flex items-center gap-1.5">
-                <Sprout className="w-4 h-4" />
+            <div className="hairline-border p-4 bg-paper dark:bg-carbon space-y-1.5">
+              <div className="font-mono text-[10px] tracking-wider text-vermilion">
+                01 // PHÂN RÃ CÂU
+              </div>
+              <div className="text-carbon dark:text-paper font-semibold text-xs flex items-center gap-1.5">
+                <Sprout className="w-3.5 h-3.5 text-vermilion" />
                 <span>Cây Đậu Học Tập</span>
               </div>
-              <p className="text-[11px] text-gray-500 dark:text-zinc-400 leading-normal">
-                Chia nhỏ bài essay thành 4-5 câu trọng tâm theo từng cấp độ.
+              <p className="text-[11px] text-carbon-muted dark:text-paper-muted leading-relaxed">
+                Chia nhỏ bài essay thành 4-5 câu trọng tâm theo từng nấc thang band điểm.
               </p>
             </div>
 
-            <div className="p-3.5 rounded-2xl bg-gray-50 dark:bg-zinc-800/60 border border-gray-100 dark:border-zinc-800 space-y-1">
-              <div className="text-sky-600 dark:text-sky-400 font-bold text-xs flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4" />
-                <span>AI Rà Lỗi &amp; Gợi Ý</span>
+            <div className="hairline-border p-4 bg-paper dark:bg-carbon space-y-1.5">
+              <div className="font-mono text-[10px] tracking-wider text-vermilion">
+                02 // ĐỐI CHIẾU AI
               </div>
-              <p className="text-[11px] text-gray-500 dark:text-zinc-400 leading-normal">
-                Sửa ngữ pháp tức thì và gợi ý Paraphrase nâng band điểm.
+              <div className="text-carbon dark:text-paper font-semibold text-xs flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-vermilion" />
+                <span>Rà Lỗi &amp; Nâng Cấp</span>
+              </div>
+              <p className="text-[11px] text-carbon-muted dark:text-paper-muted leading-relaxed">
+                Phát hiện lỗi ngữ pháp tức thì và gợi ý các cấu trúc diễn đạt tự nhiên hơn.
               </p>
             </div>
 
-            <div className="p-3.5 rounded-2xl bg-gray-50 dark:bg-zinc-800/60 border border-gray-100 dark:border-zinc-800 space-y-1">
-              <div className="text-purple-600 dark:text-purple-400 font-bold text-xs flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4" />
-                <span>Lưu Trữ Cá Nhân</span>
+            <div className="hairline-border p-4 bg-paper dark:bg-carbon space-y-1.5">
+              <div className="font-mono text-[10px] tracking-wider text-vermilion">
+                03 // LƯU TRỮ
               </div>
-              <p className="text-[11px] text-gray-500 dark:text-zinc-400 leading-normal">
-                Bảo toàn lịch sử luyện viết và từ vựng tích lũy trên tài khoản.
+              <div className="text-carbon dark:text-paper font-semibold text-xs flex items-center gap-1.5">
+                <ShieldCheck className="w-3.5 h-3.5 text-vermilion" />
+                <span>Bảo Toàn Tiến Trình</span>
+              </div>
+              <p className="text-[11px] text-carbon-muted dark:text-paper-muted leading-relaxed">
+                Bảo lưu lịch sử luyện viết, bài hoàn thành và từ vựng tích lũy trên Cloud.
               </p>
             </div>
           </div>
 
           {/* Action CTAs */}
-          <div className="space-y-2.5 pt-2">
+          <div className="space-y-3 pt-2">
             <Link
               href="/auth?redirect=/builder"
-              className="w-full py-3 px-5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm shadow-lg shadow-emerald-600/25 transition flex items-center justify-center gap-2 group cursor-pointer"
+              className="w-full py-3.5 px-6 hairline-border bg-carbon dark:bg-paper text-paper dark:text-carbon hover:bg-vermilion dark:hover:bg-vermilion dark:hover:text-white font-mono text-xs uppercase tracking-wider transition-colors duration-200 flex items-center justify-center gap-2 group cursor-pointer"
             >
               <span>Đăng nhập / Tạo tài khoản để bắt đầu</span>
-              <ArrowRight className="w-4 h-4 transition group-hover:translate-x-0.5" />
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </Link>
 
             <Link
               href="/"
-              className="w-full py-2.5 px-4 rounded-2xl border border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-gray-600 dark:text-zinc-300 font-semibold text-xs transition block text-center"
+              className="w-full py-2.5 px-4 hairline-border bg-transparent hover:bg-paper-subtle dark:hover:bg-carbon-subtle text-carbon-muted dark:text-paper-muted hover:text-carbon dark:hover:text-paper font-mono text-[11px] tracking-wider transition-colors block text-center uppercase"
             >
-              Quay về Trang chủ
+              ← Quay về Trang chủ
             </Link>
           </div>
         </div>
@@ -317,7 +325,7 @@ function BuilderMainContent() {
 
   // Beanstalk Map View
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-50/50 via-white to-emerald-50/40 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950 flex flex-col">
+    <div className="min-h-screen bg-paper dark:bg-carbon flex flex-col">
       {state && state.config ? (
         <>
           {/* Smart Pacing Tracker Widget */}
@@ -336,22 +344,27 @@ function BuilderMainContent() {
         </>
       ) : (
         /* Empty / Initial State */
-        <div className="flex-1 flex flex-col items-center justify-center p-8 text-center space-y-4">
-          <div className="w-16 h-16 rounded-3xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 flex items-center justify-center">
-            <Sprout className="w-9 h-9" />
+        <div className="flex-1 flex flex-col items-center justify-center p-8 text-center space-y-5">
+          <div className="w-14 h-14 hairline-border bg-paper-subtle dark:bg-carbon-subtle text-vermilion flex items-center justify-center">
+            <Sprout className="w-7 h-7 stroke-[1.75]" />
           </div>
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-            Chưa có Lộ trình Cây Đậu nào được gieo
-          </h2>
-          <p className="text-xs text-gray-500 max-w-sm">
-            Hãy thiết lập Band điểm mục tiêu và số ngày học để hệ thống bốc ngẫu nhiên bộ đề và gieo mầm Cây Đậu học tập cho bạn.
-          </p>
+          <div className="space-y-2">
+            <div className="font-mono text-xs tracking-wider text-vermilion uppercase">
+              00 // KHỞI TẠO CÂY ĐẬU
+            </div>
+            <h2 className="font-serif text-2xl font-medium text-carbon dark:text-paper tracking-tight">
+              Chưa có Lộ trình Cây Đậu nào được gieo
+            </h2>
+            <p className="font-sans text-xs text-carbon-muted dark:text-paper-muted max-w-[45ch] mx-auto leading-relaxed">
+              Thiết lập Band điểm mục tiêu và thời hạn luyện thi để hệ thống bốc ngẫu nhiên bộ đề và gieo mầm Cây Đậu học tập.
+            </p>
+          </div>
           <button
             type="button"
             onClick={() => setIsConfigModalOpen(true)}
-            className="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md shadow-emerald-600/25 transition"
+            className="px-6 py-3.5 hairline-border bg-carbon dark:bg-paper text-paper dark:text-carbon hover:bg-vermilion dark:hover:bg-vermilion dark:hover:text-white font-mono text-xs uppercase tracking-wider transition-colors duration-200 cursor-pointer"
           >
-            Bắt đầu Thiết Lập Cây Đậu
+            Bắt đầu Thiết Lập Cây Đậu →
           </button>
         </div>
       )}

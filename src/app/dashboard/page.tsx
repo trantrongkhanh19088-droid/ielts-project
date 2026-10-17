@@ -108,39 +108,41 @@ export default function DashboardPage() {
   return (
     <div className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* Candidate Profile Header Card */}
-      <div className="p-6 rounded-2xl bg-gradient-to-r from-sky-900 via-indigo-900 to-slate-900 text-white shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div className="p-6 sm:p-8 rounded-lg hairline-border bg-paper-subtle dark:bg-carbon-subtle flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-xs">
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur border border-white/20 flex items-center justify-center font-bold text-2xl text-sky-300 shadow-inner">
+          <div className="w-14 h-14 rounded-md hairline-border bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 flex items-center justify-center font-mono font-bold text-xl shadow-xs shrink-0">
             {userProfile.fullName.slice(0, 2).toUpperCase()}
           </div>
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <h1 className="text-xl sm:text-2xl font-extrabold">{userProfile.fullName}</h1>
-              <span className="text-[11px] px-2.5 py-0.5 rounded-full font-bold bg-sky-500/20 text-sky-300 border border-sky-400/30">
-                Học viên IELTS
+              <h1 className="font-serif text-2xl font-normal text-stone-900 dark:text-stone-100 tracking-tight">
+                {userProfile.fullName}
+              </h1>
+              <span className="font-mono text-[10px] px-2 py-0.5 rounded hairline-border bg-stone-100 dark:bg-stone-850 text-stone-700 dark:text-stone-300 font-semibold uppercase">
+                HỌC VIÊN
               </span>
             </div>
-            <p className="text-xs text-sky-200/80 font-mono">
-              {userProfile.email || 'Lưu trữ cục bộ (Guest Profile)'}
+            <p className="font-mono text-xs text-stone-500">
+              {userProfile.email || 'Lưu trữ cục bộ // Guest Profile'}
             </p>
           </div>
         </div>
 
         {/* Target Progress Bar */}
-        <div className="w-full md:w-80 bg-white/10 backdrop-blur p-4 rounded-xl border border-white/10 space-y-2">
-          <div className="flex items-center justify-between text-xs">
-            <span className="text-sky-200 flex items-center gap-1 font-semibold">
-              <Target className="w-3.5 h-3.5 text-yellow-300" /> Mục tiêu Band {userProfile.targetBand.toFixed(1)}
+        <div className="w-full md:w-80 p-4 rounded-md hairline-border bg-paper dark:bg-carbon space-y-2">
+          <div className="flex items-center justify-between font-mono text-xs">
+            <span className="text-stone-600 dark:text-stone-400 flex items-center gap-1.5 font-medium">
+              <Target className="w-3.5 h-3.5 text-vermilion" /> Target {userProfile.targetBand.toFixed(1)}
             </span>
-            <span className="font-mono text-yellow-300 font-bold">{targetProgress}% đạt được</span>
+            <span className="text-vermilion font-bold">{targetProgress}%</span>
           </div>
-          <div className="w-full h-2.5 bg-black/30 rounded-full overflow-hidden">
+          <div className="w-full h-1.5 bg-stone-200 dark:bg-stone-800 rounded-full overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-yellow-400 to-emerald-400 rounded-full transition-all duration-500"
+              className="h-full bg-vermilion rounded-full transition-all duration-500"
               style={{ width: `${targetProgress}%` }}
             />
           </div>
-          <div className="flex justify-between text-[10px] text-sky-300/70 font-mono">
+          <div className="flex justify-between font-mono text-[10px] text-stone-400">
             <span>Điểm hiện tại: {avgBand}</span>
             <span>Mục tiêu: {userProfile.targetBand.toFixed(1)}</span>
           </div>
@@ -150,59 +152,51 @@ export default function DashboardPage() {
       {/* 4 Overview Statistics Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {/* Total Essays */}
-        <div className="p-5 rounded-xl bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 shadow-sm space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">
-              Tổng số bài đã viết
-            </span>
-            <FileText className="w-4 h-4 text-sky-600" />
+        <div className="p-5 rounded-lg hairline-border bg-paper-subtle dark:bg-carbon-subtle space-y-3">
+          <div className="flex items-center justify-between font-mono text-[10px] text-stone-500 uppercase tracking-wider">
+            <span>01 // TỔNG BÀI VIẾT</span>
+            <FileText className="w-3.5 h-3.5 text-stone-400" />
           </div>
-          <div className="text-3xl font-extrabold text-gray-900 dark:text-white font-mono">
+          <div className="text-3xl font-normal font-mono text-stone-900 dark:text-stone-100">
             {totalEssays}
           </div>
-          <p className="text-[11px] text-gray-400">Task 1, Task 2 &amp; Full Test</p>
+          <p className="font-mono text-[10px] text-stone-400">Task 1, Task 2 &amp; Full Test</p>
         </div>
 
         {/* Avg Band */}
-        <div className="p-5 rounded-xl bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 shadow-sm space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">
-              Band điểm trung bình
-            </span>
-            <TrendingUp className="w-4 h-4 text-blue-600" />
+        <div className="p-5 rounded-lg hairline-border bg-paper-subtle dark:bg-carbon-subtle space-y-3">
+          <div className="flex items-center justify-between font-mono text-[10px] text-stone-500 uppercase tracking-wider">
+            <span>02 // BAND TRUNG BÌNH</span>
+            <TrendingUp className="w-3.5 h-3.5 text-vermilion" />
           </div>
-          <div className="text-3xl font-extrabold text-blue-600 font-mono">
+          <div className="text-3xl font-normal font-mono text-vermilion">
             {avgBand}
           </div>
-          <p className="text-[11px] text-gray-400">Tính trên tất cả các bài</p>
+          <p className="font-mono text-[10px] text-stone-400">Tính trên tất cả các bài</p>
         </div>
 
         {/* Highest Band */}
-        <div className="p-5 rounded-xl bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 shadow-sm space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">
-              Band cao nhất đạt được
-            </span>
-            <Award className="w-4 h-4 text-emerald-600" />
+        <div className="p-5 rounded-lg hairline-border bg-paper-subtle dark:bg-carbon-subtle space-y-3">
+          <div className="flex items-center justify-between font-mono text-[10px] text-stone-500 uppercase tracking-wider">
+            <span>03 // KỶ LỤC CAO NHẤT</span>
+            <Award className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
           </div>
-          <div className="text-3xl font-extrabold text-emerald-600 font-mono">
+          <div className="text-3xl font-normal font-mono text-stone-900 dark:text-stone-100">
             {highestBand}
           </div>
-          <p className="text-[11px] text-gray-400">Kỷ lục bài thi tốt nhất</p>
+          <p className="font-mono text-[10px] text-stone-400">Điểm số bài thi tốt nhất</p>
         </div>
 
         {/* Total Practice Time */}
-        <div className="p-5 rounded-xl bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 shadow-sm space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">
-              Tổng thời gian luyện tập
-            </span>
-            <Clock className="w-4 h-4 text-amber-600" />
+        <div className="p-5 rounded-lg hairline-border bg-paper-subtle dark:bg-carbon-subtle space-y-3">
+          <div className="flex items-center justify-between font-mono text-[10px] text-stone-500 uppercase tracking-wider">
+            <span>04 // THỜI GIAN THỰC</span>
+            <Clock className="w-3.5 h-3.5 text-stone-400" />
           </div>
-          <div className="text-3xl font-extrabold text-gray-900 dark:text-white font-mono">
-            {totalMinutes} <span className="text-base font-normal">phút</span>
+          <div className="text-3xl font-normal font-mono text-stone-900 dark:text-stone-100">
+            {totalMinutes} <span className="text-sm font-normal text-stone-500">phút</span>
           </div>
-          <p className="text-[11px] text-gray-400">Thời gian thực tế trong phòng thi</p>
+          <p className="font-mono text-[10px] text-stone-400">Tích lũy trong phòng thi</p>
         </div>
       </div>
 

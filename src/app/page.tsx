@@ -6,25 +6,20 @@ import {
   PenTool,
   Clock,
   Layers,
-  Sparkles,
   Award,
-  CheckCircle2,
-  ShieldCheck,
   ChevronRight,
-  TrendingUp,
   FileCheck2,
   BarChart3,
-  PieChart as PieIcon,
-  MessageSquare,
-  HelpCircle,
   Search,
   Sprout,
+  ArrowUpRight,
+  BookOpen,
+  Sparkles,
 } from 'lucide-react';
 import { TASK_1_SEEDS, TASK_2_SEEDS } from '@/lib/data/seed-prompts';
-
 import ToriiGate from '@/components/japanese/ToriiGate';
 import ChochinLantern from '@/components/japanese/ChochinLantern';
-import { SeigaihaPattern, OmamoriBadge } from '@/components/japanese/JapanesePatterns';
+import { SeigaihaPattern } from '@/components/japanese/JapanesePatterns';
 
 export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -52,298 +47,362 @@ export default function HomePage() {
       task2Category === 'All' || p.category.toLowerCase().includes(task2Category.toLowerCase());
     return matchesSearch && matchesCat;
   });
+
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Hero Section with Traditional Japanese Cultural Styling */}
-      <section className="relative overflow-hidden py-14 lg:py-20 bg-gradient-to-b from-rose-50/40 via-sky-50/30 to-slate-50 dark:from-zinc-900/80 dark:via-zinc-950 dark:to-zinc-950 border-b border-gray-200/80 dark:border-zinc-800">
-        {/* Subtle Japanese Seigaiha Waves Background */}
-        <SeigaihaPattern opacity={0.06} className="text-red-900 dark:text-red-400" />
+      {/* -------------------------------------------------------------
+          HERO SECTION: High-Contrast Editorial & Architectural Kyoto Heritage
+          ------------------------------------------------------------- */}
+      <section className="relative overflow-hidden py-16 sm:py-24 lg:py-28 bg-paper dark:bg-carbon hairline-b">
+        {/* Subtle Watermark Seigaiha Pattern */}
+        <SeigaihaPattern opacity={0.035} className="text-stone-900 dark:text-stone-200" />
 
-        {/* Decorative Swaying Chochin Lanterns */}
-        <div className="hidden md:block absolute top-4 left-8 lg:left-16 pointer-events-none z-10">
-          <ChochinLantern size={72} kanji="勝" sway={true} />
+        {/* Traditional Swaying Paper Lanterns */}
+        <div className="hidden xl:block absolute top-10 left-12 pointer-events-none z-10 opacity-70">
+          <ChochinLantern size={64} kanji="勝" sway={true} />
         </div>
-        <div className="hidden md:block absolute top-4 right-8 lg:right-16 pointer-events-none z-10">
-          <ChochinLantern size={72} kanji="夢" sway={true} />
+        <div className="hidden xl:block absolute top-10 right-12 pointer-events-none z-10 opacity-70">
+          <ChochinLantern size={64} kanji="夢" sway={true} />
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6 relative z-10">
-          {/* Centered Torii Gate Architectural Emblem */}
-          <div className="flex justify-center -mb-2">
-            <ToriiGate width={130} height={105} text="合格" showShimenawa={true} glow={true} />
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-8">
+          {/* Eyebrow & Architectural Torii Crest */}
+          <div className="inline-flex flex-col items-center gap-3">
+            <div className="p-1 rounded-lg hairline-border bg-paper-subtle dark:bg-carbon-subtle shadow-xs">
+              <ToriiGate width={88} height={72} text="合格" showShimenawa={true} glow={false} />
+            </div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full hairline-border bg-stone-100/70 dark:bg-stone-900/60 font-mono text-[11px] text-stone-600 dark:text-stone-400 tracking-wider uppercase">
+              <span className="w-1.5 h-1.5 rounded-full bg-vermilion animate-pulse" />
+              <span>Specification 2026 // Mô phỏng 100% Giao diện Thi Thật Inspera</span>
+            </div>
           </div>
 
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-rose-100/80 dark:bg-red-950/60 border border-rose-300 dark:border-red-800 text-rose-900 dark:text-rose-200 text-xs font-semibold shadow-sm">
-            <Sparkles className="w-3.5 h-3.5 text-rose-500 animate-pulse" />
-            <span>Mô phỏng 100% Giao diện Thi Thật CD-IELTS Inspera</span>
+          {/* Editorial Display Headline */}
+          <div className="space-y-4">
+            <h1 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-normal tracking-[-0.035em] text-stone-900 dark:text-stone-100 leading-[1.08] max-w-4xl mx-auto">
+              Nền tảng Luyện thi{' '}
+              <span className="italic font-serif text-vermilion">IELTS Writing</span> Chuẩn Phòng Thi &amp; Chấm Điểm AI
+            </h1>
+
+            {/* Readability constrained body paragraph */}
+            <p className="text-base sm:text-lg text-stone-600 dark:text-stone-400 max-w-[65ch] mx-auto leading-[1.7] font-normal">
+              Trải nghiệm áp lực thực tế của kỳ thi trên máy: giao diện Inspera nguyên bản, vô hiệu hóa tính năng tự sửa lỗi, đồng hồ đếm ngược từng giây, và AI Giám khảo đối chiếu theo 4 tiêu chí chuẩn British Council &amp; IDP.
+            </p>
           </div>
-
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 dark:text-white tracking-tight leading-tight max-w-4xl mx-auto">
-            Nền tảng Luyện thi <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-rose-500 to-amber-500">IELTS Writing</span> Chuẩn Phòng Thi &amp; Chấm Điểm AI
-          </h1>
-
-          <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
-            Luyện tập Task 1 &amp; Task 2 với trải nghiệm như thi thật: tắt kiểm tra chính tả, đồng hồ đếm ngược, thanh điều hướng Part 1 &amp; Part 2, và AI Giám khảo chấm điểm chi tiết theo 4 tiêu chí chuẩn IELTS.
-          </p>
 
           {/* Action CTAs */}
-          <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+            <Link
+              href="/practice?mode=full_test"
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-md bg-stone-900 text-stone-50 hover:bg-vermilion dark:bg-stone-100 dark:text-stone-950 dark:hover:bg-vermilion dark:hover:text-stone-50 text-xs font-semibold tracking-wide transition-all duration-200 ease-spring shadow-sm group"
+            >
+              <Layers className="w-4 h-4 text-stone-400 group-hover:text-white dark:group-hover:text-white transition-colors" />
+              <span>Thi Thử Full Test (60 Phút)</span>
+              <ArrowUpRight className="w-3.5 h-3.5 opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            </Link>
+
             <Link
               href="/builder"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-extrabold text-sm shadow-xl shadow-emerald-600/30 transition transform hover:-translate-y-0.5"
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-md hairline-border bg-paper-subtle dark:bg-carbon-subtle hover:border-emerald-600/70 text-stone-800 dark:text-stone-200 text-xs font-semibold transition-all duration-200 ease-spring group"
             >
-              <Sprout className="w-4 h-4 text-lime-200 animate-pulse" />
+              <Sprout className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
               <span>Writing Builder (Cây Đậu N Tầng)</span>
-              <span className="px-1.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-white/20 text-white">
+              <span className="font-mono text-[9px] px-1 py-0.2 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-bold uppercase">
                 Mới
               </span>
             </Link>
 
             <Link
-              href="/practice?mode=full_test"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm shadow-lg shadow-sky-600/25 transition transform hover:-translate-y-0.5"
-            >
-              <Layers className="w-4 h-4" />
-              <span>Thi Thử Full Test (60 Phút)</span>
-            </Link>
-
-            <Link
               href="/practice?mode=task1"
-              className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl bg-white dark:bg-zinc-900 border border-gray-300 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-gray-800 dark:text-gray-200 font-semibold text-sm transition"
+              className="inline-flex items-center gap-1.5 px-4 py-3 rounded-md hairline-border bg-paper hover:bg-stone-100/70 dark:bg-carbon hover:dark:bg-stone-850 text-stone-600 dark:text-stone-300 text-xs font-medium transition-colors"
             >
-              <BarChart3 className="w-4 h-4 text-sky-600" />
-              <span>Luyện Riêng Task 1</span>
+              <span className="font-mono text-stone-400 text-[10px]">01 //</span>
+              <span>Luyện Task 1</span>
             </Link>
 
             <Link
               href="/practice?mode=task2"
-              className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl bg-white dark:bg-zinc-900 border border-gray-300 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 text-gray-800 dark:text-gray-200 font-semibold text-sm transition"
+              className="inline-flex items-center gap-1.5 px-4 py-3 rounded-md hairline-border bg-paper hover:bg-stone-100/70 dark:bg-carbon hover:dark:bg-stone-850 text-stone-600 dark:text-stone-300 text-xs font-medium transition-colors"
             >
-              <PenTool className="w-4 h-4 text-sky-600" />
-              <span>Luyện Riêng Task 2</span>
+              <span className="font-mono text-stone-400 text-[10px]">02 //</span>
+              <span>Luyện Task 2</span>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* 3 Practice Modes Section */}
-      <section className="py-16 bg-white dark:bg-zinc-950">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-          <div className="text-center space-y-2">
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white">
-              3 Chế độ Luyện thi Chuyên biệt
-            </h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
-              Lựa chọn chế độ phù hợp với mục tiêu học tập của bạn hôm nay
+      {/* -------------------------------------------------------------
+          ASYMMETRIC BENTO EDITORIAL SECTION: 3 Practice Modes
+          ------------------------------------------------------------- */}
+      <section className="py-20 bg-paper dark:bg-carbon hairline-b">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          {/* Section Header with Monospace Index */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 hairline-b pb-6">
+            <div>
+              <span className="font-mono text-[11px] text-vermilion tracking-[0.2em] uppercase font-semibold">
+                MODULES // 01 — 03
+              </span>
+              <h2 className="font-serif text-3xl sm:text-4xl text-stone-900 dark:text-stone-100 font-normal tracking-tight mt-1">
+                Ba Phương Thức Luyện Tập Thực Chiến
+              </h2>
+            </div>
+            <p className="text-xs sm:text-sm text-stone-500 dark:text-stone-400 max-w-md font-normal leading-relaxed">
+              Lựa chọn chế độ theo đúng mục tiêu của buổi học: rèn áp lực 60 phút liền mạch hoặc mài giũa từng dạng biểu đồ &amp; bài luận chuyên sâu.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Mode 1: Task 1 */}
-            <div className="flex flex-col justify-between p-6 rounded-2xl border border-gray-200 dark:border-zinc-800 bg-gray-50/50 dark:bg-zinc-900/40 hover:shadow-lg transition">
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
-                  <BarChart3 className="w-6 h-6" />
-                </div>
-                <div>
-                  <span className="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
-                    Academic Task 1
+          {/* Asymmetric Bento Layout: 7 cols (Flagship) + 5 cols (Stacked Tasks) */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+            {/* Card 1: Flagship Full Test (7 cols) */}
+            <div className="lg:col-span-7 flex flex-col justify-between p-8 rounded-lg hairline-border bg-paper-subtle dark:bg-carbon-subtle hover:border-stone-400 dark:hover:border-stone-600 transition-colors duration-200 group relative">
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-[10px] tracking-[0.16em] uppercase text-stone-500 dark:text-stone-400">
+                    FLAGSHIP // 01
                   </span>
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mt-1">
-                    Miêu tả Biểu đồ &amp; Số liệu
-                  </h3>
+                  <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 font-semibold uppercase tracking-wider">
+                    Khuyên dùng
+                  </span>
                 </div>
-                <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
-                  Luyện tập phân tích biểu đồ đường, cột, tròn hoặc tải lên ảnh đề bài riêng. Chấm theo 4 tiêu chí: Task Achievement (Overview, số liệu), CC, LR, GRA.
-                </p>
-                <div className="space-y-2 text-xs text-gray-500 pt-2 border-t border-gray-200 dark:border-zinc-800">
-                  <div className="flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-blue-500" />
-                    <span>Thời gian chuẩn: <strong>20 phút</strong></span>
+
+                <div className="space-y-2">
+                  <h3 className="font-serif text-2xl sm:text-3xl font-normal text-stone-900 dark:text-stone-100 tracking-tight">
+                    Thi Thử Full Test (Part 1 + Part 2)
+                  </h3>
+                  <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed font-normal max-w-xl">
+                    Mô phỏng chính xác kỳ thi CD-IELTS 60 phút không gián đoạn: thanh điều hướng chuyển đổi linh hoạt giữa Task 1 và Task 2, bộ đếm từ trực tiếp, và tự động tính điểm Overall Writing theo công thức chuẩn British Council: <code>(Task 1 + Task 2 × 2) / 3</code>.
+                  </p>
+                </div>
+
+                {/* Micro Metrics Timeline Bar */}
+                <div className="p-4 rounded-md hairline-border bg-paper dark:bg-carbon space-y-3">
+                  <div className="flex items-center justify-between font-mono text-[11px] text-stone-500 dark:text-stone-400">
+                    <span>TIMELINE // 60 PHÚT</span>
+                    <span className="text-vermilion font-semibold">TỰ ĐỘNG LƯU BÀI LIÊN TỤC</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <FileCheck2 className="w-4 h-4 text-blue-500" />
-                    <span>Độ dài tối thiểu: <strong>150 từ</strong></span>
+                  <div className="grid grid-cols-2 gap-3 text-xs">
+                    <div className="hairline-r pr-3 space-y-1">
+                      <div className="text-stone-400 text-[10px] font-mono">GIAI ĐOẠN 01</div>
+                      <div className="font-bold text-stone-900 dark:text-stone-100">Task 1: Biểu Đồ</div>
+                      <div className="text-[11px] text-stone-500">20 phút &bull; Tối thiểu 150 từ</div>
+                    </div>
+                    <div className="space-y-1 pl-1">
+                      <div className="text-stone-400 text-[10px] font-mono">GIAI ĐOẠN 02</div>
+                      <div className="font-bold text-stone-900 dark:text-stone-100">Task 2: Nghị Luận</div>
+                      <div className="text-[11px] text-stone-500">40 phút &bull; Tối thiểu 250 từ</div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <Link
-                href="/practice?mode=task1"
-                className="mt-6 inline-flex items-center justify-center gap-1.5 w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs shadow-sm transition"
-              >
-                <span>Bắt đầu Luyện Task 1</span>
-                <ChevronRight className="w-4 h-4" />
-              </Link>
+
+              <div className="pt-6 mt-6 hairline-t flex items-center justify-between">
+                <div className="flex items-center gap-2 font-mono text-[11px] text-stone-500">
+                  <Clock className="w-3.5 h-3.5 text-vermilion" />
+                  <span>ĐỒNG HỒ 60:00 CHUẨN INSPERA</span>
+                </div>
+                <Link
+                  href="/practice?mode=full_test"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-md bg-stone-900 text-stone-100 hover:bg-vermilion dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-vermilion dark:hover:text-stone-50 font-semibold text-xs transition-colors duration-200"
+                >
+                  <span>Bắt đầu Full Test</span>
+                  <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
             </div>
 
-            {/* Mode 2: Task 2 */}
-            <div className="flex flex-col justify-between p-6 rounded-2xl border border-gray-200 dark:border-zinc-800 bg-gray-50/50 dark:bg-zinc-900/40 hover:shadow-lg transition">
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-xl bg-sky-100 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 flex items-center justify-center font-bold">
-                  <PenTool className="w-6 h-6" />
-                </div>
-                <div>
-                  <span className="text-xs font-semibold text-sky-600 dark:text-sky-400 uppercase tracking-wider">
-                    Academic &amp; General Task 2
-                  </span>
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mt-1">
-                    Nghị luận Xã hội (Essay)
-                  </h3>
-                </div>
-                <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
-                  Viết bài luận học thuật cho các dạng đề: Opinion, Discussion, Problem &amp; Solution. Đánh giá Thesis statement, độ sâu của luận điểm và ví dụ.
-                </p>
-                <div className="space-y-2 text-xs text-gray-500 pt-2 border-t border-gray-200 dark:border-zinc-800">
-                  <div className="flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-sky-500" />
-                    <span>Thời gian chuẩn: <strong>40 phút</strong></span>
+            {/* Stacked Cards: Task 1 and Task 2 (5 cols) */}
+            <div className="lg:col-span-5 flex flex-col gap-6 justify-between">
+              {/* Card 2: Task 1 */}
+              <div className="flex-1 flex flex-col justify-between p-6 rounded-lg hairline-border bg-paper-subtle dark:bg-carbon-subtle hover:border-stone-400 dark:hover:border-stone-600 transition-colors duration-200 group">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-[10px] tracking-[0.16em] uppercase text-stone-500 dark:text-stone-400">
+                      TASK // 02
+                    </span>
+                    <span className="font-mono text-[10px] text-stone-500">20 MIN &bull; 150 WORDS</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <FileCheck2 className="w-4 h-4 text-sky-500" />
-                    <span>Độ dài tối thiểu: <strong>250 từ</strong></span>
+                  <div>
+                    <h3 className="font-serif text-xl font-normal text-stone-900 dark:text-stone-100 tracking-tight">
+                      Luyện Riêng Academic Task 1
+                    </h3>
+                    <p className="text-xs text-stone-600 dark:text-stone-300 mt-1 leading-relaxed">
+                      Phân tích số liệu biểu đồ đường, cột, tròn, bản đồ hoặc quy trình. Chấm sâu vào tiêu chí Task Achievement (Overview &amp; Số liệu).
+                    </p>
                   </div>
                 </div>
-              </div>
-              <Link
-                href="/practice?mode=task2"
-                className="mt-6 inline-flex items-center justify-center gap-1.5 w-full py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-semibold text-xs shadow-sm transition"
-              >
-                <span>Bắt đầu Luyện Task 2</span>
-                <ChevronRight className="w-4 h-4" />
-              </Link>
-            </div>
 
-            {/* Mode 3: Full Test */}
-            <div className="flex flex-col justify-between p-6 rounded-2xl border-2 border-sky-500/50 dark:border-sky-500/40 bg-gradient-to-b from-sky-50/40 to-white dark:from-sky-950/20 dark:to-zinc-900/60 hover:shadow-xl transition relative">
-              <div className="absolute -top-3 right-6 px-3 py-1 bg-sky-600 text-white rounded-full text-[10px] font-extrabold uppercase tracking-wider shadow">
-                Khuyên dùng
-              </div>
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
-                  <Layers className="w-6 h-6" />
+                <div className="pt-4 mt-4 hairline-t flex items-center justify-between">
+                  <span className="font-mono text-[10px] text-stone-500">4 TIÊU CHÍ: TA &bull; CC &bull; LR &bull; GRA</span>
+                  <Link
+                    href="/practice?mode=task1"
+                    className="inline-flex items-center gap-1 text-xs font-semibold text-stone-900 dark:text-stone-100 hover:text-vermilion dark:hover:text-vermilion transition-colors"
+                  >
+                    <span>Luyện Task 1</span>
+                    <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                  </Link>
                 </div>
-                <div>
-                  <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
-                    Full Test Mô phỏng
-                  </span>
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mt-1">
-                    Thi Thử Cả 2 Task (Part 1 + 2)
-                  </h3>
-                </div>
-                <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
-                  Thi 60 phút liên tục với thanh điều hướng Part 1 / Part 2 giống hệt phần mềm thi thật. Tính điểm Overall Writing theo công thức chuẩn: (Task 1 + Task 2 * 2) / 3.
-                </p>
-                <div className="space-y-2 text-xs text-gray-500 pt-2 border-t border-gray-200 dark:border-zinc-800">
-                  <div className="flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-emerald-500" />
-                    <span>Thời gian tổng: <strong>60 phút</strong></span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Award className="w-4 h-4 text-emerald-500" />
-                    <span>Tính điểm Overall Writing chuẩn IELTS</span>
-                  </div>
-                </div>
-              </div>
-              <Link
-                href="/practice?mode=full_test"
-                className="mt-6 inline-flex items-center justify-center gap-1.5 w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs shadow-md transition"
-              >
-                <span>Bắt đầu Thi Full Test</span>
-                <ChevronRight className="w-4 h-4" />
-              </Link>
-            </div>
-          </div>
-
-          {/* Writing Builder Gamified Banner */}
-          <div className="p-8 rounded-3xl bg-gradient-to-r from-emerald-900 via-teal-900 to-slate-900 text-white relative overflow-hidden shadow-2xl border border-emerald-500/30">
-            <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
-              <div className="space-y-3 max-w-2xl">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-lime-300 border border-emerald-500/40 text-xs font-bold uppercase tracking-wider">
-                  <Sprout className="w-3.5 h-3.5" />
-                  <span>Tính năng mới &bull; Gamified Learning Path</span>
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-black tracking-tight">
-                  Writing Builder: Lộ Trình Cây Đậu N Tầng &amp; Viết Từng Câu Cùng AI
-                </h3>
-                <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
-                  Thiết lập số ngày học và band điểm mục tiêu để tạo Cây Đậu thông minh. Trải nghiệm phương pháp cầm tay chỉ việc: phân tích đề qua câu hỏi trắc nghiệm, lập dàn ý, soạn thảo theo từng khối câu văn với 2 nút AI chuyên biệt <strong>Check</strong> (kiểm tra lỗi) và <strong>Update</strong> (nâng cấp câu kèm từ vựng &amp; collocations).
-                </p>
               </div>
 
-              <Link
-                href="/builder"
-                className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-sm shadow-xl shadow-emerald-500/25 transition transform hover:-translate-y-0.5 shrink-0"
-              >
-                <Sprout className="w-5 h-5 text-emerald-950" />
-                <span>Trồng Cây Đậu Của Bạn Ngay</span>
-                <ChevronRight className="w-4 h-4 text-emerald-950" />
-              </Link>
+              {/* Card 3: Task 2 */}
+              <div className="flex-1 flex flex-col justify-between p-6 rounded-lg hairline-border bg-paper-subtle dark:bg-carbon-subtle hover:border-stone-400 dark:hover:border-stone-600 transition-colors duration-200 group">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-[10px] tracking-[0.16em] uppercase text-stone-500 dark:text-stone-400">
+                      TASK // 03
+                    </span>
+                    <span className="font-mono text-[10px] text-stone-500">40 MIN &bull; 250 WORDS</span>
+                  </div>
+                  <div>
+                    <h3 className="font-serif text-xl font-normal text-stone-900 dark:text-stone-100 tracking-tight">
+                      Luyện Riêng Task 2 (Discursive Essay)
+                    </h3>
+                    <p className="text-xs text-stone-600 dark:text-stone-300 mt-1 leading-relaxed">
+                      Viết bài luận học thuật cho các dạng đề: Opinion, Discussion, Problem &amp; Solution. Đánh giá Thesis statement và độ sâu của lập luận.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="pt-4 mt-4 hairline-t flex items-center justify-between">
+                  <span className="font-mono text-[10px] text-stone-500">HỆ THỐNG SỐ ĐIỂM HỆ SỐ 2</span>
+                  <Link
+                    href="/practice?mode=task2"
+                    className="inline-flex items-center gap-1 text-xs font-semibold text-stone-900 dark:text-stone-100 hover:text-vermilion dark:hover:text-vermilion transition-colors"
+                  >
+                    <span>Luyện Task 2</span>
+                    <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Built-in Seed Prompts Gallery */}
-      <section className="py-16 bg-slate-50 dark:bg-zinc-900/50 border-t border-b border-gray-200 dark:border-zinc-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-            <div>
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-xs font-bold mb-2">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Trọn bộ Forecast IELTS Writing 2026 (59 Đề Thi Kèm Dàn Ý Band 8+)</span>
+      {/* -------------------------------------------------------------
+          WRITING BUILDER: Pedagogical Botanical Feature (Editorial Spec)
+          ------------------------------------------------------------- */}
+      <section className="py-20 bg-paper-subtle dark:bg-carbon-subtle hairline-b">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+          <div className="p-8 sm:p-12 rounded-lg hairline-border bg-paper dark:bg-carbon relative overflow-hidden shadow-xs">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+              <div className="space-y-4 max-w-2xl">
+                <div className="inline-flex items-center gap-2 font-mono text-[11px] text-emerald-700 dark:text-emerald-400 tracking-wider uppercase font-semibold">
+                  <Sprout className="w-3.5 h-3.5" />
+                  <span>PHƯƠNG PHÁP HỌC ĐẶC BIỆT // WRITING BUILDER</span>
+                </div>
+
+                <h3 className="font-serif text-3xl sm:text-4xl text-stone-900 dark:text-stone-100 font-normal tracking-tight">
+                  Lộ Trình Cây Đậu N Tầng &amp; Soạn Thảo Từng Khối Câu Cùng AI
+                </h3>
+
+                <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed font-normal">
+                  Xây dựng Cây Đậu theo số ngày học và band điểm mục tiêu của bạn. Trải nghiệm phương pháp viết có cấu trúc: phân tích đề bài qua câu hỏi trắc nghiệm, tạo dàn ý khoa học, và soạn thảo từng câu văn độc lập với 2 động cơ AI chuyên biệt: <strong>Check</strong> (chỉ ra lỗi chính xác) và <strong>Update</strong> (đa dạng phong cách câu kèm từ vựng &amp; collocations hiện đại).
+                </p>
+
+                {/* 4-Step Editorial Flow */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 font-mono text-[11px]">
+                  <div className="p-2.5 rounded hairline-border bg-paper-subtle dark:bg-carbon-subtle">
+                    <span className="text-stone-400 block text-[9px]">BƯỚC 01</span>
+                    <span className="font-semibold text-stone-800 dark:text-stone-200">Phân Tích Đề</span>
+                  </div>
+                  <div className="p-2.5 rounded hairline-border bg-paper-subtle dark:bg-carbon-subtle">
+                    <span className="text-stone-400 block text-[9px]">BƯỚC 02</span>
+                    <span className="font-semibold text-stone-800 dark:text-stone-200">Lập Dàn Ý</span>
+                  </div>
+                  <div className="p-2.5 rounded hairline-border bg-paper-subtle dark:bg-carbon-subtle">
+                    <span className="text-stone-400 block text-[9px]">BƯỚC 03</span>
+                    <span className="font-semibold text-stone-800 dark:text-stone-200">Viết Từng Khối</span>
+                  </div>
+                  <div className="p-2.5 rounded hairline-border bg-paper-subtle dark:bg-carbon-subtle">
+                    <span className="text-stone-400 block text-[9px]">BƯỚC 04</span>
+                    <span className="font-semibold text-stone-800 dark:text-stone-200">AI Nâng Cấp</span>
+                  </div>
+                </div>
               </div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white">
-                Kho Đề Forecast Đầy Đủ Nhất
+
+              <div className="shrink-0 flex flex-col items-start lg:items-end justify-center gap-3">
+                <Link
+                  href="/builder"
+                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-md bg-stone-900 text-stone-50 hover:bg-emerald-600 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-emerald-600 dark:hover:text-stone-50 font-semibold text-xs tracking-wide transition-all duration-200 ease-spring shadow-xs"
+                >
+                  <Sprout className="w-4 h-4" />
+                  <span>Trồng Cây Đậu Ngay</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </Link>
+                <span className="font-mono text-[10px] text-stone-400">MIỄN PHÍ TRÊN TRÌNH DUYỆT</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* -------------------------------------------------------------
+          SEED PROMPTS GALLERY: 59 Forecast Prompts (Swiss Editorial Archive)
+          ------------------------------------------------------------- */}
+      <section className="py-20 bg-paper dark:bg-carbon hairline-b">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+          {/* Header & Search */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 hairline-b pb-6">
+            <div>
+              <span className="font-mono text-[11px] text-vermilion tracking-[0.2em] uppercase font-semibold">
+                ARCHIVE // 59 FORECAST PROMPTS
+              </span>
+              <h2 className="font-serif text-3xl sm:text-4xl text-stone-900 dark:text-stone-100 font-normal tracking-tight mt-1">
+                Kho Đề Forecast IELTS Writing 2026
               </h2>
-              <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">
-                Gồm 30 đề Task 1 (Biểu đồ, Bản đồ, Quy trình) và 29 đề Task 2 (Nghị luận xã hội) kèm dàn ý chi tiết.
+              <p className="text-xs sm:text-sm text-stone-500 dark:text-stone-400 mt-1 max-w-xl font-normal">
+                Gồm 30 đề Task 1 (Biểu đồ, Bản đồ, Quy trình) và 29 đề Task 2 (Nghị luận xã hội) kèm dàn ý chi tiết Band 8+.
               </p>
+            </div>
+
+            {/* Tactile Search Bar */}
+            <div className="relative w-full md:w-80">
+              <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Tìm mã đề (T1-01, T2-15) hoặc từ khóa..."
+                className="w-full pl-9 pr-8 py-2 rounded-md hairline-border bg-paper dark:bg-carbon text-xs text-stone-900 dark:text-stone-100 placeholder-stone-400 font-mono focus:outline-none focus:border-stone-900 dark:focus:border-stone-100 transition-colors"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 font-mono text-[10px] text-stone-400 hover:text-stone-700 dark:hover:text-stone-200"
+                >
+                  [XÓA]
+                </button>
+              )}
             </div>
           </div>
 
-          {/* Quick Search Bar */}
-          <div className="relative max-w-xl">
-            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Tìm theo mã đề (T1-01, T2-15) hoặc từ khóa (cars, environment, process, map...)..."
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-xs text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-sm"
-            />
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 hover:text-gray-600"
-              >
-                Xóa
-              </button>
-            )}
-          </div>
+          <div className="space-y-14">
+            {/* ----------------- Task 1 Prompts ----------------- */}
+            <div className="space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 hairline-b pb-3">
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-xs font-bold text-stone-900 dark:text-stone-100 tracking-wider uppercase">
+                    ACADEMIC TASK 1 FORECAST
+                  </span>
+                  <span className="font-mono text-[11px] text-stone-500">
+                    ({filteredTask1.length} / {TASK_1_SEEDS.length} đề)
+                  </span>
+                </div>
 
-          <div className="space-y-12">
-            {/* Task 1 Prompts */}
-            <div className="space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-200 dark:border-zinc-800 pb-3">
-                <h3 className="text-sm font-bold text-gray-800 dark:text-gray-200 uppercase tracking-wider flex items-center gap-2">
-                  <BarChart3 className="w-4 h-4 text-sky-600" />
-                  <span>Academic Task 1 Forecast ({filteredTask1.length} / {TASK_1_SEEDS.length} đề)</span>
-                </h3>
                 {/* Category filters */}
-                <div className="flex flex-wrap items-center gap-1 text-[11px]">
+                <div className="flex flex-wrap items-center gap-1 font-mono text-[11px]">
                   {['All', 'Line Graph', 'Bar Chart', 'Process', 'Map / Plan', 'Table Chart', 'Pie Chart'].map((cat) => (
                     <button
                       key={cat}
                       type="button"
                       onClick={() => setTask1Category(cat)}
-                      className={`px-2.5 py-1 rounded-lg font-medium transition ${
+                      className={`px-2.5 py-1 rounded transition-colors ${
                         task1Category === cat
-                          ? 'bg-sky-600 text-white shadow-sm'
-                          : 'bg-white dark:bg-zinc-800 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700'
+                          ? 'bg-stone-900 text-stone-50 dark:bg-stone-100 dark:text-stone-900 font-semibold'
+                          : 'hairline-border text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 hover:bg-stone-100/70 dark:hover:bg-stone-850'
                       }`}
                     >
-                      {cat === 'All' ? 'Tất cả' : cat}
+                      {cat === 'All' ? 'TẤT CẢ' : cat.toUpperCase()}
                     </button>
                   ))}
                 </div>
@@ -353,57 +412,65 @@ export default function HomePage() {
                 {filteredTask1.map((p) => (
                   <div
                     key={p.id}
-                    className="p-4 rounded-xl bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 shadow-sm flex flex-col justify-between space-y-3 hover:border-sky-300 dark:hover:border-sky-800 transition"
+                    className="p-5 rounded-lg hairline-border bg-paper-subtle/50 dark:bg-carbon-subtle/40 flex flex-col justify-between space-y-4 hover:border-stone-400 dark:hover:border-stone-600 transition-colors duration-200 group"
                   >
-                    <div>
+                    <div className="space-y-2">
                       <div className="flex items-center justify-between gap-2">
-                        <span className="text-[10px] px-2 py-0.5 rounded font-semibold bg-sky-50 dark:bg-sky-950/60 text-sky-700 dark:text-sky-300 border border-sky-200 dark:border-sky-800">
-                          {p.category}
+                        <span className="font-mono text-[10px] text-stone-500 uppercase tracking-wider font-semibold">
+                          {p.id} &bull; {p.category}
                         </span>
                         {p.outline && (
-                          <span className="text-[10px] px-1.5 py-0.5 rounded font-semibold bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300">
-                            💡 Dàn ý Band 8+
+                          <span className="font-mono text-[9px] px-1.5 py-0.2 rounded hairline-border bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30 font-semibold">
+                            DÀN Ý BAND 8+
                           </span>
                         )}
                       </div>
-                      <h4 className="font-bold text-sm text-gray-900 dark:text-gray-100 mt-2 line-clamp-1">
+                      <h4 className="font-serif text-base font-normal text-stone-900 dark:text-stone-100 leading-snug line-clamp-1 group-hover:text-vermilion transition-colors">
                         {p.title}
                       </h4>
-                      <p className="text-xs text-gray-500 line-clamp-2 mt-1">{p.question}</p>
+                      <p className="text-xs text-stone-500 dark:text-stone-400 line-clamp-2 leading-relaxed">
+                        {p.question}
+                      </p>
                     </div>
+
                     <Link
                       href={`/practice?mode=task1&promptId=${p.id}`}
-                      className="inline-flex items-center justify-between text-xs font-semibold text-sky-600 hover:text-sky-700 pt-2 border-t border-gray-100 dark:border-zinc-800"
+                      className="inline-flex items-center justify-between font-mono text-[11px] font-semibold text-stone-900 dark:text-stone-100 hover:text-vermilion dark:hover:text-vermilion pt-3 hairline-t transition-colors"
                     >
-                      <span>Vào luyện đề này</span>
-                      <ChevronRight className="w-3.5 h-3.5" />
+                      <span>VÀO LUYỆN ĐỀ NÀY</span>
+                      <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                     </Link>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Task 2 Prompts */}
-            <div className="space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-200 dark:border-zinc-800 pb-3">
-                <h3 className="text-sm font-bold text-gray-800 dark:text-gray-200 uppercase tracking-wider flex items-center gap-2">
-                  <PenTool className="w-4 h-4 text-emerald-600" />
-                  <span>Academic Task 2 Forecast ({filteredTask2.length} / {TASK_2_SEEDS.length} đề)</span>
-                </h3>
+            {/* ----------------- Task 2 Prompts ----------------- */}
+            <div className="space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 hairline-b pb-3">
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-xs font-bold text-stone-900 dark:text-stone-100 tracking-wider uppercase">
+                    ACADEMIC &amp; GENERAL TASK 2 FORECAST
+                  </span>
+                  <span className="font-mono text-[11px] text-stone-500">
+                    ({filteredTask2.length} / {TASK_2_SEEDS.length} đề)
+                  </span>
+                </div>
+
                 {/* Category filters */}
-                <div className="flex flex-wrap items-center gap-1 text-[11px]">
+                <div className="flex flex-wrap items-center gap-1 font-mono text-[11px]">
                   {['All', 'Opinion', 'Discuss Both Views', 'Two-part', 'Causes and Solutions', 'Advantages'].map((cat) => (
                     <button
                       key={cat}
                       type="button"
                       onClick={() => setTask2Category(cat)}
-                      className={`px-2.5 py-1 rounded-lg font-medium transition ${
+                      className={`px-2.5 py-1 rounded transition-colors ${
                         task2Category === cat
-                          ? 'bg-emerald-600 text-white shadow-sm'
-                          : 'bg-white dark:bg-zinc-800 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700'
+                          ? 'bg-stone-900 text-stone-50 dark:bg-stone-100 dark:text-stone-900 font-semibold'
+                          : 'hairline-border text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 hover:bg-stone-100/70 dark:hover:bg-stone-850'
                       }`}
                     >
-                      {cat === 'All' ? 'Tất cả' : cat}
+                      {cat === 'All' ? 'TẤT CẢ' : cat.toUpperCase()}
                     </button>
                   ))}
                 </div>
@@ -413,30 +480,33 @@ export default function HomePage() {
                 {filteredTask2.map((p) => (
                   <div
                     key={p.id}
-                    className="p-4 rounded-xl bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 shadow-sm flex flex-col justify-between space-y-3 hover:border-emerald-300 dark:hover:border-emerald-800 transition"
+                    className="p-5 rounded-lg hairline-border bg-paper-subtle/50 dark:bg-carbon-subtle/40 flex flex-col justify-between space-y-4 hover:border-stone-400 dark:hover:border-stone-600 transition-colors duration-200 group"
                   >
-                    <div>
+                    <div className="space-y-2">
                       <div className="flex items-center justify-between gap-2">
-                        <span className="text-[10px] px-2 py-0.5 rounded font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
-                          {p.category}
+                        <span className="font-mono text-[10px] text-stone-500 uppercase tracking-wider font-semibold">
+                          {p.id} &bull; {p.category}
                         </span>
                         {p.outline && (
-                          <span className="text-[10px] px-1.5 py-0.5 rounded font-semibold bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300">
-                            💡 Dàn ý Band 8+
+                          <span className="font-mono text-[9px] px-1.5 py-0.2 rounded hairline-border bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30 font-semibold">
+                            DÀN Ý BAND 8+
                           </span>
                         )}
                       </div>
-                      <h4 className="font-bold text-sm text-gray-900 dark:text-gray-100 mt-2 line-clamp-1">
+                      <h4 className="font-serif text-base font-normal text-stone-900 dark:text-stone-100 leading-snug line-clamp-1 group-hover:text-vermilion transition-colors">
                         {p.title}
                       </h4>
-                      <p className="text-xs text-gray-500 line-clamp-2 mt-1">{p.question}</p>
+                      <p className="text-xs text-stone-500 dark:text-stone-400 line-clamp-2 leading-relaxed">
+                        {p.question}
+                      </p>
                     </div>
+
                     <Link
                       href={`/practice?mode=task2&promptId=${p.id}`}
-                      className="inline-flex items-center justify-between text-xs font-semibold text-emerald-600 hover:text-emerald-700 pt-2 border-t border-gray-100 dark:border-zinc-800"
+                      className="inline-flex items-center justify-between font-mono text-[11px] font-semibold text-stone-900 dark:text-stone-100 hover:text-vermilion dark:hover:text-vermilion pt-3 hairline-t transition-colors"
                     >
-                      <span>Vào luyện đề này</span>
-                      <ChevronRight className="w-3.5 h-3.5" />
+                      <span>VÀO LUYỆN ĐỀ NÀY</span>
+                      <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                     </Link>
                   </div>
                 ))}
@@ -446,12 +516,20 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-8 bg-white dark:bg-zinc-950 border-t border-gray-200 dark:border-zinc-800 mt-auto text-center text-xs text-gray-500 space-y-2">
-        <p>CD-IELTS Writing Exam Simulator &amp; AI Examiner Platform</p>
-        <p className="opacity-75">
-          Tối ưu hóa cho Vercel &bull; Supabase Storage &bull; Gemini 2.5 Flash Multimodal Vision
-        </p>
+      {/* -------------------------------------------------------------
+          FOOTER: Monospace Technical & Editorial Signature
+          ------------------------------------------------------------- */}
+      <footer className="py-12 bg-paper dark:bg-carbon mt-auto text-xs text-stone-500 space-y-3 font-mono">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-vermilion" />
+            <span className="font-bold text-stone-900 dark:text-stone-100">CD-IELTS WRITING PLATFORM</span>
+            <span className="text-stone-400">&bull; INSPERA SIMULATION</span>
+          </div>
+          <p className="text-[11px] text-stone-400">
+            ENGINEERED WITH GEMINI 2.5 FLASH MULTIMODAL &bull; VERCEL EDGE &bull; SUPABASE
+          </p>
+        </div>
       </footer>
     </div>
   );

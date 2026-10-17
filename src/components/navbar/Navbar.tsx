@@ -186,107 +186,112 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="sticky top-0 z-30 bg-white/95 dark:bg-zinc-950/95 backdrop-blur border-b border-gray-200 dark:border-zinc-800">
+      <nav className="sticky top-0 z-30 bg-paper/90 dark:bg-carbon/90 backdrop-blur-md hairline-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo & Maneki-neko */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2.5">
               <Link href="/" className="flex items-center gap-2.5 group">
-                <div className="w-9 h-9 rounded-xl overflow-hidden border border-red-500/40 dark:border-red-500/60 shadow-md shadow-red-500/20 group-hover:scale-105 transition bg-gradient-to-b from-slate-900 to-black flex items-center justify-center shrink-0 p-0.5">
-                  <ToriiGate width={32} height={28} text="合格" glow={false} showShimenawa={true} />
+                <div className="w-8 h-8 rounded-md overflow-hidden border border-stone-300/80 dark:border-stone-800 bg-stone-950 flex items-center justify-center shrink-0 p-0.5 shadow-xs group-hover:border-vermilion/60 transition-colors duration-200">
+                  <ToriiGate width={30} height={26} text="合格" glow={false} showShimenawa={true} />
                 </div>
                 <div className="flex flex-col">
-                  <span className="font-extrabold text-base tracking-tight text-gray-900 dark:text-white">
-                    CD-IELTS <span className="text-sky-600">Writing</span>
-                  </span>
-                  <span className="text-[10px] text-gray-500 dark:text-gray-400 font-medium tracking-wider uppercase">
+                  <div className="flex items-baseline">
+                    <span className="font-bold text-sm tracking-tight text-stone-900 dark:text-stone-100">
+                      CD-IELTS
+                    </span>
+                    <span className="text-vermilion font-serif italic text-base font-normal ml-1">
+                      Writing
+                    </span>
+                  </div>
+                  <span className="font-mono text-[9px] text-stone-500 dark:text-stone-400 tracking-[0.14em] uppercase font-medium -mt-0.5">
                     Inspera Official Simulator
                   </span>
                 </div>
               </Link>
               <div className="hidden lg:block pl-1">
-                <ManekiNeko size={32} tooltip="Mèo Thần Tài chúc bạn thi đạt Band cao! 🐾" />
+                <ManekiNeko size={30} tooltip="Mèo Thần Tài chúc bạn thi đạt Band cao! 🐾" />
               </div>
             </div>
 
             {/* Nav links */}
-            <div className="hidden md:flex items-center gap-1 text-sm font-medium">
+            <div className="hidden md:flex items-center gap-0.5 text-xs font-medium">
               <Link
                 href="/builder"
-                className={`px-3 py-2 rounded-lg transition flex items-center gap-1.5 ${
+                className={`px-3 py-1.5 rounded-md transition-colors flex items-center gap-1.5 ${
                   pathname === '/builder'
-                    ? 'text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 font-bold'
-                    : 'text-gray-700 dark:text-gray-200 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50/50 dark:hover:bg-zinc-900'
+                    ? 'text-stone-950 dark:text-stone-50 font-semibold bg-stone-200/60 dark:bg-stone-800/60'
+                    : 'text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 hover:bg-stone-100/70 dark:hover:bg-stone-850'
                 }`}
               >
-                <Sprout className="w-4 h-4 text-emerald-600 animate-pulse" />
-                <span className="font-bold">Writing Builder</span>
-                <span className="px-1.5 py-0.5 rounded text-[9px] font-extrabold uppercase bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
+                <Sprout className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                <span>Writing Builder</span>
+                <span className="font-mono text-[9px] px-1 py-0.2 rounded bg-emerald-100/80 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300 border border-emerald-300/60 dark:border-emerald-800/60 uppercase font-semibold">
                   Mới
                 </span>
               </Link>
               <Link
                 href="/practice?mode=task1"
-                className={`px-3 py-2 rounded-lg transition ${
+                className={`px-3 py-1.5 rounded-md transition-colors ${
                   pathname === '/practice' && typeof window !== 'undefined' && window.location.search.includes('task1')
-                    ? 'text-sky-600 bg-sky-50 dark:bg-sky-950/40 font-semibold'
-                    : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-zinc-900'
+                    ? 'text-stone-950 dark:text-stone-50 font-semibold bg-stone-200/60 dark:bg-stone-800/60'
+                    : 'text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 hover:bg-stone-100/70 dark:hover:bg-stone-850'
                 }`}
               >
                 Luyện Task 1
               </Link>
               <Link
                 href="/practice?mode=task2"
-                className="px-3 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-zinc-900 transition"
+                className="px-3 py-1.5 rounded-md text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 hover:bg-stone-100/70 dark:hover:bg-stone-850 transition-colors"
               >
                 Luyện Task 2
               </Link>
               <Link
                 href="/practice?mode=full_test"
-                className="px-3 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-zinc-900 transition flex items-center gap-1.5"
+                className="px-3 py-1.5 rounded-md text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 hover:bg-stone-100/70 dark:hover:bg-stone-850 transition-colors flex items-center gap-1.5"
               >
-                <Layers className="w-4 h-4 text-sky-600" />
+                <Layers className="w-3.5 h-3.5 text-stone-400" />
                 <span>Thi Full Test (60p)</span>
               </Link>
               <Link
                 href="/dashboard"
-                className={`px-3 py-2 rounded-lg transition flex items-center gap-1.5 ${
+                className={`px-3 py-1.5 rounded-md transition-colors flex items-center gap-1.5 ${
                   pathname === '/dashboard'
-                    ? 'text-sky-600 bg-sky-50 dark:bg-sky-950/40 font-semibold'
-                    : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-zinc-900'
+                    ? 'text-stone-950 dark:text-stone-50 font-semibold bg-stone-200/60 dark:bg-stone-800/60'
+                    : 'text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 hover:bg-stone-100/70 dark:hover:bg-stone-850'
                 }`}
               >
-                <BarChart2 className="w-4 h-4" />
-                <span>Thống kê &amp; Lịch sử</span>
+                <BarChart2 className="w-3.5 h-3.5 text-stone-400" />
+                <span>Thống kê</span>
               </Link>
             </div>
 
             {/* Right actions */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               {/* Account State */}
               {userEmail ? (
                 <button
                   type="button"
                   onClick={() => setIsProfileModalOpen(true)}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-gray-200 dark:border-zinc-800 hover:bg-gray-50 dark:hover:bg-zinc-900 transition text-left"
+                  className="flex items-center gap-2 px-2.5 py-1.5 rounded-md hairline-border hover:bg-stone-100/70 dark:hover:bg-stone-850 transition text-left"
                 >
-                  <div className="w-7 h-7 rounded-full bg-sky-600 text-white flex items-center justify-center font-bold text-xs shadow-sm">
+                  <div className="w-6 h-6 rounded bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 flex items-center justify-center font-mono font-bold text-[10px]">
                     {initials}
                   </div>
                   <div className="hidden sm:flex flex-col">
-                    <span className="text-xs font-semibold text-gray-900 dark:text-gray-100 truncate max-w-[120px]">
+                    <span className="text-xs font-semibold text-stone-900 dark:text-stone-100 truncate max-w-[110px]">
                       {userName || userEmail}
                     </span>
-                    <span className="text-[10px] text-sky-600 dark:text-sky-400 font-bold flex items-center gap-1">
-                      <Target className="w-3 h-3" /> Target {targetBand.toFixed(1)}
+                    <span className="font-mono text-[9px] text-vermilion font-semibold flex items-center gap-1">
+                      Target {targetBand.toFixed(1)}
                     </span>
                   </div>
-                  <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
+                  <ChevronDown className="w-3 h-3 text-stone-400" />
                 </button>
               ) : (
                 <Link
                   href="/auth"
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border border-gray-300 dark:border-zinc-700 hover:bg-gray-100 dark:hover:bg-zinc-900 text-xs font-semibold text-gray-700 dark:text-gray-200 transition"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md hairline-border hover:bg-stone-100/70 dark:hover:bg-stone-850 text-xs font-medium text-stone-700 dark:text-stone-300 transition-colors"
                 >
                   <User className="w-3.5 h-3.5" />
                   <span>Tài khoản</span>
@@ -297,19 +302,19 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={() => setIsCharModalOpen(true)}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-rose-500/10 via-amber-500/10 to-sky-500/10 hover:from-rose-500/20 hover:to-sky-500/20 border border-rose-300/70 dark:border-rose-700/70 text-xs font-bold text-rose-700 dark:text-rose-300 shadow-xs transition transform hover:scale-105"
+                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md hairline-border bg-stone-50 dark:bg-stone-900 hover:bg-stone-100 dark:hover:bg-stone-850 text-xs font-medium text-stone-700 dark:text-stone-300 transition-colors"
                 title="Đổi nhân vật Pixel & Giao diện Nhật Bản (「キャラ＆テーマ設定」)"
               >
-                <Sparkles className="w-3.5 h-3.5 text-rose-500 animate-spin" style={{ animationDuration: '4s' }} />
-                <span className="hidden sm:inline">キャラ＆テーマ</span>
-                <span className="sm:hidden">Nhân vật</span>
+                <span className="w-2 h-2 rounded-full bg-vermilion" />
+                <span className="hidden sm:inline font-mono text-[11px]">キャラ＆テーマ</span>
+                <span className="sm:hidden font-mono text-[11px]">Nhân vật</span>
               </button>
 
               {/* System Settings Button (Theme & Builder Config) */}
               <button
                 type="button"
                 onClick={() => setIsSettingsModalOpen(true)}
-                className="p-2 rounded-xl border border-gray-200 dark:border-zinc-800 text-gray-600 dark:text-gray-300 hover:text-sky-600 dark:hover:text-sky-400 hover:bg-gray-100 dark:hover:bg-zinc-900 transition flex items-center justify-center shadow-xs"
+                className="p-1.5 rounded-md hairline-border text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-stone-100/70 dark:hover:bg-stone-850 transition-colors flex items-center justify-center"
                 title="Cài đặt hệ thống (Giao diện & Builder)"
                 aria-label="Cài đặt"
               >
@@ -319,9 +324,8 @@ export default function Navbar() {
               {/* Start Writing button */}
               <Link
                 href="/practice?mode=full_test"
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold transition shadow-md shadow-sky-600/20"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md bg-stone-900 text-stone-50 hover:bg-vermilion dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-vermilion dark:hover:text-stone-50 text-xs font-semibold tracking-wide transition-all duration-200 ease-spring"
               >
-                <Sparkles className="w-3.5 h-3.5" />
                 <span>Bắt đầu thi</span>
               </Link>
             </div>

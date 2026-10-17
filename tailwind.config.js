@@ -9,6 +9,12 @@ module.exports = {
   darkMode: "class",
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["var(--font-sans)", "var(--font-inter)", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
+        serif: ["var(--font-serif)", "Newsreader", "Georgia", "Cambria", "serif"],
+        mono: ["var(--font-mono)", "JetBrains Mono", "Menlo", "monospace"],
+        cdielts: ["Arial", "Helvetica", "sans-serif"],
+      },
       colors: {
         inspera: {
           bg: "#f3f4f6",
@@ -18,11 +24,26 @@ module.exports = {
           accent: "#2563eb",
           contrastYellow: "#ffe600",
         },
+        paper: {
+          DEFAULT: "#FAF8F5",
+          subtle: "#F4F0E8",
+          muted: "#EBE6DC",
+          border: "#E4DEC8",
+        },
+        carbon: {
+          DEFAULT: "#0C0C0E",
+          subtle: "#141419",
+          muted: "#1B1B22",
+          border: "rgba(255, 255, 255, 0.08)",
+        },
+        vermilion: {
+          DEFAULT: "#D93829",
+          hover: "#C22E1F",
+          subtle: "rgba(217, 56, 41, 0.08)",
+        },
       },
-      fontFamily: {
-        sans: ["var(--font-inter)", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
-        cdielts: ["Arial", "Helvetica", "sans-serif"],
-        serif: ["Georgia", "Cambria", "serif"],
+      transitionTimingFunction: {
+        spring: "cubic-bezier(0.22, 1, 0.36, 1)",
       },
     },
   },
