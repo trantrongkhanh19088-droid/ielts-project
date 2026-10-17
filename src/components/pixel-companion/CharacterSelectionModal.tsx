@@ -361,9 +361,9 @@ export default function CharacterSelectionModal({
                   />
                 </div>
 
-                {/* Pixel Sprite Thumbnail */}
-                <div className="w-16 h-16 flex items-center justify-center my-1 group-hover:scale-110 transition-transform">
-                  {c.renderSprite({ size: 56 })}
+                {/* Character Face Portrait Thumbnail */}
+                <div className="w-20 h-20 flex items-center justify-center my-1 group-hover:scale-110 transition-transform">
+                  {c.renderSprite({ size: 72 })}
                 </div>
 
                 {/* Character Name & Japanese Name */}
