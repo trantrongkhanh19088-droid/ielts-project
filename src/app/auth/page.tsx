@@ -106,7 +106,7 @@ function AuthContent() {
             <ToriiGate width={56} height={48} text="合格" glow={false} showShimenawa={true} />
           </div>
           <div>
-            <h2 className="font-display font-bold text-3xl text-stone-900 dark:text-stone-100 tracking-tight leading-snug">
+            <h2 className="font-display font-bold text-3xl text-stone-900 dark:text-stone-100 tracking-normal leading-snug">
               {isSignUp ? 'Tạo Tài Khoản Luyện Thi' : 'Đăng Nhập Hệ Thống'}
             </h2>
             <p className="font-mono text-xs text-stone-500 dark:text-stone-400 mt-1">

@@ -82,14 +82,14 @@ export default function HomePage() {
           </div>
 
           {/* Editorial Display Headline */}
-          <div className="space-y-5">
-            <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-stone-900 dark:text-stone-100 leading-[1.24] max-w-4xl mx-auto">
+          <div className="space-y-6 sm:space-y-7">
+            <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-normal text-stone-900 dark:text-stone-100 leading-[1.38] sm:leading-[1.35] lg:leading-[1.32] max-w-4xl mx-auto">
               Nền tảng Luyện thi{' '}
               <span className="text-vermilion">IELTS Writing</span> Chuẩn Phòng Thi &amp; Chấm Điểm AI
             </h1>
 
             {/* Readability constrained body paragraph */}
-            <p className="text-base sm:text-lg text-stone-600 dark:text-stone-400 max-w-[65ch] mx-auto leading-[1.7] font-normal">
+            <p className="text-base sm:text-lg text-stone-600 dark:text-stone-400 max-w-[65ch] mx-auto leading-[1.75] font-normal pt-1">
               Trải nghiệm áp lực thực tế của kỳ thi trên máy: giao diện Inspera nguyên bản, vô hiệu hóa tính năng tự sửa lỗi, đồng hồ đếm ngược từng giây, và AI Giám khảo đối chiếu theo 4 tiêu chí chuẩn British Council &amp; IDP.
             </p>
           </div>
@@ -146,7 +146,7 @@ export default function HomePage() {
               <span className="font-mono text-[11px] text-vermilion tracking-[0.2em] uppercase font-semibold">
                 MODULES // 01 — 03
               </span>
-              <h2 className="font-display font-extrabold text-3xl sm:text-4xl text-stone-900 dark:text-stone-100 tracking-tight mt-1 leading-snug">
+              <h2 className="font-display font-extrabold text-3xl sm:text-4xl text-stone-900 dark:text-stone-100 tracking-normal mt-1 leading-snug">
                 Ba Phương Thức Luyện Tập Thực Chiến
               </h2>
             </div>
@@ -175,7 +175,7 @@ export default function HomePage() {
                 </div>
 
                 <div className="space-y-2">
-                  <h3 className="font-display font-bold text-2xl sm:text-3xl text-stone-900 dark:text-stone-100 tracking-tight leading-snug">
+                  <h3 className="font-display font-bold text-2xl sm:text-3xl text-stone-900 dark:text-stone-100 tracking-normal leading-snug">
                     Thi Thử Full Test <span className="text-vermilion font-sans font-bold">(Part 1 + Part 2)</span>
                   </h3>
                   <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed font-normal max-w-xl">
@@ -255,7 +255,7 @@ export default function HomePage() {
                     </span>
                   </div>
                   <div>
-                    <h3 className="font-display font-bold text-xl sm:text-2xl text-stone-900 dark:text-stone-100 tracking-tight leading-snug">
+                    <h3 className="font-display font-bold text-xl sm:text-2xl text-stone-900 dark:text-stone-100 tracking-normal leading-snug">
                       Luyện Riêng Academic Task 1
                     </h3>
                     <p className="text-xs text-stone-600 dark:text-stone-300 mt-1.5 leading-relaxed">
@@ -294,7 +294,7 @@ export default function HomePage() {
                     </span>
                   </div>
                   <div>
-                    <h3 className="font-display font-bold text-xl sm:text-2xl text-stone-900 dark:text-stone-100 tracking-tight leading-snug">
+                    <h3 className="font-display font-bold text-xl sm:text-2xl text-stone-900 dark:text-stone-100 tracking-normal leading-snug">
                       Luyện Riêng Task 2 (Discursive Essay)
                     </h3>
                     <p className="text-xs text-stone-600 dark:text-stone-300 mt-1.5 leading-relaxed">
@@ -341,7 +341,7 @@ export default function HomePage() {
                   <span className="text-[10px] text-emerald-100 font-sans tracking-tight">GAME HÓA HỌC TẬP</span>
                 </div>
 
-                <h3 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl text-stone-900 dark:text-stone-100 tracking-tight leading-snug">
+                <h3 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl text-stone-900 dark:text-stone-100 tracking-normal leading-snug">
                   Lộ Trình Cây Đậu N Tầng &amp; Soạn Thảo{' '}
                   <span className="font-display font-extrabold text-emerald-600 dark:text-emerald-400 underline decoration-emerald-400/50 decoration-wavy decoration-1 underline-offset-8">
                     Từng Khối Câu Cùng AI
@@ -468,7 +468,7 @@ export default function HomePage() {
               <span className="font-mono text-[11px] text-vermilion tracking-[0.2em] uppercase font-semibold">
                 ARCHIVE // 59 FORECAST PROMPTS
               </span>
-              <h2 className="font-display font-bold text-3xl sm:text-4xl text-stone-900 dark:text-stone-100 tracking-tight mt-1 leading-snug">
+              <h2 className="font-display font-bold text-3xl sm:text-4xl text-stone-900 dark:text-stone-100 tracking-normal mt-1 leading-snug">
                 Kho Đề Forecast IELTS Writing 2026
               </h2>
               <p className="text-xs sm:text-sm text-stone-500 dark:text-stone-400 mt-1 max-w-xl font-normal">

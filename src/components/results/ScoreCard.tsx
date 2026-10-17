@@ -30,7 +30,7 @@ export default function ScoreCard({ result, title }: ScoreCardProps) {
           <div className="font-mono text-[11px] tracking-wider text-vermilion uppercase">
             03 // {isTask1 ? 'IELTS ACADEMIC TASK 1' : 'IELTS WRITING TASK 2'}
           </div>
-          <h2 className="font-display font-bold text-xl sm:text-2xl text-carbon dark:text-paper tracking-tight leading-snug">
+          <h2 className="font-display font-bold text-xl sm:text-2xl text-carbon dark:text-paper tracking-normal leading-snug">
             {title || result.promptTitle}
           </h2>
           <div className="flex items-center gap-4 font-mono text-[11px] text-carbon-muted dark:text-paper-muted pt-1">
