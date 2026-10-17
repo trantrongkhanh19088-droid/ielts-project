@@ -266,7 +266,7 @@ export default function BuilderConfigModal({
                         <span className="text-xs font-extrabold text-emerald-800 dark:text-emerald-400">
                           {sug.label}
                         </span>
-                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 font-bold">
+                        <span className="text-[11px] px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 font-bold">
                           {sug.ratePerDay}
                         </span>
                       </div>
@@ -339,7 +339,7 @@ export default function BuilderConfigModal({
 
             <div className="flex items-center gap-3 shrink-0">
               <div className="text-center px-4 py-2 rounded-xl bg-white dark:bg-zinc-800 shadow-sm border border-gray-200 dark:border-zinc-700">
-                <span className="text-[10px] uppercase font-bold text-gray-400 block">Định mức</span>
+                <span className="text-[11px] uppercase font-bold text-gray-400 block">Định mức</span>
                 <span className="text-base font-black text-emerald-600 dark:text-emerald-400">
                   ~{avgTasksPerDay} bài/ngày
                 </span>

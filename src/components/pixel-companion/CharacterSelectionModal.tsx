@@ -111,7 +111,7 @@ export default function CharacterSelectionModal({
                 <h2 className="text-lg font-extrabold text-gray-900 dark:text-white tracking-tight">
                   キャラ＆テーマ設定
                 </h2>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-rose-100 dark:bg-rose-950/80 text-rose-700 dark:text-rose-300 border border-rose-300 dark:border-rose-800">
+                <span className="px-2 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-rose-100 dark:bg-rose-950/80 text-rose-700 dark:text-rose-300 border border-rose-300 dark:border-rose-800">
                   55 Bạn Đồng Hành
                 </span>
               </div>
@@ -154,7 +154,7 @@ export default function CharacterSelectionModal({
             </div>
             <button
               onClick={() => setGachaResult(null)}
-              className="text-[10px] text-amber-700 dark:text-amber-300 underline"
+              className="text-[11px] text-amber-700 dark:text-amber-300 underline"
             >
               Đóng
             </button>
@@ -382,7 +382,7 @@ export default function CharacterSelectionModal({
                 {/* Selected Checkmark Badge */}
                 {isSelected && (
                   <div
-                    className="absolute top-2 right-2 w-5 h-5 rounded-full flex items-center justify-center text-white text-[10px] shadow-sm font-bold"
+                    className="absolute top-2 right-2 w-5 h-5 rounded-full flex items-center justify-center text-white text-[11px] shadow-sm font-bold"
                     style={{ backgroundColor: c.accentColor }}
                   >
                     <Check className="w-3 h-3 stroke-[3]" />
@@ -390,7 +390,7 @@ export default function CharacterSelectionModal({
                 )}
 
                 {/* Number ID & Category Tag */}
-                <div className="w-full flex items-center justify-between text-[10px] text-gray-400 mb-1 px-1">
+                <div className="w-full flex items-center justify-between text-[11px] text-gray-400 mb-1 px-1">
                   <span className="font-mono font-bold">#{c.id}</span>
                   <span
                     className="w-2 h-2 rounded-full"
@@ -410,11 +410,11 @@ export default function CharacterSelectionModal({
                     {c.name}
                   </h4>
                   {c.jpName && (
-                    <div className="text-[10px] text-gray-400 dark:text-gray-500 font-serif truncate">
+                    <div className="text-[11px] text-gray-400 dark:text-gray-500 font-serif truncate">
                       {c.jpName}
                     </div>
                   )}
-                  <span className="inline-block mt-1 px-2 py-0.5 rounded text-[9px] font-semibold bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-300 truncate max-w-full">
+                  <span className="inline-block mt-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-300 truncate max-w-full">
                     {c.origin}
                   </span>
                 </div>

@@ -229,7 +229,7 @@ function BuilderMainContent() {
             <div className="inline-flex items-center gap-2 px-2.5 py-1 hairline-border bg-paper dark:bg-carbon text-[11px] font-mono tracking-wider text-vermilion uppercase">
               <span>00 // YÊU CẦU ĐĂNG NHẬP</span>
             </div>
-            <h2 className="font-serif text-2xl sm:text-3xl font-medium tracking-tight text-carbon dark:text-paper">
+            <h2 className="font-serif text-2xl sm:text-3xl font-medium tracking-tight text-carbon dark:text-paper leading-snug">
               Phòng Luyện Câu Writing Builder
             </h2>
             <p className="font-sans text-xs sm:text-sm text-carbon-muted dark:text-paper-muted max-w-[50ch] mx-auto leading-relaxed">
@@ -240,7 +240,7 @@ function BuilderMainContent() {
           {/* 3 Value Pillars */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
             <div className="hairline-border p-4 bg-paper dark:bg-carbon space-y-1.5">
-              <div className="font-mono text-[10px] tracking-wider text-vermilion">
+              <div className="font-mono text-[11px] tracking-wider text-vermilion">
                 01 // PHÂN RÃ CÂU
               </div>
               <div className="text-carbon dark:text-paper font-semibold text-xs flex items-center gap-1.5">
@@ -253,7 +253,7 @@ function BuilderMainContent() {
             </div>
 
             <div className="hairline-border p-4 bg-paper dark:bg-carbon space-y-1.5">
-              <div className="font-mono text-[10px] tracking-wider text-vermilion">
+              <div className="font-mono text-[11px] tracking-wider text-vermilion">
                 02 // ĐỐI CHIẾU AI
               </div>
               <div className="text-carbon dark:text-paper font-semibold text-xs flex items-center gap-1.5">
@@ -266,7 +266,7 @@ function BuilderMainContent() {
             </div>
 
             <div className="hairline-border p-4 bg-paper dark:bg-carbon space-y-1.5">
-              <div className="font-mono text-[10px] tracking-wider text-vermilion">
+              <div className="font-mono text-[11px] tracking-wider text-vermilion">
                 03 // LƯU TRỮ
               </div>
               <div className="text-carbon dark:text-paper font-semibold text-xs flex items-center gap-1.5">
@@ -352,7 +352,7 @@ function BuilderMainContent() {
             <div className="font-mono text-xs tracking-wider text-vermilion uppercase">
               00 // KHỞI TẠO CÂY ĐẬU
             </div>
-            <h2 className="font-serif text-2xl font-medium text-carbon dark:text-paper tracking-tight">
+            <h2 className="font-serif text-2xl font-medium text-carbon dark:text-paper tracking-tight leading-snug">
               Chưa có Lộ trình Cây Đậu nào được gieo
             </h2>
             <p className="font-sans text-xs text-carbon-muted dark:text-paper-muted max-w-[45ch] mx-auto leading-relaxed">

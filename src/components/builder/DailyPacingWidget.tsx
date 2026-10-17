@@ -67,7 +67,7 @@ export default function DailyPacingWidget({
                 <span className="text-xs font-bold text-gray-900 dark:text-white">
                   Mục tiêu hôm nay: Hoàn thành {targetToday} bài viết
                 </span>
-                <span className={`text-[10px] px-2 py-0.5 rounded-full font-extrabold uppercase tracking-wider ${
+                <span className={`text-[11px] px-2 py-0.5 rounded-full font-extrabold uppercase tracking-wider ${
                   isTargetMetToday
                     ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300'
                     : 'bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-300'

@@ -102,10 +102,10 @@ export default function ExamHeader({
               </div>
 
               <div className="hidden lg:flex flex-col">
-                <span className="font-extrabold text-xs tracking-tight leading-tight">
+                <span className="font-extrabold text-xs tracking-tight leading-normal">
                   CD-IELTS <span className="text-sky-600">Writing</span>
                 </span>
-                <span className="text-[9px] text-gray-400 font-medium uppercase tracking-wider">
+                <span className="text-[11px] text-gray-400 font-medium uppercase tracking-wider">
                   Inspera Simulator
                 </span>
               </div>
@@ -175,7 +175,7 @@ export default function ExamHeader({
                 <div className="flex items-center gap-1">
                   <span>{formatDuration(timeRemainingSeconds)}</span>
                   {isTimerPaused && (
-                    <span className="text-[10px] font-sans font-normal opacity-85 text-amber-500">
+                    <span className="text-[11px] font-sans font-normal opacity-85 text-amber-500">
                       (Tạm dừng)
                     </span>
                   )}

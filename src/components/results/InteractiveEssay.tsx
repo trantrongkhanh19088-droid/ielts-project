@@ -220,7 +220,7 @@ export default function InteractiveEssay({ essay, corrections }: InteractiveEssa
                   >
                     <span className="truncate max-w-[220px]">{corr.original}</span>
                     <span
-                      className={`text-[10px] px-1.5 py-0.5 rounded border shrink-0 ${getErrorTypeBadge(
+                      className={`text-[11px] px-1.5 py-0.5 rounded border shrink-0 ${getErrorTypeBadge(
                         corr.errorType
                       )}`}
                     >

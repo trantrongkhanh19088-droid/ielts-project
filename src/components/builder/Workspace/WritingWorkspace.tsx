@@ -387,7 +387,7 @@ export default function WritingWorkspace({
                       Đã viết {wordCount} / {minWords} từ tối thiểu
                     </span>
                     {activeGradingResult && (
-                      <span className="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 font-extrabold text-[10px] font-mono">
+                      <span className="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 font-extrabold text-[11px] font-mono">
                         ⭐ Band {activeGradingResult.overallBand.toFixed(1)}
                       </span>
                     )}

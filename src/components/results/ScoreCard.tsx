@@ -27,10 +27,10 @@ export default function ScoreCard({ result, title }: ScoreCardProps) {
       {/* Top Banner: Title & Overall Band */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5 pb-5 hairline-b">
         <div className="space-y-1.5">
-          <div className="font-mono text-[10px] tracking-wider text-vermilion uppercase">
+          <div className="font-mono text-[11px] tracking-wider text-vermilion uppercase">
             03 // {isTask1 ? 'IELTS ACADEMIC TASK 1' : 'IELTS WRITING TASK 2'}
           </div>
-          <h2 className="font-serif text-xl sm:text-2xl font-medium text-carbon dark:text-paper tracking-tight">
+          <h2 className="font-serif text-xl sm:text-2xl font-medium text-carbon dark:text-paper tracking-tight leading-snug">
             {title || result.promptTitle}
           </h2>
           <div className="flex items-center gap-4 font-mono text-[11px] text-carbon-muted dark:text-paper-muted pt-1">
@@ -49,7 +49,7 @@ export default function ScoreCard({ result, title }: ScoreCardProps) {
         <div className="flex items-center gap-4 hairline-border bg-paper dark:bg-carbon px-5 py-3.5">
           <Award className="w-7 h-7 text-vermilion shrink-0 stroke-[1.75]" />
           <div>
-            <div className="font-mono text-[10px] uppercase tracking-wider text-carbon-muted dark:text-paper-muted">
+            <div className="font-mono text-[11px] uppercase tracking-wider text-carbon-muted dark:text-paper-muted">
               Band Score
             </div>
             <div className="text-3xl font-mono font-bold text-carbon dark:text-paper">
@@ -63,14 +63,14 @@ export default function ScoreCard({ result, title }: ScoreCardProps) {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {/* TA / TR */}
         <div className="hairline-border p-4 bg-paper dark:bg-carbon space-y-2">
-          <div className="font-mono text-[10px] uppercase tracking-wider text-carbon-muted dark:text-paper-muted truncate">
+          <div className="font-mono text-[11px] uppercase tracking-wider text-carbon-muted dark:text-paper-muted truncate">
             {taLabel}
           </div>
           <div className="flex items-baseline justify-between">
             <span className="text-2xl font-mono font-bold text-carbon dark:text-paper">
               {Number(result.criteria.taskAchievementOrResponse.score).toFixed(1)}
             </span>
-            <span className="font-mono text-[10px] px-2 py-0.5 hairline-border bg-paper-subtle dark:bg-carbon-subtle text-vermilion uppercase">
+            <span className="font-mono text-[11px] px-2 py-0.5 hairline-border bg-paper-subtle dark:bg-carbon-subtle text-vermilion uppercase">
               Band {result.criteria.taskAchievementOrResponse.score}
             </span>
           </div>
@@ -78,14 +78,14 @@ export default function ScoreCard({ result, title }: ScoreCardProps) {
 
         {/* CC */}
         <div className="hairline-border p-4 bg-paper dark:bg-carbon space-y-2">
-          <div className="font-mono text-[10px] uppercase tracking-wider text-carbon-muted dark:text-paper-muted truncate">
+          <div className="font-mono text-[11px] uppercase tracking-wider text-carbon-muted dark:text-paper-muted truncate">
             Coherence &amp; Cohesion
           </div>
           <div className="flex items-baseline justify-between">
             <span className="text-2xl font-mono font-bold text-carbon dark:text-paper">
               {Number(result.criteria.coherenceCohesion.score).toFixed(1)}
             </span>
-            <span className="font-mono text-[10px] px-2 py-0.5 hairline-border bg-paper-subtle dark:bg-carbon-subtle text-vermilion uppercase">
+            <span className="font-mono text-[11px] px-2 py-0.5 hairline-border bg-paper-subtle dark:bg-carbon-subtle text-vermilion uppercase">
               Band {result.criteria.coherenceCohesion.score}
             </span>
           </div>
@@ -93,14 +93,14 @@ export default function ScoreCard({ result, title }: ScoreCardProps) {
 
         {/* LR */}
         <div className="hairline-border p-4 bg-paper dark:bg-carbon space-y-2">
-          <div className="font-mono text-[10px] uppercase tracking-wider text-carbon-muted dark:text-paper-muted truncate">
+          <div className="font-mono text-[11px] uppercase tracking-wider text-carbon-muted dark:text-paper-muted truncate">
             Lexical Resource
           </div>
           <div className="flex items-baseline justify-between">
             <span className="text-2xl font-mono font-bold text-carbon dark:text-paper">
               {Number(result.criteria.lexicalResource.score).toFixed(1)}
             </span>
-            <span className="font-mono text-[10px] px-2 py-0.5 hairline-border bg-paper-subtle dark:bg-carbon-subtle text-vermilion uppercase">
+            <span className="font-mono text-[11px] px-2 py-0.5 hairline-border bg-paper-subtle dark:bg-carbon-subtle text-vermilion uppercase">
               Band {result.criteria.lexicalResource.score}
             </span>
           </div>
@@ -108,14 +108,14 @@ export default function ScoreCard({ result, title }: ScoreCardProps) {
 
         {/* GRA */}
         <div className="hairline-border p-4 bg-paper dark:bg-carbon space-y-2">
-          <div className="font-mono text-[10px] uppercase tracking-wider text-carbon-muted dark:text-paper-muted truncate">
+          <div className="font-mono text-[11px] uppercase tracking-wider text-carbon-muted dark:text-paper-muted truncate">
             Grammatical Range
           </div>
           <div className="flex items-baseline justify-between">
             <span className="text-2xl font-mono font-bold text-carbon dark:text-paper">
               {Number(result.criteria.grammaticalRange.score).toFixed(1)}
             </span>
-            <span className="font-mono text-[10px] px-2 py-0.5 hairline-border bg-paper-subtle dark:bg-carbon-subtle text-vermilion uppercase">
+            <span className="font-mono text-[11px] px-2 py-0.5 hairline-border bg-paper-subtle dark:bg-carbon-subtle text-vermilion uppercase">
               Band {result.criteria.grammaticalRange.score}
             </span>
           </div>

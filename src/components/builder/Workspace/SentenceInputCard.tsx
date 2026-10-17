@@ -239,12 +239,12 @@ export default function SentenceInputCard({
             {showHint ? (
               <>
                 <Eye className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" />
-                <span className="text-[10px]">Gợi ý</span>
+                <span className="text-[11px]">Gợi ý</span>
               </>
             ) : (
               <>
                 <EyeOff className="w-3.5 h-3.5 text-gray-400" />
-                <span className="text-[10px]">Gợi ý: Ẩn</span>
+                <span className="text-[11px]">Gợi ý: Ẩn</span>
               </>
             )}
           </button>
@@ -361,7 +361,7 @@ export default function SentenceInputCard({
         </div>
 
         {/* Word count of this sentence */}
-        <span className="text-[10px] text-gray-400 font-medium">
+        <span className="text-[11px] text-gray-400 font-medium">
           {sentence.text.trim() ? `${sentence.text.trim().split(/\s+/).filter(Boolean).length} từ` : '0 từ'}
         </span>
       </div>
@@ -376,7 +376,7 @@ export default function SentenceInputCard({
               <span>Kết quả kiểm tra câu:</span>
             </div>
             <span
-              className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full ${
+              className={`text-[11px] font-extrabold px-2 py-0.5 rounded-full ${
                 sentence.checkResult.hasErrors
                   ? 'bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300'
                   : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300'
@@ -397,7 +397,7 @@ export default function SentenceInputCard({
                   className="p-2.5 rounded-lg bg-white/90 dark:bg-zinc-900/90 border border-amber-200/80 dark:border-zinc-800 space-y-1"
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded uppercase bg-amber-100 dark:bg-amber-900/60 text-amber-800 dark:text-amber-300">
+                    <span className="text-[11px] font-bold px-1.5 py-0.5 rounded uppercase bg-amber-100 dark:bg-amber-900/60 text-amber-800 dark:text-amber-300">
                       {err.type}
                     </span>
                     <div className="flex items-center gap-2 text-[11px]">
@@ -422,7 +422,7 @@ export default function SentenceInputCard({
           {sentence.checkResult.hasErrors && sentence.checkResult.correctedSentence && (
             <div className="pt-2 border-t border-amber-200/60 dark:border-amber-800/40 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div className="space-y-0.5 flex-1">
-                <span className="text-[10px] uppercase font-bold text-gray-500">Bản sửa hoàn chỉnh:</span>
+                <span className="text-[11px] uppercase font-bold text-gray-500">Bản sửa hoàn chỉnh:</span>
                 <p className="font-semibold text-gray-900 dark:text-white leading-relaxed">
                   {sentence.checkResult.correctedSentence}
                 </p>
@@ -460,7 +460,7 @@ export default function SentenceInputCard({
               <div className="flex flex-wrap items-center gap-1.5 font-bold text-emerald-900 dark:text-emerald-300">
                 <Sparkles className="w-4 h-4 text-emerald-600 shrink-0" />
                 <span>Bản nâng cấp học thuật (Band {sentence.paraphraseResult.bandScore}):</span>
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-200/80 dark:bg-emerald-900/70 text-emerald-900 dark:text-emerald-200 font-semibold border border-emerald-300 dark:border-emerald-700">
+                <span className="text-[11px] px-2 py-0.5 rounded-full bg-emerald-200/80 dark:bg-emerald-900/70 text-emerald-900 dark:text-emerald-200 font-semibold border border-emerald-300 dark:border-emerald-700">
                   {activeStyleLabel}
                 </span>
               </div>
@@ -515,7 +515,7 @@ export default function SentenceInputCard({
                                     {isSelected && <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />}
                                   </div>
                                   {alt.explanationVi && (
-                                    <span className="text-[10px] text-gray-500 dark:text-zinc-400 font-normal">
+                                    <span className="text-[11px] text-gray-500 dark:text-zinc-400 font-normal">
                                       {alt.explanationVi}
                                     </span>
                                   )}
@@ -580,14 +580,14 @@ export default function SentenceInputCard({
                         <span className="font-extrabold text-xs text-emerald-700 dark:text-emerald-400">
                           {lex.phrase}
                         </span>
-                        <span className="text-[9px] px-1.5 py-0.5 rounded font-bold uppercase bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300">
+                        <span className="text-[11px] px-1.5 py-0.5 rounded font-bold uppercase bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300">
                           {lex.type}
                         </span>
                       </div>
                       <p className="text-[11px] text-gray-700 dark:text-zinc-300 font-medium">
                         {lex.meaningVi}
                       </p>
-                      <p className="text-[10px] text-gray-500 dark:text-zinc-400 italic">
+                      <p className="text-[11px] text-gray-500 dark:text-zinc-400 italic">
                         {lex.usageNoteVi}
                       </p>
                     </div>

@@ -197,7 +197,7 @@ export function OmamoriBadge({
         </div>
 
         {/* Sub text badge */}
-        <div className="mt-1 px-1.5 py-0.5 rounded bg-black/40 border border-amber-300/40 text-[9px] font-black tracking-tighter text-amber-300">
+        <div className="mt-1 px-1.5 py-0.5 rounded bg-black/40 border border-amber-300/40 text-[11px] font-black tracking-tight text-amber-300">
           {subText}
         </div>
       </div>

@@ -93,7 +93,7 @@ function ResultsContent() {
         <div className="font-mono text-xs tracking-wider text-vermilion uppercase">
           00 // KHÔNG CÓ DỮ LIỆU
         </div>
-        <h2 className="font-serif text-2xl font-medium text-carbon dark:text-paper tracking-tight">
+        <h2 className="font-serif text-2xl font-medium text-carbon dark:text-paper tracking-tight leading-snug">
           Chưa tìm thấy bài thi nào
         </h2>
         <p className="font-sans text-xs text-carbon-muted dark:text-paper-muted max-w-[45ch] leading-relaxed">
@@ -157,14 +157,14 @@ function ResultsContent() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 hairline-b">
         <div>
           <div className="flex items-center gap-2.5">
-            <span className="font-mono text-[10px] tracking-wider px-2.5 py-0.5 hairline-border bg-paper-subtle dark:bg-carbon-subtle text-vermilion uppercase">
+            <span className="font-mono text-[11px] tracking-wider px-2.5 py-0.5 hairline-border bg-paper-subtle dark:bg-carbon-subtle text-vermilion uppercase">
               00 // BÁO CÁO ĐÁNH GIÁ AI EXAMINER
             </span>
             <span className="font-mono text-[11px] text-carbon-muted dark:text-paper-muted">
               {new Date(record.created_at).toLocaleString('vi-VN')}
             </span>
           </div>
-          <h1 className="font-serif text-2xl sm:text-3xl font-medium text-carbon dark:text-paper mt-2 tracking-tight">
+          <h1 className="font-serif text-2xl sm:text-3xl font-medium text-carbon dark:text-paper mt-2 tracking-tight leading-snug">
             {record.prompt_title}
           </h1>
         </div>
@@ -206,7 +206,7 @@ function ResultsContent() {
               <Layers className="w-3.5 h-3.5" />
               <span>01 // IELTS Full Writing Test Summary</span>
             </div>
-            <h2 className="font-serif text-2xl font-medium tracking-tight">
+            <h2 className="font-serif text-2xl font-medium tracking-tight leading-snug">
               Điểm Tổng Kết Overall Writing
             </h2>
             <p className="font-sans text-xs text-paper-muted leading-relaxed max-w-[55ch]">
@@ -219,7 +219,7 @@ function ResultsContent() {
 
           <div className="flex items-center gap-6 bg-carbon-subtle dark:bg-carbon px-6 py-4 hairline-border">
             <div className="text-center">
-              <span className="font-mono text-[10px] uppercase tracking-wider text-paper-muted block">
+              <span className="font-mono text-[11px] uppercase tracking-wider text-paper-muted block">
                 Task 1
               </span>
               <span className="text-2xl font-mono font-bold text-paper">
@@ -228,7 +228,7 @@ function ResultsContent() {
             </div>
             <div className="text-xl text-paper-muted font-light">+</div>
             <div className="text-center">
-              <span className="font-mono text-[10px] uppercase tracking-wider text-paper-muted block">
+              <span className="font-mono text-[11px] uppercase tracking-wider text-paper-muted block">
                 Task 2 (&times;2)
               </span>
               <span className="text-2xl font-mono font-bold text-paper">
@@ -237,7 +237,7 @@ function ResultsContent() {
             </div>
             <div className="text-xl text-paper-muted font-light">=</div>
             <div className="text-center pl-3 border-l border-white/15">
-              <span className="font-mono text-[10px] uppercase tracking-wider text-vermilion font-bold block">
+              <span className="font-mono text-[11px] uppercase tracking-wider text-vermilion font-bold block">
                 Overall Band
               </span>
               <span className="text-3xl sm:text-4xl font-mono font-bold text-vermilion">
@@ -289,7 +289,7 @@ function ResultsContent() {
       {/* Prompt Reference & Chart Image */}
       <div className="hairline-border bg-paper-subtle dark:bg-carbon-subtle p-5 space-y-2">
         <div className="flex items-center justify-between">
-          <span className="font-mono text-[10px] tracking-wider text-vermilion uppercase">
+          <span className="font-mono text-[11px] tracking-wider text-vermilion uppercase">
             02 // ĐỀ BÀI THI ({activeResult.taskType === 'task1' ? 'TASK 1' : 'TASK 2'})
           </span>
           <span className="font-mono text-xs font-semibold text-carbon dark:text-paper">

@@ -115,10 +115,10 @@ export default function DashboardPage() {
           </div>
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <h1 className="font-serif text-2xl font-normal text-stone-900 dark:text-stone-100 tracking-tight">
+              <h1 className="font-serif text-2xl font-normal text-stone-900 dark:text-stone-100 tracking-tight leading-snug">
                 {userProfile.fullName}
               </h1>
-              <span className="font-mono text-[10px] px-2 py-0.5 rounded hairline-border bg-stone-100 dark:bg-stone-850 text-stone-700 dark:text-stone-300 font-semibold uppercase">
+              <span className="font-mono text-[11px] px-2 py-0.5 rounded hairline-border bg-stone-100 dark:bg-stone-850 text-stone-700 dark:text-stone-300 font-semibold uppercase">
                 HỌC VIÊN
               </span>
             </div>
@@ -142,7 +142,7 @@ export default function DashboardPage() {
               style={{ width: `${targetProgress}%` }}
             />
           </div>
-          <div className="flex justify-between font-mono text-[10px] text-stone-400">
+          <div className="flex justify-between font-mono text-[11px] text-stone-400">
             <span>Điểm hiện tại: {avgBand}</span>
             <span>Mục tiêu: {userProfile.targetBand.toFixed(1)}</span>
           </div>
@@ -153,50 +153,50 @@ export default function DashboardPage() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {/* Total Essays */}
         <div className="p-5 rounded-lg hairline-border bg-paper-subtle dark:bg-carbon-subtle space-y-3">
-          <div className="flex items-center justify-between font-mono text-[10px] text-stone-500 uppercase tracking-wider">
+          <div className="flex items-center justify-between font-mono text-[11px] text-stone-500 uppercase tracking-wider">
             <span>01 // TỔNG BÀI VIẾT</span>
             <FileText className="w-3.5 h-3.5 text-stone-400" />
           </div>
           <div className="text-3xl font-normal font-mono text-stone-900 dark:text-stone-100">
             {totalEssays}
           </div>
-          <p className="font-mono text-[10px] text-stone-400">Task 1, Task 2 &amp; Full Test</p>
+          <p className="font-mono text-[11px] text-stone-400">Task 1, Task 2 &amp; Full Test</p>
         </div>
 
         {/* Avg Band */}
         <div className="p-5 rounded-lg hairline-border bg-paper-subtle dark:bg-carbon-subtle space-y-3">
-          <div className="flex items-center justify-between font-mono text-[10px] text-stone-500 uppercase tracking-wider">
+          <div className="flex items-center justify-between font-mono text-[11px] text-stone-500 uppercase tracking-wider">
             <span>02 // BAND TRUNG BÌNH</span>
             <TrendingUp className="w-3.5 h-3.5 text-vermilion" />
           </div>
           <div className="text-3xl font-normal font-mono text-vermilion">
             {avgBand}
           </div>
-          <p className="font-mono text-[10px] text-stone-400">Tính trên tất cả các bài</p>
+          <p className="font-mono text-[11px] text-stone-400">Tính trên tất cả các bài</p>
         </div>
 
         {/* Highest Band */}
         <div className="p-5 rounded-lg hairline-border bg-paper-subtle dark:bg-carbon-subtle space-y-3">
-          <div className="flex items-center justify-between font-mono text-[10px] text-stone-500 uppercase tracking-wider">
+          <div className="flex items-center justify-between font-mono text-[11px] text-stone-500 uppercase tracking-wider">
             <span>03 // KỶ LỤC CAO NHẤT</span>
             <Award className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
           </div>
           <div className="text-3xl font-normal font-mono text-stone-900 dark:text-stone-100">
             {highestBand}
           </div>
-          <p className="font-mono text-[10px] text-stone-400">Điểm số bài thi tốt nhất</p>
+          <p className="font-mono text-[11px] text-stone-400">Điểm số bài thi tốt nhất</p>
         </div>
 
         {/* Total Practice Time */}
         <div className="p-5 rounded-lg hairline-border bg-paper-subtle dark:bg-carbon-subtle space-y-3">
-          <div className="flex items-center justify-between font-mono text-[10px] text-stone-500 uppercase tracking-wider">
+          <div className="flex items-center justify-between font-mono text-[11px] text-stone-500 uppercase tracking-wider">
             <span>04 // THỜI GIAN THỰC</span>
             <Clock className="w-3.5 h-3.5 text-stone-400" />
           </div>
           <div className="text-3xl font-normal font-mono text-stone-900 dark:text-stone-100">
             {totalMinutes} <span className="text-sm font-normal text-stone-500">phút</span>
           </div>
-          <p className="font-mono text-[10px] text-stone-400">Tích lũy trong phòng thi</p>
+          <p className="font-mono text-[11px] text-stone-400">Tích lũy trong phòng thi</p>
         </div>
       </div>
 
@@ -283,7 +283,7 @@ export default function DashboardPage() {
 
                       <td className="p-3.5 whitespace-nowrap">
                         <span
-                          className={`px-2 py-0.5 rounded font-bold text-[10px] uppercase tracking-wider border ${
+                          className={`px-2 py-0.5 rounded font-bold text-[11px] uppercase tracking-wider border ${
                             isFT
                               ? 'bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-800'
                               : r.task_type === 'task1'

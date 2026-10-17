@@ -152,7 +152,7 @@ export default function BuilderGradingResultModal({
                 {/* Big Band Badge */}
                 <div className="flex items-center gap-3 shrink-0 self-start sm:self-center bg-white/10 backdrop-blur-md p-3 rounded-2xl border border-white/20">
                   <div className="text-center">
-                    <span className="text-[10px] uppercase font-bold text-emerald-200 block">
+                    <span className="text-[11px] uppercase font-bold text-emerald-200 block">
                       Overall Band
                     </span>
                     <span className="text-3xl sm:text-4xl font-black font-mono tracking-tight text-white drop-shadow">
@@ -162,7 +162,7 @@ export default function BuilderGradingResultModal({
                   <div className="h-10 w-px bg-white/20" />
                   <div className="text-left text-[11px]">
                     <div className="text-emerald-200 font-semibold">Target: Band {targetBand}</div>
-                    <div className="text-white/80 font-mono text-[10px]">{gradingResult.wordCount} từ</div>
+                    <div className="text-white/80 font-mono text-[11px]">{gradingResult.wordCount} từ</div>
                   </div>
                 </div>
               </div>
@@ -304,7 +304,7 @@ export default function BuilderGradingResultModal({
                         className="p-3.5 rounded-2xl border border-gray-200 dark:border-zinc-800 bg-gray-50/50 dark:bg-zinc-800/40 space-y-2 text-xs"
                       >
                         <div className="flex items-center gap-2">
-                          <span className="px-2 py-0.5 rounded-md bg-red-100 text-red-700 dark:bg-red-950/60 dark:text-red-300 font-bold text-[10px]">
+                          <span className="px-2 py-0.5 rounded-md bg-red-100 text-red-700 dark:bg-red-950/60 dark:text-red-300 font-bold text-[11px]">
                             {corr.errorType}
                           </span>
                         </div>

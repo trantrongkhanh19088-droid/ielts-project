@@ -341,7 +341,7 @@ export default function PromptPane({
                       {prompt.category ? `Đề bài: ${prompt.category}` : 'Hình ảnh / Biểu đồ:'}
                     </span>
                     {prompt.imageUrl && (
-                      <span className="text-[10px] px-1.5 py-0.5 rounded font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
+                      <span className="text-[11px] px-1.5 py-0.5 rounded font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
                         Forecast Quý 3
                       </span>
                     )}
@@ -410,7 +410,7 @@ export default function PromptPane({
                       onClick={() => setIsZoomOpen(true)}
                       className="w-full max-h-80 object-contain rounded cursor-zoom-in transition-transform duration-200 group-hover:scale-[1.01]"
                     />
-                    <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-black/75 text-white text-[10px] px-2 py-1 rounded-md pointer-events-none flex items-center gap-1">
+                    <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-black/75 text-white text-[11px] px-2 py-1 rounded-md pointer-events-none flex items-center gap-1">
                       <Maximize2 className="w-3 h-3" />
                       <span>Nhấp để phóng to toàn màn hình</span>
                     </div>

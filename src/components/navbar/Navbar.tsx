@@ -204,7 +204,7 @@ export default function Navbar() {
                       Writing
                     </span>
                   </div>
-                  <span className="font-mono text-[9px] text-stone-500 dark:text-stone-400 tracking-[0.14em] uppercase font-medium -mt-0.5">
+                  <span className="font-mono text-[11px] text-stone-500 dark:text-stone-400 tracking-wider uppercase font-medium mt-0.5">
                     Inspera Official Simulator
                   </span>
                 </div>
@@ -226,7 +226,7 @@ export default function Navbar() {
               >
                 <Sprout className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                 <span>Writing Builder</span>
-                <span className="font-mono text-[9px] px-1 py-0.2 rounded bg-emerald-100/80 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300 border border-emerald-300/60 dark:border-emerald-800/60 uppercase font-semibold">
+                <span className="font-mono text-[11px] px-1.5 py-0.5 rounded bg-emerald-100/80 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300 border border-emerald-300/60 dark:border-emerald-800/60 uppercase font-semibold">
                   Mới
                 </span>
               </Link>
@@ -275,14 +275,14 @@ export default function Navbar() {
                   onClick={() => setIsProfileModalOpen(true)}
                   className="flex items-center gap-2 px-2.5 py-1.5 rounded-md hairline-border hover:bg-stone-100/70 dark:hover:bg-stone-850 transition text-left"
                 >
-                  <div className="w-6 h-6 rounded bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 flex items-center justify-center font-mono font-bold text-[10px]">
+                  <div className="w-6 h-6 rounded bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 flex items-center justify-center font-mono font-bold text-[11px]">
                     {initials}
                   </div>
                   <div className="hidden sm:flex flex-col">
                     <span className="text-xs font-semibold text-stone-900 dark:text-stone-100 truncate max-w-[110px]">
                       {userName || userEmail}
                     </span>
-                    <span className="font-mono text-[9px] text-vermilion font-semibold flex items-center gap-1">
+                    <span className="font-mono text-[11px] text-vermilion font-semibold flex items-center gap-1">
                       Target {targetBand.toFixed(1)}
                     </span>
                   </div>

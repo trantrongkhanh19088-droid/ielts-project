@@ -56,7 +56,7 @@ export default function FullTestNavBar({
         >
           <span>Part 1 (Task 1)</span>
           <span
-            className={`text-[10px] px-1.5 py-0.5 rounded font-mono ${
+            className={`text-[11px] px-1.5 py-0.5 rounded font-mono ${
               currentPart === 'task1'
                 ? contrastMode === 'yellow-on-black'
                   ? 'bg-black text-[#ffe600]'
@@ -95,7 +95,7 @@ export default function FullTestNavBar({
         >
           <span>Part 2 (Task 2)</span>
           <span
-            className={`text-[10px] px-1.5 py-0.5 rounded font-mono ${
+            className={`text-[11px] px-1.5 py-0.5 rounded font-mono ${
               currentPart === 'task2'
                 ? contrastMode === 'yellow-on-black'
                   ? 'bg-black text-[#ffe600]'

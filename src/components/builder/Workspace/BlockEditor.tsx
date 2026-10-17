@@ -150,16 +150,16 @@ export default function BlockEditor({
               }`}
             >
               <div className="truncate">
-                <span className="text-[10px] block opacity-60">Khối {idx + 1}</span>
+                <span className="text-[11px] block opacity-60">Khối {idx + 1}</span>
                 <span className="text-xs truncate">{getBlockShortName(block)}</span>
               </div>
 
               {isDone ? (
-                <span className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300 flex items-center justify-center text-[10px] font-black shrink-0">
+                <span className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300 flex items-center justify-center text-[11px] font-black shrink-0">
                   ✓
                 </span>
               ) : (
-                <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-gray-200 dark:bg-zinc-800 text-gray-500 shrink-0 font-medium">
+                <span className="text-[11px] px-1.5 py-0.5 rounded-md bg-gray-200 dark:bg-zinc-800 text-gray-500 shrink-0 font-medium">
                   {writtenCount}/{block.sentences.length}
                 </span>
               )}
@@ -178,7 +178,7 @@ export default function BlockEditor({
               <h3 className="text-sm sm:text-base font-extrabold text-gray-900 dark:text-white">
                 {activeBlock.title}
               </h3>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+              <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
                 Đang viết ({activeBlock.sentences.length} câu)
               </span>
             </div>

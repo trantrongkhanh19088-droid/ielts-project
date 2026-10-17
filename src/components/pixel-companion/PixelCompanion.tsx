@@ -115,14 +115,14 @@ export default function PixelCompanion() {
                 <span className="font-bold text-xs" style={{ color: character.accentColor }}>
                   {character.name}
                 </span>
-                <span className="text-[10px] text-gray-500 dark:text-gray-400">
+                <span className="text-[11px] text-gray-500 dark:text-gray-400">
                   ({character.origin})
                 </span>
               </div>
               <p className="text-xs font-medium text-gray-800 dark:text-gray-100 leading-snug">
                 {character.quote}
               </p>
-              <div className="mt-1 text-[9px] text-gray-400 dark:text-gray-500 text-right">
+              <div className="mt-1 text-[11px] text-gray-400 dark:text-gray-500 text-right">
                 Nhấp để đóng &bull; Đổi nhân vật ở nút bên dưới
               </div>
             </div>

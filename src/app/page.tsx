@@ -78,8 +78,8 @@ export default function HomePage() {
           </div>
 
           {/* Editorial Display Headline */}
-          <div className="space-y-4">
-            <h1 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-normal tracking-[-0.035em] text-stone-900 dark:text-stone-100 leading-[1.08] max-w-4xl mx-auto">
+          <div className="space-y-5">
+            <h1 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-normal tracking-[-0.02em] text-stone-900 dark:text-stone-100 leading-[1.3] sm:leading-[1.26] max-w-4xl mx-auto">
               Nền tảng Luyện thi{' '}
               <span className="italic font-serif text-vermilion">IELTS Writing</span> Chuẩn Phòng Thi &amp; Chấm Điểm AI
             </h1>
@@ -107,7 +107,7 @@ export default function HomePage() {
             >
               <Sprout className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
               <span>Writing Builder (Cây Đậu N Tầng)</span>
-              <span className="font-mono text-[9px] px-1 py-0.2 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-bold uppercase">
+              <span className="font-mono text-[11px] px-1.5 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-bold uppercase">
                 Mới
               </span>
             </Link>
@@ -116,7 +116,7 @@ export default function HomePage() {
               href="/practice?mode=task1"
               className="inline-flex items-center gap-1.5 px-4 py-3 rounded-md hairline-border bg-paper hover:bg-stone-100/70 dark:bg-carbon hover:dark:bg-stone-850 text-stone-600 dark:text-stone-300 text-xs font-medium transition-colors"
             >
-              <span className="font-mono text-stone-400 text-[10px]">01 //</span>
+              <span className="font-mono text-stone-400 text-[11px]">01 //</span>
               <span>Luyện Task 1</span>
             </Link>
 
@@ -124,7 +124,7 @@ export default function HomePage() {
               href="/practice?mode=task2"
               className="inline-flex items-center gap-1.5 px-4 py-3 rounded-md hairline-border bg-paper hover:bg-stone-100/70 dark:bg-carbon hover:dark:bg-stone-850 text-stone-600 dark:text-stone-300 text-xs font-medium transition-colors"
             >
-              <span className="font-mono text-stone-400 text-[10px]">02 //</span>
+              <span className="font-mono text-stone-400 text-[11px]">02 //</span>
               <span>Luyện Task 2</span>
             </Link>
           </div>
@@ -142,7 +142,7 @@ export default function HomePage() {
               <span className="font-mono text-[11px] text-vermilion tracking-[0.2em] uppercase font-semibold">
                 MODULES // 01 — 03
               </span>
-              <h2 className="font-serif text-3xl sm:text-4xl text-stone-900 dark:text-stone-100 font-normal tracking-tight mt-1">
+              <h2 className="font-serif text-3xl sm:text-4xl text-stone-900 dark:text-stone-100 font-normal tracking-tight mt-1 leading-snug">
                 Ba Phương Thức Luyện Tập Thực Chiến
               </h2>
             </div>
@@ -157,16 +157,16 @@ export default function HomePage() {
             <div className="lg:col-span-7 flex flex-col justify-between p-8 rounded-lg hairline-border bg-paper-subtle dark:bg-carbon-subtle hover:border-stone-400 dark:hover:border-stone-600 transition-colors duration-200 group relative">
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-[10px] tracking-[0.16em] uppercase text-stone-500 dark:text-stone-400">
+                  <span className="font-mono text-[11px] tracking-[0.16em] uppercase text-stone-500 dark:text-stone-400">
                     FLAGSHIP // 01
                   </span>
-                  <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 font-semibold uppercase tracking-wider">
+                  <span className="font-mono text-[11px] px-2 py-0.5 rounded bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 font-semibold uppercase tracking-wider">
                     Khuyên dùng
                   </span>
                 </div>
 
                 <div className="space-y-2">
-                  <h3 className="font-serif text-2xl sm:text-3xl font-normal text-stone-900 dark:text-stone-100 tracking-tight">
+                  <h3 className="font-serif text-2xl sm:text-3xl font-normal text-stone-900 dark:text-stone-100 tracking-tight leading-snug">
                     Thi Thử Full Test (Part 1 + Part 2)
                   </h3>
                   <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed font-normal max-w-xl">
@@ -182,12 +182,12 @@ export default function HomePage() {
                   </div>
                   <div className="grid grid-cols-2 gap-3 text-xs">
                     <div className="hairline-r pr-3 space-y-1">
-                      <div className="text-stone-400 text-[10px] font-mono">GIAI ĐOẠN 01</div>
+                      <div className="text-stone-400 text-[11px] font-mono">GIAI ĐOẠN 01</div>
                       <div className="font-bold text-stone-900 dark:text-stone-100">Task 1: Biểu Đồ</div>
                       <div className="text-[11px] text-stone-500">20 phút &bull; Tối thiểu 150 từ</div>
                     </div>
                     <div className="space-y-1 pl-1">
-                      <div className="text-stone-400 text-[10px] font-mono">GIAI ĐOẠN 02</div>
+                      <div className="text-stone-400 text-[11px] font-mono">GIAI ĐOẠN 02</div>
                       <div className="font-bold text-stone-900 dark:text-stone-100">Task 2: Nghị Luận</div>
                       <div className="text-[11px] text-stone-500">40 phút &bull; Tối thiểu 250 từ</div>
                     </div>
@@ -216,13 +216,13 @@ export default function HomePage() {
               <div className="flex-1 flex flex-col justify-between p-6 rounded-lg hairline-border bg-paper-subtle dark:bg-carbon-subtle hover:border-stone-400 dark:hover:border-stone-600 transition-colors duration-200 group">
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-[10px] tracking-[0.16em] uppercase text-stone-500 dark:text-stone-400">
+                    <span className="font-mono text-[11px] tracking-[0.16em] uppercase text-stone-500 dark:text-stone-400">
                       TASK // 02
                     </span>
-                    <span className="font-mono text-[10px] text-stone-500">20 MIN &bull; 150 WORDS</span>
+                    <span className="font-mono text-[11px] text-stone-500">20 MIN &bull; 150 WORDS</span>
                   </div>
                   <div>
-                    <h3 className="font-serif text-xl font-normal text-stone-900 dark:text-stone-100 tracking-tight">
+                    <h3 className="font-serif text-xl font-normal text-stone-900 dark:text-stone-100 tracking-tight leading-snug">
                       Luyện Riêng Academic Task 1
                     </h3>
                     <p className="text-xs text-stone-600 dark:text-stone-300 mt-1 leading-relaxed">
@@ -232,7 +232,7 @@ export default function HomePage() {
                 </div>
 
                 <div className="pt-4 mt-4 hairline-t flex items-center justify-between">
-                  <span className="font-mono text-[10px] text-stone-500">4 TIÊU CHÍ: TA &bull; CC &bull; LR &bull; GRA</span>
+                  <span className="font-mono text-[11px] text-stone-500">4 TIÊU CHÍ: TA &bull; CC &bull; LR &bull; GRA</span>
                   <Link
                     href="/practice?mode=task1"
                     className="inline-flex items-center gap-1 text-xs font-semibold text-stone-900 dark:text-stone-100 hover:text-vermilion dark:hover:text-vermilion transition-colors"
@@ -247,13 +247,13 @@ export default function HomePage() {
               <div className="flex-1 flex flex-col justify-between p-6 rounded-lg hairline-border bg-paper-subtle dark:bg-carbon-subtle hover:border-stone-400 dark:hover:border-stone-600 transition-colors duration-200 group">
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-[10px] tracking-[0.16em] uppercase text-stone-500 dark:text-stone-400">
+                    <span className="font-mono text-[11px] tracking-[0.16em] uppercase text-stone-500 dark:text-stone-400">
                       TASK // 03
                     </span>
-                    <span className="font-mono text-[10px] text-stone-500">40 MIN &bull; 250 WORDS</span>
+                    <span className="font-mono text-[11px] text-stone-500">40 MIN &bull; 250 WORDS</span>
                   </div>
                   <div>
-                    <h3 className="font-serif text-xl font-normal text-stone-900 dark:text-stone-100 tracking-tight">
+                    <h3 className="font-serif text-xl font-normal text-stone-900 dark:text-stone-100 tracking-tight leading-snug">
                       Luyện Riêng Task 2 (Discursive Essay)
                     </h3>
                     <p className="text-xs text-stone-600 dark:text-stone-300 mt-1 leading-relaxed">
@@ -263,7 +263,7 @@ export default function HomePage() {
                 </div>
 
                 <div className="pt-4 mt-4 hairline-t flex items-center justify-between">
-                  <span className="font-mono text-[10px] text-stone-500">HỆ THỐNG SỐ ĐIỂM HỆ SỐ 2</span>
+                  <span className="font-mono text-[11px] text-stone-500">HỆ THỐNG SỐ ĐIỂM HỆ SỐ 2</span>
                   <Link
                     href="/practice?mode=task2"
                     className="inline-flex items-center gap-1 text-xs font-semibold text-stone-900 dark:text-stone-100 hover:text-vermilion dark:hover:text-vermilion transition-colors"
@@ -291,7 +291,7 @@ export default function HomePage() {
                   <span>PHƯƠNG PHÁP HỌC ĐẶC BIỆT // WRITING BUILDER</span>
                 </div>
 
-                <h3 className="font-serif text-3xl sm:text-4xl text-stone-900 dark:text-stone-100 font-normal tracking-tight">
+                <h3 className="font-serif text-3xl sm:text-4xl text-stone-900 dark:text-stone-100 font-normal tracking-tight leading-snug">
                   Lộ Trình Cây Đậu N Tầng &amp; Soạn Thảo Từng Khối Câu Cùng AI
                 </h3>
 
@@ -302,19 +302,19 @@ export default function HomePage() {
                 {/* 4-Step Editorial Flow */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 font-mono text-[11px]">
                   <div className="p-2.5 rounded hairline-border bg-paper-subtle dark:bg-carbon-subtle">
-                    <span className="text-stone-400 block text-[9px]">BƯỚC 01</span>
+                    <span className="text-stone-400 block text-[11px]">BƯỚC 01</span>
                     <span className="font-semibold text-stone-800 dark:text-stone-200">Phân Tích Đề</span>
                   </div>
                   <div className="p-2.5 rounded hairline-border bg-paper-subtle dark:bg-carbon-subtle">
-                    <span className="text-stone-400 block text-[9px]">BƯỚC 02</span>
+                    <span className="text-stone-400 block text-[11px]">BƯỚC 02</span>
                     <span className="font-semibold text-stone-800 dark:text-stone-200">Lập Dàn Ý</span>
                   </div>
                   <div className="p-2.5 rounded hairline-border bg-paper-subtle dark:bg-carbon-subtle">
-                    <span className="text-stone-400 block text-[9px]">BƯỚC 03</span>
+                    <span className="text-stone-400 block text-[11px]">BƯỚC 03</span>
                     <span className="font-semibold text-stone-800 dark:text-stone-200">Viết Từng Khối</span>
                   </div>
                   <div className="p-2.5 rounded hairline-border bg-paper-subtle dark:bg-carbon-subtle">
-                    <span className="text-stone-400 block text-[9px]">BƯỚC 04</span>
+                    <span className="text-stone-400 block text-[11px]">BƯỚC 04</span>
                     <span className="font-semibold text-stone-800 dark:text-stone-200">AI Nâng Cấp</span>
                   </div>
                 </div>
@@ -329,7 +329,7 @@ export default function HomePage() {
                   <span>Trồng Cây Đậu Ngay</span>
                   <ChevronRight className="w-3.5 h-3.5" />
                 </Link>
-                <span className="font-mono text-[10px] text-stone-400">MIỄN PHÍ TRÊN TRÌNH DUYỆT</span>
+                <span className="font-mono text-[11px] text-stone-400">MIỄN PHÍ TRÊN TRÌNH DUYỆT</span>
               </div>
             </div>
           </div>
@@ -347,7 +347,7 @@ export default function HomePage() {
               <span className="font-mono text-[11px] text-vermilion tracking-[0.2em] uppercase font-semibold">
                 ARCHIVE // 59 FORECAST PROMPTS
               </span>
-              <h2 className="font-serif text-3xl sm:text-4xl text-stone-900 dark:text-stone-100 font-normal tracking-tight mt-1">
+              <h2 className="font-serif text-3xl sm:text-4xl text-stone-900 dark:text-stone-100 font-normal tracking-tight mt-1 leading-snug">
                 Kho Đề Forecast IELTS Writing 2026
               </h2>
               <p className="text-xs sm:text-sm text-stone-500 dark:text-stone-400 mt-1 max-w-xl font-normal">
@@ -368,7 +368,7 @@ export default function HomePage() {
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 font-mono text-[10px] text-stone-400 hover:text-stone-700 dark:hover:text-stone-200"
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 font-mono text-[11px] text-stone-400 hover:text-stone-700 dark:hover:text-stone-200"
                 >
                   [XÓA]
                 </button>
@@ -416,11 +416,11 @@ export default function HomePage() {
                   >
                     <div className="space-y-2">
                       <div className="flex items-center justify-between gap-2">
-                        <span className="font-mono text-[10px] text-stone-500 uppercase tracking-wider font-semibold">
+                        <span className="font-mono text-[11px] text-stone-500 uppercase tracking-wider font-semibold">
                           {p.id} &bull; {p.category}
                         </span>
                         {p.outline && (
-                          <span className="font-mono text-[9px] px-1.5 py-0.2 rounded hairline-border bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30 font-semibold">
+                          <span className="font-mono text-[11px] px-1.5 py-0.5 rounded hairline-border bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30 font-semibold">
                             DÀN Ý BAND 8+
                           </span>
                         )}
@@ -484,11 +484,11 @@ export default function HomePage() {
                   >
                     <div className="space-y-2">
                       <div className="flex items-center justify-between gap-2">
-                        <span className="font-mono text-[10px] text-stone-500 uppercase tracking-wider font-semibold">
+                        <span className="font-mono text-[11px] text-stone-500 uppercase tracking-wider font-semibold">
                           {p.id} &bull; {p.category}
                         </span>
                         {p.outline && (
-                          <span className="font-mono text-[9px] px-1.5 py-0.2 rounded hairline-border bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30 font-semibold">
+                          <span className="font-mono text-[11px] px-1.5 py-0.5 rounded hairline-border bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30 font-semibold">
                             DÀN Ý BAND 8+
                           </span>
                         )}

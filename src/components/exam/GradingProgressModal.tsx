@@ -95,7 +95,7 @@ export default function GradingProgressModal({ isOpen, isFullTest }: GradingProg
             <span className="font-mono text-sm font-bold text-sky-600 dark:text-sky-400">
               {seconds}s
             </span>
-            <p className="text-[10px] text-gray-400">ước tính ~10-15s</p>
+            <p className="text-[11px] text-gray-400">ước tính ~10-15s</p>
           </div>
         </div>
 

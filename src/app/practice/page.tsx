@@ -885,10 +885,10 @@ function PracticeContent() {
                   <ShieldCheck className="w-4 h-4 stroke-[1.75]" />
                 </div>
                 <div>
-                  <div className="font-mono text-[10px] tracking-wider text-vermilion uppercase">
+                  <div className="font-mono text-[11px] tracking-wider text-vermilion uppercase">
                     00 // XÁC THỰC THÍ SINH
                   </div>
-                  <h3 className="font-serif font-medium text-base text-carbon dark:text-paper">
+                  <h3 className="font-serif font-medium text-base text-carbon dark:text-paper leading-snug">
                     Xác nhận nộp bài thi
                   </h3>
                 </div>

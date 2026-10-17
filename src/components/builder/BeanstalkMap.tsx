@@ -198,10 +198,10 @@ export default function BeanstalkMap({ levels, onSelectNode }: BeanstalkMapProps
                       <Check className="w-5 h-5 sm:w-6 sm:h-6 text-white stroke-[3]" />
                     ) : (
                       <>
-                        <span className="text-[10px] sm:text-xs tracking-tighter opacity-80 leading-none">
+                        <span className="text-[11px] sm:text-xs tracking-tighter opacity-80 leading-normal">
                           TẦNG
                         </span>
-                        <span className="text-sm sm:text-base font-black leading-none mt-0.5">
+                        <span className="text-sm sm:text-base font-black leading-tight mt-0.5">
                           {lvl.levelNumber}
                         </span>
                       </>
@@ -216,7 +216,7 @@ export default function BeanstalkMap({ levels, onSelectNode }: BeanstalkMapProps
                   {/* Level Pill Label */}
                   <div className="mt-1.5 flex flex-col items-center">
                     <span
-                      className={`text-[9px] sm:text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full shadow-xs whitespace-nowrap ${
+                      className={`text-[11px] font-extrabold uppercase px-2 py-0.5 rounded-full shadow-xs whitespace-nowrap ${
                         isCurrentClimbingPoint
                           ? 'bg-emerald-600 text-white ring-2 ring-emerald-400/30'
                           : isLevelFullyCompleted
@@ -268,7 +268,7 @@ export default function BeanstalkMap({ levels, onSelectNode }: BeanstalkMapProps
             </div>
 
             <div className="mt-3">
-              <span className="text-[10px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-amber-800/90 text-amber-300 border border-amber-700">
+              <span className="text-[11px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-amber-800/90 text-amber-300 border border-amber-700">
                 Gốc Cây Đậu &bull; Vùng Đất Gieo Hạt
               </span>
               <h4 className="text-sm sm:text-base font-black text-white mt-1">
@@ -404,7 +404,7 @@ function GamifiedNodeCard({
 
         {/* Status Pill */}
         {isCompleted ? (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-[10px] font-extrabold border border-emerald-300 dark:border-emerald-800">
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-[11px] font-extrabold border border-emerald-300 dark:border-emerald-800">
             {node.gradingResult ? (
               <>
                 <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
@@ -418,12 +418,12 @@ function GamifiedNodeCard({
             )}
           </span>
         ) : isAvailable ? (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 text-white text-[10px] font-black uppercase tracking-wider shadow-xs animate-pulse">
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 text-white text-[11px] font-black uppercase tracking-wider shadow-xs animate-pulse">
             <Sparkles className="w-3 h-3 text-white fill-white" />
             <span>Mở &bull; Viết ngay</span>
           </span>
         ) : (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-gray-100 dark:bg-zinc-800 text-gray-500 text-[10px] font-bold">
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-gray-100 dark:bg-zinc-800 text-gray-500 text-[11px] font-bold">
             <Lock className="w-3 h-3" />
             <span>Khóa</span>
           </span>
@@ -432,7 +432,7 @@ function GamifiedNodeCard({
 
       {/* 3. CATEGORY & TITLE */}
       <div className="mt-3 space-y-1.5">
-        <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-zinc-300 border border-gray-200 dark:border-zinc-700 inline-block">
+        <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-zinc-300 border border-gray-200 dark:border-zinc-700 inline-block">
           {category}
         </span>
         <h4 className="text-xs sm:text-sm font-black text-gray-900 dark:text-white line-clamp-1">

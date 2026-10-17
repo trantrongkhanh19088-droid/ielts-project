@@ -56,11 +56,11 @@ export default function ConfettiCelebration({
         {/* Stats Summary */}
         <div className="grid grid-cols-2 gap-3 p-4 rounded-2xl bg-gray-50 dark:bg-zinc-800/60 border border-gray-200 dark:border-zinc-700/60 text-xs">
           <div className="text-center space-y-0.5">
-            <span className="text-[10px] uppercase font-bold text-gray-400">Tiến độ hôm nay</span>
+            <span className="text-[11px] uppercase font-bold text-gray-400">Tiến độ hôm nay</span>
             <p className="text-base font-black text-emerald-600 dark:text-emerald-400">+1 Bài Viết</p>
           </div>
           <div className="text-center space-y-0.5">
-            <span className="text-[10px] uppercase font-bold text-gray-400">Mở khóa tầng kế</span>
+            <span className="text-[11px] uppercase font-bold text-gray-400">Mở khóa tầng kế</span>
             <p className="text-base font-black text-sky-600 dark:text-sky-400">Tầng {levelNumber + 1} Sẵn Sàng</p>
           </div>
         </div>

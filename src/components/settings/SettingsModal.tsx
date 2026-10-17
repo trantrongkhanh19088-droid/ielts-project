@@ -119,14 +119,14 @@ export default function SettingsModal({
                     <Sun className="w-3.5 h-3.5" />
                   </div>
                   {currentTheme === 'light' && (
-                    <span className="w-4 h-4 rounded-full bg-sky-600 text-white flex items-center justify-center text-[10px]">
+                    <span className="w-4 h-4 rounded-full bg-sky-600 text-white flex items-center justify-center text-[11px]">
                       <Check className="w-2.5 h-2.5 stroke-[3]" />
                     </span>
                   )}
                 </div>
                 <div>
                   <div className="font-bold text-xs">Giao diện Sáng</div>
-                  <div className="text-[10px] text-gray-500 dark:text-gray-400">
+                  <div className="text-[11px] text-gray-500 dark:text-gray-400">
                     Chuẩn phòng thi Inspera
                   </div>
                 </div>
@@ -147,14 +147,14 @@ export default function SettingsModal({
                     <Moon className="w-3.5 h-3.5" />
                   </div>
                   {currentTheme === 'dark' && (
-                    <span className="w-4 h-4 rounded-full bg-indigo-600 text-white flex items-center justify-center text-[10px]">
+                    <span className="w-4 h-4 rounded-full bg-indigo-600 text-white flex items-center justify-center text-[11px]">
                       <Check className="w-2.5 h-2.5 stroke-[3]" />
                     </span>
                   )}
                 </div>
                 <div>
                   <div className="font-bold text-xs">Giao diện Tối</div>
-                  <div className="text-[10px] text-gray-500 dark:text-gray-400">
+                  <div className="text-[11px] text-gray-500 dark:text-gray-400">
                     Bảo vệ mắt ban đêm
                   </div>
                 </div>
@@ -175,7 +175,7 @@ export default function SettingsModal({
                     <Flower2 className="w-3.5 h-3.5 text-rose-500 animate-pulse" />
                   </div>
                   {currentTheme === 'japanese' && (
-                    <span className="w-4 h-4 rounded-full bg-rose-600 text-white flex items-center justify-center text-[10px]">
+                    <span className="w-4 h-4 rounded-full bg-rose-600 text-white flex items-center justify-center text-[11px]">
                       <Check className="w-2.5 h-2.5 stroke-[3]" />
                     </span>
                   )}
@@ -183,9 +183,9 @@ export default function SettingsModal({
                 <div>
                   <div className="font-bold text-xs flex items-center gap-1">
                     <span>Giao diện Nhật Bản</span>
-                    <span className="text-[10px]">🌸</span>
+                    <span className="text-[11px]">🌸</span>
                   </div>
-                  <div className="text-[10px] text-rose-600 dark:text-rose-400 font-medium">
+                  <div className="text-[11px] text-rose-600 dark:text-rose-400 font-medium">
                     Hoa anh đào Sakura
                   </div>
                 </div>
@@ -238,7 +238,7 @@ export default function SettingsModal({
               <div className="flex items-center justify-between text-[11px] pt-1 text-gray-500 dark:text-gray-400 border-t border-gray-200/60 dark:border-zinc-700/60">
                 <span>Trạng thái:</span>
                 <span
-                  className={`font-bold px-2 py-0.5 rounded-full text-[10px] uppercase font-mono ${
+                  className={`font-bold px-2 py-0.5 rounded-full text-[11px] uppercase font-mono ${
                     autoSuggest
                       ? 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300'
                       : 'bg-gray-200 dark:bg-zinc-700 text-gray-600 dark:text-gray-400'
@@ -296,7 +296,7 @@ export default function SettingsModal({
               <div className="flex items-center justify-between text-[11px] pt-1 text-gray-500 dark:text-gray-400 border-t border-gray-200/60 dark:border-zinc-700/60">
                 <span>Trạng thái:</span>
                 <span
-                  className={`font-bold px-2 py-0.5 rounded-full text-[10px] uppercase font-mono ${
+                  className={`font-bold px-2 py-0.5 rounded-full text-[11px] uppercase font-mono ${
                     showCompanion
                       ? 'bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300'
                       : 'bg-gray-200 dark:bg-zinc-700 text-gray-600 dark:text-gray-400'

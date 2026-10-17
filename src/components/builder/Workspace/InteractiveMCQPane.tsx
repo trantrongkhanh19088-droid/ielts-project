@@ -78,7 +78,7 @@ export default function InteractiveMCQPane({
                     {qIdx + 1}
                   </span>
                   <div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400 block">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400 block">
                       {mcq.purposeVi}
                     </span>
                     <h4 className="text-sm font-bold text-gray-900 dark:text-white mt-0.5">
@@ -89,7 +89,7 @@ export default function InteractiveMCQPane({
 
                 {hasSelected && (
                   <span
-                    className={`text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider shrink-0 ${
+                    className={`text-[11px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider shrink-0 ${
                       mcq.options[selectedIdx].isCorrect
                         ? 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300'
                         : 'bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300'
@@ -174,7 +174,7 @@ export default function InteractiveMCQPane({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs pt-1">
             {prompt.outline.overviewOrThesis && (
               <div className="p-3 rounded-xl bg-white/80 dark:bg-zinc-800/80 border border-amber-200/80 dark:border-zinc-700 space-y-1">
-                <span className="font-bold text-amber-800 dark:text-amber-400 uppercase text-[10px] block">
+                <span className="font-bold text-amber-800 dark:text-amber-400 uppercase text-[11px] block">
                   {prompt.taskType === 'task1' ? 'Overview' : 'Thesis Statement'}
                 </span>
                 <p className="text-gray-700 dark:text-zinc-300 leading-relaxed">
@@ -185,7 +185,7 @@ export default function InteractiveMCQPane({
 
             {prompt.outline.body1 && (
               <div className="p-3 rounded-xl bg-white/80 dark:bg-zinc-800/80 border border-amber-200/80 dark:border-zinc-700 space-y-1">
-                <span className="font-bold text-amber-800 dark:text-amber-400 uppercase text-[10px] block">
+                <span className="font-bold text-amber-800 dark:text-amber-400 uppercase text-[11px] block">
                   Body 1
                 </span>
                 <p className="text-gray-700 dark:text-zinc-300 leading-relaxed">
@@ -196,7 +196,7 @@ export default function InteractiveMCQPane({
 
             {prompt.outline.body2 && (
               <div className="p-3 rounded-xl bg-white/80 dark:bg-zinc-800/80 border border-amber-200/80 dark:border-zinc-700 space-y-1">
-                <span className="font-bold text-amber-800 dark:text-amber-400 uppercase text-[10px] block">
+                <span className="font-bold text-amber-800 dark:text-amber-400 uppercase text-[11px] block">
                   Body 2
                 </span>
                 <p className="text-gray-700 dark:text-zinc-300 leading-relaxed">
@@ -207,7 +207,7 @@ export default function InteractiveMCQPane({
 
             {prompt.outline.conclusion && (
               <div className="p-3 rounded-xl bg-white/80 dark:bg-zinc-800/80 border border-amber-200/80 dark:border-zinc-700 space-y-1">
-                <span className="font-bold text-amber-800 dark:text-amber-400 uppercase text-[10px] block">
+                <span className="font-bold text-amber-800 dark:text-amber-400 uppercase text-[11px] block">
                   Conclusion
                 </span>
                 <p className="text-gray-700 dark:text-zinc-300 leading-relaxed">
