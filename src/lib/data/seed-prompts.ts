@@ -3072,6 +3072,775 @@ export const TASK_2_SEEDS: PromptSeed[] = [
       "conclusion": "While space research has merit, public budgets must decisively prioritize human survival, health, and clean energy on Earth before subsidizing deep space exploration."
     }
   }
+,
+  {
+    "id": "t2-30-senior-managers-salaries",
+    "taskType": "task2",
+    "title": "T2-30: Senior Manager Salaries vs Ordinary Worker Pay",
+    "category": "Opinion Essay",
+    "instruction": "To what extent do you agree or disagree? Write at least 250 words.",
+    "question": "Some people think it is a good thing for senior managers to have much higher salaries than other workers in a company. To what extent do you agree or disagree?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "Although higher salaries can attract talented managers, I largely agree with this policy when the difference is justified by responsibility and performance.",
+      "body1": "Drawbacks of huge disparity: Excessively high managerial salaries can create perceived workplace inequality, lowering general employee morale and productivity, while placing financial pressure on operational budgets and training funds.",
+      "body2": "Justifications for higher pay: Competitive executive remuneration is essential for talent retention, stable leadership, and performance incentives, motivating managers to achieve ambitious revenue and organizational goals.",
+      "conclusion": "Although excessive salary gaps can damage internal cohesion, higher compensation is justified when it accurately reflects extraordinary responsibility, market pressure, and measurable performance."
+    }
+  },
+  {
+    "id": "t2-31-single-legal-system-vs-national-laws",
+    "taskType": "task2",
+    "title": "T2-31: Single Global Legal System vs National Legislative Freedom",
+    "category": "Discuss Both Views",
+    "instruction": "Discuss both views and give your opinion. Write at least 250 words.",
+    "question": "Some people believe that having one single legal system would be better, while others argue that each country should have the freedom to make its own laws. Discuss both views and give your opinion.",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "While a single legal system could facilitate international cooperation, I believe countries should retain the right to make laws suited to their own circumstances.",
+      "body1": "Arguments for a universal legal framework: Streamlines international commerce by eliminating cross-border contract disputes, while coordinating transnational policing against organized crime, piracy, and human trafficking.",
+      "body2": "Why national sovereignty is essential: Legal priorities must reflect disparate stages of economic development (labor and financial regulations), as well as deeply ingrained religious, cultural, and moral traditions unique to each society.",
+      "conclusion": "Although global standards aid international cooperation, sovereign legislative autonomy remains indispensable for addressing distinct local realities and cultural values."
+    }
+  },
+  {
+    "id": "t2-32-urban-security-measures-benefits-drawbacks",
+    "taskType": "task2",
+    "title": "T2-32: Expanding Urban Security Surveillance and Crime Measures",
+    "category": "Advantages & Disadvantages",
+    "instruction": "Do the benefits outweigh the drawbacks? Write at least 250 words.",
+    "question": "More and more security measures have been introduced in large cities because of increasing crime. Do the benefits outweigh the drawbacks?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "Although extensive surveillance may raise privacy and financial concerns, I believe its benefits for public safety and emergency response clearly outweigh the drawbacks.",
+      "body1": "Drawbacks of strict measures: Constant CCTV surveillance and biometric scans infringe on civil liberties and create an intrusive atmosphere, while high installation and maintenance costs divert funding from healthcare and education.",
+      "body2": "Decisive safety benefits: Pervasive visible monitoring strongly deters violent crime and vandalism by raising detection risks, while enabling rapid emergency coordination and evidence gathering during urban crises.",
+      "conclusion": "While personal privacy and budget constraints warrant balanced regulation, the fundamental protection of human life and urban peace makes enhanced security measures a net benefit."
+    }
+  },
+  {
+    "id": "t2-33-free-housing-for-poor",
+    "taskType": "task2",
+    "title": "T2-33: Government-Provided Free Housing for Underprivileged Citizens",
+    "category": "Opinion Essay",
+    "instruction": "To what extent do you agree or disagree? Write at least 250 words.",
+    "question": "As housing is a basic need, governments should provide free housing for everyone who cannot afford it. To what extent do you agree or disagree?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "While free housing could protect vulnerable citizens, I disagree with providing it universally to everyone due to financial burden and potential policy abuse.",
+      "body1": "Merits of sheltering the vulnerable: Eliminates street homelessness, guarantees safe sanitary living conditions for low-income families, and frees household income for children's nutrition and education.",
+      "body2": "Fiscal and logistical pitfalls: Constructing and managing nationwide free housing creates an unsustainable burden on public taxpayers, while incentivizing fraud, dependency, and the illegal subletting of public properties.",
+      "conclusion": "Governments should offer targeted rental subsidies, social housing vouchers, and low-cost construction loans rather than promising unrestricted free housing to all claimants."
+    }
+  },
+  {
+    "id": "t2-34-public-services-vs-arts-funding",
+    "taskType": "task2",
+    "title": "T2-34: Government Expenditure: Public Services vs The Arts",
+    "category": "Opinion Essay",
+    "instruction": "To what extent do you agree or disagree? Write at least 250 words.",
+    "question": "Governments should spend money on public services rather than on the arts. To what extent do you agree or disagree?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "Although the arts have important cultural and economic value, I largely agree that public services should receive greater priority.",
+      "body1": "Cultural and economic value of the arts: State funding for museums, galleries, and theatrical heritage safeguards national identity and attracts international tourism and cultural prestige.",
+      "body2": "Priority of essential public services: Modern transportation networks, public healthcare clinics, and rural schools directly elevate everyday living standards, relieve poverty, and drive broad economic productivity.",
+      "conclusion": "While the arts nurture national identity, public budgets must decisively guarantee citizens' basic healthcare, education, and transport before funding high culture."
+    }
+  },
+  {
+    "id": "t2-35-retirement-funding-state-vs-personal-savings",
+    "taskType": "task2",
+    "title": "T2-35: Retirement Support: State Pensions vs Individual Savings",
+    "category": "Discuss Both Views",
+    "instruction": "Discuss both views and give your opinion. Write at least 250 words.",
+    "question": "Governments should support retired people financially, while others think people should save money for retirement themselves. Discuss both views and give your opinion.",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "While individuals should take responsibility for retirement savings, I believe governments should provide support for elderly people who cannot work or save enough.",
+      "body1": "Case for personal retirement saving: Fosters individual financial responsibility, ensures customized living standards through private pension funds, and alleviates demographic strain on public treasuries.",
+      "body2": "Case for state welfare support: Protects low-wage laborers, caregivers, and sick elders who had no disposable income to accumulate private capital, while preventing adult children from bearing crushing eldercare burdens.",
+      "conclusion": "A resilient retirement model combines mandatory personal savings accounts for working adults with a universal state pension floor to protect impoverished seniors."
+    }
+  },
+  {
+    "id": "t2-36-international-relations-importance-global-problems",
+    "taskType": "task2",
+    "title": "T2-36: The Critical Importance of International Cooperation Today",
+    "category": "Opinion Essay",
+    "instruction": "To what extent do you agree or disagree? Write at least 250 words.",
+    "question": "Good relationships between countries are becoming more important than ever before because global problems affect everyone. To what extent do you agree or disagree?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "I strongly agree that good international relations are more important than ever, particularly in tackling global problems.",
+      "body1": "Transboundary nature of modern crises: Climate disruption, carbon emissions, and viral epidemics respect no sovereign borders, demanding unified multilateral treaties, shared medical data, and joint technology deployment.",
+      "body2": "Counterargument addressed: While conflicting national agendas and economic competition can hinder consensus, unilateral isolationism is utterly powerless against global economic and ecological threats.",
+      "conclusion": "Because our interconnected world faces shared existential challenges, maintaining diplomatic trust and multilateral collaboration is an urgent planetary imperative."
+    }
+  },
+  {
+    "id": "t2-37-western-clothing-vs-traditional-attire",
+    "taskType": "task2",
+    "title": "T2-37: Adoption of Western Clothing over Traditional Dress",
+    "category": "Two-part Question",
+    "instruction": "Why is this? Is this a positive or negative development? Write at least 250 words.",
+    "question": "In many countries, people now wear Western-style clothes such as suits and jeans rather than traditional clothing. Why is this? Is this a positive or negative development?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "This trend is mainly driven by globalisation and practicality, and I believe it is a largely positive development despite some cultural drawbacks.",
+      "body1": "Underlying causes: Globalized mass media and celebrity influence project modern fashion aesthetics, while standardized Western garments (denim, suits, t-shirts) offer ergonomic comfort, durability, and cost efficiency in corporate settings.",
+      "body2": "Positive evaluation: Greatly simplifies daily wardrobe logistics and encourages cosmopolitan openness, whereas traditional costumes can be preserved and celebrated during formal festivities and national ceremonies.",
+      "conclusion": "While the preservation of folk textiles remains culturally valuable, the universal convenience and affordability of Western clothing make this shift a net positive for modern life."
+    }
+  },
+  {
+    "id": "t2-38-limiting-working-hours-laws",
+    "taskType": "task2",
+    "title": "T2-38: Statutory Limits on Maximum Employee Working Hours",
+    "category": "Two-part Question",
+    "instruction": "Why are these laws introduced? Do you think they are a positive or negative development? Write at least 250 words.",
+    "question": "Some countries have introduced laws to limit working hours for employees. Why are these laws introduced? Do you think they are a positive or negative development?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "These laws are primarily designed to protect workers' wellbeing and prevent exploitation, and I consider them a positive development.",
+      "body1": "Motivations for legislation: Curtails chronic physical and psychological burnout caused by involuntary overtime, reduces occupational accidents, and protects vulnerable staff from corporate exploitation.",
+      "body2": "Positive evaluation: Well-rested employees demonstrate superior concentration, creativity, and lower error rates, while healthy work-life balance strengthens family cohesion and civic participation.",
+      "conclusion": "Establishing statutory work-hour boundaries safeguards public health and enhances long-term economic productivity, making it an exemplary social reform."
+    }
+  },
+  {
+    "id": "t2-39-horizontal-vs-vertical-cities",
+    "taskType": "task2",
+    "title": "T2-39: Urban Development Models: Horizontal vs Vertical Cities",
+    "category": "Discuss Both Views",
+    "instruction": "Discuss both views and give your opinion. Write at least 250 words.",
+    "question": "Some people think that it is best to live in a horizontal city while others think of a vertical city. Discuss both views and give your opinion.",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "Although horizontal cities offer more spacious living environments, I believe vertical cities are more suitable for densely populated areas.",
+      "body1": "Advantages of horizontal cities: Dispersed low-rise neighborhoods provide larger private gardens, reduced noise pollution, and individual architectural freedom, creating tranquil family environments.",
+      "body2": "Superiority of vertical urbanism: Maximizes limited land resources by concentrating residences above transit hubs and commercial facilities, dramatically slashing commuting distances and protecting surrounding agricultural land from suburban sprawl.",
+      "conclusion": "While low-density suburbs offer privacy, high-density vertical development is far more ecologically sustainable, energy-efficient, and practical for growing metropolitan populations."
+    }
+  },
+  {
+    "id": "t2-40-class-size-in-language-learning",
+    "taskType": "task2",
+    "title": "T2-40: Class Size in Language Learning: Small vs Large Classes",
+    "category": "Discuss Both Views",
+    "instruction": "Discuss both views and give your opinion. Write at least 250 words.",
+    "question": "Small classes are more beneficial for language students than large classes. Discuss both views and give your opinion.",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "Although large classes can encourage independence and social interaction, I believe smaller classes are more beneficial for language learners.",
+      "body1": "Merits of large classes: Promotes student autonomy and problem-solving resilience, while exposing learners to a wider variety of peer accents and conversational dynamics.",
+      "body2": "Why small classes are superior: Language acquisition demands frequent active speaking practice, rapid instructor phonetic correction, and customized curriculum pacing that teachers cannot deliver in large cohorts.",
+      "conclusion": "While large groups encourage independent study, the personalized communicative feedback inherent in small classes produces vastly faster and more accurate linguistic mastery."
+    }
+  },
+  {
+    "id": "t2-41-university-harder-than-school",
+    "taskType": "task2",
+    "title": "T2-41: Academic Transition: Why University Study Is Harder than School",
+    "category": "Causes and Solutions",
+    "instruction": "Why is this? What can be done? Write at least 250 words.",
+    "question": "Many students find university study harder than school. Why is this? What can be done?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "This transition is mainly caused by greater academic demands, employment commitments and independent study, which can be addressed through orientation programmes and stronger academic support.",
+      "body1": "Underlying causes: University requires self-directed inquiry and critical research without constant teacher supervision, while students must simultaneously navigate adult living, financial independence, and part-time jobs.",
+      "body2": "Practical solutions: Universities should implement structured first-year academic writing and time-management workshops, pair freshmen with senior student mentors, and expand emergency bursaries.",
+      "conclusion": "Tertiary study demands steep cognitive independence, but comprehensive orientation and peer mentorship can smoothly bridge the secondary-to-university divide."
+    }
+  },
+  {
+    "id": "t2-42-children-learning-via-television",
+    "taskType": "task2",
+    "title": "T2-42: Children Learning via Television at Home and School",
+    "category": "Opinion Essay",
+    "instruction": "To what extent do you agree or disagree? Write at least 250 words.",
+    "question": "Children should be encouraged to learn by watching television both at home and at school. To what extent do you agree or disagree?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "Although educational programmes can support learning, I disagree that children should be encouraged to rely heavily on television because of its passive nature and potential distractions.",
+      "body1": "Benefits of curated broadcasts: High-definition nature, science, and history documentaries visualize abstract theories and faraway cultures that classrooms cannot replicate.",
+      "body2": "Perils of passive consumption: Television encourages passive observation rather than active analytical inquiry, while excessive screen exposure displaces tactile reading, athletic play, and social interaction.",
+      "conclusion": "Educational broadcasts serve as an engaging occasional visual aid, but television should never supersede interactive instruction and active childhood inquiry."
+    }
+  },
+  {
+    "id": "t2-43-school-role-citizens-vs-individual-growth",
+    "taskType": "task2",
+    "title": "T2-43: The Role of Schools: Producing Workers and Citizens vs Whole Person",
+    "category": "Opinion Essay",
+    "instruction": "To what extent do you agree or disagree? Write at least 250 words.",
+    "question": "Schools' main role is to turn students into good citizens and workers. To what extent do you agree or disagree?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "I partly agree because schools should develop responsible citizens and employable skills, but their role should extend beyond these two objectives.",
+      "body1": "Importance of civic and economic preparation: Teaching civic responsibility, respect for laws, numeracy, and technical competencies ensures economic productivity and social stability.",
+      "body2": "The broader humanistic purpose: Schools must also cultivate philosophical critical thinking, artistic creativity, emotional resilience, and moral autonomy, rather than merely treating youths as economic cogs.",
+      "conclusion": "Preparing young people for civic and professional life is essential, but holistic education must nurture individual intellectual freedom and emotional flourishing."
+    }
+  },
+  {
+    "id": "t2-44-education-purpose-society-vs-personal-ambitions",
+    "taskType": "task2",
+    "title": "T2-44: Purpose of Education: Societal Contribution vs Personal Ambitions",
+    "category": "Discuss Both Views",
+    "instruction": "Discuss both views and give your opinion. Write at least 250 words.",
+    "question": "Education should prepare people to contribute to society, while others think it should help people achieve personal ambitions. Discuss both views and give your opinion.",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "Although education should cultivate responsible citizens, I believe helping individuals achieve their ambitions is equally, if not more, important.",
+      "body1": "Education for societal benefit: Equips graduates with vocational, scientific, and civic skills needed to maintain national infrastructure, public healthcare, and social cohesion.",
+      "body2": "Education for personal fulfillment: Nurtures individual passions, creative autonomy, and personal satisfaction, empowering entrepreneurs and thinkers who ultimately drive groundbreaking social and technological progress.",
+      "conclusion": "Societal welfare and individual aspiration are symbiotic; when education empowers personal dreams, society naturally flourishes through inspired and passionate citizens."
+    }
+  },
+  {
+    "id": "t2-45-gendered-subject-choices-arts-vs-science",
+    "taskType": "task2",
+    "title": "T2-45: Gender Disparity in Academic Subjects: Girls in Arts, Boys in Science",
+    "category": "Two-part Question",
+    "instruction": "Discuss the reasons and give your opinion. Write at least 250 words.",
+    "question": "Girls usually choose arts while boys choose science. Discuss the reasons and give your opinion.",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "This pattern is mainly influenced by social expectations and educational experiences rather than innate ability, and I believe students should be encouraged to choose subjects freely.",
+      "body1": "Reasons for divergence: Pervasive cultural gender stereotypes conditioned from childhood, reinforced by a dearth of visible female STEM role models and male artists in popular media.",
+      "body2": "My viewpoint: Subject choice should be determined solely by individual intellect and passion; dismantling gender barriers broadens innovation pools and addresses acute engineering labor shortages.",
+      "conclusion": "Gender disparity in subject choice is a cultural construct rather than a biological reality, and educational institutions must aggressively support gender-neutral exploration."
+    }
+  },
+  {
+    "id": "t2-46-traditional-vs-modern-games-child-development",
+    "taskType": "task2",
+    "title": "T2-46: Children's Development: Traditional vs Modern Digital Games",
+    "category": "Opinion Essay",
+    "instruction": "To what extent do you agree? Write at least 250 words.",
+    "question": "Some people think traditional games are better than modern games in helping children develop their abilities. To what extent do you agree?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "Although traditional games offer valuable social and physical benefits, I disagree that they are universally superior to modern games.",
+      "body1": "Virtues of traditional play: Outdoor and board games promote cardiovascular stamina, motor dexterity, direct face-to-face conflict negotiation, and empathetic communication.",
+      "body2": "Cognitive value of modern games: Interactive strategy and puzzle video games cultivate complex multi-step planning, spatial cognition, rapid decision-making, and modern digital literacy.",
+      "conclusion": "Neither game category is intrinsically superior; a healthy childhood integrates physical traditional games with intellectually rigorous digital challenges."
+    }
+  },
+  {
+    "id": "t2-47-internet-learning-vs-necessity-of-schools",
+    "taskType": "task2",
+    "title": "T2-47: Internet Information Abundance: Are Schools Obsolete?",
+    "category": "Opinion Essay",
+    "instruction": "To what extent do you agree or disagree? Write at least 250 words.",
+    "question": "In the modern world, schools are no longer necessary because there is so much information available through the internet that children can study just as well at home. To what extent do you agree or disagree?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "Despite the enormous educational resources available online, I strongly disagree that schools are no longer necessary.",
+      "body1": "Online learning advantages: Unparalleled access to global knowledge repositories, adaptive interactive tutorials, and individualized pacing for motivated self-learners.",
+      "body2": "Indispensability of schools: Schools provide professional pedagogical guidance to structure raw information into understanding, while teaching essential teamwork, social empathy, and community discipline.",
+      "conclusion": "The internet delivers raw information, but schools shape character, social competence, and intellectual maturity that solitary online browsing can never replace."
+    }
+  },
+  {
+    "id": "t2-48-printed-books-vs-electronic-storage",
+    "taskType": "task2",
+    "title": "T2-48: Printed Books vs Electronic Digital Storage",
+    "category": "Discuss Both Views",
+    "instruction": "Discuss both views and give your opinion. Write at least 250 words.",
+    "question": "Printed books are no longer necessary because everything can be stored electronically. Discuss both views and give your opinion.",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "Although electronic books are convenient and space-saving, I believe printed books remain necessary because of their accessibility and reading experience.",
+      "body1": "Strengths of electronic storage: Extreme portability allowing entire libraries on compact tablets, instant global downloads, and eliminating physical storage space.",
+      "body2": "Enduring value of physical print: Functions reliably without battery power or digital screens, minimizes digital distractions, reduces eyestrain, and enhances deep tactile comprehension.",
+      "conclusion": "While electronic formats dominate convenience and speed, physical books remain essential for scholarly contemplation, archival preservation, and tactile reading joy."
+    }
+  },
+  {
+    "id": "t2-49-instant-gratification-culture",
+    "taskType": "task2",
+    "title": "T2-49: The Culture of Instant Gratification and Service",
+    "category": "Positive or Negative Development",
+    "instruction": "Is this a positive or negative development? Write at least 250 words.",
+    "question": "Nowadays people expect everything instantly. Is this a positive or negative development?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "Although instant access improves convenience and efficiency, I believe this trend is predominantly negative because it encourages impatience and unrealistic expectations.",
+      "body1": "Positive practical benefits: Rapid digital banking, on-demand logistics, and instant communication dramatically streamline everyday productivity and eliminate wasted queuing time.",
+      "body2": "Harmful psychological fallout: Constant immediacy erodes human patience, fosters chronic restlessness, and promotes unrealistic expectations of overnight success in education and careers.",
+      "conclusion": "Instantaneous technological services optimize logistical convenience, but our cultural expectation of instant gratification undermines human perseverance and depth."
+    }
+  },
+  {
+    "id": "t2-50-digital-devices-literacy-skills",
+    "taskType": "task2",
+    "title": "T2-50: Digital Devices and Literacy: Worsening Reading and Writing?",
+    "category": "Opinion Essay",
+    "instruction": "To what extent do you agree or disagree? Write at least 250 words.",
+    "question": "Computers and mobile phones have caused young people to become worse at reading and writing. To what extent do you agree or disagree?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "While excessive use can weaken traditional literacy skills, I only partly agree because technology can also enhance reading and writing when used appropriately.",
+      "body1": "Negative literacy impacts: Short-form social media and texting encourage slang, poor spelling, fragmented syntax, and reduced attention spans for dense literature.",
+      "body2": "Educational advantages: Word processors with spell-checkers, interactive dictionaries, audiobooks, and diverse online journalism provide unprecedented resources for literate engagement.",
+      "conclusion": "Digital devices do not inherently degrade literacy; the outcome depends entirely on whether youths consume superficial media or engage with substantive digital literature."
+    }
+  },
+  {
+    "id": "t2-51-banning-mobile-phones-in-public-places",
+    "taskType": "task2",
+    "title": "T2-51: Regulating Mobile Phone Use in Public Places",
+    "category": "Opinion Essay",
+    "instruction": "To what extent do you agree or disagree? Write at least 250 words.",
+    "question": "Mobile phones should be banned in public places such as libraries, shops and public transport. To what extent do you agree or disagree?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "Although mobile phones can disturb others, I disagree with a complete ban because they provide essential communication and practical functions.",
+      "body1": "Legitimate grounds for restriction: Loud speakerphone conversations, blaring videos, and distracted pedestrians walking into commuters degrade public etiquette and create hazards.",
+      "body2": "Why blanket bans are impractical: Smartphones are indispensable tools for digital transit ticketing, contactless payments, navigation, and urgent family emergencies.",
+      "conclusion": "Municipalities should enforce courteous etiquette through designated quiet carriages and silent modes rather than imposing impractical blanket prohibitions."
+    }
+  },
+  {
+    "id": "t2-52-online-museums-vs-physical-galleries",
+    "taskType": "task2",
+    "title": "T2-52: Digital Artifacts Online vs Future Necessity of Physical Museums",
+    "category": "Opinion Essay",
+    "instruction": "Do you agree or disagree? Write at least 250 words.",
+    "question": "Public museums and art galleries will no longer be necessary because people can view historical objects and artworks online. Do you agree or disagree?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "Despite online accessibility, I strongly disagree that physical museums and galleries will become unnecessary.",
+      "body1": "Merits of virtual exhibitions: Democratizes global cultural access for people unable to afford foreign travel, providing high-resolution digitizations for remote study.",
+      "body2": "Irreplaceable nature of physical visits: Viewing genuine historical relics in person conveys authentic emotional aura, texture, scale, and sensory immersion that computer screens cannot duplicate.",
+      "conclusion": "Digital collections expand global cultural outreach, but physical museums remain irreplaceable sanctuaries of tangible human history and aesthetic wonder."
+    }
+  },
+  {
+    "id": "t2-53-learning-history-films-vs-books",
+    "taskType": "task2",
+    "title": "T2-53: Learning History: Films and Videos vs Written Documents",
+    "category": "Opinion Essay",
+    "instruction": "To what extent do you agree or disagree? Write at least 250 words.",
+    "question": "It is better to learn history through films and videos than through written documents. To what extent do you agree or disagree?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "Although films can make history engaging and memorable, I believe written documents remain more reliable and informative.",
+      "body1": "Engaging qualities of visual media: Dramatic re-enactments, authentic costumes, and evocative musical scores recreate historical atmospheres with compelling emotional resonance.",
+      "body2": "Scholarly superiority of texts: Written historical documents, primary treaties, and scholarly analyses provide factual objectivity, rigorous citations, and deep contextual scrutiny devoid of Hollywood sensationalism.",
+      "conclusion": "Films serve as an inspiring entry point into historical curiosity, but serious historical comprehension demands the analytical rigor of written records."
+    }
+  },
+  {
+    "id": "t2-54-news-consumption-newspapers-vs-digital-media",
+    "taskType": "task2",
+    "title": "T2-54: News Consumption: Traditional Newspapers vs Modern Media",
+    "category": "Discuss Both Views",
+    "instruction": "Discuss both views and give your own opinion. Write at least 250 words.",
+    "question": "Some people think that newspapers are the best way to learn about news. However, others believe that they can learn about news more effectively through other media. Discuss both views and give your own opinion.",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "While newspapers offer detailed and structured reporting, I believe digital and broadcast media are more effective for receiving timely news.",
+      "body1": "Enduring virtues of print newspapers: High editorial standards, rigorous fact-checking, and long-form investigative journalism that avoids clickbait sensationalism.",
+      "body2": "Superiority of digital platforms: Instant real-time updates as events unfold, rich multimedia video coverage, and global accessibility across handheld devices.",
+      "conclusion": "While print newspapers maintain intellectual prestige and depth, modern digital news channels are far more practical and timely for contemporary citizens."
+    }
+  },
+  {
+    "id": "t2-55-curbing-long-distance-flights-vs-cars",
+    "taskType": "task2",
+    "title": "T2-55: Transport Emissions: Discouraging Long-Distance Flights vs Limiting Cars",
+    "category": "Opinion Essay",
+    "instruction": "To what extent do you agree or disagree? Write at least 250 words.",
+    "question": "Long-distance flights should be discouraged rather than limiting car use because they consume more fuel and create more pollution. To what extent do you agree or disagree?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "I partly agree that aviation deserves greater attention, but restricting car use is also essential because road transport affects everyday emissions on a much larger scale.",
+      "body1": "Environmental toll of long-haul aviation: Commercial flights burn vast quantities of jet fuel, depositing greenhouse gases directly into the fragile upper atmosphere with few green alternatives.",
+      "body2": "Why automobile reduction is equally vital: Billions of daily private automobile journeys generate immense cumulative carbon emissions, urban gridlock, and lethal localized particulate pollution.",
+      "conclusion": "Policymakers must not choose between these two sectors; comprehensive decarbonization requires discouraging frivolous aviation while aggressively curbing private automobile dependency."
+    }
+  },
+  {
+    "id": "t2-56-economic-development-vs-environmental-harm",
+    "taskType": "task2",
+    "title": "T2-56: Economic Growth and Inevitable Environmental Damage",
+    "category": "Opinion Essay",
+    "instruction": "To what extent do you agree? Write at least 250 words.",
+    "question": "Developing economically inevitably causes pollution and environmental damage. To what extent do you agree?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "Although development can initially create environmental damage, I disagree that pollution is inevitable because cleaner technologies and effective regulation can decouple growth from environmental harm.",
+      "body1": "Historical correlation: Traditional industrial expansion relied heavily on coal, resource extraction, and untreated waste disposal, creating catastrophic air and water pollution.",
+      "body2": "Modern green decoupling: Advanced economies increasingly power growth through renewable wind and solar energy, circular recycling systems, and strict governmental environmental mandates.",
+      "conclusion": "While unregulated industrial growth damages the biosphere, green technological innovation proves economic prosperity and environmental sustainability can be harmonized."
+    }
+  },
+  {
+    "id": "t2-57-protecting-wild-animals-and-birds",
+    "taskType": "task2",
+    "title": "T2-57: Wildlife Protection: Excessive Resources vs Essential Conservation",
+    "category": "Opinion Essay",
+    "instruction": "Do you agree or disagree? Write at least 250 words.",
+    "question": "Too much attention and too many resources are devoted to protecting wild animals and birds. Do you agree or disagree?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "Although some resources may be allocated inefficiently, I disagree that excessive attention is devoted to wildlife because biodiversity protection is essential to ecological stability.",
+      "body1": "Arguments highlighting misplaced priorities: Costly breeding programs for niche species can divert millions from strained public healthcare systems and underfunded schools.",
+      "body2": "Ecological indispensability of fauna: Wild animals and birds sustain pollination, control agricultural pests, and preserve keystone food webs that protect human food security.",
+      "conclusion": "Safeguarding wildlife is not an expendable luxury; it is a critical defensive investment in the planetary ecosystems that ensure human survival."
+    }
+  },
+  {
+    "id": "t2-58-oil-and-gas-drilling-in-pristine-areas",
+    "taskType": "task2",
+    "title": "T2-58: Fossil Fuel Exploration in Remote and Untouched Natural Areas",
+    "category": "Advantages & Disadvantages",
+    "instruction": "Do you think the advantages outweigh the disadvantages of damaging these natural areas? Write at least 250 words.",
+    "question": "The increased world demand for oil and gas has made it necessary to locate these sources in remote and untouched natural areas. Do you think the advantages outweigh the disadvantages of damaging these natural areas?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "Although exploration can improve energy security and economic development, I believe the environmental damage outweighs these benefits.",
+      "body1": "Economic advantages: Accessing new fossil reserves stabilizes volatile international energy prices, mitigates fuel shortages, and sparks regional employment and infrastructure investment.",
+      "body2": "Irreversible environmental costs: Industrial roads and drilling fragment virgin wilderness, provoke catastrophic oil spills, and destroy fragile biodiversity that cannot recover.",
+      "conclusion": "Short-term fossil energy profits are vastly outweighed by the permanent devastation of virgin biomes, making the preservation of untouched nature an urgent priority."
+    }
+  },
+  {
+    "id": "t2-59-stricter-punishment-for-traffic-offences",
+    "taskType": "task2",
+    "title": "T2-59: Road Safety: Stricter Punishments vs Comprehensive Measures",
+    "category": "Opinion Essay",
+    "instruction": "To what extent do you agree or disagree? Write at least 250 words.",
+    "question": "The only way to improve road safety is to impose much stricter punishments for traffic offences. To what extent do you agree or disagree?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "Although stricter punishment can deter dangerous driving, I disagree that it is the only effective solution.",
+      "body1": "Efficacy of punitive deterrence: Heavy fines, license points, and custodial sentences raise the perceived consequences of reckless speeding and driving under the influence.",
+      "body2": "Necessity of engineering and education: Modern road design (roundabouts, pedestrian islands, illuminated crossings), speed camera networks, and mandatory defensive driving courses prevent collisions before violations occur.",
+      "conclusion": "While severe penalties are indispensable for law enforcement, lasting road safety requires an integrated approach combining punitive deterrence with smart urban infrastructure."
+    }
+  },
+  {
+    "id": "t2-60-mandatory-tests-for-all-cyclists",
+    "taskType": "task2",
+    "title": "T2-60: Urban Cycling Safety: Mandatory Road Tests for Cyclists",
+    "category": "Opinion Essay",
+    "instruction": "Do you agree or disagree? Write at least 250 words.",
+    "question": "All cyclists should have to pass a test before riding on public roads. Do you agree or disagree?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "I agree that cyclists should pass a basic safety test because this can improve road awareness and reduce accidents without being overly restrictive.",
+      "body1": "Concerns over mandatory testing: Might create administrative friction, licensing fees, and discourage young citizens and casual commuters from choosing green transport.",
+      "body2": "Crucial safety benefits: Ensuring cyclists comprehend traffic signals, blind spot risks, and proper signaling significantly decreases lethal collisions with motor vehicles.",
+      "conclusion": "A free, accessible safety course balances civil convenience with public safety, making basic cyclist certification a sensible regulatory measure."
+    }
+  },
+  {
+    "id": "t2-61-rising-juvenile-crime-causes-solutions",
+    "taskType": "task2",
+    "title": "T2-61: Escalating Juvenile Crime: Underlying Causes and Solutions",
+    "category": "Causes and Solutions",
+    "instruction": "Why is this? What are the solutions? Write at least 250 words.",
+    "question": "Children and teenagers are committing more crimes nowadays. Why is this? What are the solutions?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "This trend is mainly driven by weak parental supervision and negative peer influence, while stronger family support and education can help address it.",
+      "body1": "Root causes: Working parents leaving adolescents unsupervised for long hours, combined with online social media groups glorifying antisocial conduct and violent street gangs.",
+      "body2": "Effective remedies: Establishing community youth sports centers, providing professional school counseling for at-risk pupils, and introducing restorative vocational training programs.",
+      "conclusion": "Curbing youth delinquency demands supportive familial engagement and proactive educational mentorship rather than merely reacting with punitive detention."
+    }
+  },
+  {
+    "id": "t2-62-museums-local-vs-international-art",
+    "taskType": "task2",
+    "title": "T2-62: Museum Curation: Prioritising Local Works vs Displaying World Cultures",
+    "category": "Opinion Essay",
+    "instruction": "To what extent do you agree or disagree? Write at least 250 words.",
+    "question": "Museums and art galleries should concentrate on local works rather than displaying foreign cultures and artworks. To what extent do you agree or disagree?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "Although local works deserve significant attention, I disagree that museums should focus exclusively on them because foreign art promotes cultural understanding.",
+      "body1": "Value of celebrating local heritage: Showcasing indigenous artifacts and crafts preserves regional cultural identity and educates youth on national history.",
+      "body2": "Vital role of international exhibitions: Displaying global art fosters cross-cultural empathy, breaks insular parochialism, and allows citizens to appreciate human creative diversity.",
+      "conclusion": "A truly educational museum celebrates national cultural heritage alongside world masterpieces, cultivating both civic pride and global cultural sophistication."
+    }
+  },
+  {
+    "id": "t2-63-artistic-ability-innate-vs-learned",
+    "taskType": "task2",
+    "title": "T2-63: Artistic Ability: Innate Talent vs Learnable Craft",
+    "category": "Discuss Both Views",
+    "instruction": "Discuss both views and give your opinion. Write at least 250 words.",
+    "question": "Everyone can create art, while others think artistic ability is innate. Discuss both views and give your opinion.",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "While some people possess natural artistic aptitude, I believe artistic ability can be substantially developed through practice and education.",
+      "body1": "Arguments for inborn talent: Rare child prodigies demonstrate intuitive mastery of perspective, color harmony, and musical pitch with minimal formal instruction.",
+      "body2": "Power of deliberate training: Systematic education in technical proportions, medium handling, and conceptual storytelling enables dedicated individuals to produce deeply resonant art.",
+      "conclusion": "While innate gifts provide a starting advantage, disciplined instruction and passionate dedication allow anyone to develop meaningful artistic capabilities."
+    }
+  },
+  {
+    "id": "t2-64-having-children-later-in-life",
+    "taskType": "task2",
+    "title": "T2-64: Delayed Parenthood: Causes and Evaluating the Trend",
+    "category": "Two-part Question",
+    "instruction": "Why? Do the advantages outweigh the disadvantages? Write at least 250 words.",
+    "question": "People are having their first child later in life. Why? Do the advantages outweigh the disadvantages?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "This is mainly due to career and financial considerations, and I believe the advantages slightly outweigh the disadvantages.",
+      "body1": "Key driving factors: Prolonged professional education, intense early career establishment, and soaring housing costs encourage couples to secure financial stability prior to childbirth.",
+      "body2": "Advantages outweighing risks: Despite medical fertility concerns and age gaps, older parents offer greater emotional maturity, stable marital relationships, and ample educational funds.",
+      "conclusion": "While delayed childbirth carries biological risks, the superior economic and emotional readiness of mature parents makes this a net positive for child development."
+    }
+  },
+  {
+    "id": "t2-65-dietary-health-individual-vs-government",
+    "taskType": "task2",
+    "title": "T2-65: Healthy Diets: Individual Responsibility vs State Regulation",
+    "category": "Discuss Both Views",
+    "instruction": "Discuss both views and give your opinion. Write at least 250 words.",
+    "question": "Individuals are responsible for their own health, while others believe governments should ensure people have healthy diets. Discuss both views and give your opinion.",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "While individuals must take responsibility for their choices, I believe governments should also play a major role in promoting healthy diets.",
+      "body1": "Personal agency: Adults exercise free will over grocery choices and portion control, making individual discipline the foundation of physical wellness.",
+      "body2": "State intervention: Governments control food standards, can tax ultra-processed sugar and trans-fats, mandate clear traffic-light nutritional labels, and subsidize farm produce.",
+      "conclusion": "Individual nutritional discipline can only flourish when supported by proactive state regulations that make wholesome food affordable and accessible."
+    }
+  },
+  {
+    "id": "t2-66-youth-leisure-malls-sports-music",
+    "taskType": "task2",
+    "title": "T2-66: Youth Leisure Trends: Shopping Centres, Sports, and Music",
+    "category": "Positive or Negative Development",
+    "instruction": "Is this a positive or negative development? Write at least 250 words.",
+    "question": "Young people prefer spending their free time in shopping centres, doing sports or listening to music. Is this a positive or negative development?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "I believe this is generally a positive development because these activities promote social interaction, physical health and emotional wellbeing.",
+      "body1": "Drawbacks to manage: Excessive shopping center loitering risks fostering consumerist habits, unnecessary spending, and exposure to materialistic peer pressure.",
+      "body2": "Significant benefits: Athletic sports build physical fitness and team cooperation, while music and social outings offer healthy stress relief from academic demands.",
+      "conclusion": "When commercial consumption is moderated, engaging in sports, music, and social recreation constitutes a balanced and positive youth lifestyle."
+    }
+  },
+  {
+    "id": "t2-67-spending-money-to-look-younger",
+    "taskType": "task2",
+    "title": "T2-67: The Anti-Aging Industry: High Spending on Youthful Appearance",
+    "category": "Two-part Question",
+    "instruction": "Why? Is this a positive or negative development? Write at least 250 words.",
+    "question": "More and more people spend large amounts of money to look younger. Why? Is this a positive or negative development?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "This trend is mainly driven by social pressure and media influence, and I believe it is predominantly negative.",
+      "body1": "Reasons behind the obsession: Social media filters, celebrity culture, and corporate beauty advertising associate youthful appearance with professional competence and social desirability.",
+      "body2": "Negative consequences: Diverts household finances toward risky cosmetic procedures, while reinforcing toxic ageist stereotypes and exacerbating psychological anxiety.",
+      "conclusion": "While healthy self-care is natural, exorbitant spending on cosmetic youthfulness reflects a harmful cultural obsession that damages self-esteem."
+    }
+  },
+  {
+    "id": "t2-68-working-abroad-with-family",
+    "taskType": "task2",
+    "title": "T2-68: Global Mobility: Working Abroad and Relocating Families",
+    "category": "Advantages & Disadvantages",
+    "instruction": "Do the advantages outweigh the disadvantages? Write at least 250 words.",
+    "question": "Many parents work abroad and take their families with them. Do the advantages outweigh the disadvantages?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "Although relocation can create cultural and educational challenges, I believe the advantages outweigh the disadvantages.",
+      "body1": "Initial hurdles: Culture shock, language barriers in foreign schools, and disconnection from extended familial roots can induce transient emotional stress in young children.",
+      "body2": "Long-term advantages: Children gain bilingual fluency, cultural adaptability, and global career networks, while expatriate salaries significantly improve family living standards.",
+      "conclusion": "The transient friction of cultural adaptation is vastly eclipsed by the lifelong educational, linguistic, and financial dividends of growing up internationally."
+    }
+  },
+  {
+    "id": "t2-69-time-away-from-family-causes-effects",
+    "taskType": "task2",
+    "title": "T2-69: Modern Lifestyles: Spending Less Time with Family",
+    "category": "Causes and Solutions",
+    "instruction": "What are the causes and effects? Write at least 250 words.",
+    "question": "Nowadays people spend more time away from their families. What are the causes and effects?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "This trend is mainly caused by demanding work schedules and digital lifestyles, and it can weaken family relationships and affect mental wellbeing.",
+      "body1": "Underlying causes: Escalating workplace demands, lengthened urban commutes, and individual digital entertainment isolate family members behind private screens.",
+      "body2": "Detrimental effects: Fractured communication between spouses, behavioral problems in neglected children, and profound isolation among aging grandparents.",
+      "conclusion": "Modern economic pressures undermine family unity; societies must champion work-life boundaries and intentional screen-free family traditions."
+    }
+  },
+  {
+    "id": "t2-70-impact-of-tv-on-children",
+    "taskType": "task2",
+    "title": "T2-70: Television and Childhood Development: Harmful vs Beneficial",
+    "category": "Discuss Both Views",
+    "instruction": "Discuss both views and give your opinion. Write at least 250 words.",
+    "question": "Some people believe that watching TV is bad for children, while others claim it has positive effects for children as they grow up. Discuss both views and give your opinion.",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "Although excessive viewing can harm children's development, I believe moderate and carefully selected television content can be beneficial.",
+      "body1": "Harmful effects of unmonitored TV: Encourages sedentary lifestyle and obesity, shortens attention spans, and exposes impressionable minds to violent or commercial content.",
+      "body2": "Educational benefits: High-quality documentaries, language animations, and science programs spark intellectual curiosity and expose children to world cultures.",
+      "conclusion": "Television is an educational asset or a developmental hazard depending entirely on parental curation and strict time limits."
+    }
+  },
+  {
+    "id": "t2-71-peer-pressure-advantages-disadvantages",
+    "taskType": "task2",
+    "title": "T2-71: Adolescent Peer Pressure: Motivation vs Psychological Risk",
+    "category": "Advantages & Disadvantages",
+    "instruction": "Do the disadvantages of peer pressure outweigh the advantages? Write at least 250 words.",
+    "question": "Young people are often influenced in their behaviours and situations by others of the same age. This is called \"peer pressure\". Do the disadvantages of peer pressure outweigh the advantages?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "Although peer influence can motivate young people to improve themselves, I believe its psychological and behavioural disadvantages outweigh these benefits.",
+      "body1": "Constructive aspects of peer influence: Positive peer cohorts encourage academic diligence, participation in athletics, and prosocial community activities.",
+      "body2": "Dangerous negative pressures: Desperation for peer acceptance often coerces youths into substance abuse, delinquency, cyberbullying, and crippling social anxiety.",
+      "conclusion": "While healthy peer role models can inspire excellence, the coercive risks of negative peer conformity make peer pressure a predominantly hazardous influence."
+    }
+  },
+  {
+    "id": "t2-72-intergenerational-communication-decline",
+    "taskType": "task2",
+    "title": "T2-72: Intergenerational Communication: Causes of Decline and Solutions",
+    "category": "Causes and Solutions",
+    "instruction": "Why is this happening? How could this situation be improved? Write at least 250 words.",
+    "question": "Nowadays in many countries young people don't communicate with older people as much as they used to. Why is this happening? How could this situation be improved?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "This is mainly caused by technological lifestyles and generational differences, and it can be improved through family activities and intergenerational programmes.",
+      "body1": "Root causes: Fast-evolving digital culture isolates youths in virtual communities unfamiliar to elders, while nuclear family households reduce daily multigenerational contact.",
+      "body2": "Actionable solutions: Families should institute regular shared meals and gatherings, while municipal centers can sponsor skill-exchange workshops pairing youths with senior mentors.",
+      "conclusion": "Bridging the intergenerational divide requires deliberate family routines and community programs that reconnect youth vitality with elder wisdom."
+    }
+  },
+  {
+    "id": "t2-73-global-trade-culture-benefits-vs-identity",
+    "taskType": "task2",
+    "title": "T2-73: Globalisation: Economic and Cultural Benefits vs Loss of National Identity",
+    "category": "Discuss Both Views",
+    "instruction": "Discuss both views and give your opinion. Write at least 250 words.",
+    "question": "Increasing business and cultural contact between countries brings many benefits, while others think it causes the loss of national identity. Discuss both views and give your opinion.",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "While international contact can create economic and cultural benefits, I believe the advantages outweigh the risk of losing aspects of national identity.",
+      "body1": "Economic and cultural benefits: Foreign direct investment fuels job growth and technological innovation, while international exchange fosters cosmopolitan tolerance.",
+      "body2": "National identity concerns addressed: Global multinational brands can homogenize local customs, but active cultural education and domestic arts funding successfully safeguard heritage.",
+      "conclusion": "International integration delivers vital economic prosperity; nations can thrive in the global marketplace while proudly maintaining their unique cultural traditions."
+    }
+  },
+  {
+    "id": "t2-74-space-tourism-positive-or-negative",
+    "taskType": "task2",
+    "title": "T2-74: Commercial Space Tourism: Technological Triumph vs Wasteful Luxury",
+    "category": "Positive or Negative Development",
+    "instruction": "Is space tourism a positive or negative development? Write at least 250 words.",
+    "question": "Is space tourism a positive or negative development?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "Although space tourism can stimulate technological innovation, I believe it is currently a predominantly negative development because of its environmental impact and limited accessibility.",
+      "body1": "Technological benefits: Private rocket commercialization accelerates aerospace engineering discoveries, lowers payload launch costs, and spurs new high-tech industries.",
+      "body2": "Severe drawbacks: Rocket launches deposit massive black carbon soot directly into the fragile stratosphere, while squandering billions on elite luxury joyrides amid pressing earthly crises.",
+      "conclusion": "Until space travel achieves zero carbon emissions and democratized utility, commercial space tourism remains an ecologically damaging and socially regressive pursuit."
+    }
+  },
+  {
+    "id": "t2-75-corporate-sports-and-social-facilities",
+    "taskType": "task2",
+    "title": "T2-75: Corporate Responsibility: Providing Community Sports and Social Facilities",
+    "category": "Opinion Essay",
+    "instruction": "To what extent do you agree or disagree? Write at least 250 words.",
+    "question": "Large companies should provide sports and social facilities for local communities. To what extent do you agree or disagree?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "I largely agree that they should contribute to local sports and social facilities because this can improve community wellbeing and strengthen corporate reputation.",
+      "body1": "Counterarguments: Commercial enterprises exist to deliver shareholder value and pay corporate taxes, which municipal governments should use to finance public amenities.",
+      "body2": "Why corporate sponsorship is justified: Funding community pitches, recreation centers, and cultural hubs fosters local public health, employee pride, and invaluable brand goodwill.",
+      "conclusion": "While civic facilities remain a public duty, profitable corporations should actively co-invest in community health as part of their modern social license to operate."
+    }
+  },
+  {
+    "id": "t2-76-wealth-purpose-helping-others",
+    "taskType": "task2",
+    "title": "T2-76: The True Value of Wealth: Helping Others vs Personal Freedom",
+    "category": "Opinion Essay",
+    "instruction": "To what extent do you agree or disagree? Write at least 250 words.",
+    "question": "The most important thing about being rich is having the opportunity to help others. To what extent do you agree or disagree?",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "Although helping others is one of the most valuable uses of wealth, I disagree that it is necessarily the most important aspect because financial security and personal freedom are also essential.",
+      "body1": "Philanthropic power of wealth: Affluent individuals can endow scientific research, alleviate systemic poverty, and fund educational scholarships that transform countless lives.",
+      "body2": "Primary individual benefits: The core value of wealth lies in eliminating financial anxiety, securing quality healthcare and housing, and granting personal autonomy over career and life choices.",
+      "conclusion": "Philanthropy represents the highest moral expression of affluence, but the foundational importance of wealth remains personal security and individual liberty."
+    }
+  },
+  {
+    "id": "t2-77-reducing-product-packaging-supermarkets-vs-consumers",
+    "taskType": "task2",
+    "title": "T2-77: Packaging Waste: Manufacturer & Supermarket Duty vs Consumer Boycotts",
+    "category": "Discuss Both Views",
+    "instruction": "Discuss both views and give your opinion. Write at least 250 words.",
+    "question": "Some people feel that manufacturers and supermarkets have the responsibility to reduce the amount of packaging of goods. Others argue that customers should avoid buying goods with a lot of packaging. Discuss both views and give your opinion.",
+    "minWords": 250,
+    "timeMinutes": 40,
+    "outline": {
+      "overviewOrThesis": "While consumers can influence packaging practices through their purchasing choices, I believe manufacturers and supermarkets should bear greater responsibility.",
+      "body1": "Consumer responsibility: Shoppers can choose loose produce, carry reusable containers, and boycott excessively wrapped goods to create market pressure for eco-friendly design.",
+      "body2": "Corporate power: Producers and retail conglomerates control product design, factory supply chains, and plastic materials, giving them the industrial power to eliminate packaging waste at scale.",
+      "conclusion": "Consumer activism is essential for market demand, but supermarkets and manufacturers hold the institutional power to enforce plastic-free packaging at the source."
+    }
+  }
 ];
 
 export function getPromptById(id: string): PromptSeed | undefined {

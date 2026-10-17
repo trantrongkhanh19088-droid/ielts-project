@@ -466,13 +466,13 @@ export default function HomePage() {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 hairline-b pb-6">
             <div>
               <span className="font-mono text-[11px] text-vermilion tracking-[0.2em] uppercase font-semibold">
-                ARCHIVE // 59 FORECAST PROMPTS
+                ARCHIVE // 107 FORECAST PROMPTS
               </span>
               <h2 className="font-display font-bold text-3xl sm:text-4xl text-stone-900 dark:text-stone-100 tracking-normal mt-1 leading-snug">
                 Kho Đề Forecast IELTS Writing 2026
               </h2>
               <p className="text-xs sm:text-sm text-stone-500 dark:text-stone-400 mt-1 max-w-xl font-normal">
-                Gồm 30 đề Task 1 (Biểu đồ, Bản đồ, Quy trình) và 29 đề Task 2 (Nghị luận xã hội) kèm dàn ý chi tiết Band 8+.
+                Gồm 30 đề Task 1 (Biểu đồ, Bản đồ, Quy trình) và 77 đề Task 2 (Nghị luận xã hội) kèm dàn ý chi tiết Band 8+.
               </p>
             </div>
 
