@@ -25,11 +25,18 @@ export interface LexicalHighlight {
   usageNoteVi: string;
 }
 
+export interface ParaphraseAlternative {
+  sentence: string;
+  styleLabel: string;
+  explanationVi?: string;
+}
+
 export interface SentenceParaphraseResult {
   paraphrasedSentence: string;
   bandScore: BuilderTargetBand;
   lexicalHighlights: LexicalHighlight[];
   styleExplanationVi: string;
+  alternatives?: ParaphraseAlternative[];
 }
 
 export interface SentenceInput {
