@@ -75,7 +75,7 @@ export default function HomePage() {
 
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-rose-100/80 dark:bg-red-950/60 border border-rose-300 dark:border-red-800 text-rose-900 dark:text-rose-200 text-xs font-semibold shadow-sm">
             <Sparkles className="w-3.5 h-3.5 text-rose-500 animate-pulse" />
-            <span>Mô phỏng 100% Giao diện Thi Thật CD-IELTS Inspera &bull; Phong cách Văn hóa Nhật Bản</span>
+            <span>Mô phỏng 100% Giao diện Thi Thật CD-IELTS Inspera</span>
           </div>
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 dark:text-white tracking-tight leading-tight max-w-4xl mx-auto">

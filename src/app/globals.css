@@ -221,3 +221,61 @@ body {
   box-shadow: 0 0 25px var(--pixel-glow);
   border-color: var(--pixel-accent);
 }
+
+/* ========================================================
+   JAPANESE SAKURA THEME (GIAO DIỆN HOA ANH ĐÀO NHẬT BẢN)
+   ======================================================== */
+html.japanese {
+  --background-rgb: 255, 245, 247;
+  --foreground-rgb: 60, 20, 32;
+  --pixel-accent: #E11D48;
+  --pixel-glow: rgba(225, 29, 72, 0.35);
+}
+
+html.japanese body {
+  background-color: #FFF5F7 !important;
+  color: #4C1D24 !important;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(254, 205, 211, 0.35) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(253, 164, 175, 0.25) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(255, 228, 230, 0.3) 0%, transparent 60%);
+  background-attachment: fixed;
+}
+
+html.japanese nav {
+  background-color: rgba(255, 245, 247, 0.94) !important;
+  border-bottom-color: rgba(251, 207, 216, 0.8) !important;
+  backdrop-filter: blur(12px) !important;
+  box-shadow: 0 4px 20px -2px rgba(225, 29, 72, 0.08);
+}
+
+html.japanese .bg-white {
+  background-color: rgba(255, 255, 255, 0.92) !important;
+  border-color: rgba(251, 207, 216, 0.6) !important;
+  box-shadow: 0 4px 16px -2px rgba(225, 29, 72, 0.06);
+}
+
+html.japanese .bg-slate-50,
+html.japanese .bg-gray-50 {
+  background-color: rgba(255, 241, 244, 0.7) !important;
+}
+
+html.japanese .border-gray-200,
+html.japanese .border-gray-300 {
+  border-color: rgba(251, 207, 216, 0.75) !important;
+}
+
+html.japanese .text-gray-900 {
+  color: #4C0519 !important;
+}
+
+html.japanese .text-gray-600,
+html.japanese .text-gray-700 {
+  color: #881337 !important;
+}
+
+html.japanese .genshin-glass {
+  background: rgba(255, 245, 247, 0.82) !important;
+  border: 1px solid rgba(253, 164, 175, 0.5) !important;
+  box-shadow: 0 8px 32px 0 rgba(225, 29, 72, 0.12) !important;
+}

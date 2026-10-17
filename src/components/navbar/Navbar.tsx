@@ -35,7 +35,7 @@ export default function Navbar() {
   const [isCharModalOpen, setIsCharModalOpen] = useState(false);
   const [companionSettings, setCompanionSettings] = useState<CompanionSettings>(DEFAULT_COMPANION_SETTINGS);
   const [bandSaved, setBandSaved] = useState(false);
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [theme, setTheme] = useState<'light' | 'dark' | 'japanese'>('light');
 
   useEffect(() => {
     try {
@@ -49,25 +49,34 @@ export default function Navbar() {
   // Load and sync theme from localStorage on mount
   useEffect(() => {
     try {
-      const savedTheme = localStorage.getItem('cd_ielts_theme') as 'light' | 'dark' | null;
+      const savedTheme = localStorage.getItem('cd_ielts_theme') as 'light' | 'dark' | 'japanese' | null;
       if (savedTheme === 'dark') {
         setTheme('dark');
         document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('japanese');
+      } else if (savedTheme === 'japanese') {
+        setTheme('japanese');
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('japanese');
       } else {
         setTheme('light');
-        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.remove('dark', 'japanese');
       }
     } catch {}
   }, []);
 
-  const handleThemeChange = (newTheme: 'light' | 'dark') => {
+  const handleThemeChange = (newTheme: 'light' | 'dark' | 'japanese') => {
     setTheme(newTheme);
     try {
       localStorage.setItem('cd_ielts_theme', newTheme);
       if (newTheme === 'dark') {
         document.documentElement.classList.add('dark');
-      } else {
+        document.documentElement.classList.remove('japanese');
+      } else if (newTheme === 'japanese') {
         document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('japanese');
+      } else {
+        document.documentElement.classList.remove('dark', 'japanese');
       }
     } catch {}
   };

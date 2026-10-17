@@ -32,10 +32,13 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               try {
-                if (localStorage.getItem('cd_ielts_theme') === 'dark') {
+                const t = localStorage.getItem('cd_ielts_theme');
+                if (t === 'dark') {
                   document.documentElement.classList.add('dark');
+                } else if (t === 'japanese') {
+                  document.documentElement.classList.add('japanese');
                 } else {
-                  document.documentElement.classList.remove('dark');
+                  document.documentElement.classList.remove('dark', 'japanese');
                 }
               } catch (_) {}
             `,

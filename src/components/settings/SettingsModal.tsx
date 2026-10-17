@@ -12,14 +12,15 @@ import {
   Sparkles,
   ShieldCheck,
   Sliders,
+  Flower2,
 } from 'lucide-react';
 import { getBuilderAutoSuggest, setBuilderAutoSuggest } from '@/lib/builder';
 
 interface SettingsModalProps {
   isOpen: boolean;
   onClose: () => void;
-  currentTheme: 'light' | 'dark';
-  onThemeChange: (newTheme: 'light' | 'dark') => void;
+  currentTheme: 'light' | 'dark' | 'japanese';
+  onThemeChange: (newTheme: 'light' | 'dark' | 'japanese') => void;
 }
 
 export default function SettingsModal({
@@ -82,20 +83,20 @@ export default function SettingsModal({
               <Sliders className="w-3.5 h-3.5 text-sky-600" />
               <span>Chế độ giao diện (Appearance)</span>
             </label>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
               {/* Light Mode Card */}
               <button
                 type="button"
                 onClick={() => onThemeChange('light')}
-                className={`p-3.5 rounded-xl border-2 text-left transition flex flex-col gap-2 relative ${
+                className={`p-3 rounded-xl border-2 text-left transition flex flex-col gap-2 relative ${
                   currentTheme === 'light'
                     ? 'border-sky-600 bg-sky-50/60 dark:bg-sky-950/30 text-sky-950 dark:text-sky-100 shadow-sm'
                     : 'border-gray-200 dark:border-zinc-800 hover:border-gray-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-800/60 text-gray-700 dark:text-gray-300'
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <div className="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-950/60 text-amber-600 flex items-center justify-center">
-                    <Sun className="w-4 h-4" />
+                  <div className="w-7 h-7 rounded-lg bg-amber-100 dark:bg-amber-950/60 text-amber-600 flex items-center justify-center">
+                    <Sun className="w-3.5 h-3.5" />
                   </div>
                   {currentTheme === 'light' && (
                     <span className="w-4 h-4 rounded-full bg-sky-600 text-white flex items-center justify-center text-[10px]">
@@ -115,15 +116,15 @@ export default function SettingsModal({
               <button
                 type="button"
                 onClick={() => onThemeChange('dark')}
-                className={`p-3.5 rounded-xl border-2 text-left transition flex flex-col gap-2 relative ${
+                className={`p-3 rounded-xl border-2 text-left transition flex flex-col gap-2 relative ${
                   currentTheme === 'dark'
                     ? 'border-indigo-600 bg-indigo-50/60 dark:bg-indigo-950/30 text-indigo-950 dark:text-indigo-100 shadow-sm'
                     : 'border-gray-200 dark:border-zinc-800 hover:border-gray-300 dark:hover:border-zinc-700 bg-white dark:bg-zinc-800/60 text-gray-700 dark:text-gray-300'
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <div className="w-8 h-8 rounded-lg bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
-                    <Moon className="w-4 h-4" />
+                  <div className="w-7 h-7 rounded-lg bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+                    <Moon className="w-3.5 h-3.5" />
                   </div>
                   {currentTheme === 'dark' && (
                     <span className="w-4 h-4 rounded-full bg-indigo-600 text-white flex items-center justify-center text-[10px]">
@@ -135,6 +136,37 @@ export default function SettingsModal({
                   <div className="font-bold text-xs">Giao diện Tối</div>
                   <div className="text-[10px] text-gray-500 dark:text-gray-400">
                     Bảo vệ mắt ban đêm
+                  </div>
+                </div>
+              </button>
+
+              {/* Japanese Sakura Theme Card */}
+              <button
+                type="button"
+                onClick={() => onThemeChange('japanese')}
+                className={`p-3 rounded-xl border-2 text-left transition flex flex-col gap-2 relative ${
+                  currentTheme === 'japanese'
+                    ? 'border-rose-500 bg-rose-50/80 dark:bg-rose-950/40 text-rose-950 dark:text-rose-100 shadow-sm'
+                    : 'border-gray-200 dark:border-zinc-800 hover:border-rose-300 bg-white dark:bg-zinc-800/60 text-gray-700 dark:text-gray-300'
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="w-7 h-7 rounded-lg bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center">
+                    <Flower2 className="w-3.5 h-3.5 text-rose-500 animate-pulse" />
+                  </div>
+                  {currentTheme === 'japanese' && (
+                    <span className="w-4 h-4 rounded-full bg-rose-600 text-white flex items-center justify-center text-[10px]">
+                      <Check className="w-2.5 h-2.5 stroke-[3]" />
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <div className="font-bold text-xs flex items-center gap-1">
+                    <span>Giao diện Nhật Bản</span>
+                    <span className="text-[10px]">🌸</span>
+                  </div>
+                  <div className="text-[10px] text-rose-600 dark:text-rose-400 font-medium">
+                    Hoa anh đào Sakura
                   </div>
                 </div>
               </button>
