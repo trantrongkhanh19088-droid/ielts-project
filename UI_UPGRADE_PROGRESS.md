@@ -10,12 +10,8 @@
 | Giai đoạn (Phase) | Nội dung | Số lượng | Trạng thái | Ghi chú |
 | :--- | :--- | :---: | :---: | :--- |
 | **Phase 0** | Sao lưu giao diện cũ & Script khôi phục | 1 bộ | ✅ Hoàn thành | `_backup_old_ui` & `restore-old-ui.js` đã sẵn sàng |
-| **Phase 1** | UI Truyền thống Nhật Bản & Anime/Game Styling | 5 module | ✅ Hoàn thành | Cổng Torii, Mèo Maneki-neko, Đèn Chochin, Hoa Sakura, Glassmorphism, Patterns |
-| **Phase 2 - Batch 1** | Genshin & Honkai (Phần 1: Nhân vật 01 -> 11) | 11 char | ✅ Hoàn thành | Raiden, Hu Tao, Sandrone, Furina, Nahida, Yae, Zhongli, Ayaka, Keqing, Ganyu, Arlecchino |
-| **Phase 2 - Batch 2** | Genshin & Honkai (Phần 2: Nhân vật 12 -> 22) | 11 char | ✅ Hoàn thành | Navia, Neuvillette, Xiao, Kazuha, Venti, Shenhe, Nilou, Kafka, Firefly, Acheron, Sparkle |
-| **Phase 2 - Batch 3** | Huyền Thoại Shonen Jump (Nhân vật 23 -> 33) | 11 char | ✅ Hoàn thành | Luffy, Zoro, Sanji, Naruto, Sasuke, Kakashi, Goku, Vegeta, Ichigo, Gon, Killua |
-| **Phase 2 - Batch 4** | Shonen Mới & Dark Fantasy (Nhân vật 34 -> 44) | 11 char | ✅ Hoàn thành | Chainsaw Man, Power, Makima, Gojo, Sukuna, Tanjiro, Nezuko, Zenitsu, Levi, Eren, Jin-Woo |
-| **Phase 2 - Batch 5** | Waifu Quốc Dân & Game Icons (Nhân vật 45 -> 55) | 11 char | ✅ Hoàn thành | Miku, Rem, Zero Two, Marin, Frieren, Fern, Anya, Yor, Kurumi, Saber, 2B |
+| **Phase 1** | UI Truyền thống Nhật Bản & Anime/Game Styling | 5 module | ✅ Hoàn thành | Cổng Torii, Mèo Maneki-neko, Đèn Chochin, Hoa Sakura (tự động tắt khi vào giao diện viết), Patterns |
+| **Phase 2 - Toàn diện** | Nâng cấp toàn bộ 55 nhân vật sang Anime/Game Artwork | 55/55 char | ✅ Hoàn thành | Thay thế Pixel 2D bằng ảnh nhân vật/render độ nét cao (trong suốt RGBA) tải từ wiki chính thống |
 | **Phase 3** | Menu Settings 「キャラ＆テーマ設定」 & Gacha Roll | 1 modal | ✅ Hoàn thành | Gacha 5 sao, Tìm kiếm, Lọc theo nhóm, Tùy chỉnh kích thước, Sync màu Accent |
 | **Phase 4** | Build & Tự động kiểm thử (Self-QA) | 1 quy trình | ✅ Hoàn thành | Next.js 14 production build thành công 100%, 0 lỗi type/linting |
 

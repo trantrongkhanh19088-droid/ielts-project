@@ -74,13 +74,13 @@ export default function PixelCompanion() {
 
   if (!isMounted) return null;
 
-  // Pixel sizing mapping
+  // Character sizing mapping
   const sizeMap = {
-    1: 48,
-    1.5: 72,
-    2: 96,
+    1: 64,
+    1.5: 88,
+    2: 120,
   };
-  const pixelSize = sizeMap[settings.size] || 72;
+  const pixelSize = sizeMap[settings.size] || 88;
 
   // Position classes
   const positionClasses =

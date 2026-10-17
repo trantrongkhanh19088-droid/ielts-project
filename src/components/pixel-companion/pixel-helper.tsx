@@ -62,3 +62,37 @@ export function P({
     />
   );
 }
+
+export function CharacterImage({
+  src,
+  alt,
+  size = 64,
+  className = '',
+  glowColor,
+}: {
+  src: string;
+  alt: string;
+  size?: number;
+  className?: string;
+  glowColor?: string;
+}) {
+  return (
+    <div
+      className={`relative inline-flex items-center justify-center select-none overflow-visible ${className}`}
+      style={{
+        width: size,
+        height: size,
+      }}
+    >
+      <img
+        src={src}
+        alt={alt}
+        className="w-full h-full object-contain pointer-events-none drop-shadow-md transition-transform duration-200"
+        style={{
+          filter: glowColor ? `drop-shadow(0 2px 10px ${glowColor})` : undefined,
+        }}
+        loading="lazy"
+      />
+    </div>
+  );
+}

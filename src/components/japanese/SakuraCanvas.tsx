@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import { usePathname } from 'next/navigation';
 
 interface SakuraCanvasProps {
   petalCount?: number;
@@ -36,6 +37,8 @@ export default function SakuraCanvas({
   petalCount = 30,
   enabled = true,
 }: SakuraCanvasProps) {
+  const pathname = usePathname();
+  const isLobby = pathname === '/';
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isEnabled, setIsEnabled] = useState(enabled);
 
@@ -60,7 +63,7 @@ export default function SakuraCanvas({
   }, []);
 
   useEffect(() => {
-    if (!isEnabled) return;
+    if (!isEnabled || !isLobby) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -168,9 +171,9 @@ export default function SakuraCanvas({
       window.removeEventListener('resize', handleResize);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [isEnabled, petalCount]);
+  }, [isEnabled, isLobby, petalCount]);
 
-  if (!isEnabled) return null;
+  if (!isEnabled || !isLobby) return null;
 
   return (
     <canvas

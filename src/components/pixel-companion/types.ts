@@ -33,6 +33,7 @@ export interface PixelCharacter {
   glowColor: string; // e.g. 'rgba(123, 44, 191, 0.45)'
   particleType: ParticleType;
   rarity?: 4 | 5; // For Gacha stars (5-star legendary)
+  imageUrl: string; // High-res character anime artwork: '/characters/01.png'
   renderSprite: (props: { size?: number; className?: string }) => React.ReactNode;
 }
 
