@@ -38,12 +38,17 @@ export default function Navbar() {
   const [theme, setTheme] = useState<'light' | 'dark' | 'japanese'>('light');
 
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem('cd_ielts_companion_settings');
-      if (stored) {
-        setCompanionSettings({ ...DEFAULT_COMPANION_SETTINGS, ...JSON.parse(stored) });
-      }
-    } catch {}
+    const syncCompanion = () => {
+      try {
+        const stored = localStorage.getItem('cd_ielts_companion_settings');
+        if (stored) {
+          setCompanionSettings({ ...DEFAULT_COMPANION_SETTINGS, ...JSON.parse(stored) });
+        }
+      } catch {}
+    };
+    syncCompanion();
+    window.addEventListener('companion-settings-updated', syncCompanion);
+    return () => window.removeEventListener('companion-settings-updated', syncCompanion);
   }, []);
 
   // Load and sync theme from localStorage on mount
@@ -455,7 +460,7 @@ export default function Navbar() {
             window.dispatchEvent(
               new CustomEvent('sakura-toggle', { detail: { enabled: newSettings.sakuraEnabled } })
             );
-            window.location.reload();
+            window.dispatchEvent(new Event('companion-settings-updated'));
           } catch {}
         }}
       />

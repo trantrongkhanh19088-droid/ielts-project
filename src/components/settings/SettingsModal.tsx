@@ -30,12 +30,20 @@ export default function SettingsModal({
   onThemeChange,
 }: SettingsModalProps) {
   const [autoSuggest, setAutoSuggestState] = useState<boolean>(true);
+  const [showCompanion, setShowCompanion] = useState<boolean>(true);
 
   useEffect(() => {
     if (isOpen) {
       setAutoSuggestState(getBuilderAutoSuggest());
       try {
         localStorage.removeItem('cd_ielts_user_gemini_key');
+        const stored = localStorage.getItem('cd_ielts_companion_settings');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (parsed.showCompanion !== undefined) {
+            setShowCompanion(Boolean(parsed.showCompanion));
+          }
+        }
       } catch {}
     }
   }, [isOpen]);
@@ -46,6 +54,18 @@ export default function SettingsModal({
     const nextVal = !autoSuggest;
     setAutoSuggestState(nextVal);
     setBuilderAutoSuggest(nextVal);
+  };
+
+  const handleToggleCompanion = () => {
+    const nextVal = !showCompanion;
+    setShowCompanion(nextVal);
+    try {
+      const stored = localStorage.getItem('cd_ielts_companion_settings');
+      const prev = stored ? JSON.parse(stored) : {};
+      const updated = { ...prev, showCompanion: nextVal };
+      localStorage.setItem('cd_ielts_companion_settings', JSON.stringify(updated));
+      window.dispatchEvent(new Event('companion-settings-updated'));
+    } catch {}
   };
 
   return (
@@ -225,6 +245,64 @@ export default function SettingsModal({
                   }`}
                 >
                   {autoSuggest ? 'Đang BẬT gợi ý' : 'Đang TẮT (Ẩn mặc định)'}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 3: Anime Companion Toggle */}
+          <div className="space-y-3 pt-3 border-t border-gray-100 dark:border-zinc-800">
+            <label className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-rose-500" />
+              <span>Bạn đồng hành Anime (Companion)</span>
+            </label>
+
+            <div className="p-4 rounded-xl border border-gray-200 dark:border-zinc-800 bg-gray-50/50 dark:bg-zinc-800/40 space-y-3">
+              <div className="flex items-start justify-between gap-4">
+                <div className="space-y-1">
+                  <div className="text-xs font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
+                    {showCompanion ? (
+                      <Eye className="w-3.5 h-3.5 text-rose-500" />
+                    ) : (
+                      <EyeOff className="w-3.5 h-3.5 text-gray-400" />
+                    )}
+                    <span>Hiển thị bạn đồng hành ở góc màn hình</span>
+                  </div>
+                  <p className="text-[11px] text-gray-500 dark:text-gray-400 leading-relaxed">
+                    Bật hoặc tắt hình ảnh nhân vật Anime/Pixel trợ lý đồng hành ở góc dưới màn hình. Bạn có thể đổi trong số 55 nhân vật tại nút 「キャラ＆テーマ」 trên thanh điều hướng.
+                  </p>
+                </div>
+
+                {/* Custom Toggle Switch */}
+                <button
+                  type="button"
+                  onClick={handleToggleCompanion}
+                  className={`w-11 h-6 shrink-0 flex items-center rounded-full p-1 transition-colors duration-200 ease-in-out cursor-pointer ${
+                    showCompanion
+                      ? 'bg-rose-500'
+                      : 'bg-gray-300 dark:bg-zinc-700'
+                  }`}
+                  aria-pressed={showCompanion}
+                  title={showCompanion ? 'Nhấp để ẩn bạn đồng hành' : 'Nhấp để hiện bạn đồng hành'}
+                >
+                  <span
+                    className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform duration-200 ease-in-out ${
+                      showCompanion ? 'translate-x-5' : 'translate-x-0'
+                    }`}
+                  />
+                </button>
+              </div>
+
+              <div className="flex items-center justify-between text-[11px] pt-1 text-gray-500 dark:text-gray-400 border-t border-gray-200/60 dark:border-zinc-700/60">
+                <span>Trạng thái:</span>
+                <span
+                  className={`font-bold px-2 py-0.5 rounded-full text-[10px] uppercase font-mono ${
+                    showCompanion
+                      ? 'bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300'
+                      : 'bg-gray-200 dark:bg-zinc-700 text-gray-600 dark:text-gray-400'
+                  }`}
+                >
+                  {showCompanion ? 'Đang BẬT hiển thị' : 'Đang TẮT (Ẩn bạn đồng hành)'}
                 </span>
               </div>
             </div>

@@ -36,8 +36,20 @@ export default function CharacterSelectionModal({
   const [position, setPosition] = useState<'left' | 'right'>(settings.position);
   const [syncThemeAccent, setSyncThemeAccent] = useState(settings.syncThemeAccent);
   const [sakuraEnabled, setSakuraEnabled] = useState(settings.sakuraEnabled);
+  const [showCompanion, setShowCompanion] = useState(settings.showCompanion !== false);
   const [isGachaRolling, setIsGachaRolling] = useState(false);
   const [gachaResult, setGachaResult] = useState<PixelCharacter | null>(null);
+
+  React.useEffect(() => {
+    if (isOpen) {
+      setSelectedCharId(settings.selectedCharacterId);
+      setSize(settings.size);
+      setPosition(settings.position);
+      setSyncThemeAccent(settings.syncThemeAccent);
+      setSakuraEnabled(settings.sakuraEnabled);
+      setShowCompanion(settings.showCompanion !== false);
+    }
+  }, [isOpen, settings]);
 
   // Filter characters based on search and category tab
   const filteredCharacters = useMemo(() => {
@@ -76,6 +88,7 @@ export default function CharacterSelectionModal({
       position,
       syncThemeAccent,
       sakuraEnabled,
+      showCompanion,
     });
     onClose();
   };
@@ -150,8 +163,33 @@ export default function CharacterSelectionModal({
 
         {/* Settings Configuration Bar */}
         <div className="px-6 py-3 border-b border-gray-100 dark:border-zinc-800 bg-gray-50/70 dark:bg-zinc-900/60 flex flex-wrap items-center justify-between gap-3 text-xs">
-          {/* Controls: Size, Position, Sync, Sakura */}
+          {/* Controls: Show/Hide, Size, Position, Sync, Sakura */}
           <div className="flex flex-wrap items-center gap-4">
+            {/* Show / Hide Companion Switch */}
+            <div className="flex items-center gap-2 pr-4 border-r border-gray-200 dark:border-zinc-700">
+              <span className="font-bold text-gray-700 dark:text-gray-200 flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                <span>Bạn đồng hành:</span>
+              </span>
+              <button
+                type="button"
+                onClick={() => setShowCompanion(!showCompanion)}
+                className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                  showCompanion ? 'bg-sky-600' : 'bg-gray-300 dark:bg-zinc-700'
+                }`}
+                title={showCompanion ? 'Đang BẬT hiển thị bạn đồng hành' : 'Đang TẮT (Ẩn bạn đồng hành)'}
+              >
+                <span
+                  className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                    showCompanion ? 'translate-x-4' : 'translate-x-0'
+                  }`}
+                />
+              </button>
+              <span className={`text-[11px] font-bold ${showCompanion ? 'text-sky-600 dark:text-sky-400' : 'text-gray-400 dark:text-gray-500'}`}>
+                {showCompanion ? 'BẬT' : 'TẮT'}
+              </span>
+            </div>
+
             {/* Size selector */}
             <div className="flex items-center gap-1.5 text-gray-600 dark:text-gray-300 font-semibold">
               <Maximize2 className="w-3.5 h-3.5 text-gray-400" />

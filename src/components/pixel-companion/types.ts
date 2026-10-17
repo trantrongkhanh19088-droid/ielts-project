@@ -43,6 +43,7 @@ export interface CompanionSettings {
   position: 'left' | 'right';
   syncThemeAccent: boolean;
   sakuraEnabled: boolean;
+  showCompanion: boolean;
 }
 
 export const DEFAULT_COMPANION_SETTINGS: CompanionSettings = {
@@ -51,4 +52,5 @@ export const DEFAULT_COMPANION_SETTINGS: CompanionSettings = {
   position: 'right',
   syncThemeAccent: true,
   sakuraEnabled: true,
+  showCompanion: true,
 };
