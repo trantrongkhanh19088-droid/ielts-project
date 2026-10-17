@@ -192,8 +192,8 @@ export default function Navbar() {
             {/* Logo & Maneki-neko */}
             <div className="flex items-center gap-2.5">
               <Link href="/" className="flex items-center gap-2.5 group">
-                <div className="w-8 h-8 rounded-md overflow-hidden border border-stone-300/80 dark:border-stone-800 bg-stone-950 flex items-center justify-center shrink-0 p-0.5 shadow-xs group-hover:border-vermilion/60 transition-colors duration-200">
-                  <ToriiGate width={30} height={26} text="合格" glow={false} showShimenawa={true} />
+                <div className="flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-200">
+                  <ToriiGate width={34} height={30} text="合格" glow={false} showShimenawa={true} />
                 </div>
                 <div className="flex flex-col">
                   <div className="flex items-baseline">

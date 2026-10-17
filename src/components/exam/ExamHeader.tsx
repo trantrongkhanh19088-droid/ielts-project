@@ -97,8 +97,8 @@ export default function ExamHeader({
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             {/* Custom Avatar Logo */}
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg overflow-hidden border border-red-500/40 dark:border-red-500/60 shadow-xs shrink-0 bg-gradient-to-b from-slate-900 to-black flex items-center justify-center p-0.5">
-                <ToriiGate width={28} height={25} text="合格" glow={false} showShimenawa={true} />
+              <div className="flex items-center justify-center shrink-0">
+                <ToriiGate width={32} height={28} text="合格" glow={false} showShimenawa={true} />
               </div>
 
               <div className="hidden lg:flex flex-col">

@@ -102,8 +102,8 @@ function AuthContent() {
     <div className="flex-1 flex items-center justify-center p-4 py-16 bg-paper dark:bg-carbon">
       <div className="max-w-md w-full bg-paper-subtle dark:bg-carbon-subtle hairline-border rounded-lg shadow-xs p-8 sm:p-10 space-y-6">
         <div className="text-center space-y-3">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-md hairline-border bg-stone-950 p-1 shadow-xs">
-            <ToriiGate width={40} height={34} text="合格" glow={false} showShimenawa={true} />
+          <div className="inline-flex items-center justify-center">
+            <ToriiGate width={56} height={48} text="合格" glow={false} showShimenawa={true} />
           </div>
           <div>
             <h2 className="font-serif text-3xl font-normal text-stone-900 dark:text-stone-100 tracking-tight">

@@ -68,8 +68,8 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-8">
           {/* Eyebrow & Architectural Torii Crest */}
           <div className="inline-flex flex-col items-center gap-3">
-            <div className="p-1 rounded-lg hairline-border bg-paper-subtle dark:bg-carbon-subtle shadow-xs">
-              <ToriiGate width={88} height={72} text="合格" showShimenawa={true} glow={false} />
+            <div className="flex items-center justify-center">
+              <ToriiGate width={96} height={80} text="合格" showShimenawa={true} glow={false} />
             </div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full hairline-border bg-stone-100/70 dark:bg-stone-900/60 font-mono text-[11px] text-stone-600 dark:text-stone-400 tracking-wider uppercase">
               <span className="w-1.5 h-1.5 rounded-full bg-vermilion animate-pulse" />
