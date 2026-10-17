@@ -10,6 +10,8 @@ interface ParaphraseRequestBody {
   blockId?: string;
   taskType?: 'task1' | 'task2';
   promptText?: string;
+  preferredStyle?: string;
+  previousAttempts?: string[];
 }
 
 export async function POST(req: NextRequest) {
@@ -19,7 +21,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body: ParaphraseRequestBody = await req.json();
-    const { sentence, targetBand, blockId, taskType, promptText } = body;
+    const { sentence, targetBand, blockId, taskType, promptText, preferredStyle, previousAttempts } = body;
 
     if (!sentence || sentence.trim().length === 0) {
       return NextResponse.json(
@@ -59,6 +61,8 @@ CONTEXT:
 - Candidate's Original Sentence:
 "${sentence.trim()}"
 - Target Band: Band ${targetBand || '7.5'}
+${preferredStyle ? `- Candidate specifically requested style: ${preferredStyle}` : ''}
+${previousAttempts && previousAttempts.length > 0 ? `- IMPORTANT: Candidate was NOT satisfied with previous attempts. Do NOT repeat or generate sentences similar to these:\n${previousAttempts.map((s) => `  * "${s}"`).join('\n')}\nProvide completely fresh ideas and different lexical choices.` : ''}
 
 CRITICAL STYLISTIC DIRECTIVE: STRICTLY AVOID MECHANICAL PASSIVE VOICE BIAS
 1. CANDIDATE FEEDBACK & REAL-WORLD EXAMINER STANDARD:

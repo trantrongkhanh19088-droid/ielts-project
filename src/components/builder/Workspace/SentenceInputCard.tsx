@@ -16,6 +16,7 @@ import {
   Lightbulb,
   Eye,
   EyeOff,
+  ChevronDown,
 } from 'lucide-react';
 import {
   SentenceInput,
@@ -78,6 +79,7 @@ export default function SentenceInputCard({
   const [isChecking, setIsChecking] = useState(false);
   const [isParaphrasing, setIsParaphrasing] = useState(false);
   const [selectedAltIndex, setSelectedAltIndex] = useState(0);
+  const [isStyleMenuOpen, setIsStyleMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'none' | 'check' | 'update'>(() => {
     if (sentence.checkResult) return 'check';
     if (sentence.paraphraseResult) return 'update';
@@ -130,6 +132,7 @@ export default function SentenceInputCard({
     setIsParaphrasing(true);
     setActiveTab('update');
     setSelectedAltIndex(0);
+    setIsStyleMenuOpen(false);
     try {
       const res = await fetch('/api/builder/paraphrase', {
         method: 'POST',
@@ -149,6 +152,53 @@ export default function SentenceInputCard({
       }
 
       const data: SentenceParaphraseResult = await res.json();
+      onUpdateParaphraseResult(data);
+    } catch (err: any) {
+      alert(`Nâng cấp câu thất bại: ${err.message || 'Lỗi mạng'}`);
+    } finally {
+      setIsParaphrasing(false);
+    }
+  };
+
+  // Regenerate fresh style if candidate is not satisfied
+  const handleRegenerateNewStyle = async () => {
+    if (!sentence.text.trim()) return;
+
+    setIsParaphrasing(true);
+    setActiveTab('update');
+    setIsStyleMenuOpen(false);
+
+    try {
+      const prevSentences: string[] = [];
+      if (sentence.paraphraseResult?.paraphrasedSentence) {
+        prevSentences.push(sentence.paraphraseResult.paraphrasedSentence);
+      }
+      (sentence.paraphraseResult?.alternatives || []).forEach((a) => {
+        if (a.sentence && !prevSentences.includes(a.sentence)) {
+          prevSentences.push(a.sentence);
+        }
+      });
+
+      const res = await fetch('/api/builder/paraphrase', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sentence: sentence.text,
+          targetBand,
+          blockId,
+          taskType,
+          promptText: promptQuestion,
+          previousAttempts: prevSentences,
+        }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || 'Lỗi nâng cấp câu.');
+      }
+
+      const data: SentenceParaphraseResult = await res.json();
+      setSelectedAltIndex(0);
       onUpdateParaphraseResult(data);
     } catch (err: any) {
       alert(`Nâng cấp câu thất bại: ${err.message || 'Lỗi mạng'}`);
@@ -397,120 +447,167 @@ export default function SentenceInputCard({
       )}
 
       {/* 2. PARAPHRASE RESULTS VIEW */}
-      {activeTab === 'update' && sentence.paraphraseResult && (
-        <div className="p-4 rounded-xl bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/60 text-xs space-y-4 animate-in fade-in">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <div className="flex items-center gap-1.5 font-bold text-emerald-900 dark:text-emerald-300">
-              <Sparkles className="w-4 h-4 text-emerald-600" />
-              <span>Bản nâng cấp học thuật (Band {sentence.paraphraseResult.bandScore}):</span>
-            </div>
-            <button
-              type="button"
-              onClick={() => {
-                const alts = sentence.paraphraseResult?.alternatives || [];
-                const toApply =
-                  alts.length > 0 && alts[selectedAltIndex]
-                    ? alts[selectedAltIndex].sentence
-                    : sentence.paraphraseResult!.paraphrasedSentence;
-                applyParaphrasedSentence(toApply);
-              }}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition shrink-0"
-            >
-              <Check className="w-3.5 h-3.5" />
-              <span>Áp dụng câu này vào bài</span>
-            </button>
-          </div>
+      {activeTab === 'update' && sentence.paraphraseResult && (() => {
+        const alts = sentence.paraphraseResult?.alternatives || [];
+        const activeAlt = alts[selectedAltIndex];
+        const activeSentence = activeAlt ? activeAlt.sentence : sentence.paraphraseResult?.paraphrasedSentence || '';
+        const activeStyleLabel = activeAlt?.styleLabel || 'Chủ động & Collocation hiện đại';
+        const activeExplanation = activeAlt?.explanationVi || sentence.paraphraseResult?.styleExplanationVi || '';
 
-          {/* Diverse Style Selector */}
-          {sentence.paraphraseResult.alternatives && sentence.paraphraseResult.alternatives.length > 0 && (
-            <div className="space-y-1.5">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-400 block">
-                Phong cách diễn đạt (Đa dạng - Không lạm dụng bị động):
-              </span>
-              <div className="flex flex-wrap gap-1.5">
-                {sentence.paraphraseResult.alternatives.map((alt, idx) => {
-                  const isSelected = selectedAltIndex === idx;
-                  return (
-                    <button
-                      key={idx}
-                      type="button"
-                      onClick={() => setSelectedAltIndex(idx)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition border flex items-center gap-1.5 ${
-                        isSelected
-                          ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs font-bold'
-                          : 'bg-white dark:bg-zinc-900 text-gray-700 dark:text-zinc-300 border-emerald-200 dark:border-zinc-800 hover:border-emerald-400 dark:hover:border-emerald-700'
-                      }`}
-                    >
-                      <span>{alt.styleLabel}</span>
-                    </button>
-                  );
-                })}
+        return (
+          <div className="p-4 rounded-xl bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/60 text-xs space-y-3.5 animate-in fade-in relative">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+              <div className="flex flex-wrap items-center gap-1.5 font-bold text-emerald-900 dark:text-emerald-300">
+                <Sparkles className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>Bản nâng cấp học thuật (Band {sentence.paraphraseResult.bandScore}):</span>
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-200/80 dark:bg-emerald-900/70 text-emerald-900 dark:text-emerald-200 font-semibold border border-emerald-300 dark:border-emerald-700">
+                  {activeStyleLabel}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0">
+                {/* Option to change style or regenerate if unsatisfied */}
+                <div className="relative">
+                  <button
+                    type="button"
+                    disabled={isParaphrasing}
+                    onClick={() => setIsStyleMenuOpen((prev) => !prev)}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white dark:bg-zinc-900 hover:bg-emerald-50 dark:hover:bg-zinc-800 text-emerald-800 dark:text-emerald-300 font-bold text-xs border border-emerald-300 dark:border-zinc-700 shadow-xs transition"
+                    title="Đổi phong cách diễn đạt khác hoặc yêu cầu AI cải tiến lại"
+                  >
+                    <RefreshCw className={`w-3.5 h-3.5 text-emerald-600 ${isParaphrasing ? 'animate-spin' : ''}`} />
+                    <span>Đổi phong cách / Cải tiến</span>
+                    <ChevronDown className={`w-3.5 h-3.5 text-emerald-600 transition-transform ${isStyleMenuOpen ? 'rotate-180' : ''}`} />
+                  </button>
+
+                  {/* Dropdown Menu */}
+                  {isStyleMenuOpen && (
+                    <>
+                      <div
+                        className="fixed inset-0 z-40"
+                        onClick={() => setIsStyleMenuOpen(false)}
+                      />
+                      <div className="absolute right-0 top-full mt-1.5 w-72 sm:w-80 bg-white dark:bg-zinc-900 border border-emerald-200 dark:border-zinc-700 rounded-xl shadow-xl p-2.5 z-50 space-y-2 animate-in fade-in zoom-in-95 duration-150">
+                        <div className="px-2 py-1 text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-zinc-400 border-b border-gray-100 dark:border-zinc-800">
+                          Chọn phong cách khác:
+                        </div>
+
+                        {alts.length > 0 ? (
+                          <div className="space-y-1">
+                            {alts.map((alt, idx) => {
+                              const isSelected = selectedAltIndex === idx;
+                              return (
+                                <button
+                                  key={idx}
+                                  type="button"
+                                  onClick={() => {
+                                    setSelectedAltIndex(idx);
+                                    setIsStyleMenuOpen(false);
+                                  }}
+                                  className={`w-full text-left p-2 rounded-lg text-xs transition flex flex-col gap-0.5 ${
+                                    isSelected
+                                      ? 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-900 dark:text-emerald-200 font-bold border border-emerald-200 dark:border-emerald-800'
+                                      : 'hover:bg-gray-50 dark:hover:bg-zinc-800/70 text-gray-700 dark:text-zinc-300'
+                                  }`}
+                                >
+                                  <div className="flex items-center justify-between">
+                                    <span>{alt.styleLabel}</span>
+                                    {isSelected && <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />}
+                                  </div>
+                                  {alt.explanationVi && (
+                                    <span className="text-[10px] text-gray-500 dark:text-zinc-400 font-normal">
+                                      {alt.explanationVi}
+                                    </span>
+                                  )}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        ) : null}
+
+                        <div className="pt-1.5 border-t border-gray-100 dark:border-zinc-800">
+                          <button
+                            type="button"
+                            onClick={handleRegenerateNewStyle}
+                            className="w-full text-left p-2 rounded-lg text-xs font-semibold text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/50 transition flex items-center gap-2"
+                          >
+                            <Sparkles className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                            <span>Chưa hài lòng? Yêu cầu AI viết lại bản mới...</span>
+                          </button>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                {/* Apply Button */}
+                <button
+                  type="button"
+                  onClick={() => applyParaphrasedSentence(activeSentence)}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition shrink-0"
+                >
+                  <Check className="w-3.5 h-3.5" />
+                  <span>Áp dụng vào bài</span>
+                </button>
               </div>
             </div>
-          )}
 
-          {/* Paraphrased Sentence Quote */}
-          <div className="space-y-1.5">
-            <div className="p-3.5 rounded-xl bg-white dark:bg-zinc-900 border-2 border-emerald-400/80 dark:border-emerald-700 text-sm font-semibold text-emerald-950 dark:text-emerald-100 leading-relaxed shadow-xs">
-              &ldquo;
-              {sentence.paraphraseResult.alternatives &&
-              sentence.paraphraseResult.alternatives.length > 0 &&
-              sentence.paraphraseResult.alternatives[selectedAltIndex]
-                ? sentence.paraphraseResult.alternatives[selectedAltIndex].sentence
-                : sentence.paraphraseResult.paraphrasedSentence}
-              &rdquo;
-            </div>
-            {sentence.paraphraseResult.alternatives &&
-              sentence.paraphraseResult.alternatives[selectedAltIndex]?.explanationVi && (
+            {/* Paraphrased Sentence Quote (Single clean display) */}
+            <div className="space-y-1.5">
+              <div className="p-3.5 rounded-xl bg-white dark:bg-zinc-900 border-2 border-emerald-400/80 dark:border-emerald-700 text-sm font-semibold text-emerald-950 dark:text-emerald-100 leading-relaxed shadow-xs">
+                &ldquo;{activeSentence}&rdquo;
+              </div>
+              {activeExplanation && (
                 <p className="text-[11px] text-emerald-800 dark:text-emerald-300 italic px-1">
-                  💡 {sentence.paraphraseResult.alternatives[selectedAltIndex].explanationVi}
+                  💡 {activeExplanation}
                 </p>
               )}
-          </div>
+            </div>
 
-          {/* Lexical Highlights & Collocations List */}
-          {sentence.paraphraseResult.lexicalHighlights && sentence.paraphraseResult.lexicalHighlights.length > 0 && (
-            <div className="space-y-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-400 block">
-                Từ vựng &amp; Cụm từ ăn điểm (Lexical Highlights):
-              </span>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                {sentence.paraphraseResult.lexicalHighlights.map((lex, idx) => (
-                  <div
-                    key={idx}
-                    className="p-2.5 rounded-lg bg-white/90 dark:bg-zinc-900/90 border border-emerald-200/80 dark:border-zinc-800 space-y-1"
-                  >
-                    <div className="flex items-center justify-between gap-1">
-                      <span className="font-extrabold text-xs text-emerald-700 dark:text-emerald-400">
-                        {lex.phrase}
-                      </span>
-                      <span className="text-[9px] px-1.5 py-0.5 rounded font-bold uppercase bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300">
-                        {lex.type}
-                      </span>
+            {/* Lexical Highlights & Collocations List */}
+            {sentence.paraphraseResult.lexicalHighlights && sentence.paraphraseResult.lexicalHighlights.length > 0 && (
+              <div className="space-y-2">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-400 block">
+                  Từ vựng &amp; Cụm từ ăn điểm (Lexical Highlights):
+                </span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {sentence.paraphraseResult.lexicalHighlights.map((lex, idx) => (
+                    <div
+                      key={idx}
+                      className="p-2.5 rounded-lg bg-white/90 dark:bg-zinc-900/90 border border-emerald-200/80 dark:border-zinc-800 space-y-1"
+                    >
+                      <div className="flex items-center justify-between gap-1">
+                        <span className="font-extrabold text-xs text-emerald-700 dark:text-emerald-400">
+                          {lex.phrase}
+                        </span>
+                        <span className="text-[9px] px-1.5 py-0.5 rounded font-bold uppercase bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300">
+                          {lex.type}
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-gray-700 dark:text-zinc-300 font-medium">
+                        {lex.meaningVi}
+                      </p>
+                      <p className="text-[10px] text-gray-500 dark:text-zinc-400 italic">
+                        {lex.usageNoteVi}
+                      </p>
                     </div>
-                    <p className="text-[11px] text-gray-700 dark:text-zinc-300 font-medium">
-                      {lex.meaningVi}
-                    </p>
-                    <p className="text-[10px] text-gray-500 dark:text-zinc-400 italic">
-                      {lex.usageNoteVi}
-                    </p>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {/* Style Explanation */}
-          {sentence.paraphraseResult.styleExplanationVi && (
-            <div className="p-3 rounded-lg bg-white/60 dark:bg-zinc-900/60 border border-emerald-200/50 dark:border-zinc-800 text-[11px] text-gray-600 dark:text-zinc-300 leading-relaxed space-y-1">
-              <span className="font-bold text-emerald-800 dark:text-emerald-400 block">
-                Điểm cộng tiêu chí (Grammar &amp; Lexical):
-              </span>
-              <p>{sentence.paraphraseResult.styleExplanationVi}</p>
-            </div>
-          )}
-        </div>
-      )}
+            {/* Style Explanation */}
+            {sentence.paraphraseResult.styleExplanationVi && (
+              <div className="p-3 rounded-lg bg-white/60 dark:bg-zinc-900/60 border border-emerald-200/50 dark:border-zinc-800 text-[11px] text-gray-600 dark:text-zinc-300 leading-relaxed space-y-1">
+                <span className="font-bold text-emerald-800 dark:text-emerald-400 block">
+                  Điểm cộng tiêu chí (Grammar &amp; Lexical):
+                </span>
+                <p>{sentence.paraphraseResult.styleExplanationVi}</p>
+              </div>
+            )}
+          </div>
+        );
+      })()}
     </div>
   );
 }
