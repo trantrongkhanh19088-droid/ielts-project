@@ -18,6 +18,7 @@ import {
   Sun,
   Moon,
   Settings,
+  BookOpen,
 } from 'lucide-react';
 import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import SettingsModal from '@/components/settings/SettingsModal';
@@ -231,6 +232,20 @@ export default function Navbar() {
                 </span>
               </Link>
               <Link
+                href="/prompts"
+                className={`px-3 py-1.5 rounded-md transition-colors flex items-center gap-1.5 ${
+                  pathname === '/prompts'
+                    ? 'text-stone-950 dark:text-stone-50 font-semibold bg-stone-200/60 dark:bg-stone-800/60'
+                    : 'text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 hover:bg-stone-100/70 dark:hover:bg-stone-850'
+                }`}
+              >
+                <BookOpen className="w-3.5 h-3.5 text-vermilion" />
+                <span>Kho Đề</span>
+                <span className="font-mono text-[10px] px-1.5 py-0.2 rounded bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-500/30 font-bold">
+                  107
+                </span>
+              </Link>
+              <Link
                 href="/practice?mode=task1"
                 className={`px-3 py-1.5 rounded-md transition-colors ${
                   pathname === '/practice' && typeof window !== 'undefined' && window.location.search.includes('task1')
@@ -415,6 +430,19 @@ export default function Navbar() {
 
               {/* Quick Navigation */}
               <div className="space-y-1.5 pt-2 border-t border-gray-100 dark:border-zinc-800 text-xs">
+                <Link
+                  href="/prompts"
+                  onClick={() => setIsProfileModalOpen(false)}
+                  className="w-full flex items-center justify-between p-2.5 rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-800 text-gray-700 dark:text-gray-300 transition"
+                >
+                  <span className="font-semibold flex items-center gap-2">
+                    <BookOpen className="w-3.5 h-3.5 text-vermilion" />
+                    Thư viện 107 Đề Thi Forecast
+                  </span>
+                  <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-700 dark:text-amber-400 font-bold">
+                    Band 8+
+                  </span>
+                </Link>
                 <Link
                   href="/dashboard"
                   onClick={() => setIsProfileModalOpen(false)}
