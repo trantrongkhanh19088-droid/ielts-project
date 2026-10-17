@@ -22,6 +22,10 @@ import {
 } from 'lucide-react';
 import { TASK_1_SEEDS, TASK_2_SEEDS } from '@/lib/data/seed-prompts';
 
+import ToriiGate from '@/components/japanese/ToriiGate';
+import ChochinLantern from '@/components/japanese/ChochinLantern';
+import { SeigaihaPattern, OmamoriBadge } from '@/components/japanese/JapanesePatterns';
+
 export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [task1Category, setTask1Category] = useState('All');
@@ -50,16 +54,32 @@ export default function HomePage() {
   });
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden py-16 lg:py-24 bg-gradient-to-b from-sky-50/60 via-white to-slate-50 dark:from-zinc-900/60 dark:via-zinc-950 dark:to-zinc-950 border-b border-gray-200/80 dark:border-zinc-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-sky-100 dark:bg-sky-950/60 border border-sky-200 dark:border-sky-800 text-sky-800 dark:text-sky-300 text-xs font-semibold shadow-sm">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Mô phỏng 100% Giao diện Thi Thật CD-IELTS Inspera</span>
+      {/* Hero Section with Traditional Japanese Cultural Styling */}
+      <section className="relative overflow-hidden py-14 lg:py-20 bg-gradient-to-b from-rose-50/40 via-sky-50/30 to-slate-50 dark:from-zinc-900/80 dark:via-zinc-950 dark:to-zinc-950 border-b border-gray-200/80 dark:border-zinc-800">
+        {/* Subtle Japanese Seigaiha Waves Background */}
+        <SeigaihaPattern opacity={0.06} className="text-red-900 dark:text-red-400" />
+
+        {/* Decorative Swaying Chochin Lanterns */}
+        <div className="hidden md:block absolute top-4 left-8 lg:left-16 pointer-events-none z-10">
+          <ChochinLantern size={72} kanji="勝" sway={true} />
+        </div>
+        <div className="hidden md:block absolute top-4 right-8 lg:right-16 pointer-events-none z-10">
+          <ChochinLantern size={72} kanji="夢" sway={true} />
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6 relative z-10">
+          {/* Centered Torii Gate Architectural Emblem */}
+          <div className="flex justify-center -mb-2">
+            <ToriiGate width={130} height={105} text="合格" showShimenawa={true} glow={true} />
+          </div>
+
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-rose-100/80 dark:bg-red-950/60 border border-rose-300 dark:border-red-800 text-rose-900 dark:text-rose-200 text-xs font-semibold shadow-sm">
+            <Sparkles className="w-3.5 h-3.5 text-rose-500 animate-pulse" />
+            <span>Mô phỏng 100% Giao diện Thi Thật CD-IELTS Inspera &bull; Phong cách Văn hóa Nhật Bản</span>
           </div>
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 dark:text-white tracking-tight leading-tight max-w-4xl mx-auto">
-            Nền tảng Luyện thi <span className="text-sky-600">IELTS Writing</span> Chuẩn Phòng Thi &amp; Chấm Điểm AI
+            Nền tảng Luyện thi <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-rose-500 to-amber-500">IELTS Writing</span> Chuẩn Phòng Thi &amp; Chấm Điểm AI
           </h1>
 
           <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">

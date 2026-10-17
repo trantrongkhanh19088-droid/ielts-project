@@ -16,6 +16,10 @@ const inter = Inter({
   variable: '--font-inter',
 });
 
+import SakuraCanvas from '@/components/japanese/SakuraCanvas';
+import ManekiNeko from '@/components/japanese/ManekiNeko';
+import PixelCompanion from '@/components/pixel-companion/PixelCompanion';
+
 export default function RootLayout({
   children,
 }: {
@@ -38,9 +42,18 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.className} min-h-screen flex flex-col bg-slate-50 dark:bg-zinc-950 text-slate-900 dark:text-slate-100 antialiased`}>
+      <body className={`${inter.className} min-h-screen flex flex-col bg-slate-50 dark:bg-zinc-950 text-slate-900 dark:text-slate-100 antialiased relative`}>
+        {/* Ambient Falling Sakura Petals */}
+        <SakuraCanvas />
+
         <Navbar />
         <main className="flex-1 flex flex-col">{children}</main>
+
+        {/* 55 Pixel Companion with Interactive Speech Bubbles & Settings */}
+        <PixelCompanion />
+
+        {/* Lucky Maneki-Neko Waving Back-To-Top Button */}
+        <ManekiNeko mode="back-to-top" size={44} tooltip="Vẫy tay rước Band 8.5+! 🐾 (Lên đầu trang)" />
       </body>
     </html>
   );

@@ -21,6 +21,9 @@ import {
 } from 'lucide-react';
 import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import SettingsModal from '@/components/settings/SettingsModal';
+import ManekiNeko from '@/components/japanese/ManekiNeko';
+import CharacterSelectionModal from '@/components/pixel-companion/CharacterSelectionModal';
+import { CompanionSettings, DEFAULT_COMPANION_SETTINGS } from '@/components/pixel-companion/types';
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -29,8 +32,19 @@ export default function Navbar() {
   const [targetBand, setTargetBand] = useState<number>(7.0);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
+  const [isCharModalOpen, setIsCharModalOpen] = useState(false);
+  const [companionSettings, setCompanionSettings] = useState<CompanionSettings>(DEFAULT_COMPANION_SETTINGS);
   const [bandSaved, setBandSaved] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem('cd_ielts_companion_settings');
+      if (stored) {
+        setCompanionSettings({ ...DEFAULT_COMPANION_SETTINGS, ...JSON.parse(stored) });
+      }
+    } catch {}
+  }, []);
 
   // Load and sync theme from localStorage on mount
   useEffect(() => {
@@ -160,25 +174,30 @@ export default function Navbar() {
       <nav className="sticky top-0 z-30 bg-white/95 dark:bg-zinc-950/95 backdrop-blur border-b border-gray-200 dark:border-zinc-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-2.5 group">
-              <div className="w-9 h-9 rounded-xl overflow-hidden border border-sky-400/50 shadow-md shadow-sky-500/20 group-hover:scale-105 transition bg-white dark:bg-zinc-800 shrink-0">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/avatar-logo.png"
-                  alt="CD-IELTS Logo"
-                  className="w-full h-full object-cover"
-                />
+            {/* Logo & Maneki-neko */}
+            <div className="flex items-center gap-2">
+              <Link href="/" className="flex items-center gap-2.5 group">
+                <div className="w-9 h-9 rounded-xl overflow-hidden border border-sky-400/50 shadow-md shadow-sky-500/20 group-hover:scale-105 transition bg-white dark:bg-zinc-800 shrink-0">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/avatar-logo.png"
+                    alt="CD-IELTS Logo"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-extrabold text-base tracking-tight text-gray-900 dark:text-white">
+                    CD-IELTS <span className="text-sky-600">Writing</span>
+                  </span>
+                  <span className="text-[10px] text-gray-500 dark:text-gray-400 font-medium tracking-wider uppercase">
+                    Inspera Official Simulator
+                  </span>
+                </div>
+              </Link>
+              <div className="hidden lg:block pl-1">
+                <ManekiNeko size={32} tooltip="Mèo Thần Tài chúc bạn thi đạt Band cao! 🐾" />
               </div>
-              <div className="flex flex-col">
-                <span className="font-extrabold text-base tracking-tight text-gray-900 dark:text-white">
-                  CD-IELTS <span className="text-sky-600">Writing</span>
-                </span>
-                <span className="text-[10px] text-gray-500 dark:text-gray-400 font-medium tracking-wider uppercase">
-                  Inspera Official Simulator
-                </span>
-              </div>
-            </Link>
+            </div>
 
             {/* Nav links */}
             <div className="hidden md:flex items-center gap-1 text-sm font-medium">
@@ -263,6 +282,18 @@ export default function Navbar() {
                   <span>Tài khoản</span>
                 </Link>
               )}
+
+              {/* Character & Theme Settings Button (「キャラ＆テーマ設定」) */}
+              <button
+                type="button"
+                onClick={() => setIsCharModalOpen(true)}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-rose-500/10 via-amber-500/10 to-sky-500/10 hover:from-rose-500/20 hover:to-sky-500/20 border border-rose-300/70 dark:border-rose-700/70 text-xs font-bold text-rose-700 dark:text-rose-300 shadow-xs transition transform hover:scale-105"
+                title="Đổi nhân vật Pixel & Giao diện Nhật Bản (「キャラ＆テーマ設定」)"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-rose-500 animate-spin" style={{ animationDuration: '4s' }} />
+                <span className="hidden sm:inline">キャラ＆テーマ</span>
+                <span className="sm:hidden">Nhân vật</span>
+              </button>
 
               {/* System Settings Button (Theme & Builder Config) */}
               <button
@@ -400,6 +431,24 @@ export default function Navbar() {
         onClose={() => setIsSettingsModalOpen(false)}
         currentTheme={theme}
         onThemeChange={handleThemeChange}
+      />
+
+      {/* Character Selection Modal */}
+      <CharacterSelectionModal
+        isOpen={isCharModalOpen}
+        onClose={() => setIsCharModalOpen(false)}
+        settings={companionSettings}
+        onSaveSettings={(newSettings) => {
+          setCompanionSettings(newSettings);
+          try {
+            localStorage.setItem('cd_ielts_companion_settings', JSON.stringify(newSettings));
+            localStorage.setItem('cd_ielts_sakura_enabled', String(newSettings.sakuraEnabled));
+            window.dispatchEvent(
+              new CustomEvent('sakura-toggle', { detail: { enabled: newSettings.sakuraEnabled } })
+            );
+            window.location.reload();
+          } catch {}
+        }}
       />
     </>
   );
