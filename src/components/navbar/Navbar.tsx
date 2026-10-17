@@ -22,6 +22,7 @@ import {
 import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import SettingsModal from '@/components/settings/SettingsModal';
 import ManekiNeko from '@/components/japanese/ManekiNeko';
+import ToriiGate from '@/components/japanese/ToriiGate';
 import CharacterSelectionModal from '@/components/pixel-companion/CharacterSelectionModal';
 import { CompanionSettings, DEFAULT_COMPANION_SETTINGS } from '@/components/pixel-companion/types';
 
@@ -191,13 +192,8 @@ export default function Navbar() {
             {/* Logo & Maneki-neko */}
             <div className="flex items-center gap-2">
               <Link href="/" className="flex items-center gap-2.5 group">
-                <div className="w-9 h-9 rounded-xl overflow-hidden border border-sky-400/50 shadow-md shadow-sky-500/20 group-hover:scale-105 transition bg-white dark:bg-zinc-800 shrink-0">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/avatar-logo.png"
-                    alt="CD-IELTS Logo"
-                    className="w-full h-full object-cover"
-                  />
+                <div className="w-9 h-9 rounded-xl overflow-hidden border border-red-500/40 dark:border-red-500/60 shadow-md shadow-red-500/20 group-hover:scale-105 transition bg-gradient-to-b from-slate-900 to-black flex items-center justify-center shrink-0 p-0.5">
+                  <ToriiGate width={32} height={28} text="合格" glow={false} showShimenawa={true} />
                 </div>
                 <div className="flex flex-col">
                   <span className="font-extrabold text-base tracking-tight text-gray-900 dark:text-white">

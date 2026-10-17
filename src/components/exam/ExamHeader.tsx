@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { ContrastMode, FontSize } from '@/types';
 import { formatDuration } from '@/lib/utils';
+import ToriiGate from '@/components/japanese/ToriiGate';
 
 interface ExamHeaderProps {
   title: string;
@@ -96,13 +97,8 @@ export default function ExamHeader({
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             {/* Custom Avatar Logo */}
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg overflow-hidden border border-sky-400/50 shadow-xs shrink-0 bg-white dark:bg-zinc-800">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/avatar-logo.png"
-                  alt="CD-IELTS Logo"
-                  className="w-full h-full object-cover"
-                />
+              <div className="w-8 h-8 rounded-lg overflow-hidden border border-red-500/40 dark:border-red-500/60 shadow-xs shrink-0 bg-gradient-to-b from-slate-900 to-black flex items-center justify-center p-0.5">
+                <ToriiGate width={28} height={25} text="合格" glow={false} showShimenawa={true} />
               </div>
 
               <div className="hidden lg:flex flex-col">

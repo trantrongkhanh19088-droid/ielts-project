@@ -15,6 +15,7 @@ import {
   PenTool,
 } from 'lucide-react';
 import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import ToriiGate from '@/components/japanese/ToriiGate';
 
 function AuthContent() {
   const router = useRouter();
@@ -101,9 +102,8 @@ function AuthContent() {
     <div className="flex-1 flex items-center justify-center p-4 py-12">
       <div className="max-w-md w-full bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl shadow-xl overflow-hidden p-8 space-y-6">
         <div className="text-center space-y-2">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl overflow-hidden border-2 border-sky-400/50 shadow-md shadow-sky-500/20 mb-1 bg-white">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/avatar-logo.png" alt="Logo" className="w-full h-full object-cover" />
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl overflow-hidden border-2 border-red-500/40 shadow-md shadow-red-500/20 mb-1 bg-gradient-to-b from-slate-900 to-black p-1">
+            <ToriiGate width={48} height={42} text="合格" glow={false} showShimenawa={true} />
           </div>
           <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white">
             {isSignUp ? 'Tạo Tài Khoản Luyện Thi' : 'Đăng Nhập Tài Khoản'}
