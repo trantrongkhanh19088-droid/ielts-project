@@ -15,6 +15,10 @@ import {
   ArrowUpRight,
   BookOpen,
   Sparkles,
+  Flame,
+  ListChecks,
+  Compass,
+  CheckCircle2,
 } from 'lucide-react';
 import { TASK_1_SEEDS, TASK_2_SEEDS } from '@/lib/data/seed-prompts';
 import ToriiGate from '@/components/japanese/ToriiGate';
@@ -154,88 +158,119 @@ export default function HomePage() {
           {/* Asymmetric Bento Layout: 7 cols (Flagship) + 5 cols (Stacked Tasks) */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
             {/* Card 1: Flagship Full Test (7 cols) */}
-            <div className="lg:col-span-7 flex flex-col justify-between p-8 rounded-lg hairline-border bg-paper-subtle dark:bg-carbon-subtle hover:border-stone-400 dark:hover:border-stone-600 transition-colors duration-200 group relative">
+            <div className="lg:col-span-7 flex flex-col justify-between p-7 sm:p-8 rounded-2xl border border-stone-200/90 dark:border-stone-800 bg-gradient-to-br from-white via-stone-50/60 to-amber-50/40 dark:from-stone-900 dark:via-stone-900/95 dark:to-amber-950/30 shadow-xs hover:shadow-xl hover:border-amber-400/70 dark:hover:border-amber-600/70 transition-all duration-300 group relative overflow-hidden">
+              {/* Top Accent Gradient Bar */}
+              <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-red-600 via-rose-500 to-amber-500" />
+
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-[11px] tracking-[0.16em] uppercase text-stone-500 dark:text-stone-400">
+                  <span className="font-mono text-[11px] tracking-[0.16em] uppercase text-stone-600 dark:text-stone-400 font-bold flex items-center gap-1.5">
+                    <Layers className="w-3.5 h-3.5 text-vermilion" />
                     FLAGSHIP // 01
                   </span>
-                  <span className="font-mono text-[11px] px-2 py-0.5 rounded bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 font-semibold uppercase tracking-wider">
-                    Khuyên dùng
+                  <span className="inline-flex items-center gap-1.5 font-mono text-[11px] px-3 py-1 rounded-full bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 text-white font-bold uppercase tracking-wider shadow-xs animate-pulse">
+                    <Flame className="w-3.5 h-3.5 fill-amber-200 text-amber-200" />
+                    Khuyên dùng &bull; Full 60M
                   </span>
                 </div>
 
                 <div className="space-y-2">
-                  <h3 className="font-serif text-2xl sm:text-3xl font-normal text-stone-900 dark:text-stone-100 tracking-tight leading-snug">
-                    Thi Thử Full Test (Part 1 + Part 2)
+                  <h3 className="font-serif text-2xl sm:text-3xl font-medium text-stone-900 dark:text-stone-100 tracking-tight leading-snug">
+                    Thi Thử Full Test <span className="text-vermilion font-serif italic">(Part 1 + Part 2)</span>
                   </h3>
                   <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed font-normal max-w-xl">
                     Mô phỏng chính xác kỳ thi CD-IELTS 60 phút không gián đoạn: thanh điều hướng chuyển đổi linh hoạt giữa Task 1 và Task 2, bộ đếm từ trực tiếp, và tự động tính điểm Overall Writing theo công thức chuẩn British Council: <code>(Task 1 + Task 2 × 2) / 3</code>.
                   </p>
                 </div>
 
-                {/* Micro Metrics Timeline Bar */}
-                <div className="p-4 rounded-md hairline-border bg-paper dark:bg-carbon space-y-3">
-                  <div className="flex items-center justify-between font-mono text-[11px] text-stone-500 dark:text-stone-400">
-                    <span>TIMELINE // 60 PHÚT</span>
-                    <span className="text-vermilion font-semibold">TỰ ĐỘNG LƯU BÀI LIÊN TỤC</span>
+                {/* Micro Metrics Timeline Bar with Enhanced Contrast */}
+                <div className="p-4 rounded-xl border border-amber-200/90 dark:border-amber-900/60 bg-amber-50/60 dark:bg-amber-950/30 space-y-3">
+                  <div className="flex items-center justify-between font-mono text-[11px]">
+                    <span className="text-amber-900 dark:text-amber-300 font-bold flex items-center gap-1.5">
+                      <Clock className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                      TIMELINE // 60 PHÚT LIÊN MẠCH
+                    </span>
+                    <span className="text-emerald-700 dark:text-emerald-400 font-bold flex items-center gap-1">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                      TỰ ĐỘNG LƯU BÀI LIÊN TỤC
+                    </span>
                   </div>
                   <div className="grid grid-cols-2 gap-3 text-xs">
-                    <div className="hairline-r pr-3 space-y-1">
-                      <div className="text-stone-400 text-[11px] font-mono">GIAI ĐOẠN 01</div>
-                      <div className="font-bold text-stone-900 dark:text-stone-100">Task 1: Biểu Đồ</div>
-                      <div className="text-[11px] text-stone-500">20 phút &bull; Tối thiểu 150 từ</div>
+                    <div className="p-3 rounded-lg bg-sky-50/90 dark:bg-sky-950/60 border border-sky-200/80 dark:border-sky-900/60 space-y-1">
+                      <div className="text-sky-700 dark:text-sky-300 text-[11px] font-mono font-bold uppercase">
+                        GIAI ĐOẠN 01
+                      </div>
+                      <div className="font-bold text-stone-900 dark:text-stone-100 text-xs sm:text-sm">
+                        Task 1: Biểu Đồ &amp; Số Liệu
+                      </div>
+                      <div className="text-[11px] text-sky-800 dark:text-sky-300 font-medium">
+                        20 phút &bull; Tối thiểu 150 từ
+                      </div>
                     </div>
-                    <div className="space-y-1 pl-1">
-                      <div className="text-stone-400 text-[11px] font-mono">GIAI ĐOẠN 02</div>
-                      <div className="font-bold text-stone-900 dark:text-stone-100">Task 2: Nghị Luận</div>
-                      <div className="text-[11px] text-stone-500">40 phút &bull; Tối thiểu 250 từ</div>
+                    <div className="p-3 rounded-lg bg-indigo-50/90 dark:bg-indigo-950/60 border border-indigo-200/80 dark:border-indigo-900/60 space-y-1">
+                      <div className="text-indigo-700 dark:text-indigo-300 text-[11px] font-mono font-bold uppercase">
+                        GIAI ĐOẠN 02
+                      </div>
+                      <div className="font-bold text-stone-900 dark:text-stone-100 text-xs sm:text-sm">
+                        Task 2: Nghị Luận Xã Hội
+                      </div>
+                      <div className="text-[11px] text-indigo-800 dark:text-indigo-300 font-medium">
+                        40 phút &bull; Tối thiểu 250 từ
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
 
               <div className="pt-6 mt-6 hairline-t flex items-center justify-between">
-                <div className="flex items-center gap-2 font-mono text-[11px] text-stone-500">
+                <div className="flex items-center gap-2 font-mono text-[11px] text-stone-600 dark:text-stone-400 font-semibold">
                   <Clock className="w-3.5 h-3.5 text-vermilion" />
                   <span>ĐỒNG HỒ 60:00 CHUẨN INSPERA</span>
                 </div>
                 <Link
                   href="/practice?mode=full_test"
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-md bg-stone-900 text-stone-100 hover:bg-vermilion dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-vermilion dark:hover:text-stone-50 font-semibold text-xs transition-colors duration-200"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-stone-900 text-white hover:bg-vermilion dark:bg-stone-100 dark:text-stone-950 dark:hover:bg-vermilion dark:hover:text-white font-bold text-xs shadow-sm hover:shadow-md transition-all duration-200 group/btn"
                 >
                   <span>Bắt đầu Full Test</span>
-                  <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                  <ChevronRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
                 </Link>
               </div>
             </div>
 
             {/* Stacked Cards: Task 1 and Task 2 (5 cols) */}
             <div className="lg:col-span-5 flex flex-col gap-6 justify-between">
-              {/* Card 2: Task 1 */}
-              <div className="flex-1 flex flex-col justify-between p-6 rounded-lg hairline-border bg-paper-subtle dark:bg-carbon-subtle hover:border-stone-400 dark:hover:border-stone-600 transition-colors duration-200 group">
+              {/* Card 2: Task 1 (Sky Blue Accent) */}
+              <div className="flex-1 flex flex-col justify-between p-6 sm:p-7 rounded-2xl border border-stone-200/90 dark:border-stone-800 bg-gradient-to-br from-white via-stone-50/60 to-sky-50/50 dark:from-stone-900 dark:via-stone-900/95 dark:to-sky-950/30 shadow-xs hover:shadow-xl hover:border-sky-400/80 dark:hover:border-sky-600/80 transition-all duration-300 group relative overflow-hidden">
+                {/* Top Accent Line */}
+                <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-sky-400 via-cyan-400 to-teal-400" />
+
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-[11px] tracking-[0.16em] uppercase text-stone-500 dark:text-stone-400">
+                    <span className="font-mono text-[11px] tracking-[0.16em] uppercase text-sky-700 dark:text-sky-400 font-bold flex items-center gap-1.5">
+                      <BarChart3 className="w-3.5 h-3.5" />
                       TASK // 02
                     </span>
-                    <span className="font-mono text-[11px] text-stone-500">20 MIN &bull; 150 WORDS</span>
+                    <span className="font-mono text-[11px] px-2.5 py-0.5 rounded-full bg-sky-100 dark:bg-sky-950/70 text-sky-800 dark:text-sky-300 font-bold border border-sky-300/70 dark:border-sky-800">
+                      20 MIN &bull; 150 WORDS
+                    </span>
                   </div>
                   <div>
-                    <h3 className="font-serif text-xl font-normal text-stone-900 dark:text-stone-100 tracking-tight leading-snug">
+                    <h3 className="font-serif text-xl sm:text-2xl font-medium text-stone-900 dark:text-stone-100 tracking-tight leading-snug">
                       Luyện Riêng Academic Task 1
                     </h3>
-                    <p className="text-xs text-stone-600 dark:text-stone-300 mt-1 leading-relaxed">
+                    <p className="text-xs text-stone-600 dark:text-stone-300 mt-1.5 leading-relaxed">
                       Phân tích số liệu biểu đồ đường, cột, tròn, bản đồ hoặc quy trình. Chấm sâu vào tiêu chí Task Achievement (Overview &amp; Số liệu).
                     </p>
                   </div>
                 </div>
 
                 <div className="pt-4 mt-4 hairline-t flex items-center justify-between">
-                  <span className="font-mono text-[11px] text-stone-500">4 TIÊU CHÍ: TA &bull; CC &bull; LR &bull; GRA</span>
+                  <span className="font-mono text-[11px] px-2 py-0.5 rounded bg-sky-50 dark:bg-sky-950/50 text-sky-700 dark:text-sky-300 border border-sky-200 dark:border-sky-800 font-bold">
+                    4 TIÊU CHÍ: TA &bull; CC &bull; LR &bull; GRA
+                  </span>
                   <Link
                     href="/practice?mode=task1"
-                    className="inline-flex items-center gap-1 text-xs font-semibold text-stone-900 dark:text-stone-100 hover:text-vermilion dark:hover:text-vermilion transition-colors"
+                    className="inline-flex items-center gap-1 text-xs font-bold text-sky-600 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 transition-colors"
                   >
                     <span>Luyện Task 1</span>
                     <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
@@ -243,30 +278,38 @@ export default function HomePage() {
                 </div>
               </div>
 
-              {/* Card 3: Task 2 */}
-              <div className="flex-1 flex flex-col justify-between p-6 rounded-lg hairline-border bg-paper-subtle dark:bg-carbon-subtle hover:border-stone-400 dark:hover:border-stone-600 transition-colors duration-200 group">
+              {/* Card 3: Task 2 (Royal Indigo Accent) */}
+              <div className="flex-1 flex flex-col justify-between p-6 sm:p-7 rounded-2xl border border-stone-200/90 dark:border-stone-800 bg-gradient-to-br from-white via-stone-50/60 to-indigo-50/50 dark:from-stone-900 dark:via-stone-900/95 dark:to-indigo-950/30 shadow-xs hover:shadow-xl hover:border-indigo-400/80 dark:hover:border-indigo-600/80 transition-all duration-300 group relative overflow-hidden">
+                {/* Top Accent Line */}
+                <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" />
+
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-[11px] tracking-[0.16em] uppercase text-stone-500 dark:text-stone-400">
+                    <span className="font-mono text-[11px] tracking-[0.16em] uppercase text-indigo-700 dark:text-indigo-400 font-bold flex items-center gap-1.5">
+                      <PenTool className="w-3.5 h-3.5" />
                       TASK // 03
                     </span>
-                    <span className="font-mono text-[11px] text-stone-500">40 MIN &bull; 250 WORDS</span>
+                    <span className="font-mono text-[11px] px-2.5 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-950/70 text-indigo-800 dark:text-indigo-300 font-bold border border-indigo-300/70 dark:border-indigo-800">
+                      40 MIN &bull; 250 WORDS
+                    </span>
                   </div>
                   <div>
-                    <h3 className="font-serif text-xl font-normal text-stone-900 dark:text-stone-100 tracking-tight leading-snug">
+                    <h3 className="font-serif text-xl sm:text-2xl font-medium text-stone-900 dark:text-stone-100 tracking-tight leading-snug">
                       Luyện Riêng Task 2 (Discursive Essay)
                     </h3>
-                    <p className="text-xs text-stone-600 dark:text-stone-300 mt-1 leading-relaxed">
+                    <p className="text-xs text-stone-600 dark:text-stone-300 mt-1.5 leading-relaxed">
                       Viết bài luận học thuật cho các dạng đề: Opinion, Discussion, Problem &amp; Solution. Đánh giá Thesis statement và độ sâu của lập luận.
                     </p>
                   </div>
                 </div>
 
                 <div className="pt-4 mt-4 hairline-t flex items-center justify-between">
-                  <span className="font-mono text-[11px] text-stone-500">HỆ THỐNG SỐ ĐIỂM HỆ SỐ 2</span>
+                  <span className="font-mono text-[11px] px-2 py-0.5 rounded bg-amber-100/90 dark:bg-amber-950/70 text-amber-900 dark:text-amber-300 border border-amber-300/80 dark:border-amber-700 font-bold">
+                    HỆ THỐNG ĐIỂM HỆ SỐ 2
+                  </span>
                   <Link
                     href="/practice?mode=task2"
-                    className="inline-flex items-center gap-1 text-xs font-semibold text-stone-900 dark:text-stone-100 hover:text-vermilion dark:hover:text-vermilion transition-colors"
+                    className="inline-flex items-center gap-1 text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors"
                   >
                     <span>Luyện Task 2</span>
                     <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
@@ -279,57 +322,135 @@ export default function HomePage() {
       </section>
 
       {/* -------------------------------------------------------------
-          WRITING BUILDER: Pedagogical Botanical Feature (Editorial Spec)
+          WRITING BUILDER: Pedagogical Botanical Feature (Vivid Highlight)
           ------------------------------------------------------------- */}
       <section className="py-20 bg-paper-subtle dark:bg-carbon-subtle hairline-b">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-          <div className="p-8 sm:p-12 rounded-lg hairline-border bg-paper dark:bg-carbon relative overflow-hidden shadow-xs">
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
-              <div className="space-y-4 max-w-2xl">
-                <div className="inline-flex items-center gap-2 font-mono text-[11px] text-emerald-700 dark:text-emerald-400 tracking-wider uppercase font-semibold">
-                  <Sprout className="w-3.5 h-3.5" />
-                  <span>PHƯƠNG PHÁP HỌC ĐẶC BIỆT // WRITING BUILDER</span>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="p-8 sm:p-12 rounded-3xl border-2 border-emerald-400/80 dark:border-emerald-600/70 bg-gradient-to-br from-emerald-50/95 via-teal-50/50 to-lime-50/40 dark:from-emerald-950/70 dark:via-zinc-900/95 dark:to-teal-950/60 relative overflow-hidden shadow-xl shadow-emerald-700/10">
+            {/* Ambient Botanical Glow Orbs */}
+            <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-emerald-400/20 dark:bg-emerald-500/15 blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-20 -left-20 w-72 h-72 rounded-full bg-teal-400/20 dark:bg-teal-500/10 blur-3xl pointer-events-none" />
+
+            <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+              <div className="space-y-5 max-w-2xl">
+                {/* Highlighted Badge */}
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-700 text-white font-mono text-[11px] font-bold uppercase tracking-wider shadow-sm">
+                  <Sprout className="w-4 h-4 text-lime-300 animate-pulse" />
+                  <span>TÍNH NĂNG ĐỘT PHÁ // WRITING BUILDER</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-lime-300" />
+                  <span className="text-[10px] text-emerald-100 font-sans tracking-tight">GAME HÓA HỌC TẬP</span>
                 </div>
 
-                <h3 className="font-serif text-3xl sm:text-4xl text-stone-900 dark:text-stone-100 font-normal tracking-tight leading-snug">
-                  Lộ Trình Cây Đậu N Tầng &amp; Soạn Thảo Từng Khối Câu Cùng AI
+                <h3 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-stone-900 dark:text-stone-100 font-normal tracking-tight leading-snug">
+                  Lộ Trình Cây Đậu N Tầng &amp; Soạn Thảo{' '}
+                  <span className="font-serif italic text-emerald-600 dark:text-emerald-400 font-medium underline decoration-emerald-400/50 decoration-wavy decoration-1 underline-offset-8">
+                    Từng Khối Câu Cùng AI
+                  </span>
                 </h3>
 
-                <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed font-normal">
-                  Xây dựng Cây Đậu theo số ngày học và band điểm mục tiêu của bạn. Trải nghiệm phương pháp viết có cấu trúc: phân tích đề bài qua câu hỏi trắc nghiệm, tạo dàn ý khoa học, và soạn thảo từng câu văn độc lập với 2 động cơ AI chuyên biệt: <strong>Check</strong> (chỉ ra lỗi chính xác) và <strong>Update</strong> (đa dạng phong cách câu kèm từ vựng &amp; collocations hiện đại).
+                <p className="text-xs sm:text-sm text-stone-700 dark:text-stone-300 leading-relaxed font-normal">
+                  Xây dựng Cây Đậu theo số ngày học và band điểm mục tiêu của bạn. Trải nghiệm phương pháp viết có cấu trúc: phân tích đề bài qua câu hỏi trắc nghiệm, tạo dàn ý khoa học, và soạn thảo từng câu văn độc lập với 2 động cơ AI chuyên biệt:
                 </p>
 
-                {/* 4-Step Editorial Flow */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 font-mono text-[11px]">
-                  <div className="p-2.5 rounded hairline-border bg-paper-subtle dark:bg-carbon-subtle">
-                    <span className="text-stone-400 block text-[11px]">BƯỚC 01</span>
-                    <span className="font-semibold text-stone-800 dark:text-stone-200">Phân Tích Đề</span>
+                {/* 2 AI Engines Colorful Feature Highlights */}
+                <div className="flex flex-wrap items-center gap-2.5 pt-1">
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-100/90 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200 text-xs font-semibold shadow-2xs">
+                    <Search className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
+                    <span><strong>Check Engine:</strong> Bắt lỗi ngữ pháp &amp; chính tả theo ngữ cảnh</span>
                   </div>
-                  <div className="p-2.5 rounded hairline-border bg-paper-subtle dark:bg-carbon-subtle">
-                    <span className="text-stone-400 block text-[11px]">BƯỚC 02</span>
-                    <span className="font-semibold text-stone-800 dark:text-stone-200">Lập Dàn Ý</span>
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-teal-100/90 dark:bg-teal-950/60 border border-teal-300 dark:border-teal-800 text-teal-900 dark:text-teal-200 text-xs font-semibold shadow-2xs">
+                    <Sparkles className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400 shrink-0" />
+                    <span><strong>Update Engine:</strong> Nâng cấp từ vựng C1-C2 &amp; Collocations ăn điểm</span>
                   </div>
-                  <div className="p-2.5 rounded hairline-border bg-paper-subtle dark:bg-carbon-subtle">
-                    <span className="text-stone-400 block text-[11px]">BƯỚC 03</span>
-                    <span className="font-semibold text-stone-800 dark:text-stone-200">Viết Từng Khối</span>
+                </div>
+
+                {/* 4-Step Flow with Vibrant Color Scheme & Icons */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 pt-3 font-mono text-[11px]">
+                  {/* Step 1: Sky Blue */}
+                  <div className="p-3.5 rounded-xl border border-sky-200 dark:border-sky-800/80 bg-white/95 dark:bg-stone-900/90 shadow-2xs hover:shadow-md hover:border-sky-400 transition-all duration-200 group/step space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sky-600 dark:text-sky-400 font-bold font-mono text-[11px]">BƯỚC 01</span>
+                      <div className="w-6 h-6 rounded-md bg-sky-100 dark:bg-sky-950/80 text-sky-600 dark:text-sky-300 flex items-center justify-center">
+                        <ListChecks className="w-3.5 h-3.5" />
+                      </div>
+                    </div>
+                    <div className="font-bold text-stone-900 dark:text-stone-100 font-sans text-xs sm:text-sm">
+                      Phân Tích Đề
+                    </div>
+                    <div className="text-[11px] text-stone-500 dark:text-stone-400 font-sans font-normal leading-snug">
+                      Trắc nghiệm bẫy đề &amp; dạng bài
+                    </div>
                   </div>
-                  <div className="p-2.5 rounded hairline-border bg-paper-subtle dark:bg-carbon-subtle">
-                    <span className="text-stone-400 block text-[11px]">BƯỚC 04</span>
-                    <span className="font-semibold text-stone-800 dark:text-stone-200">AI Nâng Cấp</span>
+
+                  {/* Step 2: Indigo */}
+                  <div className="p-3.5 rounded-xl border border-indigo-200 dark:border-indigo-800/80 bg-white/95 dark:bg-stone-900/90 shadow-2xs hover:shadow-md hover:border-indigo-400 transition-all duration-200 group/step space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-indigo-600 dark:text-indigo-400 font-bold font-mono text-[11px]">BƯỚC 02</span>
+                      <div className="w-6 h-6 rounded-md bg-indigo-100 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-300 flex items-center justify-center">
+                        <Compass className="w-3.5 h-3.5" />
+                      </div>
+                    </div>
+                    <div className="font-bold text-stone-900 dark:text-stone-100 font-sans text-xs sm:text-sm">
+                      Lập Dàn Ý
+                    </div>
+                    <div className="text-[11px] text-stone-500 dark:text-stone-400 font-sans font-normal leading-snug">
+                      Định hình luận điểm &amp; bố cục
+                    </div>
+                  </div>
+
+                  {/* Step 3: Amber */}
+                  <div className="p-3.5 rounded-xl border border-amber-200 dark:border-amber-800/80 bg-white/95 dark:bg-stone-900/90 shadow-2xs hover:shadow-md hover:border-amber-400 transition-all duration-200 group/step space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-amber-600 dark:text-amber-400 font-bold font-mono text-[11px]">BƯỚC 03</span>
+                      <div className="w-6 h-6 rounded-md bg-amber-100 dark:bg-amber-950/80 text-amber-600 dark:text-amber-300 flex items-center justify-center">
+                        <Layers className="w-3.5 h-3.5" />
+                      </div>
+                    </div>
+                    <div className="font-bold text-stone-900 dark:text-stone-100 font-sans text-xs sm:text-sm">
+                      Viết Từng Khối
+                    </div>
+                    <div className="text-[11px] text-stone-500 dark:text-stone-400 font-sans font-normal leading-snug">
+                      Soạn thảo từng câu độc lập
+                    </div>
+                  </div>
+
+                  {/* Step 4: Emerald */}
+                  <div className="p-3.5 rounded-xl border-2 border-emerald-400 dark:border-emerald-700 bg-white/95 dark:bg-stone-900/90 shadow-2xs hover:shadow-md hover:border-emerald-500 transition-all duration-200 group/step ring-2 ring-emerald-400/20 space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-emerald-700 dark:text-emerald-400 font-bold font-mono text-[11px]">BƯỚC 04</span>
+                      <div className="w-6 h-6 rounded-md bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 flex items-center justify-center">
+                        <Sparkles className="w-3.5 h-3.5" />
+                      </div>
+                    </div>
+                    <div className="font-bold text-stone-900 dark:text-stone-100 font-sans text-xs sm:text-sm">
+                      AI Nâng Cấp
+                    </div>
+                    <div className="text-[11px] text-stone-500 dark:text-stone-400 font-sans font-normal leading-snug">
+                      Chấm 4 tiêu chí &amp; sửa câu
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="shrink-0 flex flex-col items-start lg:items-end justify-center gap-3">
+              {/* Highlighted Call-to-Action with Glowing Button */}
+              <div className="shrink-0 flex flex-col items-start lg:items-end justify-center gap-3.5">
                 <Link
                   href="/builder"
-                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-md bg-stone-900 text-stone-50 hover:bg-emerald-600 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-emerald-600 dark:hover:text-stone-50 font-semibold text-xs tracking-wide transition-all duration-200 ease-spring shadow-xs"
+                  className="inline-flex items-center gap-2.5 px-7 py-4 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs sm:text-sm tracking-wide transition-all duration-300 ease-spring shadow-lg shadow-emerald-600/30 hover:shadow-emerald-600/50 hover:scale-[1.03] active:scale-[0.98] group/btn cursor-pointer"
                 >
-                  <Sprout className="w-4 h-4" />
+                  <Sprout className="w-5 h-5 text-lime-200 group-hover/btn:rotate-12 transition-transform" />
                   <span>Trồng Cây Đậu Ngay</span>
-                  <ChevronRight className="w-3.5 h-3.5" />
+                  <ChevronRight className="w-4 h-4 text-emerald-200 group-hover/btn:translate-x-1 transition-transform" />
                 </Link>
-                <span className="font-mono text-[11px] text-stone-400">MIỄN PHÍ TRÊN TRÌNH DUYỆT</span>
+                <div className="flex flex-col items-start lg:items-end gap-1 font-mono text-[11px]">
+                  <span className="text-emerald-800 dark:text-emerald-300 font-semibold flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                    MIỄN PHÍ 100% TRÊN TRÌNH DUYỆT
+                  </span>
+                  <span className="text-stone-500 dark:text-stone-400">
+                    🌱 Tùy chọn lộ trình 5 — 30 Tầng
+                  </span>
+                </div>
               </div>
             </div>
           </div>
