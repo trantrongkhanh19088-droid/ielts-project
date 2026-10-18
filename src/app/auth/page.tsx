@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import ToriiGate from '@/components/japanese/ToriiGate';
+import { SeigaihaPattern } from '@/components/japanese/JapanesePatterns';
 
 function AuthContent() {
   const router = useRouter();
@@ -99,8 +100,12 @@ function AuthContent() {
   };
 
   return (
-    <div className="flex-1 flex items-center justify-center p-4 py-16 bg-paper dark:bg-carbon">
-      <div className="max-w-md w-full bg-paper-subtle dark:bg-carbon-subtle hairline-border rounded-lg shadow-xs p-8 sm:p-10 space-y-6">
+    <div className="flex-1 flex items-center justify-center p-4 py-16 bg-paper dark:bg-carbon relative overflow-hidden">
+      <SeigaihaPattern opacity={0.03} className="text-stone-900 dark:text-stone-200" />
+      <div className="max-w-md w-full bg-paper-subtle/90 dark:bg-carbon-subtle/80 hairline-border rounded-2xl shadow-sm p-8 sm:p-10 space-y-6 relative overflow-hidden z-10">
+        {/* Top Vermilion Accent */}
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-vermilion" />
+
         <div className="text-center space-y-3">
           <div className="inline-flex items-center justify-center">
             <ToriiGate width={56} height={48} text="合格" glow={false} showShimenawa={true} />
@@ -261,8 +266,8 @@ export default function AuthPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex-1 flex items-center justify-center p-8">
-          <div className="w-8 h-8 border-4 border-sky-600 border-t-transparent rounded-full animate-spin" />
+        <div className="flex-1 flex items-center justify-center p-8 min-h-[50vh]">
+          <div className="w-7 h-7 border-2 border-vermilion border-t-transparent animate-spin" />
         </div>
       }
     >

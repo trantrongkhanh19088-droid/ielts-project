@@ -21,6 +21,7 @@ import { fetchAllEssayRecords, deleteEssayRecordAsync, clearAllEssayRecordsAsync
 import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import ProgressHistoryChart from '@/components/charts/ProgressHistoryChart';
 import { formatDuration } from '@/lib/utils';
+import ToriiGate from '@/components/japanese/ToriiGate';
 
 export default function DashboardPage() {
   const [records, setRecords] = useState<EssayRecord[]>([]);
@@ -207,18 +208,23 @@ export default function DashboardPage() {
 
       {/* History Table */}
       <div className="space-y-4">
-        <div className="flex items-center justify-between flex-wrap gap-2">
-          <h3 className="font-bold text-base text-gray-900 dark:text-white flex items-center gap-2">
-            <BarChart3 className="w-4 h-4 text-sky-600" />
-            <span>Danh sách bài viết đã lưu ({records.length})</span>
-          </h3>
+        <div className="flex items-center justify-between flex-wrap gap-2 hairline-b pb-4">
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-vermilion" />
+            <h3 className="font-display font-bold text-base sm:text-lg text-stone-900 dark:text-stone-100 flex items-center gap-2 tracking-normal">
+              <span>Lịch Sử Bài Viết &amp; Chấm Điểm</span>
+              <span className="font-mono text-xs px-2 py-0.5 rounded hairline-border bg-stone-100 dark:bg-stone-850 text-stone-600 dark:text-stone-400 font-semibold">
+                {records.length}
+              </span>
+            </h3>
+          </div>
 
           <div className="flex items-center gap-2">
             {records.length > 0 && (
               <button
                 type="button"
                 onClick={() => setShowResetModal(true)}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-red-200 dark:border-red-900/60 bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/50 text-xs font-semibold transition"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md hairline-border border-red-500/30 text-red-600 dark:text-red-400 hover:bg-red-500/10 text-xs font-mono font-semibold transition-colors"
                 title="Xóa toàn bộ lịch sử bài thi và đặt lại thống kê về 0"
               >
                 <Trash2 className="w-3.5 h-3.5" />
@@ -228,7 +234,7 @@ export default function DashboardPage() {
 
             <Link
               href="/practice"
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold shadow transition"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md bg-stone-900 text-stone-50 hover:bg-vermilion dark:bg-stone-100 dark:text-stone-950 dark:hover:bg-vermilion dark:hover:text-white text-xs font-semibold shadow-xs transition-all duration-200 ease-spring active:scale-[0.98]"
             >
               <Sparkles className="w-3.5 h-3.5" />
               <span>Luyện bài mới</span>
@@ -237,23 +243,33 @@ export default function DashboardPage() {
         </div>
 
         {loading ? (
-          <div className="p-8 text-center text-sm text-gray-500">Đang tải lịch sử...</div>
+          <div className="p-12 text-center font-mono text-xs text-stone-500">
+            00 // Đang tải lịch sử bài viết...
+          </div>
         ) : records.length === 0 ? (
-          <div className="p-12 text-center rounded-xl border border-dashed border-gray-300 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
-            <p className="text-sm text-gray-500">
-              Chưa có bài viết nào được lưu. Hãy bắt đầu luyện tập để xây dựng hồ sơ tiến bộ của bạn!
-            </p>
+          <div className="p-12 text-center rounded-xl hairline-border bg-paper-subtle/50 dark:bg-carbon-subtle/50 space-y-4">
+            <div className="flex justify-center">
+              <ToriiGate width={48} height={40} text="合格" glow={false} showShimenawa={false} />
+            </div>
+            <div className="space-y-1">
+              <h4 className="font-display font-bold text-base text-stone-900 dark:text-stone-100">
+                Chưa có bài viết nào được lưu
+              </h4>
+              <p className="text-xs text-stone-500 max-w-sm mx-auto leading-relaxed">
+                Hãy bắt đầu một bài luyện tập Task 1, Task 2 hoặc Full Test để xây dựng hồ sơ tiến bộ chuẩn thi thật của bạn!
+              </p>
+            </div>
             <Link
               href="/practice"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-sky-600 text-white text-xs font-bold shadow transition"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-stone-900 text-stone-50 hover:bg-vermilion dark:bg-stone-100 dark:text-stone-950 dark:hover:bg-vermilion dark:hover:text-white text-xs font-semibold shadow-xs transition-colors"
             >
               <span>Luyện đề đầu tiên</span>
             </Link>
           </div>
         ) : (
-          <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+          <div className="overflow-x-auto rounded-xl hairline-border bg-paper-subtle/70 dark:bg-carbon-subtle/70 shadow-xs">
             <table className="w-full text-xs text-left border-collapse">
-              <thead className="bg-gray-50 dark:bg-zinc-800/60 border-b border-gray-200 dark:border-zinc-800 text-gray-500 dark:text-gray-400 uppercase tracking-wider font-semibold">
+              <thead className="hairline-b bg-stone-100/70 dark:bg-stone-900/60 font-mono text-[11px] text-stone-500 uppercase tracking-wider font-semibold">
                 <tr>
                   <th className="p-3.5">Ngày nộp</th>
                   <th className="p-3.5">Chế độ</th>
@@ -264,15 +280,16 @@ export default function DashboardPage() {
                   <th className="p-3.5 text-right">Thao tác</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100 dark:divide-zinc-800">
+              <tbody className="divide-y divide-stone-200/60 dark:divide-stone-800/60">
                 {records.map((r) => {
                   const isFT = r.task_type === 'full_test';
+                  const isT1 = r.task_type === 'task1';
                   return (
                     <tr
                       key={r.id}
-                      className="hover:bg-gray-50/60 dark:hover:bg-zinc-800/40 transition"
+                      className="hover:bg-stone-100/50 dark:hover:bg-stone-850/40 transition-colors"
                     >
-                      <td className="p-3.5 text-gray-500 font-mono whitespace-nowrap">
+                      <td className="p-3.5 text-stone-500 font-mono whitespace-nowrap text-[11px]">
                         {new Date(r.created_at).toLocaleDateString('vi-VN', {
                           month: 'numeric',
                           day: 'numeric',
@@ -283,32 +300,32 @@ export default function DashboardPage() {
 
                       <td className="p-3.5 whitespace-nowrap">
                         <span
-                          className={`px-2 py-0.5 rounded font-bold text-[11px] uppercase tracking-wider border ${
+                          className={`font-mono text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wider ${
                             isFT
-                              ? 'bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-800'
-                              : r.task_type === 'task1'
-                              ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800'
-                              : 'bg-sky-50 dark:bg-sky-950/40 text-sky-700 dark:text-sky-300 border-sky-200 dark:border-sky-800'
+                              ? 'bg-rose-500/10 text-rose-800 dark:text-rose-300 border border-rose-500/30'
+                              : isT1
+                              ? 'bg-sky-500/10 text-sky-800 dark:text-sky-300 border border-sky-500/30'
+                              : 'bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-500/30'
                           }`}
                         >
                           {r.task_type.replace('_', ' ')}
                         </span>
                       </td>
 
-                      <td className="p-3.5 font-medium text-gray-900 dark:text-gray-100 max-w-xs truncate">
+                      <td className="p-3.5 font-display font-medium text-stone-900 dark:text-stone-100 max-w-xs truncate text-xs sm:text-sm">
                         {r.prompt_title}
                       </td>
 
-                      <td className="p-3.5 font-mono text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                      <td className="p-3.5 font-mono text-stone-600 dark:text-stone-400 whitespace-nowrap text-[11px]">
                         {r.word_count} từ
                       </td>
 
-                      <td className="p-3.5 font-mono text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                      <td className="p-3.5 font-mono text-stone-600 dark:text-stone-400 whitespace-nowrap text-[11px]">
                         {formatDuration(r.duration_seconds)}
                       </td>
 
                       <td className="p-3.5 text-center whitespace-nowrap">
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-extrabold font-mono text-xs bg-sky-100 dark:bg-sky-950/60 text-sky-800 dark:text-sky-300 border border-sky-300 dark:border-sky-800">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-bold font-mono text-xs bg-vermilion/10 text-vermilion border border-vermilion/30">
                           {Number(r.overall_band).toFixed(1)}
                           {r.server_signature && (
                             <span title="Đã xác thực chữ ký máy chủ AI">
@@ -321,7 +338,7 @@ export default function DashboardPage() {
                       <td className="p-3.5 text-right whitespace-nowrap space-x-2">
                         <Link
                           href={`/results?id=${r.id}`}
-                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-sky-50 dark:bg-sky-950/40 text-sky-700 dark:text-sky-300 hover:bg-sky-100 border border-sky-200 dark:border-sky-800 font-semibold"
+                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded hairline-border bg-paper dark:bg-carbon text-stone-800 dark:text-stone-200 hover:text-vermilion hover:border-vermilion transition-colors font-mono text-[11px] font-semibold"
                         >
                           <span>Xem chấm</span>
                           <ExternalLink className="w-3 h-3" />
@@ -329,7 +346,7 @@ export default function DashboardPage() {
                         <button
                           type="button"
                           onClick={() => handleDelete(r.id)}
-                          className="p-1 rounded text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/40 transition"
+                          className="p-1 rounded text-stone-400 hover:text-vermilion hover:bg-red-500/10 transition-colors"
                           title="Xóa bài viết"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
@@ -347,30 +364,33 @@ export default function DashboardPage() {
       {/* Reset Confirmation Modal */}
       {showResetModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="max-w-md w-full bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-zinc-800 p-6 space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 flex items-center justify-center mx-auto">
-              <Trash2 className="w-6 h-6" />
+          <div className="max-w-md w-full bg-paper dark:bg-carbon rounded-2xl hairline-border p-6 sm:p-8 space-y-5 shadow-2xl">
+            <div className="flex flex-col items-center gap-2">
+              <ToriiGate width={48} height={40} text="合格" glow={false} showShimenawa={false} />
+              <div className="w-10 h-10 rounded-full bg-red-500/10 text-vermilion flex items-center justify-center mt-1">
+                <Trash2 className="w-5 h-5" />
+              </div>
             </div>
             <div className="text-center space-y-2">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+              <h3 className="font-display font-bold text-lg text-stone-900 dark:text-stone-100">
                 Đặt lại toàn bộ dữ liệu luyện tập?
               </h3>
-              <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
-                Hành động này sẽ xóa toàn bộ <span className="font-bold text-red-600">{records.length} bài thi</span> khỏi lịch sử lưu trữ. Điểm trung bình, kỷ lục band điểm và tổng thời gian luyện tập sẽ được đưa về 0.
+              <p className="text-xs text-stone-500 dark:text-stone-400 leading-relaxed font-sans">
+                Hành động này sẽ xóa toàn bộ <span className="font-bold text-vermilion">{records.length} bài thi</span> khỏi lịch sử lưu trữ. Điểm trung bình, kỷ lục band điểm và tổng thời gian luyện tập sẽ được đưa về 0.
               </p>
             </div>
             <div className="flex items-center gap-3 pt-2">
               <button
                 type="button"
                 onClick={() => setShowResetModal(false)}
-                className="flex-1 py-2.5 px-4 rounded-xl border border-gray-200 dark:border-zinc-700 text-xs font-bold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-800 transition"
+                className="flex-1 py-2.5 px-4 rounded-lg hairline-border text-xs font-bold text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-850 transition-colors"
               >
                 Hủy bỏ
               </button>
               <button
                 type="button"
                 onClick={handleClearAll}
-                className="flex-1 py-2.5 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-xs font-bold text-white shadow-lg shadow-red-600/30 transition"
+                className="flex-1 py-2.5 px-4 rounded-lg bg-vermilion hover:bg-vermilion-hover text-xs font-bold text-white shadow-sm transition-colors"
               >
                 Xác nhận xóa sạch
               </button>

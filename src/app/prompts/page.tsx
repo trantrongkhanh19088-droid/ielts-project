@@ -317,20 +317,30 @@ export default function PromptsArchivePage() {
                 return (
                   <div
                     key={p.id}
-                    className="p-5 sm:p-6 rounded-xl hairline-border bg-paper-subtle/60 dark:bg-carbon-subtle/50 flex flex-col justify-between space-y-4 hover:border-stone-400 dark:hover:border-stone-600 hover:shadow-md transition-all duration-200 group"
+                    className="p-5 sm:p-6 rounded-2xl hairline-border bg-paper-subtle/80 dark:bg-carbon-subtle/70 flex flex-col justify-between space-y-4 hover:border-stone-400 dark:hover:border-stone-600 hover:shadow-lg transition-all duration-300 ease-spring hover:-translate-y-1 group relative overflow-hidden"
                   >
+                    {/* Top Accent Line */}
+                    <div
+                      className={`absolute top-0 left-0 right-0 h-[2px] ${
+                        isTask1 ? 'bg-sky-500' : 'bg-amber-500'
+                      }`}
+                    />
+
                     <div className="space-y-3">
                       {/* Badge bar */}
                       <div className="flex items-center justify-between gap-2">
                         <div className="flex items-center gap-1.5">
+                          <span className="font-mono text-[10px] text-stone-500 dark:text-stone-400 font-bold tracking-wider">
+                            #{p.id.toUpperCase()}
+                          </span>
                           <span
-                            className={`font-mono text-[11px] px-2 py-0.5 rounded font-bold uppercase tracking-wider ${
+                            className={`font-mono text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wider ${
                               isTask1
                                 ? 'bg-sky-500/10 text-sky-800 dark:text-sky-300 border border-sky-500/30'
                                 : 'bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-500/30'
                             }`}
                           >
-                            {isTask1 ? 'TASK 1' : 'TASK 2'} &bull; {p.category}
+                            {p.category}
                           </span>
                         </div>
                         {p.outline && (
@@ -363,43 +373,43 @@ export default function PromptsArchivePage() {
                           </button>
 
                           {isExpanded && (
-                            <div className="mt-2.5 p-3.5 rounded-lg bg-stone-100/90 dark:bg-stone-900/80 border border-stone-200 dark:border-stone-800 text-xs space-y-2 animate-in fade-in duration-150">
+                            <div className="mt-2.5 p-3.5 rounded-lg bg-stone-100/90 dark:bg-stone-900/80 border border-stone-200/80 dark:border-stone-800 text-xs space-y-2.5 animate-in fade-in duration-150">
                               {p.outline.overviewOrThesis && (
-                                <div>
+                                <div className="border-l-2 border-vermilion pl-2.5">
                                   <span className="font-mono text-[10px] font-bold text-vermilion uppercase block">
                                     THESIS / OVERVIEW:
                                   </span>
-                                  <p className="text-stone-700 dark:text-stone-300 leading-relaxed text-[11px] mt-0.5">
+                                  <p className="text-stone-700 dark:text-stone-300 leading-relaxed text-[11px] mt-0.5 font-sans">
                                     {p.outline.overviewOrThesis}
                                   </p>
                                 </div>
                               )}
                               {p.outline.body1 && (
-                                <div>
-                                  <span className="font-mono text-[10px] font-bold text-sky-600 dark:text-sky-400 uppercase block">
+                                <div className="border-l-2 border-sky-500 pl-2.5">
+                                  <span className="font-mono text-[10px] font-bold text-sky-700 dark:text-sky-300 uppercase block">
                                     THÂN BÀI 1:
                                   </span>
-                                  <p className="text-stone-700 dark:text-stone-300 leading-relaxed text-[11px] mt-0.5">
+                                  <p className="text-stone-700 dark:text-stone-300 leading-relaxed text-[11px] mt-0.5 font-sans">
                                     {p.outline.body1}
                                   </p>
                                 </div>
                               )}
                               {p.outline.body2 && (
-                                <div>
-                                  <span className="font-mono text-[10px] font-bold text-amber-600 dark:text-amber-400 uppercase block">
+                                <div className="border-l-2 border-amber-500 pl-2.5">
+                                  <span className="font-mono text-[10px] font-bold text-amber-700 dark:text-amber-300 uppercase block">
                                     THÂN BÀI 2:
                                   </span>
-                                  <p className="text-stone-700 dark:text-stone-300 leading-relaxed text-[11px] mt-0.5">
+                                  <p className="text-stone-700 dark:text-stone-300 leading-relaxed text-[11px] mt-0.5 font-sans">
                                     {p.outline.body2}
                                   </p>
                                 </div>
                               )}
                               {p.outline.conclusion && (
-                                <div>
-                                  <span className="font-mono text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase block">
+                                <div className="border-l-2 border-emerald-500 pl-2.5">
+                                  <span className="font-mono text-[10px] font-bold text-emerald-700 dark:text-emerald-300 uppercase block">
                                     KẾT BÀI:
                                   </span>
-                                  <p className="text-stone-700 dark:text-stone-300 leading-relaxed text-[11px] mt-0.5">
+                                  <p className="text-stone-700 dark:text-stone-300 leading-relaxed text-[11px] mt-0.5 font-sans">
                                     {p.outline.conclusion}
                                   </p>
                                 </div>
@@ -413,10 +423,10 @@ export default function PromptsArchivePage() {
                     {/* Action link */}
                     <Link
                       href={`/practice?mode=${p.taskType}&promptId=${p.id}`}
-                      className="inline-flex items-center justify-between font-mono text-xs font-semibold text-stone-900 dark:text-stone-100 hover:text-vermilion dark:hover:text-vermilion pt-3.5 hairline-t transition-colors"
+                      className="inline-flex items-center justify-between px-4 py-2.5 rounded-lg bg-stone-900 text-stone-50 hover:bg-vermilion dark:bg-stone-100 dark:text-stone-950 dark:hover:bg-vermilion dark:hover:text-white font-mono text-[11px] font-bold uppercase tracking-wider transition-all duration-200 ease-spring active:scale-[0.98] group/btn mt-2 shadow-2xs"
                     >
                       <span>VÀO PHÒNG THI MÔ PHỎNG</span>
-                      <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform text-vermilion" />
+                      <ChevronRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
                     </Link>
                   </div>
                 );
