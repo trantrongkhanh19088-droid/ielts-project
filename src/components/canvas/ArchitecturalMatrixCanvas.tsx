@@ -3,10 +3,10 @@
 import React, { useEffect, useRef } from 'react';
 
 /**
- * Modern Architectural Fluid Ocean Wave Contours Canvas
+ * Authentic Seigaiha (青海波) Static Ocean Wave Canvas
  * - 100% static & zero-overhead: rendered ONCE on mount / resize / theme switch.
- * - Clean, elegant modern topographical wave ribbons (neutral academic/architectural look).
- * - Zero Japanese motifs, zero CPU loops, silky fast.
+ * - Zero requestAnimationFrame loops, zero mouse event listeners, zero CPU usage.
+ * - Clean, tranquil traditional ocean wave pattern matching user's requested background.
  */
 export default function ArchitecturalMatrixCanvas() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -34,46 +34,75 @@ export default function ArchitecturalMatrixCanvas() {
       const isDark = document.documentElement.classList.contains('dark');
       const bgColor = isDark ? '#0C0C0E' : '#FAF8F5';
       const strokeRgb = isDark ? '244, 244, 240' : '28, 25, 23';
-      const strokeAlpha = isDark ? 0.045 : 0.04;
+      const alpha = isDark ? 0.085 : 0.08;
 
-      // Solid background
+      // Solid canvas background
       ctx.fillStyle = bgColor;
       ctx.fillRect(0, 0, width, height);
 
-      // Draw modern fluid architectural wave contour lines
-      const WAVE_COUNT = 18;
-      const stepY = height / (WAVE_COUNT - 1);
-      const sampleStep = 24;
+      // Seigaiha geometry
+      const R = width < 640 ? 38 : 46;
+      const stepX = R * 2;
+      const stepY = R * 0.5;
 
-      ctx.strokeStyle = `rgba(${strokeRgb}, ${strokeAlpha})`;
-      ctx.lineWidth = 1.0;
+      const r0 = R * 0.20;
+      const r1 = R * 0.40;
+      const r2 = R * 0.60;
+      const r3 = R * 0.82;
+      const SPOKE_DIVISIONS = 10;
 
-      for (let i = 0; i < WAVE_COUNT; i++) {
-        const baseY = i * stepY;
-        const phase = i * 0.45;
-        const frequency1 = 0.0028;
-        const frequency2 = 0.0055;
-        const amplitude1 = 18 + (i % 3) * 6;
-        const amplitude2 = 10 + (i % 4) * 4;
+      const startRow = Math.floor(-R / stepY) - 1;
+      const endRow = Math.ceil((height + R) / stepY) + 2;
 
-        ctx.beginPath();
-        let isFirst = true;
+      for (let row = startRow; row <= endRow; row++) {
+        const cy = row * stepY;
+        const isOdd = Math.abs(row % 2) === 1;
+        const startX = isOdd ? -R : 0;
 
-        for (let x = -20; x <= width + 20; x += sampleStep) {
-          const y =
-            baseY +
-            Math.sin(x * frequency1 + phase) * amplitude1 +
-            Math.cos(x * frequency2 - phase * 0.5) * amplitude2;
+        for (let cx = startX - stepX; cx <= width + stepX * 2; cx += stepX) {
+          // Mask background inside semi-circle
+          ctx.beginPath();
+          ctx.arc(cx, cy, R + 0.5, Math.PI, 2 * Math.PI, false);
+          ctx.closePath();
+          ctx.fillStyle = bgColor;
+          ctx.fill();
 
-          if (isFirst) {
-            ctx.moveTo(x, y);
-            isFirst = false;
-          } else {
-            ctx.lineTo(x, y);
+          // Draw Seigaiha concentric arcs and spokes
+          ctx.beginPath();
+
+          // Outermost rim
+          ctx.moveTo(cx - R, cy);
+          ctx.arc(cx, cy, R, Math.PI, 2 * Math.PI, false);
+
+          // Outer spoke bounding arc
+          ctx.moveTo(cx - r3, cy);
+          ctx.arc(cx, cy, r3, Math.PI, 2 * Math.PI, false);
+
+          // Inner spoke bounding arc
+          ctx.moveTo(cx - r2, cy);
+          ctx.arc(cx, cy, r2, Math.PI, 2 * Math.PI, false);
+
+          // Middle-inner arc
+          ctx.moveTo(cx - r1, cy);
+          ctx.arc(cx, cy, r1, Math.PI, 2 * Math.PI, false);
+
+          // Innermost arc
+          ctx.moveTo(cx - r0, cy);
+          ctx.arc(cx, cy, r0, Math.PI, 2 * Math.PI, false);
+
+          // Radiating kiku spokes
+          for (let k = 1; k < SPOKE_DIVISIONS; k++) {
+            const angle = Math.PI + (k / SPOKE_DIVISIONS) * Math.PI;
+            const cos = Math.cos(angle);
+            const sin = Math.sin(angle);
+            ctx.moveTo(cx + r2 * cos, cy + r2 * sin);
+            ctx.lineTo(cx + r3 * cos, cy + r3 * sin);
           }
-        }
 
-        ctx.stroke();
+          ctx.strokeStyle = `rgba(${strokeRgb}, ${alpha})`;
+          ctx.lineWidth = 1.0;
+          ctx.stroke();
+        }
       }
 
       ctx.restore();

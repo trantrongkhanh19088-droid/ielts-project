@@ -175,8 +175,8 @@ export default function Navbar() {
   return (
     <>
       <nav className="sticky top-0 z-30 bg-paper/90 dark:bg-carbon/90 backdrop-blur-md hairline-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-14">
+        <div className="w-full max-w-[1536px] mx-auto px-3 sm:px-5 lg:px-6">
+          <div className="flex items-center justify-between h-14 gap-2 sm:gap-4">
             {/* Brand Logo & Title */}
             <div className="flex items-center gap-2.5 shrink-0">
               <Link href="/" className="flex items-center gap-2.5 group shrink-0 select-none">
@@ -200,11 +200,11 @@ export default function Navbar() {
             </div>
 
             {/* Nav links */}
-            <div className="hidden md:flex items-center gap-0.5 text-xs font-medium shrink-0">
+            <div className="hidden lg:flex items-center gap-0.5 text-xs font-medium shrink min-w-0">
               <Link
                 href="/builder"
                 onClick={() => playClick()}
-                className={`px-3 py-1.5 rounded-md transition-colors flex items-center gap-1.5 whitespace-nowrap ${
+                className={`px-2.5 py-1.5 rounded-md transition-colors flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
                   pathname === '/builder'
                     ? 'text-stone-950 dark:text-stone-50 font-semibold bg-stone-200/60 dark:bg-stone-800/60'
                     : 'text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 hover:bg-stone-100/70 dark:hover:bg-stone-850'
@@ -219,7 +219,7 @@ export default function Navbar() {
               <Link
                 href="/prompts"
                 onClick={() => playClick()}
-                className={`px-3 py-1.5 rounded-md transition-colors flex items-center gap-1.5 whitespace-nowrap ${
+                className={`px-2.5 py-1.5 rounded-md transition-colors flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
                   pathname === '/prompts'
                     ? 'text-stone-950 dark:text-stone-50 font-semibold bg-stone-200/60 dark:bg-stone-800/60'
                     : 'text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 hover:bg-stone-100/70 dark:hover:bg-stone-850'
@@ -234,7 +234,7 @@ export default function Navbar() {
               <Link
                 href="/practice?mode=task1"
                 onClick={() => playClick()}
-                className={`hidden xl:inline-flex px-3 py-1.5 rounded-md transition-colors whitespace-nowrap ${
+                className={`hidden 2xl:inline-flex px-2.5 py-1.5 rounded-md transition-colors whitespace-nowrap shrink-0 ${
                   pathname === '/practice' && typeof window !== 'undefined' && window.location.search.includes('task1')
                     ? 'text-stone-950 dark:text-stone-50 font-semibold bg-stone-200/60 dark:bg-stone-800/60'
                     : 'text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 hover:bg-stone-100/70 dark:hover:bg-stone-850'
@@ -245,7 +245,7 @@ export default function Navbar() {
               <Link
                 href="/practice?mode=task2"
                 onClick={() => playClick()}
-                className="hidden xl:inline-flex px-3 py-1.5 rounded-md text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 hover:bg-stone-100/70 dark:hover:bg-stone-850 transition-colors whitespace-nowrap"
+                className="hidden 2xl:inline-flex px-2.5 py-1.5 rounded-md text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 hover:bg-stone-100/70 dark:hover:bg-stone-850 transition-colors whitespace-nowrap shrink-0"
               >
                 Luyện Task 2
               </Link>
@@ -253,7 +253,7 @@ export default function Navbar() {
                 href="/practice?mode=full_test"
                 onMouseEnter={() => playLockIn()}
                 onClick={() => playClick()}
-                className="px-3 py-1.5 rounded-md text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 hover:bg-stone-100/70 dark:hover:bg-stone-850 transition-colors flex items-center gap-1.5"
+                className="hidden xl:inline-flex px-2.5 py-1.5 rounded-md text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 hover:bg-stone-100/70 dark:hover:bg-stone-850 transition-colors items-center gap-1.5 whitespace-nowrap shrink-0"
               >
                 <Layers className="w-3.5 h-3.5 text-stone-400" />
                 <span>Thi Full Test (60p)</span>
@@ -261,7 +261,7 @@ export default function Navbar() {
               <Link
                 href="/dashboard"
                 onClick={() => playClick()}
-                className={`px-3 py-1.5 rounded-md transition-colors flex items-center gap-1.5 ${
+                className={`px-2.5 py-1.5 rounded-md transition-colors flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
                   pathname === '/dashboard'
                     ? 'text-stone-950 dark:text-stone-50 font-semibold bg-stone-200/60 dark:bg-stone-800/60'
                     : 'text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 hover:bg-stone-100/70 dark:hover:bg-stone-850'
@@ -271,14 +271,14 @@ export default function Navbar() {
                 <span>Thống kê</span>
               </Link>
 
-              {/* Slate Global Command Palette Trigger */}
+              {/* Slate Global Command Palette Trigger (Wide screen) */}
               <button
                 type="button"
                 onClick={() => {
                   playClick();
                   window.dispatchEvent(new CustomEvent('open-command-palette'));
                 }}
-                className="hidden xl:flex items-center gap-2 px-2.5 py-1 rounded-md hairline-border bg-stone-100/70 dark:bg-stone-850/70 hover:bg-stone-200/70 dark:hover:bg-stone-800 text-stone-500 hover:text-stone-900 dark:hover:text-stone-100 text-xs transition-colors ml-1 cursor-pointer"
+                className="hidden 2xl:flex items-center gap-2 px-2.5 py-1 rounded-md hairline-border bg-stone-100/70 dark:bg-stone-850/70 hover:bg-stone-200/70 dark:hover:bg-stone-800 text-stone-500 hover:text-stone-900 dark:hover:text-stone-100 text-xs transition-colors ml-1 cursor-pointer shrink-0"
                 title="Mở bảng điều hướng nhanh (Ctrl + K)"
               >
                 <Search className="w-3.5 h-3.5 text-stone-400" />
@@ -290,20 +290,21 @@ export default function Navbar() {
             </div>
 
             {/* Right actions */}
-            <div className="flex items-center gap-1.5 sm:gap-2">
-              {/* Mobile Command Palette Trigger */}
+            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+              {/* Compact Command Palette Trigger (when wide input is hidden) */}
               <button
                 type="button"
                 onClick={() => {
                   playClick();
                   window.dispatchEvent(new CustomEvent('open-command-palette'));
                 }}
-                className="p-1.5 rounded-md hairline-border text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-stone-100/70 dark:hover:bg-stone-850 transition-colors flex items-center justify-center xl:hidden"
+                className="p-1.5 rounded-md hairline-border text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-stone-100/70 dark:hover:bg-stone-850 transition-colors flex items-center justify-center 2xl:hidden shrink-0"
                 title="Tìm kiếm & Điều hướng (Ctrl + K)"
                 aria-label="Command Palette"
               >
                 <Search className="w-4 h-4" />
               </button>
+
               {/* Web Audio Synthesizer Sound Toggle */}
               <button
                 type="button"
@@ -311,7 +312,7 @@ export default function Navbar() {
                   toggleMute();
                   if (muted) playClick();
                 }}
-                className={`p-1.5 rounded-md hairline-border transition-colors flex items-center justify-center ${
+                className={`p-1.5 rounded-md hairline-border transition-colors flex items-center justify-center shrink-0 ${
                   muted
                     ? 'text-stone-400 hover:text-stone-600 dark:hover:text-stone-300'
                     : 'text-vermilion hover:text-vermilion-hover bg-vermilion/10 border-vermilion/30'
@@ -330,29 +331,29 @@ export default function Navbar() {
                     playClick();
                     setIsProfileModalOpen(true);
                   }}
-                  className="flex items-center gap-2 px-2.5 py-1.5 rounded-md hairline-border hover:bg-stone-100/70 dark:hover:bg-stone-850 transition text-left"
+                  className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-2.5 py-1.5 rounded-md hairline-border hover:bg-stone-100/70 dark:hover:bg-stone-850 transition text-left shrink-0"
                 >
-                  <div className="w-6 h-6 rounded bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 flex items-center justify-center font-mono font-bold text-[11px]">
+                  <div className="w-6 h-6 rounded bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 flex items-center justify-center font-mono font-bold text-[11px] shrink-0">
                     {initials}
                   </div>
                   <div className="hidden sm:flex flex-col">
-                    <span className="text-xs font-semibold text-stone-900 dark:text-stone-100 truncate max-w-[110px]">
+                    <span className="text-xs font-semibold text-stone-900 dark:text-stone-100 truncate max-w-[85px] md:max-w-[110px]">
                       {userName || userEmail}
                     </span>
                     <span className="font-mono text-[11px] text-vermilion font-semibold flex items-center gap-1">
                       Target {targetBand.toFixed(1)}
                     </span>
                   </div>
-                  <ChevronDown className="w-3 h-3 text-stone-400" />
+                  <ChevronDown className="w-3 h-3 text-stone-400 shrink-0" />
                 </button>
               ) : (
                 <Link
                   href="/auth"
                   onClick={() => playClick()}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md hairline-border hover:bg-stone-100/70 dark:hover:bg-stone-850 text-xs font-medium text-stone-700 dark:text-stone-300 transition-colors"
+                  className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-md hairline-border hover:bg-stone-100/70 dark:hover:bg-stone-850 text-xs font-medium text-stone-700 dark:text-stone-300 transition-colors shrink-0"
                 >
                   <User className="w-3.5 h-3.5" />
-                  <span>Tài khoản</span>
+                  <span className="hidden sm:inline">Tài khoản</span>
                 </Link>
               )}
 
@@ -363,7 +364,7 @@ export default function Navbar() {
                   playClick();
                   setIsSettingsModalOpen(true);
                 }}
-                className="p-1.5 rounded-md hairline-border text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-stone-100/70 dark:hover:bg-stone-850 transition-colors flex items-center justify-center"
+                className="p-1.5 rounded-md hairline-border text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-stone-100/70 dark:hover:bg-stone-850 transition-colors flex items-center justify-center shrink-0"
                 title="Cài đặt hệ thống (Giao diện & Builder)"
                 aria-label="Cài đặt"
               >
@@ -375,7 +376,7 @@ export default function Navbar() {
                 href="/practice?mode=full_test"
                 onMouseEnter={() => playLockIn()}
                 onClick={() => playClick()}
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md bg-stone-900 text-stone-50 hover:bg-vermilion dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-vermilion dark:hover:text-stone-50 text-xs font-semibold tracking-wide transition-all duration-200 ease-spring"
+                className="inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-md bg-stone-900 text-stone-50 hover:bg-vermilion dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-vermilion dark:hover:text-stone-50 text-xs font-semibold tracking-wide transition-all duration-200 ease-spring whitespace-nowrap shrink-0"
               >
                 <span>Bắt đầu thi</span>
               </Link>
