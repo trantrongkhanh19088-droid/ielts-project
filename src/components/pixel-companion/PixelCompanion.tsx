@@ -162,7 +162,7 @@ export default function PixelCompanion() {
               </p>
               <div className="mt-1.5 text-[10px] text-stone-400 dark:text-stone-500 text-right flex items-center justify-between">
                 <span>Nhấp để đóng</span>
-                <span className="text-vermilion font-semibold">Đổi nhân vật 3D ⚙️</span>
+                <span className="text-vermilion font-semibold">Đổi nhân vật 3D</span>
               </div>
             </div>
           )}

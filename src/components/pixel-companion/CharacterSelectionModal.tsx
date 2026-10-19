@@ -86,7 +86,7 @@ export default function CharacterSelectionModal({
         setCustomAvatar(e.data.avatar);
         setUseCustomAvatar(true);
         if (e.data.avatar.quote) setCustomQuote(e.data.avatar.quote);
-        showToast(`✨ Đã đặt "${e.data.avatar.name}" làm Bạn đồng hành luyện thi!`);
+        showToast(`Đã đặt "${e.data.avatar.name}" làm Bạn đồng hành luyện thi!`);
         window.dispatchEvent(new Event('companion-custom-avatar-updated'));
       }
     };
@@ -304,7 +304,7 @@ export default function CharacterSelectionModal({
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-vermilion hover:bg-vermilion-hover text-white font-bold text-xs shadow-lg shadow-vermilion/25 transition transform hover:-translate-y-0.5 active:translate-y-0"
                 >
                   <Sparkles className="w-4 h-4" />
-                  <span>✨ Đặt Làm Bạn Đồng Hành Luyện Thi</span>
+                  <span>Đặt Làm Bạn Đồng Hành Luyện Thi</span>
                 </button>
               </div>
             </div>

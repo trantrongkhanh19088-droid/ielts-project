@@ -183,7 +183,6 @@ export default function SettingsModal({
                 <div>
                   <div className="font-bold text-xs flex items-center gap-1">
                     <span>Giao diện Nhật Bản</span>
-                    <span className="text-[11px]">🌸</span>
                   </div>
                   <div className="text-[11px] text-rose-600 dark:text-rose-400 font-medium">
                     Hoa anh đào Sakura

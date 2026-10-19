@@ -10,11 +10,21 @@ import { useSoundEngine } from '@/hooks/useSoundEngine';
  * - Light Mode: Clinical laboratory white/light-grey Inspera workstation surface.
  * - Dark Mode: Graphite Slate (#161821) high-contrast HUD.
  */
-export default function InsperaWorkstationHUD() {
+interface InsperaWorkstationHUDProps {
+  forcedTask?: 'task1' | 'task2';
+}
+
+export default function InsperaWorkstationHUD({ forcedTask }: InsperaWorkstationHUDProps = {}) {
   const { playClick, playTick } = useSoundEngine();
   const [secondsRemaining, setSecondsRemaining] = useState(3582); // 59:42
   const [activeTask, setActiveTask] = useState<'task1' | 'task2'>('task2');
   const [isExamLive, setIsExamLive] = useState(true);
+
+  useEffect(() => {
+    if (forcedTask) {
+      setActiveTask(forcedTask);
+    }
+  }, [forcedTask]);
 
   // Live ticking countdown
   useEffect(() => {

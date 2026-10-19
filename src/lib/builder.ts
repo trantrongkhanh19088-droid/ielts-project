@@ -1111,7 +1111,7 @@ export function getInteractiveMCQsForPrompt(prompt: PromptSeed, targetBand: Buil
         purposeVi: 'Phát triển luận điểm sâu sắc & Logic',
         options: [
           {
-            text: 'Topic Sentence (Câu chủ đề) ➔ Explanation (Giải thích cơ chế) ➔ Example (Ví dụ thực tiễn) ➔ Link/Impact (Kết luận tác động).',
+            text: 'Topic Sentence (Câu chủ đề) -> Explanation (Giải thích cơ chế) -> Example (Ví dụ thực tiễn) -> Link/Impact (Kết luận tác động).',
             isCorrect: true,
             explanationVi: 'Hoàn hảo! Phương pháp PEEL đảm bảo mỗi luận điểm đều được mổ xẻ có chiều sâu, tránh liệt kê hời hợt, đạt điểm cao cho Task Response.',
           },

@@ -130,7 +130,13 @@ export default function InteractiveEssay({ essay, corrections }: InteractiveEssa
                 : 'bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300 border border-rose-200 dark:border-rose-800'
             }`}
           >
-            {validCorrections.length === 0 ? '✓ Không có lỗi' : `${validCorrections.length} lỗi cần sửa`}
+            {validCorrections.length === 0 ? (
+              <span className="inline-flex items-center gap-1">
+                <Check className="w-3.5 h-3.5" /> Không có lỗi
+              </span>
+            ) : (
+              `${validCorrections.length} lỗi cần sửa`
+            )}
           </span>
         </div>
 

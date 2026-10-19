@@ -17,8 +17,9 @@ import {
   Flame,
 } from 'lucide-react';
 import { TASK_1_SEEDS, TASK_2_SEEDS } from '@/lib/data/seed-prompts';
+import { motion } from 'framer-motion';
 import ArchitecturalMatrixCanvas from '@/components/canvas/ArchitecturalMatrixCanvas';
-import InsperaWorkstationHUD from '@/components/hero/InsperaWorkstationHUD';
+import MinimalMotionHero from '@/components/hero/MinimalMotionHero';
 import BandScoreFormulaSimulator from '@/components/exam/BandScoreFormulaSimulator';
 import DualEngineSandbox from '@/components/builder/DualEngineSandbox';
 import { useSoundEngine } from '@/hooks/useSoundEngine';
@@ -57,113 +58,20 @@ export default function HomePage() {
       </svg>
 
       {/* =========================================================================
-          ZONE 01 // HERO — THE EXAM THRESHOLD (Asymmetric 7/5 Grid)
+          ZONE 01 // MINIMAL MOTION HERO — THE EXAM THRESHOLD
           ========================================================================= */}
-      <section className="relative z-20 pt-10 sm:pt-16 pb-16 sm:pb-24 border-b border-stone-200/80 dark:border-[rgba(244,244,240,0.08)]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
-            {/* Left 7 Columns: Editorial & Asymmetric Command Center */}
-            <div className="lg:col-span-7 space-y-6 text-left">
-              {/* Technical Status Bar */}
-              <div className="inline-flex items-center gap-2.5 px-3 py-1 rounded-full bg-white dark:bg-[#161821] border border-stone-200/90 dark:border-[rgba(244,244,240,0.12)] font-mono text-[11px] text-stone-700 dark:text-[rgba(244,244,240,0.8)] tracking-wider uppercase shadow-xs">
-                <span className="w-2 h-2 rounded-full bg-[#FF3B1D] animate-ping" />
-                <span className="w-1.5 h-1.5 rounded-full bg-[#FF3B1D] -ml-3.5" />
-                <span className="font-semibold text-stone-900 dark:text-[#F4F4F0]">Specification 2026</span>
-                <span className="text-stone-300 dark:text-[rgba(244,244,240,0.3)]">//</span>
-                <span>Mô phỏng 100% Giao diện Thi Thật Inspera</span>
-              </div>
-
-              {/* Monumental Left-Aligned Headline */}
-              <div className="space-y-3">
-                <h1 className="font-display text-4xl sm:text-6xl font-extrabold tracking-[-0.03em] text-stone-900 dark:text-[#F4F4F0] leading-[1.12]">
-                  Nền tảng Luyện thi{' '}
-                  <span className="text-[#FF3B1D] inline-block">IELTS Writing</span>{' '}
-                  Chuẩn Phòng Thi &amp; Chấm Điểm AI
-                </h1>
-                <p className="text-sm sm:text-base text-stone-600 dark:text-[rgba(244,244,240,0.68)] max-w-[62ch] font-normal leading-relaxed pt-1">
-                  Trải nghiệm áp lực thực tế của kỳ thi trên máy: giao diện Inspera nguyên bản, vô hiệu hóa tính năng tự sửa lỗi, đồng hồ đếm ngược từng giây, và AI Giám khảo đối chiếu theo 4 tiêu chí chuẩn British Council &amp; IDP.
-                </p>
-              </div>
-
-              {/* 2x2 Tactical Command Matrix */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3">
-                {/* 01: Full Test (Flagship) */}
-                <Link
-                  href="/practice?mode=full_test"
-                  onMouseEnter={() => playLockIn()}
-                  onClick={() => playClick()}
-                  className="p-4 rounded-xl bg-[#FF3B1D] text-white hover:bg-[#FF3B1D]/90 transition-all flex items-center justify-between group shadow-md"
-                >
-                  <div className="space-y-0.5">
-                    <div className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider text-white/80 font-bold">
-                      <Layers className="w-3.5 h-3.5" />
-                      <span>FLAGSHIP // FULL TEST</span>
-                    </div>
-                    <div className="text-sm font-bold tracking-tight">Thi Thử Full Test (60 Phút)</div>
-                  </div>
-                  <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                </Link>
-
-                {/* 02: Writing Builder */}
-                <Link
-                  href="/builder"
-                  onClick={() => playClick()}
-                  className="p-4 rounded-xl bg-white dark:bg-[#161821] border border-[#10B981]/50 text-stone-900 dark:text-[#F4F4F0] hover:border-[#10B981] transition-all flex items-center justify-between group shadow-xs"
-                >
-                  <div className="space-y-0.5">
-                    <div className="flex items-center gap-1.5 font-mono text-[11px] text-[#10B981] font-bold uppercase tracking-wider">
-                      <Sprout className="w-3.5 h-3.5" />
-                      <span>PHƯƠNG PHÁP MỚI</span>
-                    </div>
-                    <div className="text-sm font-bold tracking-tight">Writing Builder (Cây Đậu N Tầng)</div>
-                  </div>
-                  <ArrowUpRight className="w-4 h-4 text-[#10B981] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                </Link>
-
-                {/* 03: Task 1 */}
-                <Link
-                  href="/practice?mode=task1"
-                  onClick={() => playClick()}
-                  className="p-3.5 rounded-xl bg-white dark:bg-[#161821] border border-stone-200/80 dark:border-[rgba(244,244,240,0.1)] text-stone-900 dark:text-[#F4F4F0] hover:border-stone-400 dark:hover:border-[rgba(244,244,240,0.3)] transition-all flex items-center justify-between group shadow-xs"
-                >
-                  <div className="space-y-0.5">
-                    <span className="font-mono text-[10px] text-stone-500 dark:text-[rgba(244,244,240,0.5)] uppercase tracking-wider">
-                      01 // ACADEMIC TASK 1
-                    </span>
-                    <div className="text-xs font-bold text-stone-800 dark:text-[rgba(244,244,240,0.9)]">Biểu Đồ &amp; Số Liệu (150 từ)</div>
-                  </div>
-                  <ChevronRight className="w-4 h-4 text-stone-400 dark:text-[rgba(244,244,240,0.4)] group-hover:translate-x-1 transition-transform" />
-                </Link>
-
-                {/* 04: Task 2 */}
-                <Link
-                  href="/practice?mode=task2"
-                  onClick={() => playClick()}
-                  className="p-3.5 rounded-xl bg-white dark:bg-[#161821] border border-stone-200/80 dark:border-[rgba(244,244,240,0.1)] text-stone-900 dark:text-[#F4F4F0] hover:border-stone-400 dark:hover:border-[rgba(244,244,240,0.3)] transition-all flex items-center justify-between group shadow-xs"
-                >
-                  <div className="space-y-0.5">
-                    <span className="font-mono text-[10px] text-stone-500 dark:text-[rgba(244,244,240,0.5)] uppercase tracking-wider">
-                      02 // DISCURSIVE TASK 2
-                    </span>
-                    <div className="text-xs font-bold text-stone-800 dark:text-[rgba(244,244,240,0.9)]">Nghị Luận Xã Hội (250 từ)</div>
-                  </div>
-                  <ChevronRight className="w-4 h-4 text-stone-400 dark:text-[rgba(244,244,240,0.4)] group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </div>
-            </div>
-
-            {/* Right 5 Columns: Interactive Mini-Inspera Telemetry Workstation HUD */}
-            <div className="lg:col-span-5 relative">
-              <InsperaWorkstationHUD />
-            </div>
-          </div>
-        </div>
-      </section>
+      <MinimalMotionHero />
 
       {/* =========================================================================
           ZONE 02 // MODULES 01–03 — ASYMMETRIC BENTO GRID
           ========================================================================= */}
-      <section className="relative z-20 py-20 border-b border-stone-200/80 dark:border-[rgba(244,244,240,0.08)] bg-white/60 dark:bg-[#090A0F]/60">
+      <motion.section
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-60px' }}
+        transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-20 py-20 border-b border-stone-200/80 dark:border-[rgba(244,244,240,0.08)] bg-white/60 dark:bg-[#090A0F]/60"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           {/* Section Header with Exposed Hairline */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-stone-200/80 dark:border-[rgba(244,244,240,0.08)]">
@@ -333,12 +241,18 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* =========================================================================
           ZONE 03 // WRITING BUILDER — CÂY ĐẬU N TẦNG WORKBENCH
           ========================================================================= */}
-      <section className="relative z-20 py-20 border-b border-stone-200/80 dark:border-[rgba(244,244,240,0.08)] bg-stone-50/50 dark:bg-[#090A0F]">
+      <motion.section
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-60px' }}
+        transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-20 py-20 border-b border-stone-200/80 dark:border-[rgba(244,244,240,0.08)] bg-stone-50/50 dark:bg-[#090A0F]"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-stone-200/80 dark:border-[rgba(244,244,240,0.08)]">
             <div>
@@ -357,12 +271,18 @@ export default function HomePage() {
           {/* Interactive Dual-Engine Sandbox Component */}
           <DualEngineSandbox />
         </div>
-      </section>
+      </motion.section>
 
       {/* =========================================================================
           ZONE 04 // ARCHIVE — 107 FORECAST VAULT (2026)
           ========================================================================= */}
-      <section className="relative z-20 py-20 border-b border-stone-200/80 dark:border-[rgba(244,244,240,0.08)] bg-white/60 dark:bg-[#090A0F]/50">
+      <motion.section
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-60px' }}
+        transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-20 py-20 border-b border-stone-200/80 dark:border-[rgba(244,244,240,0.08)] bg-white/60 dark:bg-[#090A0F]/50"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
           {/* Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-stone-200/80 dark:border-[rgba(244,244,240,0.08)]">
@@ -626,7 +546,7 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* =========================================================================
           ZONE 05 // TECHNICAL COLOPHON FOOTER

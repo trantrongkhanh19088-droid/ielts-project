@@ -215,7 +215,7 @@ export default function Navbar() {
                 </div>
               </Link>
               <div className="hidden lg:block pl-1">
-                <ManekiNeko size={30} tooltip="Mèo Thần Tài chúc bạn thi đạt Band cao! 🐾" />
+                <ManekiNeko size={30} tooltip="Mèo Thần Tài chúc bạn thi đạt Band cao!" />
               </div>
             </div>
 
@@ -464,7 +464,7 @@ export default function Navbar() {
                     Cài đặt hệ thống (Giao diện &amp; Builder)
                   </span>
                   <span className="text-[11px] font-semibold text-gray-400">
-                    {theme === 'dark' ? '🌙 Tối' : '☀️ Sáng'}
+                    {theme === 'dark' ? 'Tối' : 'Sáng'}
                   </span>
                 </button>
               </div>
