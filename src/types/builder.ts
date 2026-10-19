@@ -64,6 +64,8 @@ export interface BuilderNode {
   mcqAnswers?: Record<number, number>; // question index -> selected option index
   gradingResult?: GradingResult;
   recordId?: string;
+  isTargetWeakness?: boolean;
+  weaknessReason?: string;
 }
 
 export interface BuilderLevel {
@@ -77,6 +79,9 @@ export interface BuilderTreeConfig {
   studyDays: number;
   totalLevels: number; // N
   createdAt: string;
+  weaknessPrompt?: string;
+  targetedWeaknesses?: string[];
+  coachAdvice?: string;
 }
 
 export interface BuilderDailyTracker {

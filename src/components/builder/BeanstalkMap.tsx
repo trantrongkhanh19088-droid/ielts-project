@@ -18,16 +18,17 @@ import {
   Check,
   Zap,
 } from 'lucide-react';
-import { BuilderLevel, BuilderNode, PromptSeed } from '@/types';
+import { BuilderLevel, BuilderNode, BuilderTreeConfig, PromptSeed } from '@/types';
 import { getPromptById } from '@/lib/data/seed-prompts';
 import { useSoundEngine } from '@/hooks/useSoundEngine';
 
 interface BeanstalkMapProps {
   levels: BuilderLevel[];
   onSelectNode: (levelNumber: number, taskType: 'task1' | 'task2') => void;
+  config?: BuilderTreeConfig | null;
 }
 
-export default function BeanstalkMap({ levels, onSelectNode }: BeanstalkMapProps) {
+export default function BeanstalkMap({ levels, onSelectNode, config }: BeanstalkMapProps) {
   const { playClick, playChime } = useSoundEngine();
   // We display levels from N down to 1 (top to bottom on screen), so level 1 is at the bottom like a real beanstalk!
   const reversedLevels = [...levels].sort((a, b) => b.levelNumber - a.levelNumber);
@@ -131,6 +132,50 @@ export default function BeanstalkMap({ levels, onSelectNode }: BeanstalkMapProps
           </p>
         </div>
       </div>
+
+      {/* PERSONALIZED WEAKNESS COACH BANNER */}
+      {config && (config.weaknessPrompt || (config.targetedWeaknesses && config.targetedWeaknesses.length > 0)) && (
+        <div className="relative z-10 w-full max-w-2xl mx-auto mb-8 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-amber-500/15 via-orange-500/10 to-emerald-500/15 border-2 border-amber-400/50 dark:border-amber-600/40 backdrop-blur-md shadow-md animate-in fade-in">
+          <div className="flex items-start gap-3.5">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-500 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+              <Zap className="w-5 h-5 text-yellow-200 fill-yellow-200" />
+            </div>
+            <div className="space-y-1.5 flex-1">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <span className="text-xs font-black uppercase tracking-wider text-amber-800 dark:text-amber-300 flex items-center gap-1.5">
+                  <span>🎯 Lộ Trình Cây Đậu Khắc Phục Điểm Yếu</span>
+                </span>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500 text-white uppercase">
+                  Personalized
+                </span>
+              </div>
+
+              {config.targetedWeaknesses && config.targetedWeaknesses.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 pt-0.5">
+                  {config.targetedWeaknesses.map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-2.5 py-0.5 rounded-lg bg-amber-100/90 dark:bg-amber-950/80 text-amber-900 dark:text-amber-200 text-[11px] font-extrabold border border-amber-300 dark:border-amber-700/80 shadow-2xs"
+                    >
+                      🎯 {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              {config.coachAdvice ? (
+                <p className="text-xs text-gray-700 dark:text-zinc-300 italic leading-relaxed pt-1 border-t border-amber-200/50 dark:border-zinc-700/50">
+                  &ldquo;{config.coachAdvice}&rdquo;
+                </p>
+              ) : config.weaknessPrompt ? (
+                <p className="text-xs text-gray-600 dark:text-zinc-400 line-clamp-2 pt-1 border-t border-amber-200/50 dark:border-zinc-700/50">
+                  <strong>Trọng tâm:</strong> {config.weaknessPrompt}
+                </p>
+              ) : null}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ========================================================================= */}
       {/* 2. MAIN BEANSTALK MAP CONTAINER WITH WINDING TRUNK */}
@@ -358,6 +403,8 @@ function GamifiedNodeCard({
           ? 'bg-gray-100/70 dark:bg-zinc-900/40 border-gray-200/80 dark:border-zinc-800/80 opacity-60 cursor-not-allowed select-none'
           : isCompleted
           ? 'bg-white dark:bg-zinc-900 border-emerald-400 dark:border-emerald-700/80 hover:border-emerald-500 shadow-md hover:shadow-xl cursor-pointer transform hover:-translate-y-1'
+          : node.isTargetWeakness
+          ? 'bg-white dark:bg-zinc-900 border-amber-400 dark:border-amber-500 ring-4 ring-amber-400/25 hover:ring-amber-400/45 shadow-lg hover:shadow-2xl cursor-pointer transform hover:-translate-y-1'
           : isTask1
           ? 'bg-white dark:bg-zinc-900 border-sky-400 dark:border-sky-500 ring-4 ring-sky-400/20 hover:ring-sky-400/40 shadow-lg hover:shadow-2xl cursor-pointer transform hover:-translate-y-1'
           : 'bg-white dark:bg-zinc-900 border-emerald-400 dark:border-emerald-500 ring-4 ring-emerald-400/20 hover:ring-emerald-400/40 shadow-lg hover:shadow-2xl cursor-pointer transform hover:-translate-y-1'
@@ -442,12 +489,25 @@ function GamifiedNodeCard({
 
       {/* 3. CATEGORY & TITLE */}
       <div className="mt-3 space-y-1.5">
-        <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-zinc-300 border border-gray-200 dark:border-zinc-700 inline-block">
-          {category}
-        </span>
+        <div className="flex flex-wrap items-center gap-1.5">
+          <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-zinc-300 border border-gray-200 dark:border-zinc-700 inline-block">
+            {category}
+          </span>
+          {node.isTargetWeakness && (
+            <span className="inline-flex items-center gap-1 text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700/80 shadow-2xs">
+              <Sparkles className="w-2.5 h-2.5 text-amber-600 dark:text-amber-400" />
+              <span>🎯 Trọng tâm cải thiện</span>
+            </span>
+          )}
+        </div>
         <h4 className="text-xs sm:text-sm font-black text-gray-900 dark:text-white line-clamp-1">
           {title}
         </h4>
+        {node.weaknessReason && (
+          <p className="text-[10px] font-bold text-amber-700 dark:text-amber-400">
+            {node.weaknessReason}
+          </p>
+        )}
         {prompt?.question && (
           <p className="text-[11px] text-gray-600 dark:text-zinc-400 line-clamp-2 leading-relaxed">
             {prompt.question}

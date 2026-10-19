@@ -581,39 +581,228 @@ export function createInitialBlocksForTask(taskType: 'task1' | 'task2', promptId
 }
 
 // ==============================================================================
-// 4. BEANSTALK TREE GENERATION
+// 4. BEANSTALK TREE GENERATION WITH WEAKNESS TARGETING
 // ==============================================================================
+
+export interface BeanstalkWeaknessOptions {
+  weaknessPrompt?: string;
+  targetedWeaknesses?: string[];
+  coachAdvice?: string;
+  customTask1Ids?: string[];
+  customTask2Ids?: string[];
+}
+
+export function selectPromptsWithWeaknessPriority(
+  seeds: PromptSeed[],
+  count: number,
+  taskType: 'task1' | 'task2',
+  options?: BeanstalkWeaknessOptions
+): { prompt: PromptSeed; isTargetWeakness: boolean; weaknessReason?: string }[] {
+  const targetedWeaknesses = options?.targetedWeaknesses || [];
+  const weaknessPrompt = (options?.weaknessPrompt || '').trim().toLowerCase();
+  const customIds = taskType === 'task1' ? options?.customTask1Ids : options?.customTask2Ids;
+
+  const hasAnyFilter =
+    targetedWeaknesses.length > 0 || weaknessPrompt.length > 0 || (customIds && customIds.length > 0);
+
+  if (!hasAnyFilter) {
+    const regular = selectDistributedPrompts(seeds, count);
+    return regular.map((p) => ({ prompt: p, isTargetWeakness: false }));
+  }
+
+  const categoryKeywordsMap: Record<string, string[]> = {
+    'Map': ['map', 'bản đồ', 'quy hoạch', 'village', 'town', 'layout', 'renovation', 'plan'],
+    'Process': ['process', 'quy trình', 'chu trình', 'sản xuất', 'stage', 'production', 'cycle', 'manufacturing'],
+    'Bar Chart': ['bar', 'cột', 'bar chart', 'biểu đồ cột'],
+    'Line Graph': ['line', 'đường', 'line graph', 'xu hướng', 'trend'],
+    'Pie Chart': ['pie', 'tròn', 'tỷ trọng', 'proportion', 'percentage'],
+    'Table Chart': ['table', 'bảng', 'số liệu'],
+    'Discuss Both Views': ['discuss', 'thảo luận', 'hai quan điểm', 'both views', 'cả hai'],
+    'Opinion': ['opinion', 'quan điểm', 'đồng tình', 'agree', 'disagree', 'phản đối'],
+    'Causes and Solutions': ['cause', 'solution', 'nguyên nhân', 'giải pháp', 'hậu quả', 'problem'],
+    'Two-part': ['two-part', 'hai câu hỏi', '2 câu hỏi', '2 phần'],
+    'Advantages': ['advantage', 'disadvantage', 'lợi ích', 'tác hại', 'mặt tốt', 'mặt xấu'],
+  };
+
+  const topicKeywords: { tag: string; keywords: string[] }[] = [
+    { tag: 'Môi trường', keywords: ['môi trường', 'environment', 'khí hậu', 'climate', 'pollution', 'rác thải', 'plastic', 'năng lượng', 'energy'] },
+    { tag: 'Công nghệ & AI', keywords: ['công nghệ', 'technology', 'ai', 'trí tuệ nhân tạo', 'internet', 'social media', 'smartphone', 'máy tính', 'robot'] },
+    { tag: 'Giáo dục', keywords: ['giáo dục', 'education', 'trường học', 'school', 'university', 'sinh viên', 'student', 'trẻ em', 'children'] },
+    { tag: 'Xã hội & Đời sống', keywords: ['xã hội', 'society', 'gia đình', 'family', 'người già', 'elderly', 'lifestyle', 'thành phố', 'city'] },
+    { tag: 'Sức khỏe & Y tế', keywords: ['sức khỏe', 'health', 'y tế', 'bệnh', 'diet', 'thực phẩm', 'food', 'nutrition'] },
+    { tag: 'Tội phạm & Luật pháp', keywords: ['tội phạm', 'crime', 'luật', 'law', 'police', 'prison', 'tù'] },
+    { tag: 'Việc làm & Kinh tế', keywords: ['việc làm', 'work', 'job', 'kinh tế', 'economy', 'lương', 'salary', 'career'] },
+  ];
+
+  const scoredSeeds = seeds.map((seed) => {
+    let score = 0;
+    const reasons: string[] = [];
+    const seedCat = (seed.category || '').toLowerCase();
+    const seedTitle = (seed.title || '').toLowerCase();
+    const seedQuestion = (seed.question || '').toLowerCase();
+    const seedContent = `${seedCat} ${seedTitle} ${seedQuestion}`;
+
+    if (customIds && customIds.includes(seed.id)) {
+      score += 300;
+      reasons.push('Đề xuất trọng tâm từ AI');
+    }
+
+    for (const tag of targetedWeaknesses) {
+      const lowerTag = tag.toLowerCase();
+      if (seedCat.includes(lowerTag) || lowerTag.includes(seedCat)) {
+        score += 150;
+        reasons.push(`Dạng bài: ${seed.category}`);
+      }
+      for (const [catKey, keywords] of Object.entries(categoryKeywordsMap)) {
+        if (lowerTag.includes(catKey.toLowerCase()) || lowerTag.includes(keywords[0])) {
+          if (keywords.some((kw) => seedCat.includes(kw) || seedContent.includes(kw))) {
+            score += 120;
+            reasons.push(`Dạng bài: ${catKey}`);
+          }
+        }
+      }
+      for (const topic of topicKeywords) {
+        if (lowerTag.includes(topic.tag.toLowerCase())) {
+          if (topic.keywords.some((kw) => seedContent.includes(kw))) {
+            score += 100;
+            reasons.push(`Chủ đề: ${topic.tag}`);
+          }
+        }
+      }
+    }
+
+    if (weaknessPrompt) {
+      for (const [catKey, keywords] of Object.entries(categoryKeywordsMap)) {
+        const matchesPrompt = keywords.some((kw) => weaknessPrompt.includes(kw));
+        const matchesSeed = keywords.some((kw) => seedCat.includes(kw) || seedContent.includes(kw));
+        if (matchesPrompt && matchesSeed) {
+          score += 120;
+          reasons.push(`Khắc phục dạng: ${catKey}`);
+        }
+      }
+
+      for (const topic of topicKeywords) {
+        const matchesPrompt = topic.keywords.some((kw) => weaknessPrompt.includes(kw));
+        const matchesSeed = topic.keywords.some((kw) => seedContent.includes(kw));
+        if (matchesPrompt && matchesSeed) {
+          score += 90;
+          reasons.push(`Chủ đề rèn luyện: ${topic.tag}`);
+        }
+      }
+    }
+
+    const uniqueReasons = Array.from(new Set(reasons));
+    const reasonText = uniqueReasons.length > 0 ? uniqueReasons.slice(0, 2).join(' • ') : undefined;
+
+    return {
+      seed,
+      score,
+      isTargetWeakness: score > 0,
+      weaknessReason: reasonText,
+    };
+  });
+
+  const targeted = scoredSeeds.filter((s) => s.score > 0).sort((a, b) => b.score - a.score);
+  const remaining = scoredSeeds.filter((s) => s.score === 0);
+
+  const maxTargetedToTake = Math.min(targeted.length, Math.max(1, Math.round(count * 0.75)));
+  const chosenTargeted = targeted.slice(0, maxTargetedToTake);
+  const remainingNeeded = count - chosenTargeted.length;
+
+  let chosenRemaining: PromptSeed[] = [];
+  if (remainingNeeded > 0) {
+    const leftoverSeeds = [
+      ...targeted.slice(maxTargetedToTake).map((t) => t.seed),
+      ...remaining.map((r) => r.seed),
+    ];
+    chosenRemaining = selectDistributedPrompts(leftoverSeeds, remainingNeeded);
+  }
+
+  const result: { prompt: PromptSeed; isTargetWeakness: boolean; weaknessReason?: string }[] = [];
+  let tIdx = 0;
+  let rIdx = 0;
+
+  for (let i = 0; i < count; i++) {
+    if (tIdx < chosenTargeted.length && (i % 2 === 0 || rIdx >= chosenRemaining.length)) {
+      const item = chosenTargeted[tIdx++];
+      result.push({
+        prompt: item.seed,
+        isTargetWeakness: true,
+        weaknessReason: item.weaknessReason,
+      });
+    } else if (rIdx < chosenRemaining.length) {
+      result.push({
+        prompt: chosenRemaining[rIdx++],
+        isTargetWeakness: false,
+      });
+    } else if (tIdx < chosenTargeted.length) {
+      const item = chosenTargeted[tIdx++];
+      result.push({
+        prompt: item.seed,
+        isTargetWeakness: true,
+        weaknessReason: item.weaknessReason,
+      });
+    }
+  }
+
+  return result;
+}
 
 export function generateBeanstalkTree(
   totalLevels: number,
   targetBand: BuilderTargetBand,
-  studyDays: number
+  studyDays: number,
+  weaknessOptions?: BeanstalkWeaknessOptions
 ): BuilderState {
-  const t1Prompts = selectDistributedPrompts(TASK_1_SEEDS, totalLevels);
-  const t2Prompts = selectDistributedPrompts(TASK_2_SEEDS, totalLevels);
+  let t1Pool = [...TASK_1_SEEDS];
+  let t2Pool = [...TASK_2_SEEDS];
+
+  if (typeof window !== 'undefined') {
+    try {
+      const keys = Object.keys(localStorage).filter((k) => k.startsWith('cd_ielts_custom_prompts_'));
+      for (const k of keys) {
+        const raw = localStorage.getItem(k);
+        if (raw) {
+          const list = JSON.parse(raw);
+          if (Array.isArray(list)) {
+            for (const item of list) {
+              if (item.taskType === 'task1') t1Pool.push(item);
+              else if (item.taskType === 'task2') t2Pool.push(item);
+            }
+          }
+        }
+      }
+    } catch {}
+  }
+
+  const t1Selection = selectPromptsWithWeaknessPriority(t1Pool, totalLevels, 'task1', weaknessOptions);
+  const t2Selection = selectPromptsWithWeaknessPriority(t2Pool, totalLevels, 'task2', weaknessOptions);
 
   const levels: BuilderLevel[] = [];
 
   for (let i = 0; i < totalLevels; i++) {
     const levelNumber = i + 1;
-    // Level 1 starts available; subsequent levels start locked
     const initialStatus = levelNumber === 1 ? 'available' : 'locked';
 
-    const t1Seed = t1Prompts[i];
-    const t2Seed = t2Prompts[i];
+    const t1Item = t1Selection[i] || { prompt: t1Pool[0], isTargetWeakness: false };
+    const t2Item = t2Selection[i] || { prompt: t2Pool[0], isTargetWeakness: false };
 
     const task1Node: BuilderNode = {
-      promptId: t1Seed.id,
+      promptId: t1Item.prompt.id,
       taskType: 'task1',
       status: initialStatus,
-      blocks: createInitialBlocksForTask('task1', t1Seed.id),
+      blocks: createInitialBlocksForTask('task1', t1Item.prompt.id),
+      isTargetWeakness: t1Item.isTargetWeakness,
+      weaknessReason: t1Item.weaknessReason,
     };
 
     const task2Node: BuilderNode = {
-      promptId: t2Seed.id,
+      promptId: t2Item.prompt.id,
       taskType: 'task2',
       status: initialStatus,
-      blocks: createInitialBlocksForTask('task2', t2Seed.id),
+      blocks: createInitialBlocksForTask('task2', t2Item.prompt.id),
+      isTargetWeakness: t2Item.isTargetWeakness,
+      weaknessReason: t2Item.weaknessReason,
     };
 
     levels.push({
@@ -632,6 +821,9 @@ export function generateBeanstalkTree(
     studyDays,
     totalLevels,
     createdAt: new Date().toISOString(),
+    weaknessPrompt: weaknessOptions?.weaknessPrompt,
+    targetedWeaknesses: weaknessOptions?.targetedWeaknesses,
+    coachAdvice: weaknessOptions?.coachAdvice,
   };
 
   const dailyTracker: BuilderDailyTracker = {

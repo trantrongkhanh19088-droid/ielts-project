@@ -82,11 +82,23 @@ function BuilderMainContent() {
     targetBand: BuilderTargetBand;
     studyDays: number;
     totalLevels: number;
+    weaknessPrompt?: string;
+    targetedWeaknesses?: string[];
+    coachAdvice?: string;
+    customTask1Ids?: string[];
+    customTask2Ids?: string[];
   }) => {
     const newState = generateBeanstalkTree(
       config.totalLevels,
       config.targetBand,
-      config.studyDays
+      config.studyDays,
+      {
+        weaknessPrompt: config.weaknessPrompt,
+        targetedWeaknesses: config.targetedWeaknesses,
+        coachAdvice: config.coachAdvice,
+        customTask1Ids: config.customTask1Ids,
+        customTask2Ids: config.customTask2Ids,
+      }
     );
     setState(newState);
     saveBuilderState(newState);
@@ -339,7 +351,7 @@ function BuilderMainContent() {
 
           {/* Dynamic N-Level Beanstalk Map */}
           <div className="flex-1 w-full overflow-x-hidden">
-            <BeanstalkMap levels={state.levels} onSelectNode={handleSelectNode} />
+            <BeanstalkMap levels={state.levels} onSelectNode={handleSelectNode} config={state.config} />
           </div>
         </>
       ) : (

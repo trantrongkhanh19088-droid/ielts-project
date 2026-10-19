@@ -95,6 +95,17 @@ export default function DailyPacingWidget({
               <span>{dailyTracker.studyStreakDays} ngày streak</span>
             </div>
 
+            {/* Targeted Weakness Badge */}
+            {config.targetedWeaknesses && config.targetedWeaknesses.length > 0 && (
+              <div
+                className="hidden xl:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800 text-xs font-bold"
+                title={`Trọng tâm cải thiện: ${config.targetedWeaknesses.join(', ')}`}
+              >
+                <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                <span className="max-w-[180px] truncate">🎯 {config.targetedWeaknesses.join(', ')}</span>
+              </div>
+            )}
+
             {/* Tree Management Controls */}
             <div className="flex items-center gap-1.5 pl-2 border-l border-gray-200 dark:border-zinc-700">
               <button
