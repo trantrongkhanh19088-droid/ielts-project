@@ -226,7 +226,7 @@ export default function Navbar() {
                 }`}
               >
                 <BookOpen className="w-3.5 h-3.5 text-vermilion" />
-                <span>Kho Đề &amp; Prompts</span>
+                <span>Kho Đề Thi</span>
                 <span className="font-mono text-[10px] px-1.5 py-0.2 rounded bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-500/30 font-bold">
                   107+
                 </span>

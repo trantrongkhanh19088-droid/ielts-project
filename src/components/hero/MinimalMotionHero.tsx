@@ -285,7 +285,7 @@ export default function MinimalMotionHero() {
             </div>
           </Link>
 
-          {/* Card 3: 107 Forecast Vault & AI Personas */}
+          {/* Card 3: 107 Forecast Vault */}
           <Link
             href="/prompts"
             onClick={() => playClick()}
@@ -295,22 +295,22 @@ export default function MinimalMotionHero() {
               <div className="flex items-center justify-between font-mono text-[11px] text-sky-600 dark:text-sky-400 font-bold uppercase tracking-wider">
                 <span className="flex items-center gap-1.5">
                   <BookOpen className="w-3.5 h-3.5" />
-                  KHO ĐỀ &amp; PERSONAS
+                  KHO ĐỀ FORECAST
                 </span>
                 <span className="flex items-center gap-1 text-[#FF3B1D]">
                   <Sparkles className="w-3 h-3" />
-                  CHUYÊN GIA AI
+                  BAND 8.0+
                 </span>
               </div>
               <div className="font-display text-base font-bold tracking-tight text-stone-900 dark:text-[#F4F4F0]">
-                107 Đề &amp; 6 Persona AI
+                107 Đề Thi Dự Đoán 2026
               </div>
               <p className="text-xs text-stone-600 dark:text-[rgba(244,244,240,0.65)] leading-relaxed">
-                Đề Forecast kèm dàn ý Band 8+ và kho Persona AI chuyên gia tinh tuyển chuẩn Khảo thí Cambridge.
+                Tổng hợp 107 đề thi Task 1 &amp; Task 2 kèm dàn ý chi tiết, từ vựng học thuật và phân tích dữ liệu chuẩn Cambridge.
               </p>
             </div>
             <div className="flex items-center gap-1 text-xs font-mono font-bold tracking-wider uppercase text-sky-600 dark:text-sky-400 pt-1">
-              <span>Khám phá kho đề &amp; personas</span>
+              <span>Khám phá kho đề thi</span>
               <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </div>
           </Link>
