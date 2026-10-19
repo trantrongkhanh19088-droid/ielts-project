@@ -86,54 +86,71 @@ export default function MinimalMotionHero() {
   return (
     <section className="relative z-20 pt-10 sm:pt-16 pb-16 sm:pb-24 border-b border-stone-200/80 dark:border-[rgba(244,244,240,0.08)]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
-        {/* Top Specification Pill Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-          className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/80 dark:bg-[#161821]/80 backdrop-blur-md border border-stone-200/90 dark:border-[rgba(244,244,240,0.12)] font-mono text-[11px] text-stone-700 dark:text-[rgba(244,244,240,0.85)] tracking-wider uppercase shadow-xs mx-auto"
-        >
-          <span className="w-2 h-2 rounded-full bg-[#FF3B1D] animate-ping" />
-          <span className="w-1.5 h-1.5 rounded-full bg-[#FF3B1D] -ml-3.5" />
-          <span className="font-semibold text-stone-900 dark:text-[#F4F4F0]">Specification 2026</span>
-          <span className="text-stone-300 dark:text-[rgba(244,244,240,0.3)]">//</span>
-          <span>Mô phỏng 100% Giao diện Thi Thật Inspera</span>
-        </motion.div>
+        {/* Monumental Headline Shield Card - Prevents background wave lines from obstructing typography */}
+        <div className="relative max-w-4xl mx-auto px-6 py-8 sm:px-10 sm:py-10 rounded-3xl bg-white/95 dark:bg-[#12141f]/95 backdrop-blur-2xl border border-stone-200/90 dark:border-[rgba(244,244,240,0.12)] shadow-xl shadow-stone-900/5 dark:shadow-2xl dark:shadow-black/60 space-y-6">
+          {/* Subtle architectural corner crosshairs */}
+          <div className="absolute top-3.5 left-3.5 font-mono text-[9px] text-stone-300 dark:text-[rgba(244,244,240,0.25)] select-none pointer-events-none">
+            +
+          </div>
+          <div className="absolute top-3.5 right-3.5 font-mono text-[9px] text-stone-300 dark:text-[rgba(244,244,240,0.25)] select-none pointer-events-none">
+            +
+          </div>
+          <div className="absolute bottom-3.5 left-3.5 font-mono text-[9px] text-stone-300 dark:text-[rgba(244,244,240,0.25)] select-none pointer-events-none">
+            +
+          </div>
+          <div className="absolute bottom-3.5 right-3.5 font-mono text-[9px] text-stone-300 dark:text-[rgba(244,244,240,0.25)] select-none pointer-events-none">
+            +
+          </div>
 
-        {/* Monumental Headline with Spring Word Motion */}
-        <div className="space-y-4 max-w-4xl mx-auto">
-          <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold tracking-[-0.035em] text-stone-900 dark:text-[#F4F4F0] leading-[1.12]">
-            <span>Luyện thi IELTS Writing</span>
-            <span className="block mt-1 sm:mt-2 text-2xl sm:text-3xl lg:text-4xl text-stone-500 dark:text-[rgba(244,244,240,0.55)] font-semibold">
-              chuẩn hóa theo{' '}
-              <span className="relative inline-flex overflow-hidden align-baseline font-extrabold text-[#FF3B1D] pb-1 min-w-[280px] sm:min-w-[420px] h-[1.25em]">
-                &nbsp;
-                {titles.map((title, index) => (
-                  <motion.span
-                    key={index}
-                    className="absolute left-0 right-0 text-center top-0 whitespace-nowrap text-[#FF3B1D] font-extrabold"
-                    initial={{ opacity: 0, y: -40 }}
-                    animate={
-                      titleNumber === index
-                        ? { opacity: 1, y: 0 }
-                        : { opacity: 0, y: titleNumber > index ? -50 : 50 }
-                    }
-                    transition={{
-                      type: 'spring',
-                      stiffness: 90,
-                      damping: 15,
-                    }}
-                  >
-                    {title}
-                  </motion.span>
-                ))}
+          {/* Top Specification Pill Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+            className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-stone-100/80 dark:bg-[#1a1c28]/80 border border-stone-200/90 dark:border-[rgba(244,244,240,0.12)] font-mono text-[11px] text-stone-700 dark:text-[rgba(244,244,240,0.85)] tracking-wider uppercase shadow-xs mx-auto"
+          >
+            <span className="w-2 h-2 rounded-full bg-[#FF3B1D] animate-ping" />
+            <span className="w-1.5 h-1.5 rounded-full bg-[#FF3B1D] -ml-3.5" />
+            <span className="font-semibold text-stone-900 dark:text-[#F4F4F0]">Specification 2026</span>
+            <span className="text-stone-300 dark:text-[rgba(244,244,240,0.3)]">//</span>
+            <span>Mô phỏng 100% Giao diện Thi Thật Inspera</span>
+          </motion.div>
+
+          {/* Monumental Headline with Spring Word Motion */}
+          <div className="space-y-4 max-w-3xl mx-auto">
+            <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold tracking-[-0.035em] text-stone-900 dark:text-[#F4F4F0] leading-[1.12]">
+              <span>Luyện thi IELTS Writing</span>
+              <span className="block mt-1 sm:mt-2 text-2xl sm:text-3xl lg:text-4xl text-stone-500 dark:text-[rgba(244,244,240,0.55)] font-semibold">
+                chuẩn hóa theo{' '}
+                <span className="relative inline-flex overflow-hidden align-baseline font-extrabold text-[#FF3B1D] pb-1 min-w-[280px] sm:min-w-[420px] h-[1.25em]">
+                  &nbsp;
+                  {titles.map((title, index) => (
+                    <motion.span
+                      key={index}
+                      className="absolute left-0 right-0 text-center top-0 whitespace-nowrap text-[#FF3B1D] font-extrabold"
+                      initial={{ opacity: 0, y: -40 }}
+                      animate={
+                        titleNumber === index
+                          ? { opacity: 1, y: 0 }
+                          : { opacity: 0, y: titleNumber > index ? -50 : 50 }
+                      }
+                      transition={{
+                        type: 'spring',
+                        stiffness: 90,
+                        damping: 15,
+                      }}
+                    >
+                      {title}
+                    </motion.span>
+                  ))}
+                </span>
               </span>
-            </span>
-          </h1>
+            </h1>
 
-          <p className="text-sm sm:text-base text-stone-600 dark:text-[rgba(244,244,240,0.7)] max-w-2xl mx-auto font-normal leading-relaxed pt-1">
-            Trải nghiệm áp lực thực tế của kỳ thi trên máy tính: giao diện Inspera nguyên bản, vô hiệu hóa tính năng tự sửa lỗi, đồng hồ 60 phút đếm ngược, và hệ thống AI Giám khảo đối chiếu theo 4 tiêu chí chuẩn British Council &amp; IDP.
-          </p>
+            <p className="text-sm sm:text-base text-stone-600 dark:text-[rgba(244,244,240,0.7)] max-w-2xl mx-auto font-normal leading-relaxed pt-1">
+              Trải nghiệm áp lực thực tế của kỳ thi trên máy tính: giao diện Inspera nguyên bản, vô hiệu hóa tính năng tự sửa lỗi, đồng hồ 60 phút đếm ngược, và hệ thống AI Giám khảo đối chiếu theo 4 tiêu chí chuẩn British Council &amp; IDP.
+            </p>
+          </div>
         </div>
 
         {/* Interactive Mode Selector Pills */}
