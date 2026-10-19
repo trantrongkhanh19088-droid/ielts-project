@@ -254,7 +254,12 @@ Output JSON Schema:
       "contextExample": string (Ví dụ câu văn hoàn chỉnh áp dụng từ mới đúng ngữ cảnh đề bài này)
     }
   ],
-  "modelEssayBand8": string (Bài luận mẫu hoàn chỉnh Band 8.0 - 8.5 chuẩn mực, giải quyết trọn vẹn đề bài với văn phong học thuật tự nhiên)
+  "modelEssayBand8": string (Bài luận mẫu hoàn chỉnh Band 8.0 - 8.5 chuẩn mực, giải quyết trọn vẹn đề bài với văn phong học thuật tự nhiên),
+  "diagnosticRoadmap": {
+    "bandCeilingFactor": string (Yếu tố cản trở lớn nhất khiến thí sinh chưa thể đạt band điểm cao hơn theo tiêu chuẩn khảo thí),
+    "topPriorityFix": string (Hành động ưu tiên số 1 thí sinh cần thực hiện trong bài viết tiếp theo để nâng band),
+    "examinerNoteVi": string (Lời khuyên chiến lược súc tích, mang tính định hướng từ Giám khảo)
+  }
 }
 
 STRICT RULE FOR "sentenceCorrections":

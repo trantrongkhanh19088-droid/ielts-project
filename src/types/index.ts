@@ -60,12 +60,19 @@ export interface GradingCriteria {
   grammaticalRange: CriterionFeedback;
 }
 
+export interface DiagnosticRoadmap {
+  bandCeilingFactor: string;
+  topPriorityFix: string;
+  examinerNoteVi?: string;
+}
+
 export interface GradingResult {
   overallBand: number;
   criteria: GradingCriteria;
   sentenceCorrections: SentenceCorrection[];
   vocabularyUpgrades: VocabularyUpgrade[];
   modelEssayBand8: string;
+  diagnosticRoadmap?: DiagnosticRoadmap;
   wordCount: number;
   timeSpentSeconds: number;
   taskType: 'task1' | 'task2';

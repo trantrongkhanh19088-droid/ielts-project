@@ -62,12 +62,13 @@ ${previousSentences && previousSentences.length > 0 ? previousSentences.map((s, 
 CANDIDATE'S SENTENCE TO EVALUATE:
 "${sentence.trim()}"
 
-YOUR TASK:
+YOUR TASK (CAMBRIDGE & PROMPTS.CHAT ACADEMIC REFINEMENT STANDARDS):
 1. Detect all grammatical errors (tenses, subject-verb agreement, relative clauses, prepositions, articles, dangling modifiers).
 2. Detect lexical and word choice inaccuracies (unnatural collocations, wrong parts of speech, inappropriate register).
-3. Detect spelling, capitalization, and punctuation mistakes.
-4. Formulate the clean, corrected version of the candidate's sentence preserving their original intended meaning.
-5. Provide a short, constructive, encouraging advice sentence in Vietnamese.
+3. Detect academic wordiness and redundancy (eliminating empty filler language, repetitive clichés like "due to the fact that" -> "because").
+4. Detect spelling, capitalization, and punctuation mistakes.
+5. Formulate the clean, corrected version of the candidate's sentence preserving their original intended meaning with optimal academic density.
+6. Provide a short, constructive, encouraging advice sentence in Vietnamese.
 
 MANDATORY JSON OUTPUT FORMAT:
 You MUST output ONLY a valid JSON object matching this exact schema:
@@ -75,13 +76,13 @@ You MUST output ONLY a valid JSON object matching this exact schema:
   "hasErrors": true, // false if sentence has zero errors
   "errors": [
     {
-      "type": "Grammar", // "Grammar" | "Vocabulary" | "Spelling" | "Punctuation"
-      "originalSnippet": "exact substring containing error",
-      "correction": "exact corrected substring",
-      "explanationVi": "Ngắn gọn giải thích tại sao sai bằng tiếng Việt (1 câu dễ hiểu)"
+      "type": "Grammar", // "Grammar" | "Vocabulary" | "Spelling" | "Punctuation" | "Redundancy"
+      "originalSnippet": "exact substring containing error or wordiness",
+      "correction": "exact corrected or tightened substring",
+      "explanationVi": "Ngắn gọn giải thích tại sao sai hoặc lý do cần tinh giản bằng tiếng Việt (1 câu dễ hiểu)"
     }
   ],
-  "correctedSentence": "Full corrected sentence with all mistakes resolved",
+  "correctedSentence": "Full corrected sentence with all mistakes and redundancies resolved",
   "overallAdviceVi": "Lời khuyên ngắn gọn bằng tiếng Việt giúp học viên nhớ quy tắc này"
 }
 `;

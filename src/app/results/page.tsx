@@ -414,6 +414,7 @@ function ResultsContent() {
             <CriteriaFeedbackTab
               criteria={activeResult.criteria}
               taskType={activeResult.taskType}
+              diagnosticRoadmap={activeResult.diagnosticRoadmap}
             />
           )}
 

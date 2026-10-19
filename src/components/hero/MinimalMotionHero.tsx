@@ -118,31 +118,23 @@ export default function MinimalMotionHero() {
 
           {/* Monumental Headline with Spring Word Motion */}
           <div className="space-y-4 max-w-3xl mx-auto">
-            <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold tracking-[-0.035em] text-stone-900 dark:text-[#F4F4F0] leading-[1.12]">
+            <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold tracking-[-0.035em] text-stone-900 dark:text-[#F4F4F0] leading-[1.15]">
               <span>Luyện thi IELTS Writing</span>
-              <span className="block mt-1 sm:mt-2 text-2xl sm:text-3xl lg:text-4xl text-stone-500 dark:text-[rgba(244,244,240,0.55)] font-semibold">
+              <span className="block mt-1 sm:mt-2 text-xl sm:text-3xl lg:text-4xl text-stone-500 dark:text-[rgba(244,244,240,0.55)] font-semibold">
                 chuẩn hóa theo{' '}
-                <span className="relative inline-flex overflow-hidden align-baseline font-extrabold text-[#FF3B1D] pb-1 min-w-[280px] sm:min-w-[420px] h-[1.25em]">
-                  &nbsp;
-                  {titles.map((title, index) => (
+                <span className="relative inline-block align-baseline font-extrabold text-[#FF3B1D] min-h-[1.3em]">
+                  <AnimatePresence mode="wait">
                     <motion.span
-                      key={index}
-                      className="absolute left-0 right-0 text-center top-0 whitespace-nowrap text-[#FF3B1D] font-extrabold"
-                      initial={{ opacity: 0, y: -40 }}
-                      animate={
-                        titleNumber === index
-                          ? { opacity: 1, y: 0 }
-                          : { opacity: 0, y: titleNumber > index ? -50 : 50 }
-                      }
-                      transition={{
-                        type: 'spring',
-                        stiffness: 90,
-                        damping: 15,
-                      }}
+                      key={titleNumber}
+                      initial={{ opacity: 0, y: 14 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -14 }}
+                      transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+                      className="inline-block text-[#FF3B1D] font-extrabold px-1.5"
                     >
-                      {title}
+                      {titles[titleNumber]}
                     </motion.span>
-                  ))}
+                  </AnimatePresence>
                 </span>
               </span>
             </h1>
@@ -293,7 +285,7 @@ export default function MinimalMotionHero() {
             </div>
           </Link>
 
-          {/* Card 3: 107 Forecast Vault */}
+          {/* Card 3: 107 Forecast Vault & AI Personas */}
           <Link
             href="/prompts"
             onClick={() => playClick()}
@@ -303,19 +295,22 @@ export default function MinimalMotionHero() {
               <div className="flex items-center justify-between font-mono text-[11px] text-sky-600 dark:text-sky-400 font-bold uppercase tracking-wider">
                 <span className="flex items-center gap-1.5">
                   <BookOpen className="w-3.5 h-3.5" />
-                  KHO LƯU TRỮ
+                  KHO ĐỀ &amp; PERSONAS
                 </span>
-                <span>107 BỘ ĐỀ</span>
+                <span className="flex items-center gap-1 text-[#FF3B1D]">
+                  <Sparkles className="w-3 h-3" />
+                  PROMPTS.CHAT
+                </span>
               </div>
               <div className="font-display text-base font-bold tracking-tight text-stone-900 dark:text-[#F4F4F0]">
-                Đề Forecast &amp; Dàn Ý
+                107 Đề &amp; 6 Persona AI
               </div>
               <p className="text-xs text-stone-600 dark:text-[rgba(244,244,240,0.65)] leading-relaxed">
-                30 đề Task 1 đủ biểu đồ và 77 đề Task 2 có sẵn dàn ý cấu trúc Band 8.0+.
+                Đề Forecast kèm dàn ý Band 8+ và kho Persona AI chuyên gia tinh tuyển từ prompts.chat.
               </p>
             </div>
             <div className="flex items-center gap-1 text-xs font-mono font-bold tracking-wider uppercase text-sky-600 dark:text-sky-400 pt-1">
-              <span>Khám phá kho đề</span>
+              <span>Khám phá kho đề &amp; prompt</span>
               <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </div>
           </Link>
