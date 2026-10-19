@@ -15,7 +15,7 @@ interface InsperaWorkstationHUDProps {
 }
 
 export default function InsperaWorkstationHUD({ forcedTask }: InsperaWorkstationHUDProps = {}) {
-  const { playClick, playTick } = useSoundEngine();
+  const { playClick } = useSoundEngine();
   const [secondsRemaining, setSecondsRemaining] = useState(3582); // 59:42
   const [activeTask, setActiveTask] = useState<'task1' | 'task2'>('task2');
   const [isExamLive, setIsExamLive] = useState(true);
@@ -26,18 +26,17 @@ export default function InsperaWorkstationHUD({ forcedTask }: InsperaWorkstation
     }
   }, [forcedTask]);
 
-  // Live ticking countdown
+  // Live countdown animation (silent visual progression)
   useEffect(() => {
     if (!isExamLive) return;
     const interval = setInterval(() => {
       setSecondsRemaining((prev) => {
         if (prev <= 1) return 3600;
-        playTick();
         return prev - 1;
       });
     }, 1000);
     return () => clearInterval(interval);
-  }, [isExamLive, playTick]);
+  }, [isExamLive]);
 
   const formatTime = (secs: number) => {
     const m = Math.floor(secs / 60);

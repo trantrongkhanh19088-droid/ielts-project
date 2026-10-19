@@ -36,6 +36,7 @@ import Task1LineChart from '@/components/charts/Task1LineChart';
 import Task1BarChart from '@/components/charts/Task1BarChart';
 import Task1PieChart from '@/components/charts/Task1PieChart';
 import ImageZoomModal from '@/components/exam/ImageZoomModal';
+import { useSoundEngine } from '@/hooks/useSoundEngine';
 
 interface WritingWorkspaceProps {
   levelNumber: number;
@@ -62,6 +63,7 @@ export default function WritingWorkspace({
   onSaveMCQAnswers,
   onCompleteNode,
 }: WritingWorkspaceProps) {
+  const { playClick, playChime, playLockIn } = useSoundEngine();
   const prompt = useMemo(() => getPromptById(node.promptId), [node.promptId]);
   const mcqs = useMemo(
     () => (prompt ? getInteractiveMCQsForPrompt(prompt, targetBand) : []),
@@ -123,6 +125,7 @@ export default function WritingWorkspace({
 
   // Handle AI Grading Execution
   const handleGradeEssay = async (fullEssay: string) => {
+    playLockIn();
     setIsGrading(true);
     setIsGradingModalOpen(true);
 
@@ -160,6 +163,7 @@ export default function WritingWorkspace({
       result.userEssay = fullEssay;
       result.wordCount = wordCount;
 
+      playChime();
       setActiveGradingResult(result);
 
       // Save to official user essay history
@@ -207,6 +211,7 @@ export default function WritingWorkspace({
 
   // Handle Quick Complete without grading
   const handleQuickComplete = () => {
+    playChime();
     setCompletedWordCount(wordCount);
     onCompleteNode(wordCount);
     setShowCelebration(true);
@@ -221,7 +226,10 @@ export default function WritingWorkspace({
           <div className="flex items-center gap-3">
             <button
               type="button"
-              onClick={onBackToTree}
+              onClick={() => {
+                playClick();
+                onBackToTree();
+              }}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-gray-200 dark:border-zinc-700 hover:bg-gray-100 dark:hover:bg-zinc-800 text-xs font-semibold text-gray-700 dark:text-zinc-300 transition"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
@@ -243,7 +251,10 @@ export default function WritingWorkspace({
             <div className="flex rounded-xl p-1 bg-gray-100 dark:bg-zinc-800 text-xs font-bold">
               <button
                 type="button"
-                onClick={() => setRightViewMode('editor')}
+                onClick={() => {
+                  playClick();
+                  setRightViewMode('editor');
+                }}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition ${
                   rightViewMode === 'editor'
                     ? 'bg-white dark:bg-zinc-900 text-emerald-600 dark:text-emerald-400 shadow-xs'
@@ -256,7 +267,10 @@ export default function WritingWorkspace({
 
               <button
                 type="button"
-                onClick={() => setRightViewMode('preview')}
+                onClick={() => {
+                  playClick();
+                  setRightViewMode('preview');
+                }}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition ${
                   rightViewMode === 'preview'
                     ? 'bg-white dark:bg-zinc-900 text-sky-600 dark:text-sky-400 shadow-xs'

@@ -22,6 +22,7 @@ import { TASK_1_SEEDS, TASK_2_SEEDS } from '@/lib/data/seed-prompts';
 import { PromptSeed } from '@/types';
 import ToriiGate from '@/components/japanese/ToriiGate';
 import { SeigaihaPattern } from '@/components/japanese/JapanesePatterns';
+import { useSoundEngine } from '@/hooks/useSoundEngine';
 
 const TASK_1_CATEGORIES = [
   'All',
@@ -44,6 +45,7 @@ const TASK_2_CATEGORIES = [
 ];
 
 export default function PromptsArchivePage() {
+  const { playClick, playChime, playLockIn } = useSoundEngine();
   const [activeTab, setActiveTab] = useState<'all' | 'task1' | 'task2'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [task1Category, setTask1Category] = useState('All');
@@ -96,10 +98,18 @@ export default function PromptsArchivePage() {
   }, [filteredPrompts]);
 
   const toggleOutline = (id: string) => {
-    setExpandedOutlineId((prev) => (prev === id ? null : id));
+    setExpandedOutlineId((prev) => {
+      if (prev === id) {
+        playClick();
+        return null;
+      }
+      playChime();
+      return id;
+    });
   };
 
   const resetFilters = () => {
+    playClick();
     setSearchQuery('');
     setTask1Category('All');
     setTask2Category('All');
@@ -169,7 +179,10 @@ export default function PromptsArchivePage() {
             <div className="inline-flex items-center p-1 rounded-lg hairline-border bg-paper-subtle dark:bg-carbon-subtle font-mono text-xs">
               <button
                 type="button"
-                onClick={() => setActiveTab('all')}
+                onClick={() => {
+                  playClick();
+                  setActiveTab('all');
+                }}
                 className={`px-4 py-2 rounded-md transition-colors font-semibold ${
                   activeTab === 'all'
                     ? 'bg-stone-900 text-stone-50 dark:bg-stone-100 dark:text-stone-950 shadow-xs'
@@ -180,7 +193,10 @@ export default function PromptsArchivePage() {
               </button>
               <button
                 type="button"
-                onClick={() => setActiveTab('task1')}
+                onClick={() => {
+                  playClick();
+                  setActiveTab('task1');
+                }}
                 className={`px-4 py-2 rounded-md transition-colors font-semibold flex items-center gap-1.5 ${
                   activeTab === 'task1'
                     ? 'bg-stone-900 text-stone-50 dark:bg-stone-100 dark:text-stone-950 shadow-xs'
@@ -192,7 +208,10 @@ export default function PromptsArchivePage() {
               </button>
               <button
                 type="button"
-                onClick={() => setActiveTab('task2')}
+                onClick={() => {
+                  playClick();
+                  setActiveTab('task2');
+                }}
                 className={`px-4 py-2 rounded-md transition-colors font-semibold flex items-center gap-1.5 ${
                   activeTab === 'task2'
                     ? 'bg-stone-900 text-stone-50 dark:bg-stone-100 dark:text-stone-950 shadow-xs'
@@ -217,7 +236,10 @@ export default function PromptsArchivePage() {
               {searchQuery && (
                 <button
                   type="button"
-                  onClick={() => setSearchQuery('')}
+                  onClick={() => {
+                    playClick();
+                    setSearchQuery('');
+                  }}
                   className="absolute right-2.5 top-1/2 -translate-y-1/2 font-mono text-[11px] text-stone-400 hover:text-stone-700 dark:hover:text-stone-200"
                 >
                   [XÓA]
@@ -238,7 +260,10 @@ export default function PromptsArchivePage() {
                   <button
                     key={cat}
                     type="button"
-                    onClick={() => setTask1Category(cat)}
+                    onClick={() => {
+                      playClick();
+                      setTask1Category(cat);
+                    }}
                     className={`px-3 py-1 rounded transition-colors ${
                       task1Category === cat
                         ? 'bg-sky-600 text-white font-semibold shadow-xs'
@@ -263,7 +288,10 @@ export default function PromptsArchivePage() {
                   <button
                     key={cat}
                     type="button"
-                    onClick={() => setTask2Category(cat)}
+                    onClick={() => {
+                      playClick();
+                      setTask2Category(cat);
+                    }}
                     className={`px-3 py-1 rounded transition-colors ${
                       task2Category === cat
                         ? 'bg-amber-600 text-white font-semibold shadow-xs'
@@ -423,6 +451,8 @@ export default function PromptsArchivePage() {
                     {/* Action link */}
                     <Link
                       href={`/practice?mode=${p.taskType}&promptId=${p.id}`}
+                      onMouseEnter={() => playLockIn()}
+                      onClick={() => playClick()}
                       className="inline-flex items-center justify-between px-4 py-2.5 rounded-lg bg-stone-900 text-stone-50 hover:bg-vermilion dark:bg-stone-100 dark:text-stone-950 dark:hover:bg-vermilion dark:hover:text-white font-mono text-[11px] font-bold uppercase tracking-wider transition-all duration-200 ease-spring active:scale-[0.98] group/btn mt-2 shadow-2xs"
                     >
                       <span>VÀO PHÒNG THI MÔ PHỎNG</span>

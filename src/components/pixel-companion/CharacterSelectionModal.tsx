@@ -19,6 +19,7 @@ import {
   Layers,
   ArrowRight,
 } from 'lucide-react';
+import { useSoundEngine } from '@/hooks/useSoundEngine';
 
 interface CharacterSelectionModalProps {
   isOpen: boolean;
@@ -33,6 +34,7 @@ export default function CharacterSelectionModal({
   settings,
   onSaveSettings,
 }: CharacterSelectionModalProps) {
+  const { playClick, playChime, playLockIn } = useSoundEngine();
   const [modalTab, setModalTab] = useState<'studio' | 'settings' | 'presets'>('studio');
   const [searchQuery, setSearchQuery] = useState('');
   const [activePresetTab, setActivePresetTab] = useState<'all' | CharacterCategory>('all');
@@ -100,6 +102,7 @@ export default function CharacterSelectionModal({
   };
 
   const handleTriggerSaveFromStudio = () => {
+    playLockIn();
     if (iframeRef.current?.contentWindow) {
       iframeRef.current.contentWindow.postMessage(
         { type: 'dot-avatar:trigger-save-companion' },
@@ -110,6 +113,7 @@ export default function CharacterSelectionModal({
 
   const handleRemoveCustomAvatar = () => {
     try {
+      playClick();
       localStorage.removeItem('cd_ielts_custom_avatar');
       setCustomAvatar(null);
       setUseCustomAvatar(false);
@@ -145,6 +149,7 @@ export default function CharacterSelectionModal({
   }, [searchQuery, activePresetTab]);
 
   const handleApply = () => {
+    playLockIn();
     onSaveSettings({
       selectedCharacterId: selectedCharId,
       size,
@@ -193,7 +198,10 @@ export default function CharacterSelectionModal({
           <div className="flex items-center gap-2">
             <button
               type="button"
-              onClick={onClose}
+              onClick={() => {
+                playClick();
+                onClose();
+              }}
               className="p-2 rounded-xl text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-850 transition"
               title="Đóng cửa sổ"
             >
@@ -207,7 +215,10 @@ export default function CharacterSelectionModal({
           <div className="flex items-center gap-1.5 sm:gap-2">
             <button
               type="button"
-              onClick={() => setModalTab('studio')}
+              onClick={() => {
+                playClick();
+                setModalTab('studio');
+              }}
               className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition ${
                 modalTab === 'studio'
                   ? 'bg-vermilion text-white shadow-md shadow-vermilion/25'
@@ -220,7 +231,10 @@ export default function CharacterSelectionModal({
 
             <button
               type="button"
-              onClick={() => setModalTab('settings')}
+              onClick={() => {
+                playClick();
+                setModalTab('settings');
+              }}
               className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition ${
                 modalTab === 'settings'
                   ? 'bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-950 shadow-sm'
@@ -233,7 +247,10 @@ export default function CharacterSelectionModal({
 
             <button
               type="button"
-              onClick={() => setModalTab('presets')}
+              onClick={() => {
+                playClick();
+                setModalTab('presets');
+              }}
               className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition ${
                 modalTab === 'presets'
                   ? 'bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-950 shadow-sm'
@@ -615,6 +632,7 @@ export default function CharacterSelectionModal({
                   <div
                     key={c.id}
                     onClick={() => {
+                      playChime();
                       setSelectedCharId(c.id);
                       setUseCustomAvatar(false);
                       showToast(`Đã chọn bạn đồng hành mẫu: ${c.name}`);
@@ -702,7 +720,10 @@ export default function CharacterSelectionModal({
           <div className="flex items-center gap-2.5">
             <button
               type="button"
-              onClick={onClose}
+              onClick={() => {
+                playClick();
+                onClose();
+              }}
               className="px-4 py-2 rounded-xl border border-stone-300 dark:border-stone-700 hover:bg-stone-100 dark:hover:bg-stone-800 text-xs font-semibold text-stone-700 dark:text-stone-300 transition"
             >
               Đóng

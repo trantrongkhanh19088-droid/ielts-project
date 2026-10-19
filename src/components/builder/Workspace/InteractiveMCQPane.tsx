@@ -12,6 +12,7 @@ import {
   Info,
 } from 'lucide-react';
 import { InteractiveMCQ, PromptSeed, BuilderTargetBand } from '@/types';
+import { useSoundEngine } from '@/hooks/useSoundEngine';
 
 interface InteractiveMCQPaneProps {
   prompt: PromptSeed;
@@ -30,9 +31,16 @@ export default function InteractiveMCQPane({
   onSaveAnswers,
   onProceedToEditor,
 }: InteractiveMCQPaneProps) {
+  const { playClick, playChime } = useSoundEngine();
   const [selectedOptions, setSelectedOptions] = useState<Record<number, number>>(savedAnswers);
 
   const handleSelectOption = (questionId: number, optionIdx: number) => {
+    const q = mcqs.find((m) => m.id === questionId);
+    if (q && q.options[optionIdx]?.isCorrect) {
+      playChime();
+    } else {
+      playClick();
+    }
     const updated = {
       ...selectedOptions,
       [questionId]: optionIdx,
@@ -229,7 +237,10 @@ export default function InteractiveMCQPane({
 
         <button
           type="button"
-          onClick={onProceedToEditor}
+          onClick={() => {
+            playClick();
+            onProceedToEditor();
+          }}
           className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs shadow-md shadow-sky-600/25 transition transform hover:-translate-y-0.5"
         >
           <span>Bắt đầu viết từng câu (Block Editor)</span>

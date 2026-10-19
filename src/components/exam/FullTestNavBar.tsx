@@ -3,6 +3,7 @@
 import React from 'react';
 import { CheckCircle2, ChevronRight, Layers } from 'lucide-react';
 import { ContrastMode } from '@/types';
+import { useSoundEngine } from '@/hooks/useSoundEngine';
 
 interface FullTestNavBarProps {
   currentPart: 'task1' | 'task2';
@@ -19,6 +20,7 @@ export default function FullTestNavBar({
   task2WordCount,
   contrastMode,
 }: FullTestNavBarProps) {
+  const { playClick } = useSoundEngine();
   const task1Satisfied = task1WordCount >= 150;
   const task2Satisfied = task2WordCount >= 250;
 
@@ -41,7 +43,10 @@ export default function FullTestNavBar({
         {/* Part 1 (Task 1) Button */}
         <button
           type="button"
-          onClick={() => onSwitchPart('task1')}
+          onClick={() => {
+            playClick();
+            onSwitchPart('task1');
+          }}
           className={`flex items-center gap-2 px-3 py-1.5 rounded border text-xs font-semibold transition ${
             currentPart === 'task1'
               ? contrastMode === 'yellow-on-black'
@@ -80,7 +85,10 @@ export default function FullTestNavBar({
         {/* Part 2 (Task 2) Button */}
         <button
           type="button"
-          onClick={() => onSwitchPart('task2')}
+          onClick={() => {
+            playClick();
+            onSwitchPart('task2');
+          }}
           className={`flex items-center gap-2 px-3 py-1.5 rounded border text-xs font-semibold transition ${
             currentPart === 'task2'
               ? contrastMode === 'yellow-on-black'

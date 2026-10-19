@@ -28,10 +28,12 @@ import {
   getLastCompletedPromptId,
   setLastCompletedPromptId,
 } from '@/lib/storage';
+import { useSoundEngine } from '@/hooks/useSoundEngine';
 
 function PracticeContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { playClick, playChime, playLockIn } = useSoundEngine();
 
   // Mode initialization
   const modeParam = (searchParams.get('mode') as TaskType) || 'task1';
@@ -465,6 +467,7 @@ function PracticeContent() {
     setChallengeProblem({ q: `${num1} + ${num2}`, a: num1 + num2 });
     setChallengeAnswer('');
     setChallengeError('');
+    playLockIn();
     setShowChallengeModal(true);
   };
 
@@ -479,6 +482,7 @@ function PracticeContent() {
       return;
     }
 
+    playChime();
     setShowChallengeModal(false);
     await executeSubmission();
   };
@@ -858,7 +862,10 @@ function PracticeContent() {
             fontSize={fontSize}
             lastSavedAt={lastSavedAt}
             isFullscreen={isEditorFullscreen}
-            onToggleFullscreen={() => setIsEditorFullscreen(!isEditorFullscreen)}
+            onToggleFullscreen={() => {
+              playClick();
+              setIsEditorFullscreen(!isEditorFullscreen);
+            }}
             onFontSizeChange={setFontSize}
           />
         </div>
@@ -895,7 +902,10 @@ function PracticeContent() {
               </div>
               <button
                 type="button"
-                onClick={() => setShowChallengeModal(false)}
+                onClick={() => {
+                  playClick();
+                  setShowChallengeModal(false);
+                }}
                 className="text-carbon-muted dark:text-paper-muted hover:text-carbon dark:hover:text-paper p-1 transition-colors"
               >
                 <X className="w-4 h-4" />
@@ -958,7 +968,10 @@ function PracticeContent() {
             <div className="flex items-center gap-2 pt-2">
               <button
                 type="button"
-                onClick={() => setShowChallengeModal(false)}
+                onClick={() => {
+                  playClick();
+                  setShowChallengeModal(false);
+                }}
                 className="flex-1 py-2.5 px-3.5 hairline-border text-xs font-mono tracking-wider uppercase text-carbon-muted dark:text-paper-muted hover:text-carbon dark:hover:text-paper hover:bg-paper-subtle dark:hover:bg-carbon-subtle transition-colors"
               >
                 Tiếp tục viết
@@ -1005,7 +1018,10 @@ function PracticeContent() {
             <div className="flex items-center justify-end gap-2.5 pt-2">
               <button
                 type="button"
-                onClick={() => setSubmitError(null)}
+                onClick={() => {
+                  playClick();
+                  setSubmitError(null);
+                }}
                 className="px-4 py-2 hairline-border text-xs font-mono tracking-wider uppercase text-carbon-muted dark:text-paper-muted hover:text-carbon dark:hover:text-paper hover:bg-paper-subtle dark:hover:bg-carbon-subtle transition-colors"
               >
                 Quay lại bài viết
@@ -1013,6 +1029,7 @@ function PracticeContent() {
               <button
                 type="button"
                 onClick={() => {
+                  playLockIn();
                   setSubmitError(null);
                   handleSubmit();
                 }}

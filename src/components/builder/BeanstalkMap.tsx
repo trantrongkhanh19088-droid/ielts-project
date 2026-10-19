@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { BuilderLevel, BuilderNode, PromptSeed } from '@/types';
 import { getPromptById } from '@/lib/data/seed-prompts';
+import { useSoundEngine } from '@/hooks/useSoundEngine';
 
 interface BeanstalkMapProps {
   levels: BuilderLevel[];
@@ -27,6 +28,7 @@ interface BeanstalkMapProps {
 }
 
 export default function BeanstalkMap({ levels, onSelectNode }: BeanstalkMapProps) {
+  const { playClick, playChime } = useSoundEngine();
   // We display levels from N down to 1 (top to bottom on screen), so level 1 is at the bottom like a real beanstalk!
   const reversedLevels = [...levels].sort((a, b) => b.levelNumber - a.levelNumber);
   const currentLevelRef = useRef<HTMLDivElement | null>(null);
@@ -168,7 +170,11 @@ export default function BeanstalkMap({ levels, onSelectNode }: BeanstalkMapProps
                     levelNumber={lvl.levelNumber}
                     taskLabel="Task 1 (Academic)"
                     branchSide="left"
-                    onSelect={() => onSelectNode(lvl.levelNumber, 'task1')}
+                    onSelect={() => {
+                      if (lvl.task1Node.status !== 'locked') playChime();
+                      else playClick();
+                      onSelectNode(lvl.levelNumber, 'task1');
+                    }}
                   />
                 </div>
 
@@ -243,7 +249,11 @@ export default function BeanstalkMap({ levels, onSelectNode }: BeanstalkMapProps
                     levelNumber={lvl.levelNumber}
                     taskLabel="Task 2 (Essay)"
                     branchSide="right"
-                    onSelect={() => onSelectNode(lvl.levelNumber, 'task2')}
+                    onSelect={() => {
+                      if (lvl.task2Node.status !== 'locked') playChime();
+                      else playClick();
+                      onSelectNode(lvl.levelNumber, 'task2');
+                    }}
                   />
                 </div>
               </div>

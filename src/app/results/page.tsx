@@ -23,8 +23,10 @@ import VocabUpgradesTab from '@/components/results/VocabUpgradesTab';
 import ModelEssayTab from '@/components/results/ModelEssayTab';
 import LowScoreMemeModal from '@/components/results/LowScoreMemeModal';
 import { formatDuration } from '@/lib/utils';
+import { useSoundEngine } from '@/hooks/useSoundEngine';
 
 function ResultsContent() {
+  const { playClick, playChime, playLockIn } = useSoundEngine();
   const searchParams = useSearchParams();
   const router = useRouter();
   const resultId = searchParams.get('id');
@@ -53,6 +55,9 @@ function ResultsContent() {
       if (isMounted) {
         setRecord(currentRecord);
         setLoading(false);
+        if (currentRecord) {
+          playChime();
+        }
 
         // Trigger popup if band is strictly below 6.0 and hasn't been dismissed yet
         if (currentRecord && currentRecord.overall_band < 6.0 && !dismissedResultIds.has(currentRecord.id)) {
@@ -65,7 +70,7 @@ function ResultsContent() {
     return () => {
       isMounted = false;
     };
-  }, [resultId, dismissedResultIds]);
+  }, [resultId, dismissedResultIds, playChime]);
 
   const handleCloseMeme = () => {
     setShowMemeModal(false);
@@ -141,6 +146,7 @@ function ResultsContent() {
   }).length;
 
   const handlePrint = () => {
+    playClick();
     window.print();
   };
 
@@ -154,7 +160,7 @@ function ResultsContent() {
       />
 
       {/* Top Banner & Action Controls */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 hairline-b">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 hairline-b">
         <div>
           <div className="flex items-center gap-2.5">
             <span className="font-mono text-[11px] tracking-wider px-2.5 py-0.5 hairline-border bg-paper-subtle dark:bg-carbon-subtle text-vermilion uppercase">
@@ -182,6 +188,8 @@ function ResultsContent() {
 
           <Link
             href="/practice"
+            onMouseEnter={() => playLockIn()}
+            onClick={() => playClick()}
             className="inline-flex items-center gap-1.5 px-4 py-2 hairline-border bg-paper dark:bg-carbon text-carbon dark:text-paper hover:bg-paper-subtle dark:hover:bg-carbon-subtle font-mono text-xs uppercase tracking-wider transition-colors"
           >
             <RotateCcw className="w-3.5 h-3.5 text-vermilion" />
@@ -190,6 +198,7 @@ function ResultsContent() {
 
           <Link
             href="/dashboard"
+            onClick={() => playClick()}
             className="inline-flex items-center gap-1.5 px-4 py-2 hairline-border bg-carbon dark:bg-paper text-paper dark:text-carbon hover:bg-vermilion dark:hover:bg-vermilion dark:hover:text-white font-mono text-xs uppercase tracking-wider transition-colors"
           >
             <BarChart2 className="w-3.5 h-3.5" />
@@ -256,7 +265,10 @@ function ResultsContent() {
           </span>
           <button
             type="button"
-            onClick={() => setActiveFullTestTab('task1')}
+            onClick={() => {
+              playClick();
+              setActiveFullTestTab('task1');
+            }}
             className={`px-4 py-2 hairline-border font-mono text-xs uppercase tracking-wider transition-colors flex items-center gap-2 ${
               activeFullTestTab === 'task1'
                 ? 'bg-carbon text-paper dark:bg-paper dark:text-carbon'
@@ -271,7 +283,10 @@ function ResultsContent() {
 
           <button
             type="button"
-            onClick={() => setActiveFullTestTab('task2')}
+            onClick={() => {
+              playClick();
+              setActiveFullTestTab('task2');
+            }}
             className={`px-4 py-2 hairline-border font-mono text-xs uppercase tracking-wider transition-colors flex items-center gap-2 ${
               activeFullTestTab === 'task2'
                 ? 'bg-carbon text-paper dark:bg-paper dark:text-carbon'
@@ -319,7 +334,10 @@ function ResultsContent() {
         <div className="flex flex-wrap items-center gap-2 hairline-b pb-3 print-hidden">
           <button
             type="button"
-            onClick={() => setActiveDetailTab('essay')}
+            onClick={() => {
+              playClick();
+              setActiveDetailTab('essay');
+            }}
             className={`px-4 py-2 hairline-border font-mono text-xs uppercase tracking-wider transition-colors flex items-center gap-2 ${
               activeDetailTab === 'essay'
                 ? 'bg-carbon text-paper dark:bg-paper dark:text-carbon'
@@ -336,7 +354,10 @@ function ResultsContent() {
 
           <button
             type="button"
-            onClick={() => setActiveDetailTab('criteria')}
+            onClick={() => {
+              playClick();
+              setActiveDetailTab('criteria');
+            }}
             className={`px-4 py-2 hairline-border font-mono text-xs uppercase tracking-wider transition-colors flex items-center gap-2 ${
               activeDetailTab === 'criteria'
                 ? 'bg-carbon text-paper dark:bg-paper dark:text-carbon'
@@ -349,7 +370,10 @@ function ResultsContent() {
 
           <button
             type="button"
-            onClick={() => setActiveDetailTab('vocab')}
+            onClick={() => {
+              playClick();
+              setActiveDetailTab('vocab');
+            }}
             className={`px-4 py-2 hairline-border font-mono text-xs uppercase tracking-wider transition-colors flex items-center gap-2 ${
               activeDetailTab === 'vocab'
                 ? 'bg-carbon text-paper dark:bg-paper dark:text-carbon'
@@ -362,7 +386,10 @@ function ResultsContent() {
 
           <button
             type="button"
-            onClick={() => setActiveDetailTab('model')}
+            onClick={() => {
+              playClick();
+              setActiveDetailTab('model');
+            }}
             className={`px-4 py-2 hairline-border font-mono text-xs uppercase tracking-wider transition-colors flex items-center gap-2 ${
               activeDetailTab === 'model'
                 ? 'bg-carbon text-paper dark:bg-paper dark:text-carbon'

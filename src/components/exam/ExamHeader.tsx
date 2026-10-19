@@ -20,6 +20,7 @@ import {
 import { ContrastMode, FontSize } from '@/types';
 import { formatDuration } from '@/lib/utils';
 import ToriiGate from '@/components/japanese/ToriiGate';
+import { useSoundEngine } from '@/hooks/useSoundEngine';
 
 interface ExamHeaderProps {
   title: string;
@@ -58,6 +59,7 @@ export default function ExamHeader({
   onRandomizePrompt,
   defaultMinutes = 60,
 }: ExamHeaderProps) {
+  const { playClick, playLockIn, playChime } = useSoundEngine();
   const [showTime, setShowTime] = useState(true);
   const [isTimeSettingsOpen, setIsTimeSettingsOpen] = useState(false);
   const [customInputMinutes, setCustomInputMinutes] = useState<string>(String(defaultMinutes));
@@ -115,7 +117,10 @@ export default function ExamHeader({
             {onGoHome && (
               <button
                 type="button"
-                onClick={onGoHome}
+                onClick={() => {
+                  playClick();
+                  onGoHome();
+                }}
                 className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs font-semibold transition ${
                   contrastMode === 'yellow-on-black'
                     ? 'border-[#ffe600] text-[#ffe600] hover:bg-[#ffe600]/10'
@@ -189,7 +194,10 @@ export default function ExamHeader({
             {onTogglePauseTimer && (
               <button
                 type="button"
-                onClick={onTogglePauseTimer}
+                onClick={() => {
+                  playClick();
+                  onTogglePauseTimer();
+                }}
                 className={`p-1.5 rounded-lg border text-xs flex items-center transition ${
                   isTimerPaused
                     ? 'bg-amber-500 text-white border-amber-500'
@@ -208,7 +216,10 @@ export default function ExamHeader({
             {/* Time Settings & Reset Button */}
             <button
               type="button"
-              onClick={() => setIsTimeSettingsOpen(true)}
+              onClick={() => {
+                playClick();
+                setIsTimeSettingsOpen(true);
+              }}
               className={`p-1.5 rounded-lg border text-xs flex items-center gap-1 transition ${
                 contrastMode === 'yellow-on-black'
                   ? 'border-[#ffe600] hover:bg-[#ffe600]/10 text-[#ffe600]'
@@ -226,7 +237,10 @@ export default function ExamHeader({
             {onRandomizePrompt && (
               <button
                 type="button"
-                onClick={onRandomizePrompt}
+                onClick={() => {
+                  playChime();
+                  onRandomizePrompt();
+                }}
                 className={`p-1.5 rounded-lg border text-xs flex items-center gap-1 transition ${
                   contrastMode === 'yellow-on-black'
                     ? 'border-[#ffe600] hover:bg-[#ffe600]/10 text-[#ffe600]'
@@ -244,7 +258,10 @@ export default function ExamHeader({
             {/* Toggle Hide/Show time */}
             <button
               type="button"
-              onClick={() => setShowTime(!showTime)}
+              onClick={() => {
+                playClick();
+                setShowTime(!showTime);
+              }}
               className={`p-1.5 rounded-lg border text-xs flex items-center gap-1 transition ${
                 contrastMode === 'yellow-on-black'
                   ? 'border-[#ffe600] hover:bg-[#ffe600]/10 text-[#ffe600]'
@@ -273,7 +290,10 @@ export default function ExamHeader({
             >
               <button
                 type="button"
-                onClick={() => onFontSizeChange('normal')}
+                onClick={() => {
+                  playClick();
+                  onFontSizeChange('normal');
+                }}
                 className={`px-2 py-1 transition ${
                   fontSize === 'normal'
                     ? 'font-bold bg-sky-600 text-white'
@@ -285,7 +305,10 @@ export default function ExamHeader({
               </button>
               <button
                 type="button"
-                onClick={() => onFontSizeChange('large')}
+                onClick={() => {
+                  playClick();
+                  onFontSizeChange('large');
+                }}
                 className={`px-2 py-1 text-sm transition ${
                   fontSize === 'large'
                     ? 'font-bold bg-sky-600 text-white'
@@ -297,7 +320,10 @@ export default function ExamHeader({
               </button>
               <button
                 type="button"
-                onClick={() => onFontSizeChange('extra-large')}
+                onClick={() => {
+                  playClick();
+                  onFontSizeChange('extra-large');
+                }}
                 className={`px-2 py-1 text-base transition ${
                   fontSize === 'extra-large'
                     ? 'font-bold bg-sky-600 text-white'
@@ -321,7 +347,10 @@ export default function ExamHeader({
             >
               <button
                 type="button"
-                onClick={() => onContrastModeChange('default')}
+                onClick={() => {
+                  playClick();
+                  onContrastModeChange('default');
+                }}
                 className={`p-1.5 transition ${
                   contrastMode === 'default'
                     ? 'bg-gray-200 text-gray-900 font-bold'
@@ -333,7 +362,10 @@ export default function ExamHeader({
               </button>
               <button
                 type="button"
-                onClick={() => onContrastModeChange('white-on-black')}
+                onClick={() => {
+                  playClick();
+                  onContrastModeChange('white-on-black');
+                }}
                 className={`p-1.5 transition ${
                   contrastMode === 'white-on-black'
                     ? 'bg-zinc-800 text-white font-bold'
@@ -345,7 +377,10 @@ export default function ExamHeader({
               </button>
               <button
                 type="button"
-                onClick={() => onContrastModeChange('yellow-on-black')}
+                onClick={() => {
+                  playClick();
+                  onContrastModeChange('yellow-on-black');
+                }}
                 className={`p-1.5 transition ${
                   contrastMode === 'yellow-on-black'
                     ? 'bg-zinc-800 text-[#ffe600] font-bold'
@@ -360,7 +395,11 @@ export default function ExamHeader({
             {/* Submit / Finish test button */}
             <button
               type="button"
-              onClick={onSubmit}
+              onMouseEnter={() => playLockIn()}
+              onClick={() => {
+                playLockIn();
+                onSubmit();
+              }}
               disabled={isSubmitting}
               className={`inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-xl font-bold text-xs sm:text-sm shadow-md transition ${
                 isSubmitting

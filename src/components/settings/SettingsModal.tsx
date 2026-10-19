@@ -15,6 +15,7 @@ import {
   Flower2,
 } from 'lucide-react';
 import { getBuilderAutoSuggest, setBuilderAutoSuggest } from '@/lib/builder';
+import { useSoundEngine } from '@/hooks/useSoundEngine';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -29,6 +30,7 @@ export default function SettingsModal({
   currentTheme,
   onThemeChange,
 }: SettingsModalProps) {
+  const { playClick, playLockIn } = useSoundEngine();
   const [autoSuggest, setAutoSuggestState] = useState<boolean>(true);
   const [showCompanion, setShowCompanion] = useState<boolean>(true);
 
@@ -51,12 +53,14 @@ export default function SettingsModal({
   if (!isOpen) return null;
 
   const handleToggleAutoSuggest = () => {
+    playClick();
     const nextVal = !autoSuggest;
     setAutoSuggestState(nextVal);
     setBuilderAutoSuggest(nextVal);
   };
 
   const handleToggleCompanion = () => {
+    playClick();
     const nextVal = !showCompanion;
     setShowCompanion(nextVal);
     try {
@@ -88,7 +92,10 @@ export default function SettingsModal({
           </div>
           <button
             type="button"
-            onClick={onClose}
+            onClick={() => {
+              playClick();
+              onClose();
+            }}
             className="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-zinc-800 transition"
           >
             <X className="w-4 h-4" />
@@ -107,7 +114,10 @@ export default function SettingsModal({
               {/* Light Mode Card */}
               <button
                 type="button"
-                onClick={() => onThemeChange('light')}
+                onClick={() => {
+                  playLockIn();
+                  onThemeChange('light');
+                }}
                 className={`p-3 rounded-xl border-2 text-left transition flex flex-col gap-2 relative ${
                   currentTheme === 'light'
                     ? 'border-sky-600 bg-sky-50/60 dark:bg-sky-950/30 text-sky-950 dark:text-sky-100 shadow-sm'
@@ -135,7 +145,10 @@ export default function SettingsModal({
               {/* Dark Mode Card */}
               <button
                 type="button"
-                onClick={() => onThemeChange('dark')}
+                onClick={() => {
+                  playLockIn();
+                  onThemeChange('dark');
+                }}
                 className={`p-3 rounded-xl border-2 text-left transition flex flex-col gap-2 relative ${
                   currentTheme === 'dark'
                     ? 'border-indigo-600 bg-indigo-50/60 dark:bg-indigo-950/30 text-indigo-950 dark:text-indigo-100 shadow-sm'
@@ -163,7 +176,10 @@ export default function SettingsModal({
               {/* Japanese Sakura Theme Card */}
               <button
                 type="button"
-                onClick={() => onThemeChange('japanese')}
+                onClick={() => {
+                  playLockIn();
+                  onThemeChange('japanese');
+                }}
                 className={`p-3 rounded-xl border-2 text-left transition flex flex-col gap-2 relative ${
                   currentTheme === 'japanese'
                     ? 'border-rose-500 bg-rose-50/80 dark:bg-rose-950/40 text-rose-950 dark:text-rose-100 shadow-sm'
@@ -316,7 +332,10 @@ export default function SettingsModal({
           </span>
           <button
             type="button"
-            onClick={onClose}
+            onClick={() => {
+              playClick();
+              onClose();
+            }}
             className="px-3.5 py-1.5 rounded-lg bg-gray-200 dark:bg-zinc-700 text-gray-700 dark:text-gray-200 text-xs font-bold hover:bg-gray-300 dark:hover:bg-zinc-600 transition"
           >
             Đóng

@@ -17,8 +17,10 @@ import {
 import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import ToriiGate from '@/components/japanese/ToriiGate';
 import { SeigaihaPattern } from '@/components/japanese/JapanesePatterns';
+import { useSoundEngine } from '@/hooks/useSoundEngine';
 
 function AuthContent() {
+  const { playClick, playLockIn } = useSoundEngine();
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTarget = searchParams.get('redirect') || '/dashboard';
@@ -35,6 +37,7 @@ function AuthContent() {
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
+    playLockIn();
     setErrorMsg('');
     setSuccessMsg('');
     setLoading(true);
@@ -165,7 +168,10 @@ function AuthContent() {
                     <button
                       key={b}
                       type="button"
-                      onClick={() => setTargetBand(b)}
+                      onClick={() => {
+                        playClick();
+                        setTargetBand(b);
+                      }}
                       className={`py-1.5 rounded-md text-xs font-semibold transition-colors hairline-border ${
                         targetBand === b
                           ? 'bg-stone-900 text-stone-50 dark:bg-stone-100 dark:text-stone-950 font-bold'
@@ -231,6 +237,7 @@ function AuthContent() {
               <button
                 type="button"
                 onClick={() => {
+                  playClick();
                   setIsSignUp(false);
                   setErrorMsg('');
                   setSuccessMsg('');
@@ -246,6 +253,7 @@ function AuthContent() {
               <button
                 type="button"
                 onClick={() => {
+                  playClick();
                   setIsSignUp(true);
                   setErrorMsg('');
                   setSuccessMsg('');
