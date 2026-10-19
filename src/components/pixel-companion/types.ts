@@ -37,13 +37,27 @@ export interface PixelCharacter {
   renderSprite: (props: { size?: number; className?: string }) => React.ReactNode;
 }
 
+export interface CustomAvatar {
+  dataUrl: string; // transparent PNG snapshot
+  name: string;
+  shape?: string;
+  material?: string;
+  color?: string;
+  style?: string;
+  gender?: string;
+  accentColor?: string;
+  quote?: string;
+  updatedAt?: number;
+}
+
 export interface CompanionSettings {
   selectedCharacterId: string;
-  size: 1 | 1.5 | 2; // 1x = 48px, 1.5x = 72px, 2x = 96px
+  size: 1 | 1.5 | 2; // 1x = 64px, 1.5x = 88px, 2x = 120px
   position: 'left' | 'right';
   syncThemeAccent: boolean;
   sakuraEnabled: boolean;
   showCompanion: boolean;
+  useCustomAvatar?: boolean;
 }
 
 export const DEFAULT_COMPANION_SETTINGS: CompanionSettings = {
@@ -53,4 +67,5 @@ export const DEFAULT_COMPANION_SETTINGS: CompanionSettings = {
   syncThemeAccent: true,
   sakuraEnabled: true,
   showCompanion: true,
+  useCustomAvatar: true,
 };

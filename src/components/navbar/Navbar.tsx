@@ -346,7 +346,7 @@ export default function Navbar() {
                 </Link>
               )}
 
-              {/* Character & Theme Settings Button (「キャラ＆テーマ設定」) */}
+              {/* 3D Character Studio & Companion Settings Button */}
               <button
                 type="button"
                 onClick={() => {
@@ -354,11 +354,11 @@ export default function Navbar() {
                   setIsCharModalOpen(true);
                 }}
                 className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md hairline-border bg-stone-50 dark:bg-stone-900 hover:bg-stone-100 dark:hover:bg-stone-850 text-xs font-medium text-stone-700 dark:text-stone-300 transition-colors"
-                title="Đổi nhân vật Pixel & Giao diện Nhật Bản (「キャラ＆テーマ設定」)"
+                title="Studio Tạo Nhân Vật 3D & Cài đặt Bạn đồng hành"
               >
-                <span className="w-2 h-2 rounded-full bg-vermilion" />
-                <span className="hidden sm:inline font-mono text-[11px]">キャラ＆テーマ</span>
-                <span className="sm:hidden font-mono text-[11px]">Nhân vật</span>
+                <Sparkles className="w-3.5 h-3.5 text-vermilion" />
+                <span className="hidden sm:inline font-mono text-[11px]">Tạo Nhân Vật 3D</span>
+                <span className="sm:hidden font-mono text-[11px]">Tạo 3D</span>
               </button>
 
               {/* System Settings Button (Theme & Builder Config) */}
