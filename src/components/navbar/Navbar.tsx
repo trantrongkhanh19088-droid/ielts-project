@@ -19,7 +19,10 @@ import {
   Moon,
   Settings,
   BookOpen,
+  Volume2,
+  VolumeX,
 } from 'lucide-react';
+import { useSoundEngine } from '@/hooks/useSoundEngine';
 import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import SettingsModal from '@/components/settings/SettingsModal';
 import ManekiNeko from '@/components/japanese/ManekiNeko';
@@ -29,6 +32,7 @@ import { CompanionSettings, DEFAULT_COMPANION_SETTINGS } from '@/components/pixe
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { muted, toggleMute, playClick, playChime, playLockIn } = useSoundEngine();
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [userName, setUserName] = useState<string | null>(null);
   const [targetBand, setTargetBand] = useState<number>(7.0);
@@ -219,6 +223,7 @@ export default function Navbar() {
             <div className="hidden md:flex items-center gap-0.5 text-xs font-medium">
               <Link
                 href="/builder"
+                onClick={() => playClick()}
                 className={`px-3 py-1.5 rounded-md transition-colors flex items-center gap-1.5 ${
                   pathname === '/builder'
                     ? 'text-stone-950 dark:text-stone-50 font-semibold bg-stone-200/60 dark:bg-stone-800/60'
@@ -233,6 +238,7 @@ export default function Navbar() {
               </Link>
               <Link
                 href="/prompts"
+                onClick={() => playClick()}
                 className={`px-3 py-1.5 rounded-md transition-colors flex items-center gap-1.5 ${
                   pathname === '/prompts'
                     ? 'text-stone-950 dark:text-stone-50 font-semibold bg-stone-200/60 dark:bg-stone-800/60'
@@ -247,6 +253,7 @@ export default function Navbar() {
               </Link>
               <Link
                 href="/practice?mode=task1"
+                onClick={() => playClick()}
                 className={`px-3 py-1.5 rounded-md transition-colors ${
                   pathname === '/practice' && typeof window !== 'undefined' && window.location.search.includes('task1')
                     ? 'text-stone-950 dark:text-stone-50 font-semibold bg-stone-200/60 dark:bg-stone-800/60'
@@ -257,12 +264,15 @@ export default function Navbar() {
               </Link>
               <Link
                 href="/practice?mode=task2"
+                onClick={() => playClick()}
                 className="px-3 py-1.5 rounded-md text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 hover:bg-stone-100/70 dark:hover:bg-stone-850 transition-colors"
               >
                 Luyện Task 2
               </Link>
               <Link
                 href="/practice?mode=full_test"
+                onMouseEnter={() => playLockIn()}
+                onClick={() => playClick()}
                 className="px-3 py-1.5 rounded-md text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 hover:bg-stone-100/70 dark:hover:bg-stone-850 transition-colors flex items-center gap-1.5"
               >
                 <Layers className="w-3.5 h-3.5 text-stone-400" />
@@ -270,6 +280,7 @@ export default function Navbar() {
               </Link>
               <Link
                 href="/dashboard"
+                onClick={() => playClick()}
                 className={`px-3 py-1.5 rounded-md transition-colors flex items-center gap-1.5 ${
                   pathname === '/dashboard'
                     ? 'text-stone-950 dark:text-stone-50 font-semibold bg-stone-200/60 dark:bg-stone-800/60'
@@ -283,11 +294,32 @@ export default function Navbar() {
 
             {/* Right actions */}
             <div className="flex items-center gap-2">
+              {/* Web Audio Synthesizer Sound Toggle */}
+              <button
+                type="button"
+                onClick={() => {
+                  toggleMute();
+                  if (muted) playClick();
+                }}
+                className={`p-1.5 rounded-md hairline-border transition-colors flex items-center justify-center ${
+                  muted
+                    ? 'text-stone-400 hover:text-stone-600 dark:hover:text-stone-300'
+                    : 'text-vermilion hover:text-vermilion-hover bg-vermilion/10 border-vermilion/30'
+                }`}
+                title={muted ? 'Bật âm thanh hiệu ứng (Web Audio Synthesizer)' : 'Tắt âm thanh hiệu ứng (Đang bật)'}
+                aria-label="Sound Toggle"
+              >
+                {muted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+              </button>
+
               {/* Account State */}
               {userEmail ? (
                 <button
                   type="button"
-                  onClick={() => setIsProfileModalOpen(true)}
+                  onClick={() => {
+                    playClick();
+                    setIsProfileModalOpen(true);
+                  }}
                   className="flex items-center gap-2 px-2.5 py-1.5 rounded-md hairline-border hover:bg-stone-100/70 dark:hover:bg-stone-850 transition text-left"
                 >
                   <div className="w-6 h-6 rounded bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 flex items-center justify-center font-mono font-bold text-[11px]">
@@ -306,6 +338,7 @@ export default function Navbar() {
               ) : (
                 <Link
                   href="/auth"
+                  onClick={() => playClick()}
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md hairline-border hover:bg-stone-100/70 dark:hover:bg-stone-850 text-xs font-medium text-stone-700 dark:text-stone-300 transition-colors"
                 >
                   <User className="w-3.5 h-3.5" />
@@ -316,7 +349,10 @@ export default function Navbar() {
               {/* Character & Theme Settings Button (「キャラ＆テーマ設定」) */}
               <button
                 type="button"
-                onClick={() => setIsCharModalOpen(true)}
+                onClick={() => {
+                  playClick();
+                  setIsCharModalOpen(true);
+                }}
                 className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md hairline-border bg-stone-50 dark:bg-stone-900 hover:bg-stone-100 dark:hover:bg-stone-850 text-xs font-medium text-stone-700 dark:text-stone-300 transition-colors"
                 title="Đổi nhân vật Pixel & Giao diện Nhật Bản (「キャラ＆テーマ設定」)"
               >
@@ -328,7 +364,10 @@ export default function Navbar() {
               {/* System Settings Button (Theme & Builder Config) */}
               <button
                 type="button"
-                onClick={() => setIsSettingsModalOpen(true)}
+                onClick={() => {
+                  playClick();
+                  setIsSettingsModalOpen(true);
+                }}
                 className="p-1.5 rounded-md hairline-border text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-stone-100/70 dark:hover:bg-stone-850 transition-colors flex items-center justify-center"
                 title="Cài đặt hệ thống (Giao diện & Builder)"
                 aria-label="Cài đặt"
@@ -339,6 +378,8 @@ export default function Navbar() {
               {/* Start Writing button */}
               <Link
                 href="/practice?mode=full_test"
+                onMouseEnter={() => playLockIn()}
+                onClick={() => playClick()}
                 className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md bg-stone-900 text-stone-50 hover:bg-vermilion dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-vermilion dark:hover:text-stone-50 text-xs font-semibold tracking-wide transition-all duration-200 ease-spring"
               >
                 <span>Bắt đầu thi</span>
