@@ -199,20 +199,6 @@ export default function CommandPalette() {
     // 3. System Tools & Customizations
     items.push(
       {
-        id: 'tool-avatar-maker',
-        title: 'Studio Tạo Nhân Vật 3D & Bạn Đồng Hành',
-        subtitle: 'Tạo mascot pixel/3D tương tác, tùy biến trang phục và động lực học tập',
-        category: 'tools',
-        icon: Sparkles,
-        badge: 'Studio',
-        badgeColor: 'bg-pink-500/10 text-pink-700 dark:text-pink-300 border-pink-500/30',
-        action: () => {
-          playChime();
-          setIsOpen(false);
-          window.dispatchEvent(new CustomEvent('open-companion-modal'));
-        },
-      },
-      {
         id: 'tool-settings',
         title: 'Cài Đặt Hệ Thống & Giao Diện',
         subtitle: 'Chỉnh độ tương phản phòng thi, cỡ chữ Inspera, thông số Gemini AI Examiner',

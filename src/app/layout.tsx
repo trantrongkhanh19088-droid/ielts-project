@@ -6,7 +6,6 @@ import Navbar from '@/components/navbar/Navbar';
 import CommandPalette from '@/components/command/CommandPalette';
 import SakuraCanvas from '@/components/japanese/SakuraCanvas';
 import ManekiNeko from '@/components/japanese/ManekiNeko';
-import PixelCompanion from '@/components/pixel-companion/PixelCompanion';
 
 export const metadata: Metadata = {
   title: 'CD-IELTS Writing Simulator | Nền tảng Luyện thi IELTS Chuẩn Inspera',
@@ -85,9 +84,6 @@ export default function RootLayout({
         <Navbar />
         <CommandPalette />
         <main className="flex-1 flex flex-col relative z-10">{children}</main>
-
-        {/* 55 Pixel Companion with Interactive Speech Bubbles & Settings */}
-        <PixelCompanion />
 
         {/* Lucky Maneki-Neko Waving Back-To-Top Button */}
         <ManekiNeko mode="back-to-top" size={44} tooltip="Vẫy tay rước Band 8.5+! 🐾 (Lên đầu trang)" />

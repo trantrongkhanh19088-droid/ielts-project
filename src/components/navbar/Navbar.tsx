@@ -28,8 +28,6 @@ import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase/c
 import SettingsModal from '@/components/settings/SettingsModal';
 import ManekiNeko from '@/components/japanese/ManekiNeko';
 import ToriiGate from '@/components/japanese/ToriiGate';
-import CharacterSelectionModal from '@/components/pixel-companion/CharacterSelectionModal';
-import { CompanionSettings, DEFAULT_COMPANION_SETTINGS } from '@/components/pixel-companion/types';
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -39,30 +37,14 @@ export default function Navbar() {
   const [targetBand, setTargetBand] = useState<number>(7.0);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
-  const [isCharModalOpen, setIsCharModalOpen] = useState(false);
-  const [companionSettings, setCompanionSettings] = useState<CompanionSettings>(DEFAULT_COMPANION_SETTINGS);
   const [bandSaved, setBandSaved] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark' | 'japanese'>('light');
 
   useEffect(() => {
-    const syncCompanion = () => {
-      try {
-        const stored = localStorage.getItem('cd_ielts_companion_settings');
-        if (stored) {
-          setCompanionSettings({ ...DEFAULT_COMPANION_SETTINGS, ...JSON.parse(stored) });
-        }
-      } catch {}
-    };
-    syncCompanion();
     const handleOpenSettings = () => setIsSettingsModalOpen(true);
-    const handleOpenChar = () => setIsCharModalOpen(true);
-    window.addEventListener('companion-settings-updated', syncCompanion);
     window.addEventListener('open-settings-modal', handleOpenSettings);
-    window.addEventListener('open-companion-modal', handleOpenChar);
     return () => {
-      window.removeEventListener('companion-settings-updated', syncCompanion);
       window.removeEventListener('open-settings-modal', handleOpenSettings);
-      window.removeEventListener('open-companion-modal', handleOpenChar);
     };
   }, []);
 
@@ -385,21 +367,6 @@ export default function Navbar() {
                 </Link>
               )}
 
-              {/* 3D Character Studio & Companion Settings Button */}
-              <button
-                type="button"
-                onClick={() => {
-                  playClick();
-                  setIsCharModalOpen(true);
-                }}
-                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md hairline-border bg-stone-50 dark:bg-stone-900 hover:bg-stone-100 dark:hover:bg-stone-850 text-xs font-medium text-stone-700 dark:text-stone-300 transition-colors"
-                title="Studio Tạo Nhân Vật 3D & Cài đặt Bạn đồng hành"
-              >
-                <Sparkles className="w-3.5 h-3.5 text-vermilion" />
-                <span className="hidden sm:inline font-mono text-[11px]">Tạo Nhân Vật 3D</span>
-                <span className="sm:hidden font-mono text-[11px]">Tạo 3D</span>
-              </button>
-
               {/* System Settings Button (Theme & Builder Config) */}
               <button
                 type="button"
@@ -553,24 +520,6 @@ export default function Navbar() {
         onClose={() => setIsSettingsModalOpen(false)}
         currentTheme={theme}
         onThemeChange={handleThemeChange}
-      />
-
-      {/* Character Selection Modal */}
-      <CharacterSelectionModal
-        isOpen={isCharModalOpen}
-        onClose={() => setIsCharModalOpen(false)}
-        settings={companionSettings}
-        onSaveSettings={(newSettings) => {
-          setCompanionSettings(newSettings);
-          try {
-            localStorage.setItem('cd_ielts_companion_settings', JSON.stringify(newSettings));
-            localStorage.setItem('cd_ielts_sakura_enabled', String(newSettings.sakuraEnabled));
-            window.dispatchEvent(
-              new CustomEvent('sakura-toggle', { detail: { enabled: newSettings.sakuraEnabled } })
-            );
-            window.dispatchEvent(new Event('companion-settings-updated'));
-          } catch {}
-        }}
       />
     </>
   );
