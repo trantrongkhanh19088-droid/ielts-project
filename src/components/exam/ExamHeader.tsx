@@ -98,16 +98,16 @@ export default function ExamHeader({
           {/* Left section: Logo, Home button, Test Info */}
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             {/* Custom Avatar Logo */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 shrink-0 select-none">
               <div className="flex items-center justify-center shrink-0">
                 <AcademicLogo width={28} height={28} />
               </div>
 
-              <div className="hidden lg:flex flex-col">
-                <span className="font-extrabold text-xs tracking-tight leading-normal">
+              <div className="hidden lg:flex flex-col shrink-0 justify-center">
+                <span className="font-extrabold text-xs tracking-tight leading-none whitespace-nowrap">
                   CD-IELTS <span className="text-sky-600">Writing</span>
                 </span>
-                <span className="text-[11px] text-gray-400 font-medium uppercase tracking-wider">
+                <span className="text-[10px] text-gray-400 font-medium uppercase tracking-wider whitespace-nowrap mt-0.5 leading-none">
                   Inspera Simulator
                 </span>
               </div>

@@ -178,21 +178,21 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14">
             {/* Brand Logo & Title */}
-            <div className="flex items-center gap-2.5">
-              <Link href="/" className="flex items-center gap-2.5 group">
+            <div className="flex items-center gap-2.5 shrink-0">
+              <Link href="/" className="flex items-center gap-2.5 group shrink-0 select-none">
                 <div className="flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-200">
                   <AcademicLogo width={34} height={34} />
                 </div>
-                <div className="flex flex-col">
-                  <div className="flex items-baseline">
-                    <span className="font-bold text-sm tracking-tight text-stone-900 dark:text-stone-100">
+                <div className="flex flex-col shrink-0 justify-center">
+                  <div className="flex items-baseline whitespace-nowrap leading-none">
+                    <span className="font-bold text-sm tracking-tight text-stone-900 dark:text-stone-100 whitespace-nowrap">
                       CD-IELTS
                     </span>
-                    <span className="text-vermilion font-display font-extrabold text-base ml-1">
+                    <span className="text-vermilion font-display font-extrabold text-base ml-1.5 whitespace-nowrap">
                       Writing
                     </span>
                   </div>
-                  <span className="font-mono text-[11px] text-stone-500 dark:text-stone-400 tracking-wider uppercase font-medium mt-0.5">
+                  <span className="font-mono text-[10px] text-stone-500 dark:text-stone-400 tracking-wider uppercase font-medium mt-1 leading-none whitespace-nowrap">
                     Inspera Official Simulator
                   </span>
                 </div>
@@ -200,11 +200,11 @@ export default function Navbar() {
             </div>
 
             {/* Nav links */}
-            <div className="hidden md:flex items-center gap-0.5 text-xs font-medium">
+            <div className="hidden md:flex items-center gap-0.5 text-xs font-medium shrink-0">
               <Link
                 href="/builder"
                 onClick={() => playClick()}
-                className={`px-3 py-1.5 rounded-md transition-colors flex items-center gap-1.5 ${
+                className={`px-3 py-1.5 rounded-md transition-colors flex items-center gap-1.5 whitespace-nowrap ${
                   pathname === '/builder'
                     ? 'text-stone-950 dark:text-stone-50 font-semibold bg-stone-200/60 dark:bg-stone-800/60'
                     : 'text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 hover:bg-stone-100/70 dark:hover:bg-stone-850'
@@ -219,7 +219,7 @@ export default function Navbar() {
               <Link
                 href="/prompts"
                 onClick={() => playClick()}
-                className={`px-3 py-1.5 rounded-md transition-colors flex items-center gap-1.5 ${
+                className={`px-3 py-1.5 rounded-md transition-colors flex items-center gap-1.5 whitespace-nowrap ${
                   pathname === '/prompts'
                     ? 'text-stone-950 dark:text-stone-50 font-semibold bg-stone-200/60 dark:bg-stone-800/60'
                     : 'text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 hover:bg-stone-100/70 dark:hover:bg-stone-850'
@@ -234,7 +234,7 @@ export default function Navbar() {
               <Link
                 href="/practice?mode=task1"
                 onClick={() => playClick()}
-                className={`px-3 py-1.5 rounded-md transition-colors ${
+                className={`hidden xl:inline-flex px-3 py-1.5 rounded-md transition-colors whitespace-nowrap ${
                   pathname === '/practice' && typeof window !== 'undefined' && window.location.search.includes('task1')
                     ? 'text-stone-950 dark:text-stone-50 font-semibold bg-stone-200/60 dark:bg-stone-800/60'
                     : 'text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 hover:bg-stone-100/70 dark:hover:bg-stone-850'
@@ -245,7 +245,7 @@ export default function Navbar() {
               <Link
                 href="/practice?mode=task2"
                 onClick={() => playClick()}
-                className="px-3 py-1.5 rounded-md text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 hover:bg-stone-100/70 dark:hover:bg-stone-850 transition-colors"
+                className="hidden xl:inline-flex px-3 py-1.5 rounded-md text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 hover:bg-stone-100/70 dark:hover:bg-stone-850 transition-colors whitespace-nowrap"
               >
                 Luyện Task 2
               </Link>
