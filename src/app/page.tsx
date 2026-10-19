@@ -43,7 +43,7 @@ export default function HomePage() {
       : featuredPrompts.filter((p) => p.taskType === 'task2');
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#F8F7F4] dark:bg-[#090A0F] text-stone-900 dark:text-[#F4F4F0] selection:bg-[#FF3B1D]/25 selection:text-[#FF3B1D] font-sans relative overflow-x-hidden transition-colors duration-300">
+    <div className="flex flex-col min-h-screen bg-transparent text-stone-900 dark:text-[#F4F4F0] selection:bg-[#FF3B1D]/25 selection:text-[#FF3B1D] font-sans relative overflow-x-hidden transition-colors duration-300">
       {/* Subtle Archival Paper Grain Noise Overlay */}
       <svg className="fixed inset-0 pointer-events-none z-10 w-full h-full opacity-[0.025] dark:opacity-[0.035]" aria-hidden="true">
         <filter id="archivalNoise">
@@ -247,7 +247,7 @@ export default function HomePage() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-        className="relative z-20 py-20 border-b border-stone-200/80 dark:border-[rgba(244,244,240,0.08)] bg-stone-50/50 dark:bg-[#090A0F]"
+        className="relative z-20 py-20 border-b border-stone-200/80 dark:border-[rgba(244,244,240,0.08)] bg-stone-50/50 dark:bg-[#090A0F]/60"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-stone-200/80 dark:border-[rgba(244,244,240,0.08)]">
