@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import {
   BarChart3,
@@ -15,6 +15,11 @@ import {
   User,
   CheckCircle2,
   ShieldCheck,
+  Search,
+  Filter,
+  ArrowUpDown,
+  Eye,
+  SlidersHorizontal,
 } from 'lucide-react';
 import { EssayRecord } from '@/types';
 import { fetchAllEssayRecords, deleteEssayRecordAsync, clearAllEssayRecordsAsync } from '@/lib/storage';
@@ -22,11 +27,20 @@ import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase/c
 import ProgressHistoryChart from '@/components/charts/ProgressHistoryChart';
 import { formatDuration } from '@/lib/utils';
 import ToriiGate from '@/components/japanese/ToriiGate';
+import KpiSparkline from '@/components/dashboard/KpiSparkline';
+import RecordDetailDrawer from '@/components/dashboard/RecordDetailDrawer';
+import { useSoundEngine } from '@/hooks/useSoundEngine';
 
 export default function DashboardPage() {
+  const { playClick, playLockIn } = useSoundEngine();
   const [records, setRecords] = useState<EssayRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [showResetModal, setShowResetModal] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState<EssayRecord | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterType, setFilterType] = useState<'all' | 'task1' | 'task2' | 'full_test'>('all');
+  const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'band_high' | 'band_low'>('newest');
+
   const [userProfile, setUserProfile] = useState<{
     fullName: string;
     email: string;
@@ -81,12 +95,16 @@ export default function DashboardPage() {
     if (confirm('Bạn có chắc chắn muốn xóa bài viết này khỏi lịch sử không?')) {
       await deleteEssayRecordAsync(id);
       setRecords((prev) => prev.filter((r) => r.id !== id));
+      if (selectedRecord?.id === id) {
+        setSelectedRecord(null);
+      }
     }
   };
 
   const handleClearAll = async () => {
     await clearAllEssayRecordsAsync();
     setRecords([]);
+    setSelectedRecord(null);
     setShowResetModal(false);
   };
 
@@ -106,12 +124,62 @@ export default function DashboardPage() {
 
   const targetProgress = Math.min(100, Math.round((avgBandNum / (userProfile.targetBand || 7.0)) * 100));
 
+  // Sparkline data sequences (chronological from oldest to newest)
+  const chronologicalRecords = useMemo(() => [...records].reverse(), [records]);
+  const bandSparklineData = useMemo(
+    () => chronologicalRecords.map((r) => Number(r.overall_band)),
+    [chronologicalRecords]
+  );
+  const wordCountSparklineData = useMemo(
+    () => chronologicalRecords.map((r) => r.word_count),
+    [chronologicalRecords]
+  );
+  const timeSparklineData = useMemo(
+    () => chronologicalRecords.map((r) => Math.round((r.duration_seconds || 0) / 60)),
+    [chronologicalRecords]
+  );
+
+  // Filter & Sort records for the DataTable
+  const filteredRecords = useMemo(() => {
+    return records
+      .filter((r) => {
+        const matchesFilter = filterType === 'all' || r.task_type === filterType;
+        const q = searchQuery.trim().toLowerCase();
+        const matchesSearch =
+          !q ||
+          r.prompt_title.toLowerCase().includes(q) ||
+          r.task_type.toLowerCase().includes(q) ||
+          r.prompt_text.toLowerCase().includes(q);
+        return matchesFilter && matchesSearch;
+      })
+      .sort((a, b) => {
+        if (sortBy === 'newest') {
+          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+        }
+        if (sortBy === 'oldest') {
+          return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+        }
+        if (sortBy === 'band_high') {
+          return Number(b.overall_band) - Number(a.overall_band);
+        }
+        if (sortBy === 'band_low') {
+          return Number(a.overall_band) - Number(b.overall_band);
+        }
+        return 0;
+      });
+  }, [records, filterType, searchQuery, sortBy]);
+
+  // Counts by task type
+  const countTask1 = useMemo(() => records.filter((r) => r.task_type === 'task1').length, [records]);
+  const countTask2 = useMemo(() => records.filter((r) => r.task_type === 'task2').length, [records]);
+  const countFullTest = useMemo(() => records.filter((r) => r.task_type === 'full_test').length, [records]);
+
   return (
-    <div className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      {/* Candidate Profile Header Card */}
-      <div className="p-6 sm:p-8 rounded-lg hairline-border bg-paper-subtle dark:bg-carbon-subtle flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-xs">
+    <div className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-fade-in">
+      {/* Candidate Profile Header Card (Slate Inset Panel) */}
+      <div className="p-6 sm:p-8 rounded-xl hairline-border bg-paper-subtle dark:bg-carbon-subtle flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-xs">
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-md hairline-border bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 flex items-center justify-center font-mono font-bold text-xl shadow-xs shrink-0">
+          <div className="w-14 h-14 rounded-lg hairline-border bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 flex items-center justify-center font-mono font-bold text-xl shadow-xs shrink-0">
             {userProfile.fullName.slice(0, 2).toUpperCase()}
           </div>
           <div className="space-y-1">
@@ -130,7 +198,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Target Progress Bar */}
-        <div className="w-full md:w-80 p-4 rounded-md hairline-border bg-paper dark:bg-carbon space-y-2">
+        <div className="w-full md:w-80 p-4 rounded-lg hairline-border bg-paper dark:bg-carbon space-y-2">
           <div className="flex items-center justify-between font-mono text-xs">
             <span className="text-stone-600 dark:text-stone-400 flex items-center gap-1.5 font-medium">
               <Target className="w-3.5 h-3.5 text-vermilion" /> Target {userProfile.targetBand.toFixed(1)}
@@ -150,54 +218,100 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* 4 Overview Statistics Cards */}
+      {/* 4 Overview Statistics Cards with SVG Sparklines (Slate KPI Specification) */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {/* Total Essays */}
-        <div className="p-5 rounded-lg hairline-border bg-paper-subtle dark:bg-carbon-subtle space-y-3">
-          <div className="flex items-center justify-between font-mono text-[11px] text-stone-500 uppercase tracking-wider">
-            <span>01 // TỔNG BÀI VIẾT</span>
-            <FileText className="w-3.5 h-3.5 text-stone-400" />
+        <div className="p-5 rounded-xl hairline-border bg-paper-subtle dark:bg-carbon-subtle flex flex-col justify-between space-y-3">
+          <div className="space-y-2">
+            <div className="flex items-center justify-between font-mono text-[11px] text-stone-500 uppercase tracking-wider">
+              <span>01 // TỔNG BÀI NỘP</span>
+              <FileText className="w-3.5 h-3.5 text-stone-400" />
+            </div>
+            <div className="text-3xl font-semibold font-mono text-stone-900 dark:text-stone-100 tabular-nums">
+              {totalEssays}
+            </div>
+            <p className="font-mono text-[11px] text-stone-400">
+              T1: {countTask1} • T2: {countTask2} • FT: {countFullTest}
+            </p>
           </div>
-          <div className="text-3xl font-normal font-mono text-stone-900 dark:text-stone-100">
-            {totalEssays}
+          <div className="pt-2">
+            <KpiSparkline
+              data={wordCountSparklineData.length > 0 ? wordCountSparklineData : [0, 0]}
+              color="#10B981"
+              fillColor="rgba(16, 185, 129, 0.08)"
+              height={36}
+            />
           </div>
-          <p className="font-mono text-[11px] text-stone-400">Task 1, Task 2 &amp; Full Test</p>
         </div>
 
         {/* Avg Band */}
-        <div className="p-5 rounded-lg hairline-border bg-paper-subtle dark:bg-carbon-subtle space-y-3">
-          <div className="flex items-center justify-between font-mono text-[11px] text-stone-500 uppercase tracking-wider">
-            <span>02 // BAND TRUNG BÌNH</span>
-            <TrendingUp className="w-3.5 h-3.5 text-vermilion" />
+        <div className="p-5 rounded-xl hairline-border bg-paper-subtle dark:bg-carbon-subtle flex flex-col justify-between space-y-3">
+          <div className="space-y-2">
+            <div className="flex items-center justify-between font-mono text-[11px] text-stone-500 uppercase tracking-wider">
+              <span>02 // BAND TRUNG BÌNH</span>
+              <TrendingUp className="w-3.5 h-3.5 text-vermilion" />
+            </div>
+            <div className="text-3xl font-semibold font-mono text-vermilion tabular-nums">
+              {avgBand}
+            </div>
+            <p className="font-mono text-[11px] text-stone-400">
+              {totalEssays > 0 ? `Tính trên ${totalEssays} bài thi` : 'Chưa có bài thi'}
+            </p>
           </div>
-          <div className="text-3xl font-normal font-mono text-vermilion">
-            {avgBand}
+          <div className="pt-2">
+            <KpiSparkline
+              data={bandSparklineData.length > 0 ? bandSparklineData : [0, 0]}
+              color="#FF3B1D"
+              fillColor="rgba(255, 59, 29, 0.08)"
+              height={36}
+            />
           </div>
-          <p className="font-mono text-[11px] text-stone-400">Tính trên tất cả các bài</p>
         </div>
 
         {/* Highest Band */}
-        <div className="p-5 rounded-lg hairline-border bg-paper-subtle dark:bg-carbon-subtle space-y-3">
-          <div className="flex items-center justify-between font-mono text-[11px] text-stone-500 uppercase tracking-wider">
-            <span>03 // KỶ LỤC CAO NHẤT</span>
-            <Award className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+        <div className="p-5 rounded-xl hairline-border bg-paper-subtle dark:bg-carbon-subtle flex flex-col justify-between space-y-3">
+          <div className="space-y-2">
+            <div className="flex items-center justify-between font-mono text-[11px] text-stone-500 uppercase tracking-wider">
+              <span>03 // KỶ LỤC CAO NHẤT</span>
+              <Award className="w-3.5 h-3.5 text-amber-500" />
+            </div>
+            <div className="text-3xl font-semibold font-mono text-stone-900 dark:text-stone-100 tabular-nums">
+              {highestBand}
+            </div>
+            <p className="font-mono text-[11px] text-stone-400">Điểm số bài thi tốt nhất</p>
           </div>
-          <div className="text-3xl font-normal font-mono text-stone-900 dark:text-stone-100">
-            {highestBand}
+          <div className="pt-2">
+            <KpiSparkline
+              data={bandSparklineData.map((b) => Math.max(b, 6.0))}
+              color="#F59E0B"
+              fillColor="rgba(245, 158, 11, 0.08)"
+              height={36}
+            />
           </div>
-          <p className="font-mono text-[11px] text-stone-400">Điểm số bài thi tốt nhất</p>
         </div>
 
         {/* Total Practice Time */}
-        <div className="p-5 rounded-lg hairline-border bg-paper-subtle dark:bg-carbon-subtle space-y-3">
-          <div className="flex items-center justify-between font-mono text-[11px] text-stone-500 uppercase tracking-wider">
-            <span>04 // THỜI GIAN THỰC</span>
-            <Clock className="w-3.5 h-3.5 text-stone-400" />
+        <div className="p-5 rounded-xl hairline-border bg-paper-subtle dark:bg-carbon-subtle flex flex-col justify-between space-y-3">
+          <div className="space-y-2">
+            <div className="flex items-center justify-between font-mono text-[11px] text-stone-500 uppercase tracking-wider">
+              <span>04 // THỜI GIAN THỰC</span>
+              <Clock className="w-3.5 h-3.5 text-stone-400" />
+            </div>
+            <div className="text-3xl font-semibold font-mono text-stone-900 dark:text-stone-100 tabular-nums">
+              {totalMinutes} <span className="text-sm font-normal text-stone-500">phút</span>
+            </div>
+            <p className="font-mono text-[11px] text-stone-400">
+              {totalEssays > 0 ? `~${Math.round(totalMinutes / totalEssays)} phút/bài` : 'Tích lũy trong phòng thi'}
+            </p>
           </div>
-          <div className="text-3xl font-normal font-mono text-stone-900 dark:text-stone-100">
-            {totalMinutes} <span className="text-sm font-normal text-stone-500">phút</span>
+          <div className="pt-2">
+            <KpiSparkline
+              data={timeSparklineData.length > 0 ? timeSparklineData : [0, 0]}
+              color="#3B82F6"
+              fillColor="rgba(59, 130, 246, 0.08)"
+              height={36}
+            />
           </div>
-          <p className="font-mono text-[11px] text-stone-400">Tích lũy trong phòng thi</p>
         </div>
       </div>
 
@@ -206,24 +320,28 @@ export default function DashboardPage() {
         <ProgressHistoryChart records={records} />
       </div>
 
-      {/* History Table */}
+      {/* Slate DataTable Workbench Section */}
       <div className="space-y-4">
-        <div className="flex items-center justify-between flex-wrap gap-2 hairline-b pb-4">
+        {/* Section Header */}
+        <div className="flex items-center justify-between flex-wrap gap-3 hairline-b pb-4">
           <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-vermilion" />
-            <h3 className="font-display font-bold text-base sm:text-lg text-stone-900 dark:text-stone-100 flex items-center gap-2 tracking-normal">
-              <span>Lịch Sử Bài Viết &amp; Chấm Điểm</span>
-              <span className="font-mono text-xs px-2 py-0.5 rounded hairline-border bg-stone-100 dark:bg-stone-850 text-stone-600 dark:text-stone-400 font-semibold">
-                {records.length}
-              </span>
-            </h3>
+            <span className="w-2 h-2 rounded-full bg-vermilion" />
+            <h2 className="font-display font-bold text-lg sm:text-xl text-stone-900 dark:text-stone-100 tracking-normal">
+              Lịch Sử Bài Viết &amp; Chấm Điểm
+            </h2>
+            <span className="font-mono text-xs px-2 py-0.5 rounded hairline-border bg-stone-100 dark:bg-stone-850 text-stone-600 dark:text-stone-400 font-semibold">
+              {records.length} bài
+            </span>
           </div>
 
           <div className="flex items-center gap-2">
             {records.length > 0 && (
               <button
                 type="button"
-                onClick={() => setShowResetModal(true)}
+                onClick={() => {
+                  playClick();
+                  setShowResetModal(true);
+                }}
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md hairline-border border-red-500/30 text-red-600 dark:text-red-400 hover:bg-red-500/10 text-xs font-mono font-semibold transition-colors"
                 title="Xóa toàn bộ lịch sử bài thi và đặt lại thống kê về 0"
               >
@@ -234,6 +352,8 @@ export default function DashboardPage() {
 
             <Link
               href="/practice"
+              onMouseEnter={() => playLockIn()}
+              onClick={() => playClick()}
               className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md bg-stone-900 text-stone-50 hover:bg-vermilion dark:bg-stone-100 dark:text-stone-950 dark:hover:bg-vermilion dark:hover:text-white text-xs font-semibold shadow-xs transition-all duration-200 ease-spring active:scale-[0.98]"
             >
               <Sparkles className="w-3.5 h-3.5" />
@@ -242,52 +362,155 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        {/* Toolbar: Search & Segmented Filter Chips */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-3 rounded-xl hairline-border bg-paper-subtle/50 dark:bg-carbon-subtle/50">
+          {/* Search box */}
+          <div className="relative flex-1 max-w-sm">
+            <Search className="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Lọc bài viết theo tiêu đề hoặc nội dung..."
+              className="w-full pl-9 pr-3 py-1.5 rounded-lg hairline-border bg-paper dark:bg-carbon text-xs text-stone-900 dark:text-stone-100 placeholder:text-stone-400 outline-hidden"
+            />
+          </div>
+
+          {/* Filter Chips & Sort Select */}
+          <div className="flex items-center gap-2 flex-wrap">
+            <div className="flex items-center gap-1 p-0.5 rounded-lg hairline-border bg-stone-100/60 dark:bg-stone-850/60 text-xs">
+              <button
+                type="button"
+                onClick={() => {
+                  playClick();
+                  setFilterType('all');
+                }}
+                className={`px-2.5 py-1 rounded-md font-medium text-[11px] transition-colors ${
+                  filterType === 'all'
+                    ? 'bg-paper dark:bg-carbon text-stone-900 dark:text-stone-100 shadow-xs font-semibold'
+                    : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100'
+                }`}
+              >
+                Tất cả ({records.length})
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  playClick();
+                  setFilterType('task1');
+                }}
+                className={`px-2.5 py-1 rounded-md font-medium text-[11px] transition-colors ${
+                  filterType === 'task1'
+                    ? 'bg-paper dark:bg-carbon text-stone-900 dark:text-stone-100 shadow-xs font-semibold'
+                    : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100'
+                }`}
+              >
+                Task 1 ({countTask1})
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  playClick();
+                  setFilterType('task2');
+                }}
+                className={`px-2.5 py-1 rounded-md font-medium text-[11px] transition-colors ${
+                  filterType === 'task2'
+                    ? 'bg-paper dark:bg-carbon text-stone-900 dark:text-stone-100 shadow-xs font-semibold'
+                    : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100'
+                }`}
+              >
+                Task 2 ({countTask2})
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  playClick();
+                  setFilterType('full_test');
+                }}
+                className={`px-2.5 py-1 rounded-md font-medium text-[11px] transition-colors ${
+                  filterType === 'full_test'
+                    ? 'bg-paper dark:bg-carbon text-stone-900 dark:text-stone-100 shadow-xs font-semibold'
+                    : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100'
+                }`}
+              >
+                Full Test ({countFullTest})
+              </button>
+            </div>
+
+            {/* Sort Selector */}
+            <div className="flex items-center gap-1.5 ml-auto sm:ml-0">
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as any)}
+                className="px-2.5 py-1 rounded-lg hairline-border bg-paper dark:bg-carbon text-xs text-stone-700 dark:text-stone-300 font-mono outline-hidden"
+              >
+                <option value="newest">Mới nhất</option>
+                <option value="oldest">Cũ nhất</option>
+                <option value="band_high">Band cao nhất</option>
+                <option value="band_low">Band thấp nhất</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* Loading State */}
         {loading ? (
           <div className="p-12 text-center font-mono text-xs text-stone-500">
             00 // Đang tải lịch sử bài viết...
           </div>
-        ) : records.length === 0 ? (
+        ) : filteredRecords.length === 0 ? (
           <div className="p-12 text-center rounded-xl hairline-border bg-paper-subtle/50 dark:bg-carbon-subtle/50 space-y-4">
             <div className="flex justify-center">
               <ToriiGate width={48} height={40} text="合格" glow={false} showShimenawa={false} />
             </div>
             <div className="space-y-1">
-              <h4 className="font-display font-bold text-base text-stone-900 dark:text-stone-100">
-                Chưa có bài viết nào được lưu
-              </h4>
+              <h3 className="font-display font-bold text-base text-stone-900 dark:text-stone-100">
+                {records.length === 0
+                  ? 'Chưa có bài viết nào được lưu'
+                  : 'Không tìm thấy bài viết phù hợp với bộ lọc'}
+              </h3>
               <p className="text-xs text-stone-500 max-w-sm mx-auto leading-relaxed">
-                Hãy bắt đầu một bài luyện tập Task 1, Task 2 hoặc Full Test để xây dựng hồ sơ tiến bộ chuẩn thi thật của bạn!
+                {records.length === 0
+                  ? 'Hãy bắt đầu một bài luyện tập Task 1, Task 2 hoặc Full Test để xây dựng hồ sơ tiến bộ chuẩn thi thật của bạn!'
+                  : 'Hãy thử xóa từ khóa tìm kiếm hoặc đổi chế độ lọc để xem lại bài làm.'}
               </p>
             </div>
-            <Link
-              href="/practice"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-stone-900 text-stone-50 hover:bg-vermilion dark:bg-stone-100 dark:text-stone-950 dark:hover:bg-vermilion dark:hover:text-white text-xs font-semibold shadow-xs transition-colors"
-            >
-              <span>Luyện đề đầu tiên</span>
-            </Link>
+            {records.length === 0 && (
+              <Link
+                href="/practice"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-stone-900 text-stone-50 hover:bg-vermilion dark:bg-stone-100 dark:text-stone-950 dark:hover:bg-vermilion dark:hover:text-white text-xs font-semibold shadow-xs transition-colors"
+              >
+                <span>Luyện đề đầu tiên</span>
+              </Link>
+            )}
           </div>
         ) : (
-          <div className="overflow-x-auto rounded-xl hairline-border bg-paper-subtle/70 dark:bg-carbon-subtle/70 shadow-xs">
+          /* Slate DataTable */
+          <div className="overflow-x-auto rounded-xl hairline-border bg-paper dark:bg-carbon shadow-xs">
             <table className="w-full text-xs text-left border-collapse">
               <thead className="hairline-b bg-stone-100/70 dark:bg-stone-900/60 font-mono text-[11px] text-stone-500 uppercase tracking-wider font-semibold">
                 <tr>
                   <th className="p-3.5">Ngày nộp</th>
                   <th className="p-3.5">Chế độ</th>
                   <th className="p-3.5">Đề bài</th>
-                  <th className="p-3.5">Số từ</th>
-                  <th className="p-3.5">Thời gian</th>
+                  <th className="p-3.5 text-right">Số từ</th>
+                  <th className="p-3.5 text-right">Thời gian</th>
                   <th className="p-3.5 text-center">Band Score</th>
                   <th className="p-3.5 text-right">Thao tác</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-stone-200/60 dark:divide-stone-800/60">
-                {records.map((r) => {
+                {filteredRecords.map((r) => {
                   const isFT = r.task_type === 'full_test';
                   const isT1 = r.task_type === 'task1';
                   return (
                     <tr
                       key={r.id}
-                      className="hover:bg-stone-100/50 dark:hover:bg-stone-850/40 transition-colors"
+                      onClick={() => {
+                        playClick();
+                        setSelectedRecord(r);
+                      }}
+                      className="hover:bg-stone-100/60 dark:hover:bg-stone-850/60 transition-colors cursor-pointer group"
                     >
                       <td className="p-3.5 text-stone-500 font-mono whitespace-nowrap text-[11px]">
                         {new Date(r.created_at).toLocaleDateString('vi-VN', {
@@ -312,20 +535,20 @@ export default function DashboardPage() {
                         </span>
                       </td>
 
-                      <td className="p-3.5 font-display font-medium text-stone-900 dark:text-stone-100 max-w-xs truncate text-xs sm:text-sm">
+                      <td className="p-3.5 font-display font-medium text-stone-900 dark:text-stone-100 max-w-xs truncate text-xs sm:text-sm group-hover:text-vermilion transition-colors">
                         {r.prompt_title}
                       </td>
 
-                      <td className="p-3.5 font-mono text-stone-600 dark:text-stone-400 whitespace-nowrap text-[11px]">
+                      <td className="p-3.5 font-mono text-stone-600 dark:text-stone-400 whitespace-nowrap text-[11px] text-right tabular-nums">
                         {r.word_count} từ
                       </td>
 
-                      <td className="p-3.5 font-mono text-stone-600 dark:text-stone-400 whitespace-nowrap text-[11px]">
+                      <td className="p-3.5 font-mono text-stone-600 dark:text-stone-400 whitespace-nowrap text-[11px] text-right tabular-nums">
                         {formatDuration(r.duration_seconds)}
                       </td>
 
                       <td className="p-3.5 text-center whitespace-nowrap">
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-bold font-mono text-xs bg-vermilion/10 text-vermilion border border-vermilion/30">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md font-bold font-mono text-xs bg-vermilion/10 text-vermilion border border-vermilion/30">
                           {Number(r.overall_band).toFixed(1)}
                           {r.server_signature && (
                             <span title="Đã xác thực chữ ký máy chủ AI">
@@ -335,10 +558,26 @@ export default function DashboardPage() {
                         </span>
                       </td>
 
-                      <td className="p-3.5 text-right whitespace-nowrap space-x-2">
+                      <td
+                        className="p-3.5 text-right whitespace-nowrap space-x-1.5"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <button
+                          type="button"
+                          onClick={() => {
+                            playClick();
+                            setSelectedRecord(r);
+                          }}
+                          className="inline-flex items-center gap-1 px-2 py-1 rounded hairline-border bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:text-stone-950 dark:hover:text-stone-50 font-mono text-[11px] font-semibold transition-colors"
+                          title="Xem nhanh trong drawer"
+                        >
+                          <Eye className="w-3 h-3" />
+                          <span className="hidden sm:inline">Chi tiết</span>
+                        </button>
                         <Link
                           href={`/results?id=${r.id}`}
-                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded hairline-border bg-paper dark:bg-carbon text-stone-800 dark:text-stone-200 hover:text-vermilion hover:border-vermilion transition-colors font-mono text-[11px] font-semibold"
+                          onClick={() => playClick()}
+                          className="inline-flex items-center gap-1 px-2 py-1 rounded hairline-border bg-paper dark:bg-carbon text-stone-800 dark:text-stone-200 hover:text-vermilion hover:border-vermilion transition-colors font-mono text-[11px] font-semibold"
                         >
                           <span>Xem chấm</span>
                           <ExternalLink className="w-3 h-3" />
@@ -360,6 +599,14 @@ export default function DashboardPage() {
           </div>
         )}
       </div>
+
+      {/* Record Inspection Detail Drawer (Slate Specification) */}
+      <RecordDetailDrawer
+        record={selectedRecord}
+        isOpen={Boolean(selectedRecord)}
+        onClose={() => setSelectedRecord(null)}
+        onDelete={handleDelete}
+      />
 
       {/* Reset Confirmation Modal */}
       {showResetModal && (

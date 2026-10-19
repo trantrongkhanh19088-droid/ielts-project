@@ -21,6 +21,7 @@ import {
   BookOpen,
   Volume2,
   VolumeX,
+  Search,
 } from 'lucide-react';
 import { useSoundEngine } from '@/hooks/useSoundEngine';
 import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase/client';
@@ -53,8 +54,16 @@ export default function Navbar() {
       } catch {}
     };
     syncCompanion();
+    const handleOpenSettings = () => setIsSettingsModalOpen(true);
+    const handleOpenChar = () => setIsCharModalOpen(true);
     window.addEventListener('companion-settings-updated', syncCompanion);
-    return () => window.removeEventListener('companion-settings-updated', syncCompanion);
+    window.addEventListener('open-settings-modal', handleOpenSettings);
+    window.addEventListener('open-companion-modal', handleOpenChar);
+    return () => {
+      window.removeEventListener('companion-settings-updated', syncCompanion);
+      window.removeEventListener('open-settings-modal', handleOpenSettings);
+      window.removeEventListener('open-companion-modal', handleOpenChar);
+    };
   }, []);
 
   // Load and sync theme from localStorage on mount
@@ -193,7 +202,7 @@ export default function Navbar() {
     <>
       <nav className="sticky top-0 z-30 bg-paper/90 dark:bg-carbon/90 backdrop-blur-md hairline-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-14">
             {/* Logo & Maneki-neko */}
             <div className="flex items-center gap-2.5">
               <Link href="/" className="flex items-center gap-2.5 group">
@@ -290,10 +299,40 @@ export default function Navbar() {
                 <BarChart2 className="w-3.5 h-3.5 text-stone-400" />
                 <span>Thống kê</span>
               </Link>
+
+              {/* Slate Global Command Palette Trigger */}
+              <button
+                type="button"
+                onClick={() => {
+                  playClick();
+                  window.dispatchEvent(new CustomEvent('open-command-palette'));
+                }}
+                className="hidden xl:flex items-center gap-2 px-2.5 py-1 rounded-md hairline-border bg-stone-100/70 dark:bg-stone-850/70 hover:bg-stone-200/70 dark:hover:bg-stone-800 text-stone-500 hover:text-stone-900 dark:hover:text-stone-100 text-xs transition-colors ml-1 cursor-pointer"
+                title="Mở bảng điều hướng nhanh (Ctrl + K)"
+              >
+                <Search className="w-3.5 h-3.5 text-stone-400" />
+                <span className="font-sans text-[11px] text-stone-500 dark:text-stone-400">Tìm đề thi...</span>
+                <kbd className="font-mono text-[10px] px-1.5 py-0.2 rounded hairline-border bg-stone-200/80 dark:bg-stone-800/80 text-stone-600 dark:text-stone-300 font-semibold">
+                  Ctrl K
+                </kbd>
+              </button>
             </div>
 
             {/* Right actions */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              {/* Mobile Command Palette Trigger */}
+              <button
+                type="button"
+                onClick={() => {
+                  playClick();
+                  window.dispatchEvent(new CustomEvent('open-command-palette'));
+                }}
+                className="p-1.5 rounded-md hairline-border text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-stone-100/70 dark:hover:bg-stone-850 transition-colors flex items-center justify-center xl:hidden"
+                title="Tìm kiếm & Điều hướng (Ctrl + K)"
+                aria-label="Command Palette"
+              >
+                <Search className="w-4 h-4" />
+              </button>
               {/* Web Audio Synthesizer Sound Toggle */}
               <button
                 type="button"

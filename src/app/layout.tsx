@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { Inter, Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/navbar/Navbar';
+import CommandPalette from '@/components/command/CommandPalette';
 import SakuraCanvas from '@/components/japanese/SakuraCanvas';
 import ManekiNeko from '@/components/japanese/ManekiNeko';
 import PixelCompanion from '@/components/pixel-companion/PixelCompanion';
@@ -82,6 +83,7 @@ export default function RootLayout({
         <SakuraCanvas />
 
         <Navbar />
+        <CommandPalette />
         <main className="flex-1 flex flex-col relative z-10">{children}</main>
 
         {/* 55 Pixel Companion with Interactive Speech Bubbles & Settings */}
