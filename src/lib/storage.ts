@@ -1,4 +1,4 @@
-import { EssayRecord, TaskType, GradingResult, FullTestGradingResult } from '@/types';
+import { EssayRecord, TaskType, GradingResult, FullTestGradingResult, PromptSeed } from '@/types';
 import { getSupabaseBrowserClient, isSupabaseConfigured } from './supabase/client';
 
 const ESSAYS_STORAGE_KEY = 'cd_ielts_essay_records';
@@ -372,3 +372,95 @@ export function setLastCompletedPromptId(taskType: 'task1' | 'task2', id: string
     console.error('Failed to save last completed prompt id', err);
   }
 }
+
+// ==========================================
+// Custom User Prompts Storage (User / Local Only)
+// ==========================================
+const CUSTOM_PROMPTS_PREFIX = 'cd_ielts_custom_prompts_';
+
+export function getCustomPromptsStorageKey(userId?: string | null): string {
+  if (userId) return `${CUSTOM_PROMPTS_PREFIX}${userId}`;
+  if (typeof window !== 'undefined') {
+    try {
+      const sbKey = Object.keys(localStorage).find((k) => k.startsWith('sb-') && k.endsWith('-auth-token'));
+      if (sbKey) {
+        const rawSb = localStorage.getItem(sbKey);
+        if (rawSb) {
+          const parsed = JSON.parse(rawSb);
+          const uid = parsed?.user?.id;
+          if (uid) return `${CUSTOM_PROMPTS_PREFIX}${uid}`;
+        }
+      }
+    } catch {}
+  }
+  return `${CUSTOM_PROMPTS_PREFIX}guest`;
+}
+
+export function getCustomPrompts(userId?: string | null): PromptSeed[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const key = getCustomPromptsStorageKey(userId);
+    const raw = localStorage.getItem(key);
+    const list: PromptSeed[] = raw ? JSON.parse(raw) : [];
+
+    // Also check guest key if user is logged in, but don't duplicate
+    if (key !== `${CUSTOM_PROMPTS_PREFIX}guest`) {
+      const guestRaw = localStorage.getItem(`${CUSTOM_PROMPTS_PREFIX}guest`);
+      if (guestRaw) {
+        try {
+          const guestList: PromptSeed[] = JSON.parse(guestRaw);
+          const existingIds = new Set(list.map((p) => p.id));
+          const toMerge = guestList.filter((p) => !existingIds.has(p.id));
+          if (toMerge.length > 0) {
+            const merged = [...list, ...toMerge];
+            localStorage.setItem(key, JSON.stringify(merged));
+            return merged;
+          }
+        } catch {}
+      }
+    }
+    return list;
+  } catch (err) {
+    console.error('Failed to get custom prompts', err);
+    return [];
+  }
+}
+
+export function saveCustomPrompt(prompt: PromptSeed, userId?: string | null): PromptSeed {
+  if (typeof window === 'undefined') return prompt;
+  const key = getCustomPromptsStorageKey(userId);
+  const existing = getCustomPrompts(userId);
+  const index = existing.findIndex((p) => p.id === prompt.id);
+  if (index >= 0) {
+    existing[index] = prompt;
+  } else {
+    existing.unshift(prompt);
+  }
+  try {
+    localStorage.setItem(key, JSON.stringify(existing));
+  } catch (err) {
+    console.error('Failed to save custom prompt', err);
+  }
+  return prompt;
+}
+
+export function deleteCustomPrompt(id: string, userId?: string | null): boolean {
+  if (typeof window === 'undefined') return false;
+  const key = getCustomPromptsStorageKey(userId);
+  const existing = getCustomPrompts(userId);
+  const filtered = existing.filter((p) => p.id !== id);
+  try {
+    localStorage.setItem(key, JSON.stringify(filtered));
+    return true;
+  } catch (err) {
+    console.error('Failed to delete custom prompt', err);
+    return false;
+  }
+}
+
+export function getCustomPromptById(id: string, userId?: string | null): PromptSeed | undefined {
+  if (typeof window === 'undefined') return undefined;
+  const prompts = getCustomPrompts(userId);
+  return prompts.find((p) => p.id === id);
+}
+

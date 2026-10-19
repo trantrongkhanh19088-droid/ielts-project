@@ -3844,7 +3844,22 @@ export const TASK_2_SEEDS: PromptSeed[] = [
 ];
 
 export function getPromptById(id: string): PromptSeed | undefined {
-  return [...TASK_1_SEEDS, ...TASK_2_SEEDS].find((p) => p.id === id);
+  const seed = [...TASK_1_SEEDS, ...TASK_2_SEEDS].find((p) => p.id === id);
+  if (seed) return seed;
+  if (typeof window !== 'undefined') {
+    try {
+      const keys = Object.keys(localStorage).filter((k) => k.startsWith('cd_ielts_custom_prompts_'));
+      for (const key of keys) {
+        const raw = localStorage.getItem(key);
+        if (raw) {
+          const list = JSON.parse(raw);
+          const found = Array.isArray(list) ? list.find((p: PromptSeed) => p.id === id) : undefined;
+          if (found) return found;
+        }
+      }
+    } catch {}
+  }
+  return undefined;
 }
 
 export function getRandomPrompt(taskType: 'task1' | 'task2', excludeId?: string): PromptSeed {

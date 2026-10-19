@@ -33,6 +33,8 @@ export interface PromptSeed {
     conclusion?: string;
     note?: string;
   };
+  isCustom?: boolean;
+  createdAt?: string;
 }
 
 export interface SentenceCorrection {
