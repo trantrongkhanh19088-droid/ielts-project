@@ -18,7 +18,6 @@ import {
 } from 'lucide-react';
 import { TASK_1_SEEDS, TASK_2_SEEDS } from '@/lib/data/seed-prompts';
 import { motion } from 'framer-motion';
-import ArchitecturalMatrixCanvas from '@/components/canvas/ArchitecturalMatrixCanvas';
 import MinimalMotionHero from '@/components/hero/MinimalMotionHero';
 import BandScoreFormulaSimulator from '@/components/exam/BandScoreFormulaSimulator';
 import DualEngineSandbox from '@/components/builder/DualEngineSandbox';
@@ -45,9 +44,6 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-[#F8F7F4] dark:bg-[#090A0F] text-stone-900 dark:text-[#F4F4F0] selection:bg-[#FF3B1D]/25 selection:text-[#FF3B1D] font-sans relative overflow-x-hidden transition-colors duration-300">
-      {/* Procedural 60 FPS Architectural Matrix Canvas (Adapts dynamically to Light & Dark) */}
-      <ArchitecturalMatrixCanvas />
-
       {/* Subtle Archival Paper Grain Noise Overlay */}
       <svg className="fixed inset-0 pointer-events-none z-10 w-full h-full opacity-[0.025] dark:opacity-[0.035]" aria-hidden="true">
         <filter id="archivalNoise">

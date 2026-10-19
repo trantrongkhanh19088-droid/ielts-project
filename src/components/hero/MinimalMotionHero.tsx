@@ -15,9 +15,9 @@ import {
   ShieldAlert,
   ChevronRight,
   Flame,
+  CheckCircle2,
 } from 'lucide-react';
 import { useSoundEngine } from '@/hooks/useSoundEngine';
-import InsperaWorkstationHUD from './InsperaWorkstationHUD';
 
 export type ExamMode = 'full_test' | 'builder' | 'task1' | 'task2';
 
@@ -45,231 +45,286 @@ export default function MinimalMotionHero() {
     return () => clearTimeout(timeoutId);
   }, [titleNumber, titles.length]);
 
-  const modeDescriptions: Record<ExamMode, { title: string; subtitle: string; link: string; badge: string }> = {
+  const modeDescriptions: Record<
+    ExamMode,
+    { title: string; subtitle: string; link: string; badge: string; meta: string }
+  > = {
     full_test: {
       title: 'Full Test 60 Phút Liền Mạch',
-      subtitle: 'Mô phỏng 100% giao diện thi thật Inspera, đồng hồ 60:00 đếm ngược và khóa tính năng tự sửa lỗi.',
+      subtitle:
+        'Mô phỏng 100% giao diện thi thật Inspera, đồng hồ 60:00 đếm ngược không thể tạm dừng và khóa tính năng tự sửa lỗi (spellcheck). Tự động chuyển đổi giữa Task 1 & Task 2.',
       link: '/practice?mode=full_test',
       badge: 'FLAGSHIP // OFFICIAL SIMULATOR',
+      meta: '60 Phút • Part 1 (150w) + Part 2 (250w) • Hệ số 1 : 2',
     },
     builder: {
       title: 'Writing Builder (Cây Đậu N Tầng)',
-      subtitle: 'Phương pháp rèn cấu trúc viết từ 5 tầng cơ bản đến 30 tầng chuyên sâu với Check & Update Engine.',
+      subtitle:
+        'Phương pháp rèn cấu trúc bài viết từ 5 tầng cơ bản đến 30 tầng chuyên sâu: so sánh Check Engine (ngữ pháp) và Update Engine (nâng cấp từ vựng C1/C2).',
       link: '/builder',
       badge: 'DUAL AI // STRUCTURAL METHOD',
+      meta: 'Phòng luyện câu tương tác • Trắc nghiệm Collocation • Giám khảo AI',
     },
     task1: {
       title: 'Academic Task 1: Biểu Đồ & Quy Trình',
-      subtitle: '20 phút &bull; 150 từ: Rèn kỹ năng trích xuất Overview sắc bén và dẫn chứng số liệu đối sánh chuẩn mực.',
+      subtitle:
+        'Rèn luyện kỹ năng trích xuất Overview sắc bén và dẫn chứng số liệu đối sánh chuẩn mực cho biểu đồ đường, cột, tròn, bảng biểu, quy trình hoặc bản đồ.',
       link: '/practice?mode=task1',
       badge: 'CRITERIA // TASK ACHIEVEMENT',
+      meta: '20 Phút • Tối thiểu 150 từ • Trọng số 33% tổng điểm Writing',
     },
     task2: {
       title: 'Discursive Task 2: Nghị Luận Xã Hội',
-      subtitle: '40 phút &bull; 250 từ: Lập luận đa chiều, kiểm tra Thesis statement và mạch Cohesion & Coherence.',
+      subtitle:
+        'Rèn luyện bài luận học thuật cho các dạng đề: Opinion, Discussion, Advantages & Disadvantages, Causes & Solutions. Kiểm tra Thesis statement và mạch Cohesion & Coherence.',
       link: '/practice?mode=task2',
       badge: 'CRITERIA // BAND 8.0+ ARGUMENT',
+      meta: '40 Phút • Tối thiểu 250 từ • Trọng số 67% tổng điểm Writing',
     },
   };
 
-  const hudTask = activeMode === 'task1' ? 'task1' : 'task2';
-
   return (
-    <section className="relative z-20 pt-8 sm:pt-14 pb-16 sm:pb-22 border-b border-stone-200/80 dark:border-[rgba(244,244,240,0.08)]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
-          {/* Left 7 Columns: Minimal Motion Command Center */}
-          <div className="lg:col-span-7 space-y-6 text-left">
-            {/* Top Specification Badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-              className="inline-flex items-center gap-2.5 px-3 py-1 rounded-full bg-white dark:bg-[#161821] border border-stone-200/90 dark:border-[rgba(244,244,240,0.12)] font-mono text-[11px] text-stone-700 dark:text-[rgba(244,244,240,0.8)] tracking-wider uppercase shadow-xs"
-            >
-              <span className="w-2 h-2 rounded-full bg-[#FF3B1D] animate-ping" />
-              <span className="w-1.5 h-1.5 rounded-full bg-[#FF3B1D] -ml-3.5" />
-              <span className="font-semibold text-stone-900 dark:text-[#F4F4F0]">Specification 2026</span>
-              <span className="text-stone-300 dark:text-[rgba(244,244,240,0.3)]">//</span>
-              <span>Mô phỏng 100% Giao diện Thi Thật Inspera</span>
-            </motion.div>
+    <section className="relative z-20 pt-10 sm:pt-16 pb-16 sm:pb-24 border-b border-stone-200/80 dark:border-[rgba(244,244,240,0.08)]">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
+        {/* Top Specification Pill Badge */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+          className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/80 dark:bg-[#161821]/80 backdrop-blur-md border border-stone-200/90 dark:border-[rgba(244,244,240,0.12)] font-mono text-[11px] text-stone-700 dark:text-[rgba(244,244,240,0.85)] tracking-wider uppercase shadow-xs mx-auto"
+        >
+          <span className="w-2 h-2 rounded-full bg-[#FF3B1D] animate-ping" />
+          <span className="w-1.5 h-1.5 rounded-full bg-[#FF3B1D] -ml-3.5" />
+          <span className="font-semibold text-stone-900 dark:text-[#F4F4F0]">Specification 2026</span>
+          <span className="text-stone-300 dark:text-[rgba(244,244,240,0.3)]">//</span>
+          <span>Mô phỏng 100% Giao diện Thi Thật Inspera</span>
+        </motion.div>
 
-            {/* Monumental Headline with Spring Word Motion */}
-            <div className="space-y-3">
-              <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold tracking-[-0.035em] text-stone-900 dark:text-[#F4F4F0] leading-[1.12]">
-                <span>Luyện thi IELTS Writing</span>
-                <span className="block mt-1 sm:mt-2 text-2xl sm:text-3xl lg:text-4xl text-stone-500 dark:text-[rgba(244,244,240,0.55)] font-semibold">
-                  chuẩn hóa theo{' '}
-                  <span className="relative inline-flex overflow-hidden align-baseline font-extrabold text-[#FF3B1D] pb-1 min-w-[280px] sm:min-w-[420px] h-[1.25em]">
-                    &nbsp;
-                    {titles.map((title, index) => (
-                      <motion.span
-                        key={index}
-                        className="absolute left-0 top-0 whitespace-nowrap text-[#FF3B1D] font-extrabold"
-                        initial={{ opacity: 0, y: -40 }}
-                        animate={
-                          titleNumber === index
-                            ? { opacity: 1, y: 0 }
-                            : { opacity: 0, y: titleNumber > index ? -50 : 50 }
-                        }
-                        transition={{
-                          type: 'spring',
-                          stiffness: 90,
-                          damping: 15,
-                        }}
-                      >
-                        {title}
-                      </motion.span>
-                    ))}
+        {/* Monumental Headline with Spring Word Motion */}
+        <div className="space-y-4 max-w-4xl mx-auto">
+          <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.75rem] font-extrabold tracking-[-0.035em] text-stone-900 dark:text-[#F4F4F0] leading-[1.12]">
+            <span>Luyện thi IELTS Writing</span>
+            <span className="block mt-1 sm:mt-2 text-2xl sm:text-3xl lg:text-4xl text-stone-500 dark:text-[rgba(244,244,240,0.55)] font-semibold">
+              chuẩn hóa theo{' '}
+              <span className="relative inline-flex overflow-hidden align-baseline font-extrabold text-[#FF3B1D] pb-1 min-w-[280px] sm:min-w-[420px] h-[1.25em]">
+                &nbsp;
+                {titles.map((title, index) => (
+                  <motion.span
+                    key={index}
+                    className="absolute left-0 right-0 text-center top-0 whitespace-nowrap text-[#FF3B1D] font-extrabold"
+                    initial={{ opacity: 0, y: -40 }}
+                    animate={
+                      titleNumber === index
+                        ? { opacity: 1, y: 0 }
+                        : { opacity: 0, y: titleNumber > index ? -50 : 50 }
+                    }
+                    transition={{
+                      type: 'spring',
+                      stiffness: 90,
+                      damping: 15,
+                    }}
+                  >
+                    {title}
+                  </motion.span>
+                ))}
+              </span>
+            </span>
+          </h1>
+
+          <p className="text-sm sm:text-base text-stone-600 dark:text-[rgba(244,244,240,0.7)] max-w-2xl mx-auto font-normal leading-relaxed pt-1">
+            Trải nghiệm áp lực thực tế của kỳ thi trên máy tính: giao diện Inspera nguyên bản, vô hiệu hóa tính năng tự sửa lỗi, đồng hồ 60 phút đếm ngược, và hệ thống AI Giám khảo đối chiếu theo 4 tiêu chí chuẩn British Council &amp; IDP.
+          </p>
+        </div>
+
+        {/* Interactive Mode Selector Pills */}
+        <div className="flex flex-col items-center gap-4 pt-1 max-w-3xl mx-auto">
+          <div className="flex items-center gap-1.5 p-1.5 rounded-2xl bg-stone-200/70 dark:bg-[#161821]/90 backdrop-blur-md border border-stone-200 dark:border-[rgba(244,244,240,0.1)] shadow-xs overflow-x-auto max-w-full">
+            {[
+              { id: 'full_test', label: 'Full Test (60P)', icon: Flame },
+              { id: 'builder', label: 'Writing Builder', icon: Sprout },
+              { id: 'task1', label: 'Academic Task 1', icon: BarChart3 },
+              { id: 'task2', label: 'Task 2 Essay', icon: PenTool },
+            ].map((m) => {
+              const Icon = m.icon;
+              const isActive = activeMode === m.id;
+              return (
+                <button
+                  key={m.id}
+                  type="button"
+                  onClick={() => {
+                    playClick();
+                    setActiveMode(m.id as ExamMode);
+                  }}
+                  className={`relative inline-flex items-center gap-2 px-4 py-2 rounded-xl font-mono text-xs font-bold transition-all select-none whitespace-nowrap ${
+                    isActive
+                      ? 'text-white shadow-md'
+                      : 'text-stone-600 dark:text-[rgba(244,244,240,0.65)] hover:text-stone-900 dark:hover:text-[#F4F4F0]'
+                  }`}
+                >
+                  {isActive && (
+                    <motion.span
+                      layoutId="hero-active-pill"
+                      className="absolute inset-0 rounded-xl bg-[#FF3B1D]"
+                      transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                    />
+                  )}
+                  <span className="relative z-10 flex items-center gap-1.5">
+                    <Icon className="w-3.5 h-3.5" />
+                    <span>{m.label}</span>
                   </span>
-                </span>
-              </h1>
+                </button>
+              );
+            })}
+          </div>
 
-              <p className="text-sm sm:text-base text-stone-600 dark:text-[rgba(244,244,240,0.68)] max-w-[62ch] font-normal leading-relaxed pt-1">
-                Trải nghiệm áp lực thực tế của kỳ thi trên máy: giao diện Inspera nguyên bản, vô hiệu hóa tính năng tự sửa lỗi, đồng hồ đếm ngược từng giây, và AI Giám khảo đối chiếu theo 4 tiêu chí chuẩn British Council &amp; IDP.
-              </p>
-            </div>
-
-            {/* Interactive Mode Selector (State the visitor can change and see respond) */}
-            <div className="pt-2">
-              <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-stone-200/60 dark:bg-[#161821]/80 border border-stone-200 dark:border-[rgba(244,244,240,0.08)] max-w-fit overflow-x-auto">
-                {[
-                  { id: 'full_test', label: 'Full Test (60P)', icon: Flame },
-                  { id: 'builder', label: 'Writing Builder', icon: Sprout },
-                  { id: 'task1', label: 'Academic Task 1', icon: BarChart3 },
-                  { id: 'task2', label: 'Task 2 Essay', icon: PenTool },
-                ].map((m) => {
-                  const Icon = m.icon;
-                  const isActive = activeMode === m.id;
-                  return (
-                    <button
-                      key={m.id}
-                      type="button"
-                      onClick={() => {
-                        playClick();
-                        setActiveMode(m.id as ExamMode);
-                      }}
-                      className={`relative inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-mono text-xs font-bold transition-all select-none ${
-                        isActive
-                          ? 'text-white shadow-sm'
-                          : 'text-stone-600 dark:text-[rgba(244,244,240,0.6)] hover:text-stone-900 dark:hover:text-[#F4F4F0]'
-                      }`}
-                    >
-                      {isActive && (
-                        <motion.span
-                          layoutId="hero-active-pill"
-                          className="absolute inset-0 rounded-xl bg-[#FF3B1D]"
-                          transition={{ type: 'spring', stiffness: 350, damping: 30 }}
-                        />
-                      )}
-                      <span className="relative z-10 flex items-center gap-1.5">
-                        <Icon className="w-3.5 h-3.5" />
-                        <span>{m.label}</span>
-                      </span>
-                    </button>
-                  );
-                })}
+          {/* Dynamic Mode Preview Card */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeMode}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.22, ease: 'easeOut' }}
+              className="w-full p-5 sm:p-6 rounded-2xl bg-white/90 dark:bg-[#161821]/90 backdrop-blur-md border border-stone-200/90 dark:border-[rgba(244,244,240,0.12)] shadow-md flex flex-col md:flex-row items-center justify-between gap-5 text-left transition-colors duration-300"
+            >
+              <div className="space-y-1.5 max-w-xl">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="font-mono text-[10px] font-bold text-[#FF3B1D] uppercase tracking-wider bg-[#FF3B1D]/10 dark:bg-[#FF3B1D]/15 px-2.5 py-0.5 rounded-full border border-[#FF3B1D]/25">
+                    {modeDescriptions[activeMode].badge}
+                  </span>
+                  <span className="font-mono text-[10px] text-stone-500 dark:text-[rgba(244,244,240,0.5)]">
+                    {modeDescriptions[activeMode].meta}
+                  </span>
+                </div>
+                <div className="font-display text-base sm:text-lg font-bold text-stone-900 dark:text-[#F4F4F0]">
+                  {modeDescriptions[activeMode].title}
+                </div>
+                <p className="text-xs sm:text-sm text-stone-600 dark:text-[rgba(244,244,240,0.68)] leading-relaxed">
+                  {modeDescriptions[activeMode].subtitle}
+                </p>
               </div>
 
-              {/* Dynamic Mode Card Display */}
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeMode}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  transition={{ duration: 0.22, ease: 'easeOut' }}
-                  className="mt-3 p-4 rounded-xl bg-white dark:bg-[#161821] border border-stone-200/90 dark:border-[rgba(244,244,240,0.1)] shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3"
-                >
-                  <div className="space-y-0.5 max-w-xl">
-                    <div className="flex items-center gap-2">
-                      <span className="font-mono text-[10px] font-bold text-[#FF3B1D] uppercase tracking-wider">
-                        {modeDescriptions[activeMode].badge}
-                      </span>
-                    </div>
-                    <div className="text-xs font-bold text-stone-900 dark:text-[#F4F4F0]">
-                      {modeDescriptions[activeMode].title}
-                    </div>
-                    <div
-                      className="text-[11px] text-stone-500 dark:text-[rgba(244,244,240,0.6)]"
-                      dangerouslySetInnerHTML={{ __html: modeDescriptions[activeMode].subtitle }}
-                    />
-                  </div>
-
-                  <Link
-                    href={modeDescriptions[activeMode].link}
-                    onMouseEnter={() => {
-                      if (activeMode === 'full_test') playLockIn();
-                    }}
-                    onClick={() => playClick()}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-stone-900 text-white dark:bg-[#F4F4F0] dark:text-[#090A0F] hover:bg-[#FF3B1D] dark:hover:bg-[#FF3B1D] dark:hover:text-white font-mono text-xs font-bold uppercase tracking-wider transition-all shadow-xs shrink-0 group"
-                  >
-                    <span>Vào Luyện Ngay</span>
-                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
-            {/* Quick Tactical Navigation Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-              {/* Primary Flagship CTA */}
               <Link
-                href="/practice?mode=full_test"
-                onMouseEnter={() => playLockIn()}
+                href={modeDescriptions[activeMode].link}
+                onMouseEnter={() => {
+                  if (activeMode === 'full_test') playLockIn();
+                }}
                 onClick={() => playClick()}
-                className="p-4 rounded-xl bg-[#FF3B1D] text-white hover:bg-[#FF3B1D]/90 transition-all flex items-center justify-between group shadow-md"
+                className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-stone-900 text-white dark:bg-[#F4F4F0] dark:text-[#090A0F] hover:bg-[#FF3B1D] dark:hover:bg-[#FF3B1D] dark:hover:text-white font-mono text-xs font-bold uppercase tracking-wider transition-all shadow-md shrink-0 group cursor-pointer"
               >
-                <div className="space-y-0.5">
-                  <div className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider text-white/80 font-bold">
-                    <Layers className="w-3.5 h-3.5" />
-                    <span>FLAGSHIP // FULL TEST</span>
-                  </div>
-                  <div className="text-sm font-bold tracking-tight">Thi Thử Full Test (60 Phút)</div>
-                </div>
+                <span>Vào Luyện Ngay</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
-              {/* Secondary Method CTA */}
-              <Link
-                href="/builder"
-                onClick={() => playClick()}
-                className="p-4 rounded-xl bg-white dark:bg-[#161821] border border-[#10B981]/50 text-stone-900 dark:text-[#F4F4F0] hover:border-[#10B981] transition-all flex items-center justify-between group shadow-xs"
-              >
-                <div className="space-y-0.5">
-                  <div className="flex items-center gap-1.5 font-mono text-[11px] text-[#10B981] font-bold uppercase tracking-wider">
-                    <Sprout className="w-3.5 h-3.5" />
-                    <span>PHƯƠNG PHÁP MỚI</span>
-                  </div>
-                  <div className="text-sm font-bold tracking-tight">Writing Builder (Cây Đậu N Tầng)</div>
-                </div>
-                <ChevronRight className="w-4 h-4 text-[#10B981] group-hover:translate-x-1 transition-transform" />
-              </Link>
+        {/* Quick Tactical Navigation Bento (3 Pillars) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 max-w-5xl mx-auto pt-2 text-left">
+          {/* Card 1: Flagship Full Test */}
+          <Link
+            href="/practice?mode=full_test"
+            onMouseEnter={() => playLockIn()}
+            onClick={() => playClick()}
+            className="p-5 rounded-2xl bg-[#FF3B1D] text-white hover:bg-[#FF3B1D]/90 transition-all flex flex-col justify-between space-y-4 group shadow-md"
+          >
+            <div className="space-y-1">
+              <div className="flex items-center justify-between font-mono text-[11px] uppercase tracking-wider text-white/80 font-bold">
+                <span className="flex items-center gap-1.5">
+                  <Flame className="w-3.5 h-3.5" />
+                  FLAGSHIP
+                </span>
+                <span>60 PHÚT</span>
+              </div>
+              <div className="font-display text-base font-bold tracking-tight text-white">
+                Thi Thử Full Test
+              </div>
+              <p className="text-xs text-white/85 leading-relaxed">
+                Mô phỏng cả Task 1 &amp; Task 2 liên tục, đồng hồ đếm ngược và thanh chuyển Part.
+              </p>
             </div>
-
-            {/* Micro Telemetry Indicators */}
-            <div className="flex flex-wrap items-center gap-4 pt-2 font-mono text-[11px] text-stone-500 dark:text-[rgba(244,244,240,0.5)]">
-              <span className="flex items-center gap-1.5">
-                <Clock className="w-3.5 h-3.5 text-[#FF3B1D]" />
-                <span>60:00 Phút chuẩn Inspera</span>
-              </span>
-              <span className="text-stone-300 dark:text-stone-700">&bull;</span>
-              <span className="flex items-center gap-1.5">
-                <BookOpen className="w-3.5 h-3.5 text-[#10B981]" />
-                <span>107 Bộ đề Forecast kèm dàn ý</span>
-              </span>
-              <span className="text-stone-300 dark:text-stone-700">&bull;</span>
-              <span className="flex items-center gap-1.5">
-                <ShieldAlert className="w-3.5 h-3.5 text-amber-500" />
-                <span>Khóa Auto-Correct tuyệt đối</span>
-              </span>
+            <div className="flex items-center gap-1 text-xs font-mono font-bold tracking-wider uppercase text-white/95 pt-1">
+              <span>Bắt đầu thi</span>
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </div>
-          </div>
+          </Link>
 
-          {/* Right 5 Columns: Synchronized Interactive Inspera Workstation HUD */}
-          <div className="lg:col-span-5 relative">
-            <InsperaWorkstationHUD forcedTask={hudTask} />
-          </div>
+          {/* Card 2: Writing Builder */}
+          <Link
+            href="/builder"
+            onClick={() => playClick()}
+            className="p-5 rounded-2xl bg-white/90 dark:bg-[#161821]/90 backdrop-blur-md border border-[#10B981]/40 text-stone-900 dark:text-[#F4F4F0] hover:border-[#10B981] transition-all flex flex-col justify-between space-y-4 group shadow-xs hover:shadow-md"
+          >
+            <div className="space-y-1">
+              <div className="flex items-center justify-between font-mono text-[11px] text-[#10B981] font-bold uppercase tracking-wider">
+                <span className="flex items-center gap-1.5">
+                  <Sprout className="w-3.5 h-3.5" />
+                  PHƯƠNG PHÁP MỚI
+                </span>
+                <span>5–30 TẦNG</span>
+              </div>
+              <div className="font-display text-base font-bold tracking-tight text-stone-900 dark:text-[#F4F4F0]">
+                Cây Đậu N Tầng
+              </div>
+              <p className="text-xs text-stone-600 dark:text-[rgba(244,244,240,0.65)] leading-relaxed">
+                Rèn cấu trúc câu từng bước, từ ngữ pháp chuẩn đến từ vựng C1/C2 nâng band.
+              </p>
+            </div>
+            <div className="flex items-center gap-1 text-xs font-mono font-bold tracking-wider uppercase text-[#10B981] pt-1">
+              <span>Vào Workbench</span>
+              <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+            </div>
+          </Link>
+
+          {/* Card 3: 107 Forecast Vault */}
+          <Link
+            href="/prompts"
+            onClick={() => playClick()}
+            className="p-5 rounded-2xl bg-white/90 dark:bg-[#161821]/90 backdrop-blur-md border border-stone-200/90 dark:border-[rgba(244,244,240,0.12)] text-stone-900 dark:text-[#F4F4F0] hover:border-sky-500/60 transition-all flex flex-col justify-between space-y-4 group shadow-xs hover:shadow-md"
+          >
+            <div className="space-y-1">
+              <div className="flex items-center justify-between font-mono text-[11px] text-sky-600 dark:text-sky-400 font-bold uppercase tracking-wider">
+                <span className="flex items-center gap-1.5">
+                  <BookOpen className="w-3.5 h-3.5" />
+                  KHO LƯU TRỮ
+                </span>
+                <span>107 BỘ ĐỀ</span>
+              </div>
+              <div className="font-display text-base font-bold tracking-tight text-stone-900 dark:text-[#F4F4F0]">
+                Đề Forecast &amp; Dàn Ý
+              </div>
+              <p className="text-xs text-stone-600 dark:text-[rgba(244,244,240,0.65)] leading-relaxed">
+                30 đề Task 1 đủ biểu đồ và 77 đề Task 2 có sẵn dàn ý cấu trúc Band 8.0+.
+              </p>
+            </div>
+            <div className="flex items-center gap-1 text-xs font-mono font-bold tracking-wider uppercase text-sky-600 dark:text-sky-400 pt-1">
+              <span>Khám phá kho đề</span>
+              <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+            </div>
+          </Link>
+        </div>
+
+        {/* Micro Telemetry Indicators */}
+        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 pt-3 font-mono text-[11px] text-stone-500 dark:text-[rgba(244,244,240,0.55)]">
+          <span className="inline-flex items-center gap-1.5">
+            <Clock className="w-3.5 h-3.5 text-[#FF3B1D]" />
+            <span>60:00 Phút chuẩn phòng thi</span>
+          </span>
+          <span className="text-stone-300 dark:text-stone-700 hidden sm:inline">&bull;</span>
+          <span className="inline-flex items-center gap-1.5">
+            <ShieldAlert className="w-3.5 h-3.5 text-amber-500" />
+            <span>Khóa Auto-Correct &amp; Spellcheck</span>
+          </span>
+          <span className="text-stone-300 dark:text-stone-700 hidden sm:inline">&bull;</span>
+          <span className="inline-flex items-center gap-1.5">
+            <BookOpen className="w-3.5 h-3.5 text-[#10B981]" />
+            <span>107 Bộ đề Forecast kèm dàn ý</span>
+          </span>
+          <span className="text-stone-300 dark:text-stone-700 hidden sm:inline">&bull;</span>
+          <span className="inline-flex items-center gap-1.5">
+            <Sparkles className="w-3.5 h-3.5 text-sky-500" />
+            <span>Dual-Engine Gemini 2.5 Flash</span>
+          </span>
         </div>
       </div>
     </section>

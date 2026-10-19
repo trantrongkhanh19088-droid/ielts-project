@@ -6,6 +6,7 @@ import Navbar from '@/components/navbar/Navbar';
 import CommandPalette from '@/components/command/CommandPalette';
 import SakuraCanvas from '@/components/japanese/SakuraCanvas';
 import ManekiNeko from '@/components/japanese/ManekiNeko';
+import ArchitecturalMatrixCanvas from '@/components/canvas/ArchitecturalMatrixCanvas';
 
 export const metadata: Metadata = {
   title: 'CD-IELTS Writing Simulator | Nền tảng Luyện thi IELTS Chuẩn Inspera',
@@ -80,6 +81,9 @@ export default function RootLayout({
 
         {/* Ambient Falling Sakura Petals */}
         <SakuraCanvas />
+
+        {/* Procedural Interactive Ocean Wave & Architectural Matrix Canvas */}
+        <ArchitecturalMatrixCanvas />
 
         <Navbar />
         <CommandPalette />
