@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 import { ContrastMode, FontSize } from '@/types';
 import { formatDuration } from '@/lib/utils';
-import ToriiGate from '@/components/japanese/ToriiGate';
+import AcademicLogo from '@/components/brand/AcademicLogo';
 import { useSoundEngine } from '@/hooks/useSoundEngine';
 
 interface ExamHeaderProps {
@@ -100,7 +100,7 @@ export default function ExamHeader({
             {/* Custom Avatar Logo */}
             <div className="flex items-center gap-2">
               <div className="flex items-center justify-center shrink-0">
-                <ToriiGate width={32} height={28} text="合格" glow={false} showShimenawa={true} />
+                <AcademicLogo width={28} height={28} />
               </div>
 
               <div className="hidden lg:flex flex-col">

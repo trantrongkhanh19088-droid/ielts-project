@@ -26,8 +26,7 @@ import {
 import { useSoundEngine } from '@/hooks/useSoundEngine';
 import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import SettingsModal from '@/components/settings/SettingsModal';
-import ManekiNeko from '@/components/japanese/ManekiNeko';
-import ToriiGate from '@/components/japanese/ToriiGate';
+import AcademicLogo from '@/components/brand/AcademicLogo';
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -38,7 +37,7 @@ export default function Navbar() {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [bandSaved, setBandSaved] = useState(false);
-  const [theme, setTheme] = useState<'light' | 'dark' | 'japanese'>('light');
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
   useEffect(() => {
     const handleOpenSettings = () => setIsSettingsModalOpen(true);
@@ -51,35 +50,28 @@ export default function Navbar() {
   // Load and sync theme from localStorage on mount
   useEffect(() => {
     try {
-      const savedTheme = localStorage.getItem('cd_ielts_theme') as 'light' | 'dark' | 'japanese' | null;
+      const savedTheme = localStorage.getItem('cd_ielts_theme') as 'light' | 'dark' | null;
       if (savedTheme === 'dark') {
         setTheme('dark');
         document.documentElement.classList.add('dark');
-        document.documentElement.classList.remove('japanese');
-      } else if (savedTheme === 'japanese') {
-        setTheme('japanese');
-        document.documentElement.classList.remove('dark');
-        document.documentElement.classList.add('japanese');
       } else {
         setTheme('light');
-        document.documentElement.classList.remove('dark', 'japanese');
+        document.documentElement.classList.remove('dark');
       }
+      document.documentElement.classList.remove('japanese');
     } catch {}
   }, []);
 
-  const handleThemeChange = (newTheme: 'light' | 'dark' | 'japanese') => {
+  const handleThemeChange = (newTheme: 'light' | 'dark') => {
     setTheme(newTheme);
     try {
       localStorage.setItem('cd_ielts_theme', newTheme);
       if (newTheme === 'dark') {
         document.documentElement.classList.add('dark');
-        document.documentElement.classList.remove('japanese');
-      } else if (newTheme === 'japanese') {
-        document.documentElement.classList.remove('dark');
-        document.documentElement.classList.add('japanese');
       } else {
-        document.documentElement.classList.remove('dark', 'japanese');
+        document.documentElement.classList.remove('dark');
       }
+      document.documentElement.classList.remove('japanese');
     } catch {}
   };
 
@@ -185,11 +177,11 @@ export default function Navbar() {
       <nav className="sticky top-0 z-30 bg-paper/90 dark:bg-carbon/90 backdrop-blur-md hairline-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14">
-            {/* Logo & Maneki-neko */}
+            {/* Brand Logo & Title */}
             <div className="flex items-center gap-2.5">
               <Link href="/" className="flex items-center gap-2.5 group">
                 <div className="flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-200">
-                  <ToriiGate width={34} height={30} text="合格" glow={false} showShimenawa={true} />
+                  <AcademicLogo width={34} height={34} />
                 </div>
                 <div className="flex flex-col">
                   <div className="flex items-baseline">
@@ -205,9 +197,6 @@ export default function Navbar() {
                   </span>
                 </div>
               </Link>
-              <div className="hidden lg:block pl-1">
-                <ManekiNeko size={30} tooltip="Mèo Thần Tài chúc bạn thi đạt Band cao!" />
-              </div>
             </div>
 
             {/* Nav links */}

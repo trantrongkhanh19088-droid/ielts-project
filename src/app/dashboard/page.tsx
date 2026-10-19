@@ -26,7 +26,6 @@ import { fetchAllEssayRecords, deleteEssayRecordAsync, clearAllEssayRecordsAsync
 import { getSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import ProgressHistoryChart from '@/components/charts/ProgressHistoryChart';
 import { formatDuration } from '@/lib/utils';
-import ToriiGate from '@/components/japanese/ToriiGate';
 import KpiSparkline from '@/components/dashboard/KpiSparkline';
 import RecordDetailDrawer from '@/components/dashboard/RecordDetailDrawer';
 import { useSoundEngine } from '@/hooks/useSoundEngine';
@@ -461,7 +460,9 @@ export default function DashboardPage() {
         ) : filteredRecords.length === 0 ? (
           <div className="p-12 text-center rounded-xl hairline-border bg-paper-subtle/50 dark:bg-carbon-subtle/50 space-y-4">
             <div className="flex justify-center">
-              <ToriiGate width={48} height={40} text="合格" glow={false} showShimenawa={false} />
+              <div className="w-12 h-12 rounded-xl hairline-border bg-stone-100 dark:bg-stone-850 text-stone-400 flex items-center justify-center">
+                <FileText className="w-6 h-6 stroke-[1.5]" />
+              </div>
             </div>
             <div className="space-y-1">
               <h3 className="font-display font-bold text-base text-stone-900 dark:text-stone-100">
@@ -613,8 +614,7 @@ export default function DashboardPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
           <div className="max-w-md w-full bg-paper dark:bg-carbon rounded-2xl hairline-border p-6 sm:p-8 space-y-5 shadow-2xl">
             <div className="flex flex-col items-center gap-2">
-              <ToriiGate width={48} height={40} text="合格" glow={false} showShimenawa={false} />
-              <div className="w-10 h-10 rounded-full bg-red-500/10 text-vermilion flex items-center justify-center mt-1">
+              <div className="w-12 h-12 rounded-full bg-red-500/10 text-vermilion flex items-center justify-center">
                 <Trash2 className="w-5 h-5" />
               </div>
             </div>

@@ -27,8 +27,7 @@ import {
 import { TASK_1_SEEDS, TASK_2_SEEDS } from '@/lib/data/seed-prompts';
 import { PromptSeed } from '@/types';
 import { AI_PERSONAS, AIPersona } from '@/lib/data/ai-personas';
-import ToriiGate from '@/components/japanese/ToriiGate';
-import { SeigaihaPattern } from '@/components/japanese/JapanesePatterns';
+import AcademicLogo from '@/components/brand/AcademicLogo';
 import { useSoundEngine } from '@/hooks/useSoundEngine';
 
 const TASK_1_CATEGORIES = [
@@ -173,9 +172,6 @@ export default function PromptsArchivePage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-paper dark:bg-carbon relative">
-      {/* Background Watermark */}
-      <SeigaihaPattern opacity={0.03} className="text-stone-900 dark:text-stone-200" />
-
       {/* Top Breadcrumb & Return Nav */}
       <div className="hairline-b bg-paper-subtle/50 dark:bg-carbon-subtle/40 py-3.5 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto flex items-center justify-between text-xs font-mono">
@@ -200,7 +196,7 @@ export default function PromptsArchivePage() {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="space-y-3">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full hairline-border bg-stone-100/80 dark:bg-stone-900/80 text-[11px] font-mono tracking-wider text-vermilion uppercase font-semibold">
-                <ToriiGate width={24} height={20} text="合格" showShimenawa={false} glow={false} />
+                <AcademicLogo width={18} height={18} />
                 <span>ARCHIVE // THƯ VIỆN ĐỀ THI &amp; KHO PROMPTS AI CHUYÊN GIA</span>
               </div>
               <h1 className="font-display font-bold text-3xl sm:text-5xl text-stone-900 dark:text-stone-100 tracking-normal leading-snug">

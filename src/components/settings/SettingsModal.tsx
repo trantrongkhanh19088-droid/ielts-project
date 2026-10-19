@@ -12,7 +12,6 @@ import {
   Sparkles,
   ShieldCheck,
   Sliders,
-  Flower2,
 } from 'lucide-react';
 import { getBuilderAutoSuggest, setBuilderAutoSuggest } from '@/lib/builder';
 import { useSoundEngine } from '@/hooks/useSoundEngine';
@@ -20,8 +19,8 @@ import { useSoundEngine } from '@/hooks/useSoundEngine';
 interface SettingsModalProps {
   isOpen: boolean;
   onClose: () => void;
-  currentTheme: 'light' | 'dark' | 'japanese';
-  onThemeChange: (newTheme: 'light' | 'dark' | 'japanese') => void;
+  currentTheme: 'light' | 'dark';
+  onThemeChange: (newTheme: 'light' | 'dark') => void;
 }
 
 export default function SettingsModal({
@@ -89,7 +88,7 @@ export default function SettingsModal({
               <Sliders className="w-3.5 h-3.5 text-sky-600" />
               <span>Chế độ giao diện (Appearance)</span>
             </label>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {/* Light Mode Card */}
               <button
                 type="button"
@@ -148,39 +147,6 @@ export default function SettingsModal({
                   <div className="font-bold text-xs">Giao diện Tối</div>
                   <div className="text-[11px] text-gray-500 dark:text-gray-400">
                     Bảo vệ mắt ban đêm
-                  </div>
-                </div>
-              </button>
-
-              {/* Japanese Sakura Theme Card */}
-              <button
-                type="button"
-                onClick={() => {
-                  playLockIn();
-                  onThemeChange('japanese');
-                }}
-                className={`p-3 rounded-xl border-2 text-left transition flex flex-col gap-2 relative ${
-                  currentTheme === 'japanese'
-                    ? 'border-rose-500 bg-rose-50/80 dark:bg-rose-950/40 text-rose-950 dark:text-rose-100 shadow-sm'
-                    : 'border-gray-200 dark:border-zinc-800 hover:border-rose-300 bg-white dark:bg-zinc-800/60 text-gray-700 dark:text-gray-300'
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="w-7 h-7 rounded-lg bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center">
-                    <Flower2 className="w-3.5 h-3.5 text-rose-500 animate-pulse" />
-                  </div>
-                  {currentTheme === 'japanese' && (
-                    <span className="w-4 h-4 rounded-full bg-rose-600 text-white flex items-center justify-center text-[11px]">
-                      <Check className="w-2.5 h-2.5 stroke-[3]" />
-                    </span>
-                  )}
-                </div>
-                <div>
-                  <div className="font-bold text-xs flex items-center gap-1">
-                    <span>Giao diện Nhật Bản</span>
-                  </div>
-                  <div className="text-[11px] text-rose-600 dark:text-rose-400 font-medium">
-                    Hoa anh đào Sakura
                   </div>
                 </div>
               </button>
