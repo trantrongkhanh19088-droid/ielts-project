@@ -86,30 +86,49 @@ body {
 
 /* Print Styles for Export PDF / Print Report */
 @media print {
-  /* Hide interactive buttons, navigation, headers during print */
+  /* Hide interactive buttons, navigation, canvases, floating modals during print */
   nav,
   header,
-  .no-print,
+  canvas,
   button,
-  .print-hidden {
+  .no-print,
+  .print-hidden,
+  [aria-modal="true"],
+  [role="dialog"] {
     display: none !important;
   }
 
-  body {
-    background: white !important;
-    color: black !important;
-    font-size: 11pt !important;
+  body, html {
+    background: #ffffff !important;
+    color: #111827 !important;
+    font-size: 10.5pt !important;
+    line-height: 1.5 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
-  .print-break-inside {
-    break-inside: avoid;
-    page-break-inside: avoid;
+  .print-report-container {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
 
+  /* Page breaks */
+  .break-before-page,
   .print-page-break {
-    page-break-before: always;
+    break-before: page !important;
+    page-break-before: always !important;
   }
 
+  .avoid-page-break,
+  .print-break-inside {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .shadow-xs,
   .shadow-sm,
   .shadow-md,
   .shadow-lg,
@@ -117,8 +136,10 @@ body {
     box-shadow: none !important;
   }
 
-  .border {
-    border-color: #e5e7eb !important;
+  @page {
+    size: A4 portrait;
+    margin: 12mm 10mm 12mm 10mm;
   }
 }
+
 

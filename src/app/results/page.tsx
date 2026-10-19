@@ -22,6 +22,7 @@ import CriteriaFeedbackTab from '@/components/results/CriteriaFeedbackTab';
 import VocabUpgradesTab from '@/components/results/VocabUpgradesTab';
 import ModelEssayTab from '@/components/results/ModelEssayTab';
 import LowScoreMemeModal from '@/components/results/LowScoreMemeModal';
+import PrintableEvaluationReport from '@/components/results/PrintableEvaluationReport';
 import { formatDuration } from '@/lib/utils';
 import { useSoundEngine } from '@/hooks/useSoundEngine';
 
@@ -151,7 +152,9 @@ function ResultsContent() {
   };
 
   return (
-    <div className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 bg-paper dark:bg-carbon">
+    <>
+      {/* On-Screen Interactive Presentation */}
+      <div className="print:hidden flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 bg-paper dark:bg-carbon">
       {/* Low Score Meme Modal (< 6.0 Band) */}
       <LowScoreMemeModal
         isOpen={showMemeModal}
@@ -431,7 +434,13 @@ function ResultsContent() {
         </div>
       </div>
     </div>
-  );
+
+    {/* Dedicated Comprehensive Print / PDF Export Report (Contains All 4 Sections) */}
+    <div className="hidden print:block w-full">
+      <PrintableEvaluationReport record={record} />
+    </div>
+  </>
+);
 }
 
 export default function ResultsPage() {
