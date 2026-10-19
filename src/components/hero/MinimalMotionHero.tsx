@@ -299,18 +299,18 @@ export default function MinimalMotionHero() {
                 </span>
                 <span className="flex items-center gap-1 text-[#FF3B1D]">
                   <Sparkles className="w-3 h-3" />
-                  PROMPTS.CHAT
+                  CHUYÊN GIA AI
                 </span>
               </div>
               <div className="font-display text-base font-bold tracking-tight text-stone-900 dark:text-[#F4F4F0]">
                 107 Đề &amp; 6 Persona AI
               </div>
               <p className="text-xs text-stone-600 dark:text-[rgba(244,244,240,0.65)] leading-relaxed">
-                Đề Forecast kèm dàn ý Band 8+ và kho Persona AI chuyên gia tinh tuyển từ prompts.chat.
+                Đề Forecast kèm dàn ý Band 8+ và kho Persona AI chuyên gia tinh tuyển chuẩn Khảo thí Cambridge.
               </p>
             </div>
             <div className="flex items-center gap-1 text-xs font-mono font-bold tracking-wider uppercase text-sky-600 dark:text-sky-400 pt-1">
-              <span>Khám phá kho đề &amp; prompt</span>
+              <span>Khám phá kho đề &amp; personas</span>
               <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </div>
           </Link>

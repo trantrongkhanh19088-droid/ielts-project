@@ -108,7 +108,7 @@ export default function PromptsArchivePage() {
     });
   }, [activeTab, searchQuery, task1Category, task2Category]);
 
-  // Filter curated AI personas from prompts.chat
+  // Filter curated AI personas chuẩn Khảo thí Cambridge & IDP
   const filteredPersonas = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
     return AI_PERSONAS.filter((p) => {
@@ -207,7 +207,7 @@ export default function PromptsArchivePage() {
                 Kho Đề Thi &amp; Persona AI Chuyên Gia 2026
               </h1>
               <p className="text-sm sm:text-base text-stone-600 dark:text-stone-400 max-w-2xl leading-relaxed">
-                Tổng hợp 107 đề thi dự đoán Task 1 &amp; Task 2 chuẩn Cambridge kèm dàn ý chi tiết, kết hợp cùng 6 bộ Prompts Persona chuyên gia tinh tuyển từ <strong className="text-stone-900 dark:text-stone-100 font-semibold">prompts.chat</strong> phục vụ luyện thi và sửa bài toàn diện.
+                Tổng hợp 107 đề thi dự đoán Task 1 &amp; Task 2 chuẩn Cambridge kèm dàn ý chi tiết, kết hợp cùng 6 bộ Prompts Persona chuyên gia tinh tuyển chuẩn <strong className="text-stone-900 dark:text-stone-100 font-semibold">Khảo thí Cambridge &amp; IDP</strong> phục vụ luyện thi và sửa bài toàn diện.
               </p>
             </div>
 
@@ -296,7 +296,7 @@ export default function PromptsArchivePage() {
                 }`}
               >
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>PROMPTS.CHAT PERSONAS (6)</span>
+                <span>AI PERSONAS CHUYÊN GIA (6)</span>
               </button>
             </div>
 
@@ -421,7 +421,7 @@ export default function PromptsArchivePage() {
       <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 flex-1">
         <div className="max-w-6xl mx-auto space-y-6">
           {/* =====================================================================
-              TAB CONTENT: AI PERSONAS & PROMPTS (PROMPTS.CHAT)
+              TAB CONTENT: AI PERSONAS & PROMPTS CHUYÊN GIA
               ===================================================================== */}
           {activeTab === 'personas' ? (
             <div className="space-y-6 animate-in fade-in duration-300">
@@ -433,7 +433,7 @@ export default function PromptsArchivePage() {
                       TÍCH HỢP TỰ ĐỘNG MCP SERVER
                     </span>
                     <span className="font-mono text-[11px] text-stone-500">
-                      prompts.chat // 2,533 Prompts Library
+                      CAMBRIDGE &amp; IDP STANDARDS // 6 CHUYÊN GIA
                     </span>
                   </div>
                   <h3 className="font-display text-base font-bold text-stone-900 dark:text-stone-100">

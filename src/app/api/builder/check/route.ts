@@ -62,7 +62,7 @@ ${previousSentences && previousSentences.length > 0 ? previousSentences.map((s, 
 CANDIDATE'S SENTENCE TO EVALUATE:
 "${sentence.trim()}"
 
-YOUR TASK (CAMBRIDGE & PROMPTS.CHAT ACADEMIC REFINEMENT STANDARDS):
+YOUR TASK (CAMBRIDGE & IDP ACADEMIC REFINEMENT STANDARDS):
 1. Detect all grammatical errors (tenses, subject-verb agreement, relative clauses, prepositions, articles, dangling modifiers).
 2. Detect lexical and word choice inaccuracies (unnatural collocations, wrong parts of speech, inappropriate register).
 3. Detect academic wordiness and redundancy (eliminating empty filler language, repetitive clichés like "due to the fact that" -> "because").
